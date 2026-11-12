@@ -100,8 +100,8 @@ final class TGTakePiece {
 	// adds it to each side of the tap: a mono piece's one side to both
 	void addTo(float[][] tap) {
 		long from = Math.max(0, this.start - (this.head ? FADE : 0));
-		long to = Math.min(tap[0].length, this.end + (this.tail ? FADE : 0));
 		for (int side = 0; side < tap.length; side++) {
+			long to = Math.min(tap[side].length, this.end + (this.tail ? FADE : 0));
 			int own = Math.min(side, this.source.length - 1);
 			for (long o = from; o < to; o++) {
 				tap[side][(int) o] += (float) (this.gain(o) * this.sample(own, o));

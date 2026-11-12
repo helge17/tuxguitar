@@ -68,6 +68,7 @@ public class TestAudioTrackRender {
 		TGRender render = render();
 		double pan = 30 / 127.0 * Math.PI / 2;
 
+		assertEquals(1f, render.getTap(track)[1000]);
 		assertEquals(1f, render.getTap(track, 0)[1000]);
 		assertEquals(0.5f, render.getTap(track, 1)[1000]);
 		assertEquals(100 / 127.0 * Math.cos(pan), render.getLeft()[1000], 1e-6);

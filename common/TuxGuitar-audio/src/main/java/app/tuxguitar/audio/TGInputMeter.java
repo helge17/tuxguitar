@@ -7,8 +7,8 @@ package app.tuxguitar.audio;
  */
 public final class TGInputMeter {
 
-	// -0.1 dBFS
-	private static final double CLIPPING = Math.pow(10, -0.1 / 20);
+	// -0.1 dBFS, as a sample
+	static final float CLIPPING = (float) Math.pow(10, -0.1 / 20);
 
 	// the peak of each of the last second's samples, the oldest overwritten first
 	private final float[] lastSecond;

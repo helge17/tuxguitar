@@ -46,6 +46,13 @@ public class TestInputMeter {
 	}
 
 	@Test
+	public void aSampleAtExactlyMinusOneTenthOfADecibelIsClipping() {
+		meter.deliver(level(1, TGInputMeter.CLIPPING));
+		assertTrue(meter.isClipping());
+		assertTrue(meter.hasClipped());
+	}
+
+	@Test
 	public void theInputIsClippingFromMinusOneTenthOfADecibel() {
 		meter.deliver(level(1, (float) Math.pow(10, -0.1001 / 20)));
 		assertFalse(meter.isClipping());

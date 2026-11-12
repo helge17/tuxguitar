@@ -1,5 +1,6 @@
 package app.tuxguitar.audio;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -132,6 +133,36 @@ public class TestWsolaKnobs {
 		for (int i = 0; i < mono.length; i++) {
 			assertEquals(2 * mono[i], stereo[0][i] + stereo[1][i], 1e-5, "sample " + i);
 		}
+	}
+
+	// played at its own length the input comes out sample for sample, onsets and all
+	@Test
+	public void atItsOwnLengthTheInputIsUnchangedWhateverItsOnsets() {
+		float[] input = new float[4096];
+		for (int i = 0; i < input.length; i++) {
+			input[i] = (float) (0.05 * Math.sin(2 * Math.PI * 440 * i / 44100));
+		}
+		input[1100] = 0.9f;
+		assertArrayEquals(input, stretcher.stretch(new float[][] {input}, 0, 4096, 4096)[0]);
+	}
+
+	// a click at sample 30000 starts a piece; inside that piece a tone turns louder from sample 60000 (over 10 ms, so
+	// it is no onset): stretched to twice its length, past the click it first turns louder near sample 120000 (within
+	// a frame, the search and a period, doubled)
+	@Test
+	public void aPieceAfterAnOnsetKeepsItsTimingInside() {
+		float[] input = new float[88200];
+		for (int i = 0; i < input.length; i++) {
+			double level = 0.1 + 0.2 * Math.min(1, Math.max(0, (i - 60000) / 441.0));
+			input[i] = (float) (level * Math.sin(2 * Math.PI * 440 * i / 44100));
+		}
+		input[30000] = 0.9f;
+		float[] output = stretcher.stretch(new float[][] {input}, 0, 88200, 176400)[0];
+		int louder = 62000;
+		while (Math.abs(output[louder]) <= 0.2) {
+			louder++;
+		}
+		assertEquals(120000, louder, 2 * (1024 + 203 + 100));
 	}
 
 	// a stretch of exactly a frame is time-stretched, keeping its pitch, not resampled
