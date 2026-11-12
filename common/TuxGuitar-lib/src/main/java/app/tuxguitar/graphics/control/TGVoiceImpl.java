@@ -535,7 +535,7 @@ public class TGVoiceImpl extends TGVoice{
 		if( getDuration().getValue() < TGDuration.EIGHTH ) {
 			return;
 		}
-		int index =  ( getDuration().getIndex() - 3);
+		int index = getLastBeamLevel(this);
 		if( index < 0 ) {
 			return;
 		}
@@ -567,16 +567,14 @@ public class TGVoiceImpl extends TGVoice{
 		float hX = (getPosX() + spacing);
 		float hLineWidth = layout.getLineWidth(2);
 		float hLineMargin = hLineWidth;
-		int nIndex = getBeamIndex(this.next);
-		int pIndex = getBeamIndex(this.previous);
 		boolean pathInitialized = false;
 
 		float hX1 = getBeamX1(layout, joinedType, hX, spacing, scale);
 		float hX2 = getBeamX2(layout, joinedType, hX, spacing, scale);
 
 		for(int i = 0; i <= index; i ++) {
-			float currHX1 = getBeamSegmentX1(i, pIndex, hX, hX1);
-			float currHX2 = getBeamSegmentX2(i, nIndex, hX, hX2);
+			float currHX1 = getBeamSegmentX1(i, hX, hX1);
+			float currHX2 = getBeamSegmentX2(i, hX, hX2);
 			if( currHX1 != currHX2 ) {
 				if(!pathInitialized) {
 					pathInitialized = true;
@@ -595,8 +593,9 @@ public class TGVoiceImpl extends TGVoice{
 		}
 	}
 
-	private static int getBeamIndex(TGVoiceImpl voice){
-		return (voice != null ? voice.getDuration().getIndex() - 3 : -1);
+	// the beam levels of a voice are 0 (eighth) to this one; below 0, it has no beam
+	private static int getLastBeamLevel(TGVoiceImpl voice){
+		return (voice.getDuration().getIndex() - 3);
 	}
 
 	private float getBeamX1(TGLayout layout, int joinedType, float hX, float spacing, float scale){
@@ -617,15 +616,17 @@ public class TGVoiceImpl extends TGVoice{
 		return getJoin2().getPosX() + getJoin2().getBeatImpl().getSpacing(layout);
 	}
 
-	private float getBeamSegmentX1(int i, int pIndex, float hX, float hX1){
-		if( isJoinedFromPrevious() && ((this.getJoin1() != null && this.getJoin1().equals(this.previous)) || i <= pIndex) ) {
+	// level i starts at this stem (hX) when the previous voice, beamed to this one, has that level: it draws it here
+	private float getBeamSegmentX1(int i, float hX, float hX1){
+		if( isJoinedFromPrevious() && i <= getLastBeamLevel(this.previous) ) {
 			return hX;
 		}
 		return hX1;
 	}
 
-	private float getBeamSegmentX2(int i, int nIndex, float hX, float hX2){
-		if( isJoinedToNext() && ((this.getJoin1() == null || !this.getJoin2().equals(this.next)) && i <= nIndex) ) {
+	// level i ends at this stem (hX) when a longer next voice, beamed back to this one, has that level: it draws it
+	private float getBeamSegmentX2(int i, float hX, float hX2){
+		if( isJoinedToNext() && !this.getJoin2().equals(this.next) && i <= getLastBeamLevel(this.next) ) {
 			return hX;
 		}
 		return hX2;
