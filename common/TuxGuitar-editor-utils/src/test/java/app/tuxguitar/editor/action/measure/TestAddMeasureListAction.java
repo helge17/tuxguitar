@@ -13,7 +13,7 @@ import app.tuxguitar.editor.action.SongActionFixture;
 
 /**
  * Pins TGAddMeasureListAction: the count of new measures go in at the measure number, which can be one past the
- * song end; a number out of the song, or a count of zero, adds nothing.
+ * song end; a number out of the song, or a count below one, adds nothing.
  *
  * The song starts with one measure holding one note; it reads back as the notes of each measure, a new measure
  * holding only a rest.
@@ -42,7 +42,8 @@ public class TestAddMeasureListAction {
 			adding("a count of one adds one measure", " | s1f1", 1, 1),
 			adding("a number past the song end adds nothing", "s1f1", 3, 2),
 			adding("a number before the first measure adds nothing", "s1f1", 0, 2),
-			adding("a count of zero adds nothing", "s1f1", 1, 0));
+			adding("a count of zero adds nothing", "s1f1", 1, 0),
+			adding("a negative count adds nothing", "s1f1", 1, -1));
 	}
 
 	private static DynamicTest adding(String name, String expected, int number, int count) {

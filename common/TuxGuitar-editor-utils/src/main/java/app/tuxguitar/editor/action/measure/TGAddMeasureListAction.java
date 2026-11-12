@@ -23,7 +23,7 @@ public class TGAddMeasureListAction extends TGActionBase {
 		int number = ((Integer) actionContext.getAttribute(ATTRIBUTE_MEASURE_NUMBER)).intValue();
 		int count = ((Integer) actionContext.getAttribute(ATTRIBUTE_MEASURE_COUNT)).intValue();
 
-		if(count > 0 && number > 0 && number <=  (song.countMeasureHeaders() + 1)){
+		if(number > 0 && number <=  (song.countMeasureHeaders() + 1)){
 			TGActionManager actionManager = TGActionManager.getInstance(getContext());
 			for( int i = 0 ; i < count ; i ++ ){
 				actionContext.setAttribute(TGAddMeasureAction.ATTRIBUTE_MEASURE_NUMBER, Integer.valueOf((number + i)));
