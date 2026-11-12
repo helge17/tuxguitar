@@ -1918,32 +1918,42 @@ public class TGMeasureManager {
 
 	public void moveVoice(TGVoice voice, TGBeat beat){
 		TGBeat currentBeat = voice.getBeat();
-		if(!currentBeat.equals(beat)){
-			if(currentBeat.getVoice( voice.getIndex() ).equals( voice )){
-				if ( currentBeat.isTextBeat() && isUniqueVoice(voice, false) ){
-						beat.setText( currentBeat.getText() );
-						currentBeat.removeText();
-				}
-				if( isUniqueVoice(voice, true) ){
-					if( currentBeat.isChordBeat() ){
-						beat.setChord( currentBeat.getChord() );
-						currentBeat.removeChord();
-					}
-					if( currentBeat.getStroke().getDirection() != TGStroke.STROKE_NONE ){
-						beat.getStroke().copyFrom( currentBeat.getStroke() );
-						currentBeat.getStroke().setDirection(TGStroke.STROKE_NONE);
-					}
-					if( currentBeat.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE ){
-						beat.getPickStroke().copyFrom( currentBeat.getPickStroke() );
-						currentBeat.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
-					}
-				}
-				// Make sure to remove another voice instance from old beat.
-				TGVoice newVoice = getSongManager().getFactory().newVoice(voice.getIndex());
-				currentBeat.setVoice( voice.getIndex(), newVoice);
-				this.removeVoice(newVoice);
-			}
-			beat.setVoice( voice.getIndex() , voice);
+		if(currentBeat.equals(beat)){
+			return;
+		}
+		if(currentBeat.getVoice( voice.getIndex() ).equals( voice )){
+			moveBeatAttributes(voice, currentBeat, beat);
+			// Make sure to remove another voice instance from old beat.
+			TGVoice newVoice = getSongManager().getFactory().newVoice(voice.getIndex());
+			currentBeat.setVoice( voice.getIndex(), newVoice);
+			this.removeVoice(newVoice);
+		}
+		beat.setVoice( voice.getIndex() , voice);
+	}
+
+	// a voice takes along the text of its beat when no other voice is there, the chord and strokes when no other voice has notes
+	private void moveBeatAttributes(TGVoice voice, TGBeat from, TGBeat to){
+		if ( from.isTextBeat() && isUniqueVoice(voice, false) ){
+			to.setText( from.getText() );
+			from.removeText();
+		}
+		if( isUniqueVoice(voice, true) ){
+			moveChordAndStrokes(from, to);
+		}
+	}
+
+	private void moveChordAndStrokes(TGBeat from, TGBeat to){
+		if( from.isChordBeat() ){
+			to.setChord( from.getChord() );
+			from.removeChord();
+		}
+		if( from.getStroke().getDirection() != TGStroke.STROKE_NONE ){
+			to.getStroke().copyFrom( from.getStroke() );
+			from.getStroke().setDirection(TGStroke.STROKE_NONE);
+		}
+		if( from.getPickStroke().getDirection() != TGPickStroke.PICK_STROKE_NONE ){
+			to.getPickStroke().copyFrom( from.getPickStroke() );
+			from.getPickStroke().setDirection(TGPickStroke.PICK_STROKE_NONE);
 		}
 	}
 
@@ -2232,37 +2242,39 @@ public class TGMeasureManager {
 	}
 
 	public void transposeNotes( TGBeat beat, List<TGString> strings, int transposition , boolean tryKeepString, boolean applyToChord, int applyToString, int maxFret){
-		if( transposition != 0 ){
-			List<TGNote> notes = getNotes(beat);
-
-			int stringCount = strings.size();
-			for( int i = 0 ; i < stringCount ; i ++ ){
-				TGString string = strings.get( (stringCount - i) - 1 );
-				if( applyToString == -1 || string.getNumber() == applyToString ){
-					TGNote note = null;
-					for( int n = 0 ; n < notes.size() ; n ++ ){
-						TGNote current = notes.get( n );
-						if( current.getString() == string.getNumber() ){
-							note = current;
-						}
-					}
-					if( note != null ){
-						transpose(new FrettedNotes(notes), note.getString(), strings, transposition, tryKeepString, false, maxFret );
-					}
-
-					if( applyToChord && beat.isChordBeat() ){
-						TGChord chord = beat.getChord();
-						int chordString = ( string.getNumber() - 1 );
-						if( chord.getFretValue( chordString ) >= 0 ){
-							transpose(new FrettedChord(chord), string.getNumber(), strings, transposition, tryKeepString, false, maxFret);
-						}
-					}
-				}
+		if( transposition == 0 ){
+			return;
+		}
+		boolean withChord = ( applyToChord && beat.isChordBeat() );
+		List<FrettedStrings> fretted = getFrettedStrings(beat, withChord);
+		// strings from the last to the first in "strings" order
+		for( int i = strings.size() - 1 ; i >= 0 ; i -- ){
+			int stringNumber = strings.get( i ).getNumber();
+			if( applyToString == -1 || stringNumber == applyToString ){
+				transposeString(fretted, stringNumber, strings, transposition, tryKeepString, maxFret);
 			}
-			if( applyToChord && beat.isChordBeat() ){
-				TGChord chord = beat.getChord();
-				chord.setFirstFret( -1 );
-				chord.setName("");
+		}
+		if( withChord ){
+			beat.getChord().setFirstFret( -1 );
+			beat.getChord().setName("");
+		}
+	}
+
+	// the notes of the beat, then its chord when asked
+	private List<FrettedStrings> getFrettedStrings(TGBeat beat, boolean withChord){
+		List<FrettedStrings> fretted = new ArrayList<FrettedStrings>();
+		fretted.add(new FrettedNotes(getNotes(beat)));
+		if( withChord ){
+			fretted.add(new FrettedChord(beat.getChord()));
+		}
+		return fretted;
+	}
+
+	// transposes the fret on the string in each of the fretted strings that has one
+	private void transposeString(List<FrettedStrings> fretted, int stringNumber, List<TGString> strings, int transposition, boolean tryKeepString, int maxFret){
+		for( FrettedStrings frets : fretted ){
+			if( frets.isFretted(stringNumber) ){
+				transpose(frets, stringNumber, strings, transposition, tryKeepString, false, maxFret);
 			}
 		}
 	}
