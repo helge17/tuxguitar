@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
 import app.tuxguitar.player.base.MidiChannel;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiReceiver;
@@ -49,12 +50,31 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 		}
 	}
 
+	// the channel DRUMS is the synthesizer's own drums: Gervill's General MIDI drum kit (bank 128, program 0), outside
+	// every sound chain
 	public MidiChannel openChannel(int channelId) throws MidiPlayerException{
 		TGSynthChannel tgChannel = new TGSynthChannel(this, channelId);
+		if( channelId == DRUMS ) {
+			tgChannel.loadProgram(drums());
+		}
 
 		this.add(tgChannel);
 
 		return tgChannel;
+	}
+
+	public boolean hasDrums() {
+		return true;
+	}
+
+	private static TGProgram drums() {
+		TGProgramElement kit = new TGProgramElement();
+		kit.setId("drums");
+		kit.setType(GervillProcessorFactory.TYPE);
+		kit.setParameter("gervil.program", "128:0");
+		TGProgram drums = new TGProgram();
+		drums.setReceiver(kit);
+		return drums;
 	}
 
 	public void closeChannel(MidiChannel midiChannel) throws MidiPlayerException{

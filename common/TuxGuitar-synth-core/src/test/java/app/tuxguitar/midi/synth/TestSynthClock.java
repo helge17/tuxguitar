@@ -5,11 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
 import app.tuxguitar.player.base.MidiParameters;
+import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiReceiver;
 import app.tuxguitar.util.TGContext;
@@ -51,6 +54,21 @@ public class TestSynthClock {
 		this.model.at(34).sendNoteOn(9, 60, 100, 2, true);
 
 		assertEquals("[on 60 100 2 true @30, bend 70 2 true @31, cc 91 40 @32, off 60 0 2 true @33] []", received(3) + " " + received(4));
+	}
+
+	// the synthesizer's own drums, where the Metronome clicks: they open as the channel DRUMS on Gervill's drum kit
+	// (here a source of Gervill's type), whatever the programs of its banks, take the events of a frame, and their
+	// latency counts in the synthesizer's (plugin delay compensation delays the other channels to them)
+	@Test
+	public void itsDrumsOpenAsTheirOwnChannelOnGervillsDrumKit() throws MidiPlayerException {
+		FakeProcessors.SourceFactory gervill = new FakeProcessors.SourceFactory(GervillProcessorFactory.TYPE, 0.5f);
+		TGSynthManager.getInstance(this.context).addExtension(TGMidiProcessorFactory.class, gervill);
+		this.model.openChannel(MidiSampleClock.DRUMS);
+		gervill.last().latency = 700;
+		this.model.at(40).sendNoteOn(MidiSampleClock.DRUMS, 37, 95, -1, false);
+
+		assertEquals("true " + Collections.singletonMap("gervil.program", "128:0") + " [on 37 95 -1 false @40] 700",
+				this.model.hasDrums() + " " + gervill.last().restored + " " + gervill.last().received + " " + this.model.getLatency());
 	}
 
 	// a bend with its exact semitones reaches a source that takes them (a VST3 instrument) with them, on its frame; a
