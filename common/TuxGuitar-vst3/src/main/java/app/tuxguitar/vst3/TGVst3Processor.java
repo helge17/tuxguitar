@@ -1,0 +1,133 @@
+package app.tuxguitar.vst3;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+
+/**
+ * A VST3 plugin as a processor of the TuxGuitar Synthesizer: its element's parameters open it in the host process (the
+ * plugin they name, its state, the parameters set since), and each block goes through it in 32-bit float. When the host
+ * process stops, the plugin is gone: it sounds nothing, and the hosting reports the stop.
+ */
+abstract class TGVst3Processor implements TGAudioProcessor {
+
+	static final int FRAMES = TGAudioBuffer.BUFFER_SIZE / 2;
+
+	private final TGVst3Hosting hosting;
+	private final boolean instrument;
+	private final float[][] block = new float[TGAudioBuffer.CHANNELS][FRAMES];
+	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
+	private TGVst3Plugin plugin;
+	private TGVst3Instance instance;
+
+	TGVst3Processor(TGVst3Hosting hosting, boolean instrument) {
+		this.hosting = hosting;
+		this.instrument = instrument;
+	}
+
+	public void setSampleRate(float sampleRate) {
+		this.sampleRate = sampleRate;
+	}
+
+	// the plugin the parameters name (opened again when it is another one), then its state and the parameters set since
+	public void restoreParameters(Map<String, String> parameters) {
+		TGVst3Plugin wanted = TGVst3Element.plugin(parameters, this.instrument);
+		try {
+			if (!this.plays(wanted)) {
+				this.close();
+				this.instance = (wanted != null ? this.hosting.open(wanted, this.sampleRate, FRAMES) : null);
+				this.plugin = wanted;
+			}
+			this.restore(parameters);
+		} catch (TGVst3Exception e) {
+			this.lost();
+		}
+	}
+
+	private boolean plays(TGVst3Plugin wanted) {
+		return (this.instance != null && wanted != null && wanted.getModule().equals(this.plugin.getModule()) && wanted.getClassId().equals(this.plugin.getClassId()));
+	}
+
+	private void restore(Map<String, String> parameters) throws TGVst3Exception {
+		if (this.instance == null) {
+			return;
+		}
+		TGVst3State state = TGVst3Element.state(parameters);
+		if (state != null) {
+			this.instance.setState(state);
+		}
+		for (Map.Entry<Integer, Double> parameter : TGVst3Element.parameters(parameters).entrySet()) {
+			this.instance.setParameter(parameter.getKey(), parameter.getValue());
+		}
+	}
+
+	public void storeParameters(Map<String, String> parameters) {
+		try {
+			if (this.instance != null) {
+				TGVst3Element.store(parameters, this.plugin, this.instance.getState());
+			}
+		} catch (TGVst3Exception e) {
+			this.lost();
+		}
+	}
+
+	public void fillBuffer(TGAudioBuffer buffer) {
+		buffer.read(this.block);
+		this.process(this.block);
+		buffer.write(this.block);
+	}
+
+	public void process(float[][] samples) {
+		try {
+			if (this.instance != null) {
+				this.instance.process(samples, FRAMES, TGVst3Transport.STOPPED, this.takeEvents());
+				return;
+			}
+		} catch (TGVst3Exception e) {
+			this.lost();
+		}
+		for (float[] side : samples) {
+			java.util.Arrays.fill(side, 0f);
+		}
+	}
+
+	// the note events of the block about to be processed
+	List<TGVst3NoteEvent> takeEvents() {
+		return Collections.emptyList();
+	}
+
+	// the host process stopped and the plugin with it
+	private void lost() {
+		this.instance = null;
+	}
+
+	public int getLatency() {
+		return (this.instance != null ? this.instance.getLatency() : 0);
+	}
+
+	// the plugin as it is open in the host process, or null
+	public TGVst3Instance getInstance() {
+		return this.instance;
+	}
+
+	public boolean isOpen() {
+		return (this.instance != null);
+	}
+
+	public boolean isBusy() {
+		return false;
+	}
+
+	public void close() {
+		if (this.instance != null) {
+			this.instance.close();
+			this.instance = null;
+		}
+	}
+
+	public void finalize() {
+	}
+}

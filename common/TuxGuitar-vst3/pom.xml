@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>app.tuxguitar</groupId>
+		<version>9.99-SNAPSHOT</version>
+		<relativePath>../../desktop/</relativePath>
+	</parent>
+
+	<!-- VST3 hosting, headless: the client of the helper process that runs VST3 plugins apart from TuxGuitar
+		(native/host), and VST3 effects and instruments as the TuxGuitar Synthesizer's audio and MIDI processors.
+		native/ also holds the test plugins of the audio features. Before the tests, build.cmd / build.sh builds them
+		with CMake into native-build/ (outside target/, so it survives `mvn clean` and is built once); without a C++
+		toolchain the build stops there and says what to install. -DskipTests skips the native build too. -->
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-vst3</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<skipTests>false</skipTests>
+		<vst3.native.dir>${project.basedir}/native-build</vst3.native.dir>
+	</properties>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>build-vst3-native</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<target name="build-vst3-native">
+								<exec executable="cmd" osfamily="windows" failonerror="true">
+									<arg value="/c" />
+									<arg value="${project.basedir}/native/build.cmd" />
+									<arg value="${vst3.native.dir}" />
+								</exec>
+								<exec executable="sh" osfamily="unix" failonerror="true">
+									<arg value="${project.basedir}/native/build.sh" />
+									<arg value="${vst3.native.dir}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<tg.vst3.native>${vst3.native.dir}</tg.vst3.native>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.14.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-lib</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-synth-core</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

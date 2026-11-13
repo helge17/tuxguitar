@@ -7,6 +7,7 @@
 #include "pluginterfaces/vst/ivstparameterchanges.h"
 
 #include <cmath>
+#include <cstdlib>
 #include <cstring>
 
 namespace TuxGuitar {
@@ -203,7 +204,8 @@ IPlugView* PLUGIN_API TestPlugin::createView(FIDString name) {
 }
 
 // the test messages play the plugin's own editor: "TG.gesture" moves a parameter through values in one gesture,
-// "TG.preset" chooses a preset; "TG.report" answers with what the plugin was told
+// "TG.preset" chooses a preset; "TG.report" answers with what the plugin was told; "TG.crash" takes its process down, as
+// a plugin that crashes does
 tresult PLUGIN_API TestPlugin::notify(IMessage* message) {
 	FIDString id = message->getMessageID();
 	IAttributeList* attributes = message->getAttributes();
@@ -226,11 +228,19 @@ tresult PLUGIN_API TestPlugin::notify(IMessage* message) {
 		choosePreset((int32) index);
 		return kResultOk;
 	}
+	if (std::strcmp(id, "TG.crash") == 0) {
+		std::_Exit(70);
+	}
 	if (std::strcmp(id, "TG.report") == 0) {
 		std::vector<char> bytes = report();
 		return attributes->setBinary("report", bytes.data(), (uint32) bytes.size());
 	}
 	return SingleComponentEffect::notify(message);
+}
+
+tresult PLUGIN_API TestPlugin::queryInterface(const TUID _iid, void** obj) {
+	DEF_INTERFACE(IConnectionPoint)
+	return SingleComponentEffect::queryInterface(_iid, obj);
 }
 
 void TestPlugin::gesture(ParamID id, const std::vector<double>& plain) {

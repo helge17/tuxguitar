@@ -62,6 +62,8 @@ public:
 	tresult PLUGIN_API setParamNormalized(ParamID id, ParamValue value) SMTG_OVERRIDE;
 	IPlugView* PLUGIN_API createView(FIDString name) SMTG_OVERRIDE;
 	tresult PLUGIN_API notify(IMessage* message) SMTG_OVERRIDE;
+	// the test messages come through IConnectionPoint, which SingleComponentEffect hides from hosts
+	tresult PLUGIN_API queryInterface(const TUID iid, void** obj) SMTG_OVERRIDE;
 
 protected:
 	// the plain value of a parameter

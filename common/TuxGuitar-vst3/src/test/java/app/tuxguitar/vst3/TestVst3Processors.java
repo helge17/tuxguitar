@@ -1,0 +1,250 @@
+package app.tuxguitar.vst3;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.midi.synth.TGMidiProcessor;
+import app.tuxguitar.midi.synth.TGProgramElement;
+import app.tuxguitar.midi.synth.TGSynthManager;
+import app.tuxguitar.util.TGContext;
+
+/**
+ * VST3 effects and instruments as the TuxGuitar Synthesizer's processors, opened from sound chain elements in the host
+ * process, with the real test plugins.
+ */
+public class TestVst3Processors {
+
+	private static final int FRAMES = TGVst3Processor.FRAMES;
+
+	private final TGContext context = new TGContext();
+	private final TGVst3Hosting hosting = TGVst3Hosting.getInstance(this.context);
+	private final List<TGAudioProcessor> opened = new ArrayList<TGAudioProcessor>();
+
+	@BeforeEach
+	public void setUp() throws TGVst3Exception {
+		this.hosting.configure(TestPlugins.host(), Arrays.asList(TestPlugins.folder(), TestPlugins.vst2Folder()));
+		this.hosting.scan();
+		TGVst3Processors.install(this.context);
+		TGVst3Processors.install(this.context);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		this.opened.forEach(TGAudioProcessor::close);
+		this.hosting.close();
+	}
+
+	private TGProgramElement element(String name) {
+		return TGVst3Element.create("e1", this.hosting.find(name));
+	}
+
+	private <T extends TGAudioProcessor> T open(T processor, TGProgramElement element) {
+		processor.setSampleRate(44100f);
+		processor.restoreParameters(element.getParameters());
+		this.opened.add(processor);
+		return processor;
+	}
+
+	private TGAudioProcessor effect(TGProgramElement element) {
+		return open(TGSynthManager.getInstance(this.context).findAudioProcessorFactory(element.getType()).createProcessor(), element);
+	}
+
+	private TGMidiProcessor instrument(String name) {
+		TGProgramElement element = element(name);
+		return open(TGSynthManager.getInstance(this.context).findMidiProcessorFactory(element.getType()).createProcessor(), element);
+	}
+
+	private static float[][] level(float value) {
+		float[][] block = new float[2][FRAMES];
+		Arrays.fill(block[0], value);
+		Arrays.fill(block[1], value);
+		return block;
+	}
+
+	private int parameter(String plugin, String title) throws TGVst3Exception {
+		TGVst3Instance instance = this.hosting.open(this.hosting.find(plugin), 44100f, FRAMES);
+		int id = instance.findParameter(title);
+		instance.close();
+		return id;
+	}
+
+	@Test
+	public void scanningTheFoldersListsEveryPluginByName() {
+		List<String> read = new ArrayList<String>();
+		this.hosting.getPlugins().forEach(plugin -> read.add(plugin.getName() + (plugin.isInstrument() ? " (instrument)" : "")));
+		assertEquals(Arrays.asList("Test Click (instrument)", "Test Clip 0.5", "Test Drone", "Test Echo", "Test Gain", "Test Latency",
+			"Test Sine (instrument)", "Test Stereo", "Test Tempo"), read);
+		assertNull(this.hosting.find("Old Amp"));
+	}
+
+	@Test
+	public void anEffectElementOpensItsPluginWithTheParametersSet() throws TGVst3Exception {
+		TGProgramElement element = element("Test Gain");
+		TGVst3Element.setParameter(element, parameter("Test Gain", "Gain"), 0.25);
+		float[][] block = level(0.4f);
+		effect(element).process(block);
+		assertEquals(0.1f, block[0][0], 1e-6f);
+		assertEquals(0.1f, block[1][FRAMES - 1], 1e-6f);
+	}
+
+	@Test
+	public void aFloatBlockKeepsWhatGoesAboveFullScale() {
+		float[][] block = level(0.8f);
+		effect(element("Test Gain")).process(block);
+		assertEquals(1.6f, block[0][0], 1e-6f);
+	}
+
+	@Test
+	public void aSixteenBitBufferGoesThroughTheEffectToo() {
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		buffer.write(level(0.25f));
+		effect(element("Test Gain")).fillBuffer(buffer);
+		float[][] block = new float[2][FRAMES];
+		buffer.read(block);
+		assertEquals(0.5f, block[0][0], 1e-4f);
+	}
+
+	@Test
+	public void anEffectReportsItsPluginsLatency() throws TGVst3Exception {
+		TGProgramElement element = element("Test Latency");
+		TGVst3Element.setParameter(element, parameter("Test Latency", "Latency"), 2048);
+		assertEquals(2048, effect(element).getLatency());
+	}
+
+	@Test
+	public void anInstrumentPlaysEachNoteOnItsFrame() {
+		TGMidiProcessor click = instrument("Test Click");
+		click.sendNoteOn(60, 127, 0, false, 300);
+		click.sendNoteOn(62, 127, 0, false);
+		float[][] block = new float[2][FRAMES];
+		click.process(block);
+		assertEquals(0.5f, block[0][0]);
+		assertEquals(0f, block[0][1]);
+		assertEquals(0.5f, block[1][300]);
+		click.process(block);
+		assertEquals(0f, block[0][300]);
+	}
+
+	@Test
+	public void anInstrumentHearsTheVelocityAndTheNoteOff() {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(69, 79, 0, false);
+		sine.sendNoteOff(69, 0, 0, false, 256);
+		float[][] block = new float[2][FRAMES];
+		sine.process(block);
+		float peak = 0f;
+		for (int i = 0; i < 256; i++) {
+			peak = Math.max(peak, block[0][i]);
+		}
+		assertEquals(0.5f * 79 / 127, peak, 0.001f);
+		assertEquals(0f, block[0][256]);
+		sine.sendNoteOn(69, 127, 0, false);
+		sine.process(block);
+		sine.sendNoteOff(69, 0, 0, false);
+		sine.process(block);
+		assertEquals(0f, block[0][0]);
+		assertEquals(0f, block[0][100]);
+	}
+
+	@Test
+	public void aStoredEffectKeepsItsStateAndDropsTheParametersSetBefore() throws TGVst3Exception {
+		TGProgramElement element = element("Test Gain");
+		TGVst3Element.setParameter(element, parameter("Test Gain", "Gain"), 3.0);
+		Map<String, String> stored = new HashMap<String, String>();
+		effect(element).storeParameters(stored);
+		TGProgramElement copy = new TGProgramElement();
+		copy.setType(TGVst3Element.EFFECT);
+		stored.forEach(copy::setParameter);
+		float[][] block = level(0.25f);
+		effect(copy).process(block);
+		assertEquals(0.75f, block[0][0], 1e-6f);
+		assertTrue(TGVst3Element.parameters(stored).isEmpty());
+		assertEquals("Test Gain", TGVst3Element.getName(copy));
+		assertTrue(TGVst3Element.isVst3(copy));
+		assertTrue(TGVst3Element.isVst3(element("Test Sine")));
+		assertFalse(TGVst3Element.isVst3(new TGProgramElement()));
+	}
+
+	@Test
+	public void restoringAnotherPluginOpensItInstead() {
+		TGAudioProcessor processor = effect(element("Test Gain"));
+		TGVst3Instance gain = ((TGVst3Processor) processor).getInstance();
+		processor.restoreParameters(element("Test Gain").getParameters());
+		assertTrue(gain == ((TGVst3Processor) processor).getInstance());
+		processor.restoreParameters(element("Test Clip 0.5").getParameters());
+		float[][] block = level(0.8f);
+		processor.process(block);
+		assertEquals(0.5f, block[0][0]);
+	}
+
+	@Test
+	public void anEffectWhoseHostStoppedSoundsNothingAndTheStopIsReported() throws TGVst3Exception {
+		TGAudioProcessor processor = effect(element("Test Gain"));
+		TestPlugins.kill(this.hosting.getHost().getPid());
+		float[][] block = level(0.25f);
+		processor.process(block);
+		assertEquals(0f, block[0][0]);
+		assertFalse(processor.isOpen());
+		assertEquals(0, processor.getLatency());
+		processor.storeParameters(new HashMap<String, String>());
+		effect(element("Test Gain")).process(block = level(0.25f));
+		assertEquals(0.5f, block[0][0]);
+		assertEquals(1, this.hosting.getStops().size());
+		assertTrue(this.hosting.getStops().get(0).startsWith("the VST3 host stopped"), this.hosting.getStops().get(0));
+	}
+
+	@Test
+	public void anElementWithoutAPluginSoundsNothing() {
+		TGProgramElement empty = new TGProgramElement();
+		empty.setType(TGVst3Element.EFFECT);
+		TGAudioProcessor processor = effect(empty);
+		float[][] block = level(0.25f);
+		processor.process(block);
+		assertEquals(0f, block[1][0]);
+		assertFalse(processor.isOpen());
+		assertFalse(processor.isBusy());
+	}
+
+	@Test
+	public void anElementNamesAPluginByItsModuleAndClass() {
+		Map<String, String> parameters = new HashMap<String, String>(element("Test Gain").getParameters());
+		parameters.remove("vst3.class");
+		assertNull(TGVst3Element.plugin(parameters, false));
+		parameters = new HashMap<String, String>(element("Test Gain").getParameters());
+		parameters.remove("vst3.module");
+		assertNull(TGVst3Element.plugin(parameters, false));
+	}
+
+	@Test
+	public void aStateWithoutAControllerStateRestoresTheComponentAlone() {
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("vst3.state", "AAE=");
+		assertEquals(0, TGVst3Element.state(parameters).getController().length);
+		assertEquals(2, TGVst3Element.state(parameters).getComponent().length);
+	}
+
+	@Test
+	public void hostingNeedsTheHostConfigured() {
+		TGVst3Hosting unconfigured = TGVst3Hosting.getInstance(new TGContext());
+		TGVst3Exception refused = assertThrows(TGVst3Exception.class, unconfigured::getHost);
+		assertEquals("no VST3 host is configured", refused.getMessage());
+		assertNotNull(this.hosting.getFolders());
+		assertEquals(2, this.hosting.getFolders().size());
+	}
+}
