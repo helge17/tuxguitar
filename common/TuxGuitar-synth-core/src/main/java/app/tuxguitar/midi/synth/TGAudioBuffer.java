@@ -49,7 +49,7 @@ public class TGAudioBuffer {
 	public void write(float[][] sample) {
 		for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 			for (int j = 0; j < CHANNELS; j++) {
-				this.setSample(i, j, (short) (sample[(j % sample.length)][i] * Short.MAX_VALUE));
+				this.setSample(i, j, saturate(sample[(j % sample.length)][i] * Short.MAX_VALUE));
 			}
 		}
 	}
@@ -86,7 +86,7 @@ public class TGAudioBuffer {
 		if( this.buffers > 1 ) {
 			for (int i = 0; i < ( BUFFER_SIZE / 2 ); i++) {
 				for (int j = 0; j < CHANNELS; j++) {
-					this.setSample(i, j, (short) Math.max(Math.min(this.getSample(i, j) * this.buffers, Short.MAX_VALUE), Short.MIN_VALUE));
+					this.setSample(i, j, saturate(this.getSample(i, j) * this.buffers));
 				}
 			}
 		}
@@ -105,6 +105,11 @@ public class TGAudioBuffer {
 				}
 			}
 		}
+	}
+
+	// a 16-bit sample, what goes past full scale held there (truncated toward zero inside it)
+	private static short saturate(float value) {
+		return (short) Math.max(Math.min(value, Short.MAX_VALUE), Short.MIN_VALUE);
 	}
 
 	// where the sample of the frame and side starts: the samples are 16 bits, little-endian, sides interleaved

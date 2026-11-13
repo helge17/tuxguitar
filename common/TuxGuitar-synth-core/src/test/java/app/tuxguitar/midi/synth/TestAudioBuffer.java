@@ -29,8 +29,12 @@ public class TestAudioBuffer {
 		assertEquals(44100f, TGAudioBuffer.SAMPLE_RATE, 0f);
 	}
 
+	// the last write of a float chain into 16 bits: what is above full scale saturates there, it does not wrap around
 	@Test
-	public void writingThenReadingRoundsTowardZeroToA16BitStep() {
+	public void writingThenReadingRoundsTowardZeroToA16BitStepAndSaturatesAboveFullScale() {
+		float[] above = firstFrame(level(1.5f, -1.5f));
+		assertEquals(1f, above[0], 0f);
+		assertEquals(-32768 * STEP, above[1], 0f);
 		float[] frame = firstFrame(level(0.5f, -0.5f));
 		assertEquals(16383 * STEP, frame[0], 0f);
 		assertEquals(-16383 * STEP, frame[1], 0f);
