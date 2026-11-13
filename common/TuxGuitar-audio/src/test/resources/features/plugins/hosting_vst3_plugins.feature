@@ -306,6 +306,13 @@ Feature: Hosting VST3 plugins
     When I play the song live from measure 1 beat 1
     Then "Test Tempo" was told 120 bpm in 4/4 in measure 1 and 120 bpm in 3/4 in measure 3
 
+  Scenario: while the song plays live, VST3 plugins are told a new tempo from the sample its measure starts on
+    Given I have set the tempo of measure 3 only to 60 bpm
+    And track 1 has a quarter note on every beat
+    And I have added the VST3 effect "Test Tempo" to track 1
+    When I play the song live from measure 1 beat 1
+    Then "Test Tempo" was told 60 bpm from musical position 8, within 1/22050 of a quarter note
+
   Scenario: VST3 plugins are told the musical position, which jumps back with a loop
     Given I have turned Play looped on over measures 2 to 3
     And I have added the VST3 effect "Test Tempo" to track 1

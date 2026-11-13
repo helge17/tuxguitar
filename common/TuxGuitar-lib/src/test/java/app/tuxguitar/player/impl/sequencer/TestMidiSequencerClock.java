@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
@@ -205,13 +206,30 @@ public class TestMidiSequencerClock {
 		assertEquals("all notes off, pitch bend reset, @0 on 1 60 100 1 0, all notes off, pitch bend reset | false", blocks(1) + " | " + sequencer.isRunning());
 	}
 
-	private String signatures() {
+	// each span the transport was told for the last block: "@frame what q(thousandths of a quarter); "
+	private String told(Function<MidiTransport.Span, String> what) {
 		StringBuilder told = new StringBuilder();
 		for (int i = 0; i < transport.count(); i++) {
 			MidiTransport.Span span = transport.get(i);
-			told.append("@" + span.getFrame() + " " + span.getNumerator() + "/" + span.getDenominator() + " q" + Math.round(span.getQuarters() * 1000) + "; ");
+			told.append("@" + span.getFrame() + " " + what.apply(span) + " q" + Math.round(span.getQuarters() * 1000) + "; ");
 		}
 		return told.toString();
+	}
+
+	private String signatures() {
+		return told(span -> span.getNumerator() + "/" + span.getDenominator());
+	}
+
+	// the time signatures ("tick numerator/denominator") added, what the transport is told for the first block played
+	// from the position
+	private String signaturesToldPlayingFrom(long position, String... signatures) throws MidiPlayerException {
+		for (String added : signatures) {
+			String[] parts = added.split("[ /]");
+			sequence.addTimeSignature(Long.parseLong(parts[0]), 0, signature(Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
+		}
+		playOnTheClockFrom(position);
+		blocks(1);
+		return signatures();
 	}
 
 	// the transport is told a time signature from the frame its tick sounds on (tick 20: frame 459), in a span of its own
@@ -228,27 +246,34 @@ public class TestMidiSequencerClock {
 		assertEquals("@0 4/4 q0; @459 3/4 q21; | @0 3/4 q23; ", first + "| " + signatures());
 	}
 
+	private String tempos() {
+		return told(span -> span.getTempo() + " s" + span.getSamples());
+	}
+
+	// the transport is told a tempo from the frame its tick sounds on (tick 20 at 120 bpm: frame 459), in a span of its own
+	// at its tick's position (0.0208 quarters: 918.75 samples at 60 bpm), and from the first frame of the blocks after
+	@Test
+	public void theTransportIsToldEachTempoFromItsFrame() throws MidiPlayerException {
+		sequence.addTempoInUSQ(0, 0, 500000);
+		sequence.addTempoInUSQ(980, 0, 1000000);
+		playOnTheClockFrom(960);
+		blocks(1);
+		String first = tempos();
+		blocks(1);
+
+		assertEquals("@0 120.0 s0 q0; @459 60.0 s919 q21; | @0 60.0 s972 q22; ", first + "| " + tempos());
+	}
+
 	// playing from a position, the transport is told the time signature in force there from the first frame
 	@Test
 	public void playingFromAPositionIsToldTheTimeSignatureInForceThere() throws MidiPlayerException {
-		sequence.addTimeSignature(0, 0, signature(3, 4));
-		sequence.addTimeSignature(1000, 0, signature(6, 8));
-		sequence.addTimeSignature(9000, 0, signature(2, 2));
-		playOnTheClockFrom(2000);
-		blocks(1);
-
-		assertEquals("@0 6/8 q1083; ", signatures());
+		assertEquals("@0 6/8 q1083; ", signaturesToldPlayingFrom(2000, "0 3/4", "1000 6/8", "9000 2/2"));
 	}
 
 	// playing from the tick of a time signature (where a measure starts), it holds from the first frame, in one span
 	@Test
 	public void playingFromTheTickOfATimeSignatureIsToldItInOneSpan() throws MidiPlayerException {
-		sequence.addTimeSignature(0, 0, signature(4, 4));
-		sequence.addTimeSignature(4800, 0, signature(3, 4));
-		playOnTheClockFrom(4800);
-		blocks(1);
-
-		assertEquals("@0 3/4 q4000; ", signatures());
+		assertEquals("@0 3/4 q4000; ", signaturesToldPlayingFrom(4800, "0 4/4", "4800 3/4"));
 	}
 
 	@Test

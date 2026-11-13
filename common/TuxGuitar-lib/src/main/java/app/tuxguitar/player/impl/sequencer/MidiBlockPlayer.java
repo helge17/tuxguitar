@@ -14,7 +14,7 @@ import app.tuxguitar.song.models.TGDuration;
  * the clock's receiver of its frame. A tick sounds on the frame its time from the anchor reaches at the tempo, rounded
  * to the nearest frame. Playing from a position anchors it on the first frame of the next block, and sends again the
  * channel setup before it there; a tempo event moves the anchor to its own tick and frame. A time signature is sent to
- * no receiver: the clock's transport is told it from its frame on.
+ * no receiver. The clock's transport is told each tempo and time signature from its frame on.
  */
 class MidiBlockPlayer {
 
@@ -70,22 +70,30 @@ class MidiBlockPlayer {
 			if (frame >= frames) {
 				break;
 			}
-			if (event.isTempo()) {
-				this.anchor(event.getTick(), frame);
-			}
-			if (event.isTimeSignature()) {
-				this.signature = event;
-				this.span(transport, frame, rate);
-			} else if (this.sequencer.getMidiTrackController().isAudible(event.getTrack())) {
-				this.sequencer.sendEvent(event, clock.at((int) frame));
-			}
+			this.play(event, frame, clock, transport);
 		}
 		this.sequencer.getMidiTickPlayer().setTick(this.tickAt(frames, rate));
 		this.anchorFrame -= frames;
 	}
 
-	// the transport is told the song plays over the block, from its first frame, and from the frame of each time signature
-	// reached in it
+	// an event to the receiver of its frame; a tempo (sent, so the player takes it on) or a time signature also starts a
+	// span of the transport there
+	private void play(MidiEvent event, long frame, MidiSampleClock clock, MidiTransport transport) throws MidiPlayerException {
+		if (event.isTempo()) {
+			this.anchor(event.getTick(), frame);
+		}
+		if (event.isTimeSignature()) {
+			this.signature = event;
+		} else if (this.sequencer.getMidiTrackController().isAudible(event.getTrack())) {
+			this.sequencer.sendEvent(event, clock.at((int) frame));
+		}
+		if (event.isTempo() || event.isTimeSignature()) {
+			this.span(transport, frame, clock.getSampleRate());
+		}
+	}
+
+	// the transport is told the song plays over the block, from its first frame, and from the frame of each tempo and time
+	// signature reached in it
 	private void tell(MidiTransport transport, float rate) {
 		if (this.signature == null) {
 			MidiTransport.Span last = transport.get(transport.count() - 1);

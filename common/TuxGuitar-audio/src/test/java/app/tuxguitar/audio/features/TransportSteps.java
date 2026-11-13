@@ -87,6 +87,14 @@ public class TransportSteps {
 		}
 	}
 
+	// the first record from the position on starts there (a block split where the tempo changes), at that tempo
+	@Then("{string} was told {int} bpm from musical position {int}, within 1\\/22050 of a quarter note")
+	public void wasToldTheTempoFrom(String plugin, int tempo, int position) {
+		Told from = told(plugin).stream().filter(record -> record.quarters > position - 1 / 22050.0).findFirst().get();
+		assertEquals(position, from.quarters, 1 / 22050.0, "first position told from " + position);
+		assertEquals(tempo, from.tempo, 1e-9, "tempo told from " + position);
+	}
+
 	// a pass starts with the first record and wherever the position goes back
 	@Then("{string} was told musical position {int} at the start of each pass, within 1\\/22050 of a quarter note")
 	public void wasToldThePositionOfEachPass(String plugin, int position) {
