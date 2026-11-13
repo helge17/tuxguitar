@@ -15,6 +15,7 @@ public final class MidiTransport {
 
 	private final Span[] spans = new Span[MAX_SPANS];
 	private int count;
+	private boolean offline;
 
 	public MidiTransport() {
 		for (int i = 0; i < MAX_SPANS; i++) {
@@ -39,6 +40,15 @@ public final class MidiTransport {
 		if (this.count < MAX_SPANS) {
 			this.spans[this.count++].set(frame, playing, tempo, numerator, denominator, quarters, samples);
 		}
+	}
+
+	// the clock's owner waits for each block, however long it takes (an offline render, an export); a live clock cannot
+	public void setOffline(boolean offline) {
+		this.offline = offline;
+	}
+
+	public boolean isOffline() {
+		return this.offline;
 	}
 
 	public int count() {

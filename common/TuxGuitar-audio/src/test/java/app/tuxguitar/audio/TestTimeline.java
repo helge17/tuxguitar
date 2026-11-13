@@ -101,6 +101,17 @@ public class TestTimeline {
 		assertEquals("@0 false 120 bpm 4/4 q0.0000 s0; ", told(fromMeasure2().until(30000), 0));
 	}
 
+	// a timeline is an offline clock: playing or stopped, it tells the processors it waits for each block
+	@Test
+	public void aTimelineTellsItWaitsForEachBlock() {
+		MidiTransport playing = new MidiTransport();
+		fromMeasure2().tell(playing, 0, 512);
+		countDown.setEnabled(true);
+		MidiTransport stopped = new MidiTransport();
+		fromMeasure2().until(30000).tell(stopped, 0, 512);
+		assertEquals("true true", playing.isOffline() + " " + stopped.isOffline());
+	}
+
 	@Test
 	public void withCountInOffTheFirstMeasureStartsPlaying() {
 		assertEquals("88200 | [] | m2:0-3840 m3:0-3840 m4:0-3840 | 264600", read(fromMeasure2()));

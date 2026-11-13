@@ -325,7 +325,8 @@ measures 1 to 3" means each measure sounds its tone, within 1%, and no other abo
 - Failure handling: a plugin that crashes or hangs, a plugin missing on another machine, an audio device unplugged
   while recording, a song opened on a device whose sample rate differs from its takes'. One narrow exception: a VST3
   plugin that hangs goes silent for each block it does not answer in time while the other tracks keep playing on their
-  beats, and is restarted (on its own, with its last state) after a longer wait.
+  beats, and is restarted (on its own, with its last state) after a longer wait. An offline render (an export) waits for each block
+  instead, and ends only a plugin that has not answered for 2 seconds.
 - Importing audio or backing tracks from Guitar Pro 7 files (they are dropped on import today).
 - Android (it shares the file reader, so it refuses a song with audio tracks as older desktop versions do).
 - Recording MIDI from a MIDI input.

@@ -29,7 +29,8 @@ import java.util.concurrent.TimeoutException;
  * reply is owed no request is sent (one request at a time), so the next reply read is the owed one, never taken for
  * another's: each block until it comes is silent at once, and when it comes it is dropped. A host that has owed a reply
  * for SILENT_MILLIS is taken for stopped and ended, its process tree with it. Other requests wait up to CALL_MILLIS (a
- * plugin may take seconds to open), then the host is ended too.
+ * plugin may take seconds to open), then the host is ended too. Offline (an export, whose clock waits for each block)
+ * no block is late: its reply is waited for, and only a host that has not answered it for SILENT_MILLIS is ended.
  */
 public final class TGVst3Host implements AutoCloseable {
 
@@ -170,18 +171,27 @@ public final class TGVst3Host implements AutoCloseable {
 	// sends the request and reads its reply (after a reply still owed, if it comes in time), then what the plugins told
 	// the host
 	synchronized <T> T call(TGVst3Request request, TGVst3Request.Reply<T> reply) throws TGVst3Exception {
+		return this.call(request, reply, CALL_MILLIS);
+	}
+
+	private <T> T call(TGVst3Request request, TGVst3Request.Reply<T> reply, long millis) throws TGVst3Exception {
 		if (this.owing(SILENT_MILLIS - this.owedFor())) {
 			throw this.silent();
 		}
 		try {
-			return this.await(this.send(request, reply), CALL_MILLIS).deliver();
+			return this.await(this.send(request, reply), millis).deliver();
 		} catch (TimeoutException e) {
 			throw this.silent();
 		}
 	}
 
-	// a block's request, sent when no reply is owed (see isLate): false, its reply owed, when that reply is late
-	synchronized <T> boolean callInTime(TGVst3Request request, TGVst3Request.Reply<T> reply) throws TGVst3Exception {
+	// a block's request, sent when no reply is owed (see isLate): false, its reply owed, when that reply is late. Offline
+	// it is never late: its reply is waited for until the host is taken for stopped
+	synchronized <T> boolean callInTime(TGVst3Request request, TGVst3Request.Reply<T> reply, boolean offline) throws TGVst3Exception {
+		if (offline) {
+			this.call(request, reply, SILENT_MILLIS);
+			return true;
+		}
 		Future<Answer<T>> answer = this.send(request, reply);
 		try {
 			this.await(answer, LATE_MILLIS).deliver();

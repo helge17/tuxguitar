@@ -111,10 +111,15 @@ public final class TGVst3Instance implements AutoCloseable {
 		return this.tail;
 	}
 
-	// the first frames of the block's two sides go through the plugin, in place, with the events on their samples; false,
-	// and the frames silent, when the plugin's reply is late (see TGVst3Host)
+	// live: the first frames of the block's two sides go through the plugin, in place, with the events on their samples;
+	// false, and the frames silent, when the plugin's reply is late (see TGVst3Host)
 	public boolean process(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
-		boolean answered = (!this.host.isLate() && this.processInTime(block, frames, transport, events));
+		return this.process(block, frames, transport, events, false);
+	}
+
+	// offline (an export) the block waits for its reply, however late it is, unless the host is taken for stopped
+	public boolean process(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events, boolean offline) throws TGVst3Exception {
+		boolean answered = (!this.host.isLate() && this.processInTime(block, frames, transport, events, offline));
 		if (!answered) {
 			for (float[] side : block) {
 				java.util.Arrays.fill(side, 0, frames, 0f);
@@ -123,7 +128,7 @@ public final class TGVst3Instance implements AutoCloseable {
 		return answered;
 	}
 
-	private boolean processInTime(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
+	private boolean processInTime(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events, boolean offline) throws TGVst3Exception {
 		this.blocks.write(block, frames);
 		TGVst3Request request = this.request(TGVst3Protocol.PROCESS).writeInt(frames);
 		request.writeInt(transport.isPlaying() ? 1 : 0).writeDouble(transport.getTempo()).writeInt(transport.getNumerator())
@@ -132,7 +137,7 @@ public final class TGVst3Instance implements AutoCloseable {
 		for (TGVst3NoteEvent event : events) {
 			request.writeInt(event.getType()).writeInt(event.getOffset()).writeInt(event.getPitch()).writeInt(event.getNoteId()).writeFloat(event.getValue());
 		}
-		boolean answered = this.host.callInTime(request, this::readTiming);
+		boolean answered = this.host.callInTime(request, this::readTiming, offline);
 		if (answered) {
 			this.blocks.read(block, frames);
 		}

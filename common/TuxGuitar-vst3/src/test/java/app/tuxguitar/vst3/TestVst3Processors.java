@@ -267,6 +267,20 @@ public class TestVst3Processors {
 		assertTrue(this.hosting.getStops().get(0).startsWith("the VST3 host stopped"), this.hosting.getStops().get(0));
 	}
 
+	// told by an offline transport, an effect waits for a block its plugin answers late, so the block is not silent
+	@Test
+	public void anEffectToldItsClockIsOfflineWaitsForALateBlock() throws TGVst3Exception {
+		TGVst3Processor hang = (TGVst3Processor) effect(element("Test Hang"));
+		hang.getInstance().setParameter(hang.getInstance().findParameter("Hang at"), 0);
+		hang.getInstance().setParameter(hang.getInstance().findParameter("Hang for"), 300);
+		MidiTransport transport = new MidiTransport();
+		transport.setOffline(true);
+		hang.setTransport(transport);
+		float[][] block = level(0.25f);
+		hang.process(block);
+		assertEquals(0.25f, block[1][FRAMES - 1]);
+	}
+
 	// one host process per plugin: a plugin that crashes takes only its own process down, and is reported
 	@Test
 	public void aPluginThatCrashesSilencesOnlyItselfWhileAnotherKeepsSounding() throws TGVst3Exception {

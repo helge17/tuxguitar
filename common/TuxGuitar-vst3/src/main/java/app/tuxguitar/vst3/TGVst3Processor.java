@@ -98,7 +98,7 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 				for (int span = 0; span < told.count(); span++) {
 					int from = told.get(span).getFrame();
 					int to = (span + 1 < told.count() ? told.get(span + 1).getFrame() : FRAMES);
-					this.process(samples, from, to, transport(told.get(span)), TGVst3NoteEvent.between(events, from, to));
+					this.process(samples, from, to, transport(told.get(span)), TGVst3NoteEvent.between(events, from, to), told.isOffline());
 				}
 				return;
 			}
@@ -110,11 +110,11 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 		}
 	}
 
-	private void process(float[][] samples, int from, int to, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
+	private void process(float[][] samples, int from, int to, TGVst3Transport transport, List<TGVst3NoteEvent> events, boolean offline) throws TGVst3Exception {
 		for (int side = 0; side < samples.length; side++) {
 			System.arraycopy(samples[side], from, this.part[side], 0, to - from);
 		}
-		this.instance.process(this.part, to - from, transport, events);
+		this.instance.process(this.part, to - from, transport, events, offline);
 		for (int side = 0; side < samples.length; side++) {
 			System.arraycopy(this.part[side], 0, samples[side], from, to - from);
 		}

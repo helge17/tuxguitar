@@ -35,6 +35,19 @@ public class TestMidiTransport {
 		assertEquals("@0 true 96.0 3/4 q2.5 s1000; @200 true 60.0 6/8 q3.0 s2000; | @0 false 120.0 4/4 q0.0 s0; ", added + "| " + read(transport));
 	}
 
+	// a transport is live until its owner says it waits for each block, and stays so whatever it is told
+	@Test
+	public void aTransportIsLiveUntilItsOwnerSaysItIsOffline() {
+		MidiTransport transport = new MidiTransport();
+		boolean live = transport.isOffline();
+		transport.setOffline(true);
+		transport.clear();
+		transport.stop();
+		boolean offline = transport.isOffline();
+		transport.setOffline(false);
+		assertEquals("false true false", live + " " + offline + " " + transport.isOffline());
+	}
+
 	// a span past the most a block holds is left out: the last one runs on
 	@Test
 	public void aSpanPastTheMostIsLeftOut() {

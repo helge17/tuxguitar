@@ -340,6 +340,34 @@ public class TestVst3Host {
 		});
 	}
 
+	private static boolean offline(TGVst3Instance instance, float[][] block) throws TGVst3Exception {
+		return instance.process(block, FRAMES, TGVst3Transport.STOPPED, Collections.<TGVst3NoteEvent>emptyList(), true);
+	}
+
+	// offline (an export) a block waits for its reply however late it is, and is never left silent
+	@Test
+	public void offlineABlockWaitsForALateReply() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			float[][] block = block(0.25f, -0.25f);
+			boolean answered = offline(hanging(400), block);
+			assertEquals("true 0.25 -0.25", answered + " " + block[0][0] + " " + block[1][FRAMES - 1]);
+		});
+	}
+
+	// offline, a host that has not answered a block for 2 seconds is ended, its process tree with it, and reported
+	@Test
+	public void offlineAHostThatDoesNotAnswerABlockFor2SecondsIsEnded() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			TGVst3Instance hang = hanging(1e9);
+			long start = System.nanoTime();
+			TGVst3Exception silent = assertThrows(TGVst3Exception.class, () -> offline(hang, block(0.25f, 0.25f)));
+			long waited = (System.nanoTime() - start) / 1000000;
+			assertTrue(waited >= 1900 && waited < 4000, "waited " + waited + " ms");
+			assertEquals("the VST3 host did not answer for 2 s", silent.getMessage());
+			assertFalse(ProcessHandle.of(this.host.getPid()).isPresent());
+		});
+	}
+
 	@Test
 	public void aNoteStopsOnItsSample() throws TGVst3Exception {
 		float[][] block = play(open("Test Sine"), TGVst3NoteEvent.noteOn(0, 69, 7, 1f), TGVst3NoteEvent.noteOff(256, 69, 7));

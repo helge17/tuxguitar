@@ -118,8 +118,10 @@ public final class TGTimeline {
 
 	// what the song does over the block of frames from the sample, as plugins are told: a span from its first frame and
 	// one from the first frame of each played measure starting in it; before the measures (the Count In) the first one's
-	// state runs back, after them the last one's runs on; without measures the song is stopped
+	// state runs back, after them the last one's runs on; without measures the song is stopped. A timeline is an offline
+	// clock: it waits for each block
 	public void tell(MidiTransport transport, long start, int frames) {
+		transport.setOffline(true);
 		if (this.count() == 0) {
 			transport.stop();
 			return;
