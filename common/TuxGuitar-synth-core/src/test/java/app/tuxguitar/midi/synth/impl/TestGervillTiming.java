@@ -15,6 +15,8 @@ import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiTransmitter;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.properties.TGPropertiesManager;
 
@@ -110,6 +112,27 @@ public class TestGervillTiming {
 		});
 
 		assertEquals(542, FRAMES + firstSounding(late.render(BLOCKS)) - early);
+	}
+
+	// the frame a note on the tick starts on when TuxGuitar's sequencer plays the song on the synthesizer's sample clock
+	// (as the player starts it on the TuxGuitar Synthesizer) from tick 0, at 120 bpm
+	private int playedOnTheClock(long tick) throws MidiPlayerException {
+		MidiSequencerImpl sequencer = new MidiSequencerImpl(this.context);
+		sequencer.setTransmitter(new MidiTransmitter());
+		sequencer.createSequence(1).addNoteOn(tick, 0, CHANNEL, 69, 127, 0, false);
+		sequencer.setClock(this.model);
+		sequencer.start();
+		sequencer.setTickPosition(0);
+		return firstSounding(render(BLOCKS));
+	}
+
+	// a tick lasts 22.96875 frames at 44100 Hz: a note at tick 30 starts on frame 689, in the second block, 689 frames
+	// after a note at tick 0
+	@Test
+	public void theSequencerPlayingOnTheClockStartsEachNoteOnItsFrame() throws MidiPlayerException {
+		int first = playedOnTheClock(0);
+
+		assertEquals(689, new TestGervillTiming().playedOnTheClock(30) - first);
 	}
 
 	// as the player sends a note today: Gervill renders whole control periods as the stream is read, so after the first
