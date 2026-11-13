@@ -22,7 +22,12 @@ import app.tuxguitar.editor.action.note.TGChangeNoteAction;
 import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import app.tuxguitar.editor.action.track.TGSetTrackChannelAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.audio.TGAudioSaving;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.document.TGDocumentManager;
+import app.tuxguitar.editor.action.file.TGLoadSongAction;
+import app.tuxguitar.editor.action.file.TGReadSongAction;
+import app.tuxguitar.editor.action.file.TGWriteSongAction;
 import app.tuxguitar.util.properties.TGPropertiesManager;
 import app.tuxguitar.audio.TGSongTime;
 import app.tuxguitar.audio.TGSoundChain;
@@ -71,6 +76,20 @@ import app.tuxguitar.song.models.TGTrack;
  */
 public class AudioWorld {
 
+	// TuxGuitar's English messages, which name the General MIDI programs and a new song's channel and track; Maven runs
+	// the tests in the module folder. Loaded before the first song is made, so every scenario's song is named alike
+	private static final String MESSAGES = "../resources/lang/messages.properties";
+
+	static {
+		java.util.Properties properties = new java.util.Properties();
+		try (java.io.InputStream in = new java.io.FileInputStream(MESSAGES)) {
+			properties.load(in);
+		} catch (java.io.IOException e) {
+			throw new java.io.UncheckedIOException(e);
+		}
+		app.tuxguitar.util.TGMessagesManager.getInstance().setResources(new app.tuxguitar.resource.TGResourceBundle(java.util.Locale.ENGLISH, properties));
+	}
+
 	private final SongActionFixture fixture = SongActionFixture.onDocument();
 	private final TGUndoableBuffer undoHistory = new TGUndoableBuffer();
 	private final TestInterface device = new TestInterface();
@@ -79,6 +98,8 @@ public class AudioWorld {
 	private SongPosition playedClick;
 	// the file exported last, as read back, on the timeline it follows
 	private Heard exported;
+	// the TuxGuitar file saved last
+	private byte[] saved;
 
 	public AudioWorld() {
 		this.fixture.map(new TGAddTrackAction(this.fixture.context), new TGRemoveTrackAction(this.fixture.context),
@@ -87,7 +108,9 @@ public class AudioWorld {
 			new TGAddChannelAction(this.fixture.context), new TGAddMeasureAction(this.fixture.context),
 			new TGRemoveMeasureAction(this.fixture.context), new TGInsertMeasuresAction(this.fixture.context),
 			new TGCopySongFromAction(this.fixture.context), new TGChangeTempoAction(this.fixture.context),
-			new TGUpdateChannelAction(this.fixture.context));
+			new TGUpdateChannelAction(this.fixture.context), new TGWriteSongAction(this.fixture.context),
+			new TGReadSongAction(this.fixture.context), new TGLoadSongAction(this.fixture.context));
+		TGAudioSaving.install(this.fixture.context);
 		TGUndoableManager.getInstance(this.fixture.context).setBuffer(this.undoHistory);
 		TGPropertiesManager.getInstance(this.fixture.context).setPropertiesFactory(MapProperties::new);
 		// as the app refuses, during a recording, the editing actions it disables while playing (desktop's
@@ -116,8 +139,31 @@ public class AudioWorld {
 		return this.fixture;
 	}
 
+	// the document's song: the one opened last
 	public TGSong song() {
-		return this.fixture.song;
+		return TGDocumentManager.getInstance(this.fixture.context).getSong();
+	}
+
+	public byte[] saved() {
+		return this.saved;
+	}
+
+	void setSaved(byte[] saved) {
+		this.saved = saved;
+	}
+
+	// opens the file as the app opens a .tg file (format code "tg"): the document's song is then the one read, and the
+	// actions the steps run act on it
+	public void open(byte[] file) {
+		TGActionContext context = new TGActionContext() {
+		};
+		context.setAttribute(TGReadSongAction.ATTRIBUTE_INPUT_STREAM, new java.io.ByteArrayInputStream(file));
+		context.setAttribute(TGReadSongAction.ATTRIBUTE_FORMAT_CODE, "tg");
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, this.fixture.songManager);
+		TGSong before = song();
+		TGActionManager.getInstance(this.fixture.context).execute(TGReadSongAction.NAME, context);
+		org.junit.jupiter.api.Assertions.assertNotSame(before, song(), "the song read is the document's");
+		this.fixture.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, song());
 	}
 
 	// track numbers start at 1
