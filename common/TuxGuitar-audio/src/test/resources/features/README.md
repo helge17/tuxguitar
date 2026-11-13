@@ -16,7 +16,12 @@ plugin's state before the write action; the desktop does not call it yet. The pl
 is the one the output sounds: live, lib's sequencer on the synthesizer's clock reports the tick the output sounds
 (chains' latency plus output latency behind what it schedules); offline, `TGReportedPositions` reports it block by
 block the same way. The desktop does not feed the audio device's output latency in yet
-(`TGSynthModel.setOutputLatency`).
+(`TGSynthModel.setOutputLatency`). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
+sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
+parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
+`TGSetPluginStateAction`; the desktop does not map those actions or bind its synthesizer's chains yet. The Metronome
+clicks on the General MIDI drums in offline renders (`TGMetronome`); live, it is still the sequencer's metronome track.
+Two scenarios are still `@planned`: a bend on one note of a chord, and entering a note sounding it.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
