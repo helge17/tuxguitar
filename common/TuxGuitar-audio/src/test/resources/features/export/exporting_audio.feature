@@ -2,7 +2,8 @@ Feature: Exporting audio
   Exporting the song as audio renders every audible track through its sound chain into one file: General MIDI
   programs, VST3 instruments, and audio tracks' takes, with their effects. The file follows the song as written,
   repeats included, at 100% of its tempo, beat for beat from its first sample, whatever the plugins delay. It runs on
-  for the longest tail the effects report, at most 10 seconds.
+  for the longest tail heard: the tails of the effects along one chain add up, and the longest chain's wins, at
+  most 10 seconds.
 
   Background:
     Given a new song with one guitar track and 4 measures of 4/4 at 120 bpm
