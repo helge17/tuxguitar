@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -275,6 +277,67 @@ public class TestVst3Host {
 		float[][] block = new float[2][FRAMES];
 		instrument.process(block, FRAMES, TGVst3Transport.STOPPED, Arrays.asList(events));
 		return block;
+	}
+
+	// a plugin that hangs in its process call for the milliseconds, from its first block
+	private TGVst3Instance hanging(double millis) throws TGVst3Exception {
+		TGVst3Instance hang = open("Test Hang");
+		hang.setParameter(hang.findParameter("Hang at"), 0);
+		hang.setParameter(hang.findParameter("Hang for"), millis);
+		return hang;
+	}
+
+	private static boolean inTime(TGVst3Instance instance, float[][] block) throws TGVst3Exception {
+		return instance.process(block, FRAMES, TGVst3Transport.STOPPED, Collections.<TGVst3NoteEvent>emptyList());
+	}
+
+	// a block whose reply is late is silent, and so is every block until the reply comes, without waiting for it; the
+	// late reply is then dropped, and the next block's reply is its own
+	@Test
+	public void aBlockAnsweredLateIsSilentAndTheBlockAfterTheReplyIsItsOwn() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			TGVst3Instance hang = hanging(400);
+			float[][] late = block(0.25f, 0.25f);
+			float[][] owed = block(0.25f, 0.25f);
+			boolean lateAnswered = inTime(hang, late);
+			long start = System.nanoTime();
+			boolean owedAnswered = inTime(hang, owed);
+			long waited = (System.nanoTime() - start) / 1000000;
+			Thread.sleep(600);
+			float[][] own = process(hang, block(0.5f, -0.5f));
+			assertEquals("false false 0.0 0.0", lateAnswered + " " + owedAnswered + " " + late[0][0] + " " + owed[1][0]);
+			assertTrue(waited < 50, "waited " + waited + " ms");
+			assertEquals(0.5f, own[0][0]);
+			assertEquals(-0.5f, own[1][FRAMES - 1]);
+		});
+	}
+
+	// a host that has not answered for 2 seconds is ended, its process tree with it, and reported
+	@Test
+	public void aHostThatDoesNotAnswerForLongIsEndedAndReported() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			TGVst3Instance hang = hanging(1e9);
+			assertFalse(inTime(hang, block(0.25f, 0.25f)));
+			Thread.sleep(2100);
+			TGVst3Exception silent = assertThrows(TGVst3Exception.class, () -> inTime(hang, block(0.25f, 0.25f)));
+			assertEquals("the VST3 host did not answer for 2 s", silent.getMessage());
+			assertEquals(silent.getMessage(), this.host.getExitReport());
+			assertFalse(ProcessHandle.of(this.host.getPid()).isPresent());
+		});
+	}
+
+	// another request while a reply is owed waits for it only what is left of the 2 seconds
+	@Test
+	public void aRequestWhileAReplyIsOwedWaitsOnlyTheRestOfTheLimit() {
+		assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+			TGVst3Instance hang = hanging(1e9);
+			assertFalse(inTime(hang, block(0.25f, 0.25f)));
+			Thread.sleep(1500);
+			long start = System.nanoTime();
+			assertThrows(TGVst3Exception.class, () -> hang.getParameter(hang.findParameter("Hang at")));
+			long waited = (System.nanoTime() - start) / 1000000;
+			assertTrue(waited < 1200, "waited " + waited + " ms");
+		});
 	}
 
 	@Test

@@ -26,8 +26,9 @@ public final class TGVst3Instance implements AutoCloseable {
 	private final int outputs;
 	private final boolean editor;
 	private final List<TGVst3Parameter> parameters;
-	private int latency;
-	private int tail;
+	// set by the reader thread of the host when a late reply comes
+	private volatile int latency;
+	private volatile int tail;
 	private TGVst3Listener listener;
 
 	private TGVst3Instance(TGVst3Host host, TGVst3SharedBlocks blocks, int id, int inputs, int outputs, boolean editor, List<TGVst3Parameter> parameters) {
@@ -110,8 +111,19 @@ public final class TGVst3Instance implements AutoCloseable {
 		return this.tail;
 	}
 
-	// the first frames of the block's two sides go through the plugin, in place, with the events on their samples
-	public void process(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
+	// the first frames of the block's two sides go through the plugin, in place, with the events on their samples; false,
+	// and the frames silent, when the plugin's reply is late (see TGVst3Host)
+	public boolean process(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
+		boolean answered = (!this.host.isLate() && this.processInTime(block, frames, transport, events));
+		if (!answered) {
+			for (float[] side : block) {
+				java.util.Arrays.fill(side, 0, frames, 0f);
+			}
+		}
+		return answered;
+	}
+
+	private boolean processInTime(float[][] block, int frames, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
 		this.blocks.write(block, frames);
 		TGVst3Request request = this.request(TGVst3Protocol.PROCESS).writeInt(frames);
 		request.writeInt(transport.isPlaying() ? 1 : 0).writeDouble(transport.getTempo()).writeInt(transport.getNumerator())
@@ -120,8 +132,11 @@ public final class TGVst3Instance implements AutoCloseable {
 		for (TGVst3NoteEvent event : events) {
 			request.writeInt(event.getType()).writeInt(event.getOffset()).writeInt(event.getPitch()).writeInt(event.getNoteId()).writeFloat(event.getValue());
 		}
-		this.host.call(request, this::readTiming);
-		this.blocks.read(block, frames);
+		boolean answered = this.host.callInTime(request, this::readTiming);
+		if (answered) {
+			this.blocks.read(block, frames);
+		}
+		return answered;
 	}
 
 	// the plain value the plugin took
@@ -182,10 +197,12 @@ public final class TGVst3Instance implements AutoCloseable {
 		}
 	}
 
-	// closed in the host; a host that stopped has nothing left to close
+	// closed in the host; a host that stopped, or that still owes this plugin's late reply, has nothing it can close
 	public void close() {
 		try {
-			this.host.call(this.request(TGVst3Protocol.CLOSE), in -> null);
+			if (!this.host.isLate()) {
+				this.host.call(this.request(TGVst3Protocol.CLOSE), in -> null);
+			}
 		} catch (TGVst3Exception e) {
 			// the host is gone, and the plugin with it
 		}

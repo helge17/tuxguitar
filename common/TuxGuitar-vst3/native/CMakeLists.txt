@@ -78,6 +78,7 @@ if(TG_VST3_TEST_PLUGINS)
 	tg_add_test_plugin(tg_test_tempo "Test Tempo" test_tempo.cpp)
 	tg_add_test_plugin(tg_test_sine "Test Sine" test_sine.cpp)
 	tg_add_test_plugin(tg_test_click "Test Click" test_click.cpp)
+	tg_add_test_plugin(tg_test_hang "Test Hang" test_hang.cpp)
 
 	add_library(tg_old_amp MODULE test-plugins/old_amp.c)
 	set_target_properties(tg_old_amp PROPERTIES OUTPUT_NAME "Old Amp" PREFIX "" LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/vst2")

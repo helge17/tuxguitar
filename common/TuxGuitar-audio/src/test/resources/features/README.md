@@ -293,6 +293,7 @@ These features change how TuxGuitar works today. They are requirements, not side
 | `Test Latency` | VST3 effect | delays the signal by its parameter `Latency` in samples (0 by default) | `Latency` | 0 |
 | `Test Echo` | VST3 effect | adds one copy of the signal at half its level, 0.3 s later (13230 samples at 44100 Hz) | 0 | 0.3 s |
 | `Test Drone` | VST3 effect | passes the signal and adds a 100 Hz tone at 0.1 forever | 0 | infinite |
+| `Test Hang` | VST3 effect | passes the signal, and hangs once: the block holding the sample its parameter `Hang at` counts to (samples processed since it started; never by default) comes back `Hang for` milliseconds later (never by default) | 0 | 0 |
 | `Test Stereo` | VST3 effect | mono in, stereo out: the signal on the left, half of it on the right | 0 | 0 |
 | `Test Tempo` | VST3 effect | passes the signal and records the tempo, time signature, play state and musical position it is given | 0 | 0 |
 | `Test Sine` | VST3 instrument | a sine at each note's pitch, peaking at 0.5 × velocity / 127, following per-note tuning | 0 | 0 |

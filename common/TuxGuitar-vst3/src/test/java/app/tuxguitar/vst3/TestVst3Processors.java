@@ -89,7 +89,7 @@ public class TestVst3Processors {
 	public void scanningTheFoldersListsEveryPluginByName() {
 		List<String> read = new ArrayList<String>();
 		this.hosting.getPlugins().forEach(plugin -> read.add(plugin.getName() + (plugin.isInstrument() ? " (instrument)" : "")));
-		assertEquals(Arrays.asList("Test Click (instrument)", "Test Clip 0.5", "Test Drone", "Test Echo", "Test Gain", "Test Latency",
+		assertEquals(Arrays.asList("Test Click (instrument)", "Test Clip 0.5", "Test Drone", "Test Echo", "Test Gain", "Test Hang", "Test Latency",
 			"Test Sine (instrument)", "Test Stereo", "Test Tempo"), read);
 		assertNull(this.hosting.find("Old Amp"));
 	}
@@ -237,6 +237,7 @@ public class TestVst3Processors {
 		processor.close();
 		assertEquals("0 1 0", scanning + " " + playing + " " + hostProcesses());
 		assertFalse(host.isRunning());
+		assertTrue(host.getExitReport().endsWith("(exit code 0)"), "ended on its own: " + host.getExitReport());
 		assertTrue(this.hosting.getStops().isEmpty());
 	}
 

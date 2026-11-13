@@ -111,13 +111,9 @@ public class SyncSteps {
 
 	// an echo is a click on the right side (track 2's), so many samples into the second pass: after the first jump back
 	// (of a loop or a repeat)
-	@Then("the echo of the click of measure {int} beat {double} reaches the output {int} samples into the second pass, within 1 sample")
+	// "the echo of the click ..." or "the echo of the first pass's click ..."
+	@Then("the echo of the (first pass's )click of measure {int} beat {double} reaches the output {int} samples into the second pass, within 1 sample")
 	public void theEchoReachesTheSecondPass(int measure, double beat, int samples) {
-		assertClickAt(secondPass() + samples);
-	}
-
-	@Then("the echo of the first pass's click of measure {int} beat {double} reaches the output {int} samples into the second pass, within 1 sample")
-	public void theEchoOfTheFirstPassReachesTheSecondPass(int measure, double beat, int samples) {
 		assertClickAt(secondPass() + samples);
 	}
 
@@ -182,13 +178,13 @@ public class SyncSteps {
 	}
 
 	// live, the output sounds the render its latency later than the clock
-	@Then("every left click reaches the output {int} samples after its beat, within 1 sample")
-	public void everyLeftClickReachesTheOutputLate(int late) {
-		List<Integer> left = clicks(0);
+	@Then("every {side} click reaches the output {int} samples after its beat, within 1 sample")
+	public void everyClickReachesTheOutputLate(int side, int late) {
+		List<Integer> clicks = clicks(side);
 		List<Integer> beats = heard().beats();
-		assertEquals(beats.size(), left.size(), "left clicks at " + left);
-		for (int i = 0; i < left.size(); i++) {
-			assertEquals(beats.get(i) + late, left.get(i) + heard().latency(), 1, "click " + i);
+		assertEquals(beats.size(), clicks.size(), "clicks at " + clicks);
+		for (int i = 0; i < clicks.size(); i++) {
+			assertEquals(beats.get(i) + late, clicks.get(i) + heard().latency(), 1, "click " + i);
 		}
 	}
 }

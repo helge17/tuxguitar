@@ -14,20 +14,34 @@ Feature: Hosting VST3 plugins
 
   Scenario: scanning the VST3 folders lists VST3 effects and VST3 instruments apart
     When I scan the VST3 folders
-    Then the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Latency, Test Stereo, Test Tempo"
+    Then the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Hang, Test Latency, Test Stereo, Test Tempo"
     And the VST3 instruments read "Test Click, Test Sine"
 
   Scenario: a VST 2 plugin in the VST3 folders is not listed
     Given the VST3 folders also hold the VST 2 plugin "Old Amp"
     When I scan the VST3 folders
     Then neither the VST3 effects nor the VST3 instruments name "Old Amp"
-    And the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Latency, Test Stereo, Test Tempo"
+    And the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Hang, Test Latency, Test Stereo, Test Tempo"
 
   Scenario: VST3 plugins run in a process apart from TuxGuitar, and nothing listens on a network port
     Given I have added the VST3 effect "Test Gain" to track 1
     When I play the song from measure 1 beat 1
     Then "Test Gain" runs in a process other than TuxGuitar's
     And neither TuxGuitar nor the plugin process listens on a network port
+
+  Scenario: a VST3 effect that hangs goes silent while the other tracks keep playing on their beats
+    Given track 1 has a quarter note on every beat
+    And I have chosen the VST3 instrument "Test Click" for track 1
+    And I have set the Balance of track 1's channel to 0
+    And I have added an audio track recording input channel 1
+    And I have set the Balance of track 2's channel to 127
+    And track 2 has a take of clicks of -0.25 on every beat from measure 1 beat 1 to the end of measure 4
+    And I have added the VST3 effect "Test Hang" to track 1
+    And I have set "Hang at" of VST3 effect 1 of track 1 to 88200
+    When I play the song from measure 1 beat 1
+    Then the output's left side holds 4 clicks and its right side 16 clicks
+    # 600 samples: the General MIDI drums' latency, which plugin delay compensation counts
+    And every right click reaches the output 600 samples after its beat, within 1 sample
 
   # VST3 effects
 

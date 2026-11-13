@@ -9,26 +9,56 @@ import java.io.OutputStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * The process that runs VST3 plugins apart from TuxGuitar (native/host), so a plugin that crashes takes only that process
  * down. TuxGuitar talks to it through its standard input and output, which no other process can open, one request at a
  * time (TGVst3Protocol); each plugin's audio goes through a file both map (TGVst3SharedBlocks). When the process is
  * gone, every request fails, saying so, and the host reports it stopped.
+ *
+ * A plugin that hangs: a block whose reply is later than LATE_MILLIS is left silent, and its reply is owed. While a
+ * reply is owed no request is sent (one request at a time), so the next reply read is the owed one, never taken for
+ * another's: each block until it comes is silent at once, and when it comes it is dropped. A host that has owed a reply
+ * for SILENT_MILLIS is taken for stopped and ended, its process tree with it. Other requests wait up to CALL_MILLIS (a
+ * plugin may take seconds to open), then the host is ended too.
  */
 public final class TGVst3Host implements AutoCloseable {
 
+	// a block's reply later than this is late: about 4 blocks of 1024 frames at 44100 Hz, well above the scheduling
+	// jitter of a loaded machine
+	static final long LATE_MILLIS = 100;
+	// a host that has owed a reply this long is taken for stopped
+	static final long SILENT_MILLIS = 2000;
+	// how long a request other than a block's waits for its reply
+	static final long CALL_MILLIS = 30000;
+
 	private static final String STOPPED = "the VST3 host stopped";
+	private static final String SILENT = "the VST3 host did not answer for " + (SILENT_MILLIS / 1000) + " s";
 
 	private final Process process;
 	private final OutputStream requests;
 	private final DataInputStream replies;
 	private final File shared;
-	private final Map<Integer, TGVst3Instance> instances = new HashMap<Integer, TGVst3Instance>();
+	// the plugins by id: the reader thread looks them up for the notices of a reply
+	private final Map<Integer, TGVst3Instance> instances = new ConcurrentHashMap<Integer, TGVst3Instance>();
+	// reads each reply on a thread of its own, so a caller can stop waiting for one
+	private final ExecutorService reader = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable, "tuxguitar-vst3-replies");
+		thread.setDaemon(true);
+		return thread;
+	});
+	// the reply of a block that came late, not read yet, and since when (System.nanoTime)
+	private Future<? extends Answer<?>> owed;
+	private long owedSince;
 	private final List<String> opened = new ArrayList<String>();
 	private long pid;
 	private String exitReport;
@@ -137,66 +167,178 @@ public final class TGVst3Host implements AutoCloseable {
 		}
 	}
 
-	// sends the request and reads its reply, then what the plugins told the host
+	// sends the request and reads its reply (after a reply still owed, if it comes in time), then what the plugins told
+	// the host
 	synchronized <T> T call(TGVst3Request request, TGVst3Request.Reply<T> reply) throws TGVst3Exception {
+		if (this.owing(SILENT_MILLIS - this.owedFor())) {
+			throw this.silent();
+		}
+		try {
+			return this.await(this.send(request, reply), CALL_MILLIS).deliver();
+		} catch (TimeoutException e) {
+			throw this.silent();
+		}
+	}
+
+	// a block's request, sent when no reply is owed (see isLate): false, its reply owed, when that reply is late
+	synchronized <T> boolean callInTime(TGVst3Request request, TGVst3Request.Reply<T> reply) throws TGVst3Exception {
+		Future<Answer<T>> answer = this.send(request, reply);
+		try {
+			this.await(answer, LATE_MILLIS).deliver();
+			return true;
+		} catch (TimeoutException e) {
+			this.owed = answer;
+			this.owedSince = System.nanoTime();
+			return false;
+		}
+	}
+
+	// whether a late reply is still owed; one that came is dropped (what the plugins told the host with it is passed
+	// on); a host that has owed one for SILENT_MILLIS is ended
+	synchronized boolean isLate() throws TGVst3Exception {
+		return this.owing(0);
+	}
+
+	private boolean owing(long wait) throws TGVst3Exception {
+		if (this.owed == null) {
+			return false;
+		}
+		try {
+			this.await(this.owed, Math.max(wait, 0)).tell();
+			this.owed = null;
+			return false;
+		} catch (TimeoutException e) {
+			if (this.owedFor() >= SILENT_MILLIS) {
+				throw this.silent();
+			}
+			return true;
+		}
+	}
+
+	// how long the owed reply has been owed, in milliseconds; 0 when none is
+	private long owedFor() {
+		return (this.owed != null ? TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - this.owedSince) : 0);
+	}
+
+	private <T> Future<Answer<T>> send(TGVst3Request request, TGVst3Request.Reply<T> reply) throws TGVst3Exception {
 		if (!this.isRunning()) {
 			throw new TGVst3Exception(this.exitReport);
 		}
 		try {
 			request.writeTo(this.requests);
 			this.requests.flush();
-			return this.answer(reply);
 		} catch (IOException e) {
 			throw this.stopped(e);
 		}
+		return this.reader.submit(() -> this.answer(reply));
 	}
 
-	private <T> T answer(TGVst3Request.Reply<T> reply) throws IOException, TGVst3Exception {
+	private <A> A await(Future<A> answer, long millis) throws TGVst3Exception, TimeoutException {
+		try {
+			return answer.get(millis, TimeUnit.MILLISECONDS);
+		} catch (ExecutionException e) {
+			throw this.failed(e.getCause());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new TGVst3Exception("interrupted while waiting for the VST3 host", e);
+		}
+	}
+
+	// a reply that could not be read: refused as the host said, or the pipe broke
+	private TGVst3Exception failed(Throwable cause) {
+		return (cause instanceof TGVst3Exception ? (TGVst3Exception) cause : this.stopped(cause));
+	}
+
+	// on the reader thread
+	private <T> Answer<T> answer(TGVst3Request.Reply<T> reply) throws IOException, TGVst3Exception {
 		if (this.replies.readInt() != 0) {
-			String reason = TGVst3Request.readString(this.replies);
-			this.readNotices();
-			throw new TGVst3Exception(reason);
+			TGVst3Exception refused = new TGVst3Exception(TGVst3Request.readString(this.replies));
+			return new Answer<T>(null, refused, this.readNotices());
 		}
 		T value = reply.read(this.replies);
-		this.readNotices();
-		return value;
+		return new Answer<T>(value, null, this.readNotices());
 	}
 
-	private void readNotices() throws IOException {
+	private List<Runnable> readNotices() throws IOException {
+		List<Runnable> notices = new ArrayList<Runnable>();
 		TGVst3Notice.Kind[] kinds = TGVst3Notice.Kind.values();
 		for (int count = this.replies.readInt(); count > 0; count--) {
 			TGVst3Instance instance = this.instances.get(this.replies.readInt());
 			TGVst3Notice notice = new TGVst3Notice(kinds[this.replies.readInt() - 1], this.replies.readInt(), this.replies.readDouble());
 			if (instance != null) {
-				instance.notice(notice);
+				notices.add(() -> instance.notice(notice));
 			}
 		}
+		return notices;
 	}
 
 	// the pipe broke: the process is gone (or going: it is ended)
-	private TGVst3Exception stopped(IOException cause) {
+	private TGVst3Exception stopped(Throwable cause) {
+		this.end();
+		this.exitReport = STOPPED + (this.process.isAlive() ? "" : " (exit code " + this.process.exitValue() + ")");
+		return new TGVst3Exception(this.exitReport, cause);
+	}
+
+	// a reply owed too long: the host is taken for stopped
+	private TGVst3Exception silent() {
+		this.end();
+		this.exitReport = SILENT;
+		return new TGVst3Exception(SILENT);
+	}
+
+	// the process and every process it started end; waits up to 5 seconds for it
+	private void end() {
+		this.owed = null;
+		this.process.descendants().forEach(ProcessHandle::destroyForcibly);
 		this.process.destroyForcibly();
 		try {
 			this.process.waitFor(5, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		this.exitReport = STOPPED + (this.process.isAlive() ? "" : " (exit code " + this.process.exitValue() + ")");
-		return new TGVst3Exception(this.exitReport, cause);
+		this.reader.shutdownNow();
 	}
 
-	// the process ends when its input closes; it is ended if it has not within 5 seconds
+	// the process ends when its input closes, or is ended if it has not within 5 seconds (at once while it owes a reply)
 	public synchronized void close() {
 		this.closed = this.closed || this.isRunning();
 		try {
-			this.requests.close();
-			this.process.waitFor(5, TimeUnit.SECONDS);
+			if (this.owed == null) {
+				this.requests.close();
+				this.process.waitFor(5, TimeUnit.SECONDS);
+			}
 		} catch (IOException e) {
 			// the pipe is broken: the process is gone or is ended below
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		this.process.destroyForcibly();
+		this.end();
 		this.instances.clear();
+	}
+
+	// a reply as the reader thread read it: the request's value or the host's refusal, and what the plugins told the
+	// host, passed on by the caller's thread
+	private static final class Answer<T> {
+		private final T value;
+		private final TGVst3Exception refused;
+		private final List<Runnable> notices;
+
+		Answer(T value, TGVst3Exception refused, List<Runnable> notices) {
+			this.value = value;
+			this.refused = refused;
+			this.notices = notices;
+		}
+
+		void tell() {
+			this.notices.forEach(Runnable::run);
+		}
+
+		T deliver() throws TGVst3Exception {
+			this.tell();
+			if (this.refused != null) {
+				throw this.refused;
+			}
+			return this.value;
+		}
 	}
 }
