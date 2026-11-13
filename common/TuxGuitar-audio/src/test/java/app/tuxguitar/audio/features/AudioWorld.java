@@ -302,6 +302,13 @@ public class AudioWorld {
 		return samples;
 	}
 
+	// the numbers of the track's takes remembered
+	public List<Integer> rememberedTakes(int trackNumber) {
+		List<Integer> takes = new ArrayList<Integer>();
+		this.takeSamples.keySet().stream().filter(key -> key.startsWith(trackNumber + ":")).forEach(key -> takes.add(Integer.valueOf(key.substring(key.indexOf(':') + 1))));
+		return takes;
+	}
+
 	private static String key(int trackNumber, int takeNumber) {
 		return trackNumber + ":" + takeNumber;
 	}

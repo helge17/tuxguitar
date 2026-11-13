@@ -10,7 +10,6 @@ Feature: Saving audio tracks and plugins
     And I have set the audio device to "Test Interface"
     And the VST3 folders hold the test plugins
 
-  @planned
   Scenario: takes come back sample for sample, where they were, chosen as they were
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 3 beat 1
@@ -23,7 +22,6 @@ Feature: Saving audio tracks and plugins
     And track 2's playback reads "m1: take 1, m2: take 1, m3: take 2, m4: none"
     And every take of track 2 is sample for sample what it was
 
-  @planned
   Scenario: a deleted take is not saved, and its number is not given again after reopening
     Given I have added an audio track recording input channel 1
     And I have armed track 2
@@ -36,21 +34,19 @@ Feature: Saving audio tracks and plugins
     When I record from measure 3 beat 1 to measure 4 beat 1
     Then track 2's takes read "take 3: m3b1 to m4b1, take 1: m1b1 to m2b1"
 
-  @planned
   Scenario: a take keeps the tempo it was recorded at across saving
     Given I have added an audio track recording input channel 1
     And I have armed track 2
     And I have set the Percentage of Tempo to 80
-    And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
+    And the player plays clicks of -0.25 on every beat on input channel 1
     And I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have saved the song as a TuxGuitar file
     And I have opened it again
     And I have set the Percentage of Tempo to 100
     When I play the song from measure 1 beat 1
     Then track 2 plays for 4 seconds within 5 ms
-    And track 2 sounds a 440 Hz tone within 1% in measures 1 to 2
+    And track 2 sounds 8 clicks, each within 5 ms of a beat
 
-  @planned
   Scenario: each audio track's input channels are saved with the song
     Given I have added an audio track recording input channel 2
     And I have added an audio track recording input channels 1 and 2

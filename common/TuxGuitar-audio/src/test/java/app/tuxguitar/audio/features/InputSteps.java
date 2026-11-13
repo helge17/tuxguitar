@@ -7,11 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 
 import app.tuxguitar.audio.TGInputMeter;
+import app.tuxguitar.audio.action.TGAddAudioTrackAction;
 import app.tuxguitar.audio.action.TGResetClipIndicatorAction;
 import app.tuxguitar.audio.action.TGSetInputChannelsAction;
 import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
+import app.tuxguitar.song.models.TGAudioInput;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -47,6 +49,20 @@ public class InputSteps {
 	public void haveSetInputChannels(int number, int[] inputChannels) {
 		setInputChannels(number, inputChannels);
 		assertTrue(world.succeeded());
+	}
+
+	// an audio track is added recording one input channel; then it records the pair
+	@Given("I have added an audio track recording input channels {int} and {int}")
+	public void haveAddedAStereoAudioTrack(int left, int right) {
+		world.fixture().actionContext.setAttribute(TGAddAudioTrackAction.ATTRIBUTE_INPUT_CHANNEL, left);
+		world.execute(new TGAddAudioTrackAction(world.fixture().context));
+		haveSetInputChannels(world.song().countTracks(), new int[] {left, right});
+	}
+
+	@Then("track {int} records input channels {int} and {int}")
+	public void recordsInputChannels(int number, int left, int right) {
+		TGAudioInput input = world.channel(world.track(number)).getAudioInput();
+		assertEquals(left + " and " + right, input.getChannel(0) + " and " + input.getChannel(1));
 	}
 
 	// the device's clock runs while TuxGuitar is stopped: the input delivers that many seconds of its signal

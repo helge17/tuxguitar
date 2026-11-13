@@ -153,4 +153,12 @@ public class TakeSteps {
 	public void isSampleForSampleWhatItWas(int take, int number) {
 		assertArrayEquals(world.rememberedSamples(number, take), AudioWorld.samples(TGTakes.find(world.track(number), take)));
 	}
+
+	// each take remembered of the track
+	@Then("every take of track {int} is sample for sample what it was")
+	public void everyTakeIsSampleForSampleWhatItWas(int number) {
+		List<Integer> takes = world.rememberedTakes(number);
+		assertTrue(takes.size() > 1, takes + " remembered");
+		takes.forEach(take -> isSampleForSampleWhatItWas(take, number));
+	}
 }
