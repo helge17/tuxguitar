@@ -3,8 +3,9 @@ package app.tuxguitar.player.base;
 import java.util.List;
 
 /**
- * A sequencer that logs what it is told to do: "start", "stop" and "seek position". It runs only when a test says
- * so; a broken one fails to check, start, seek and read its position. Its sequence is SEQUENCE_LENGTH ticks long.
+ * A sequencer that logs what it is told to do: "start", "stop" and "seek position"; it keeps the sample clock it is
+ * given. It runs only when a test says so; a broken one fails to check, start, seek and read its position. Its sequence
+ * is SEQUENCE_LENGTH ticks long.
  */
 class FakeSequencer implements MidiSequencer {
 
@@ -18,6 +19,9 @@ class FakeSequencer implements MidiSequencer {
 	boolean broken = false;
 	// the last sequence it made
 	MidiEventRecorder sequence;
+	// the sample clock it was given, and the one it last started on (null: its timer)
+	MidiSampleClock clock;
+	MidiSampleClock startedOn;
 
 	FakeSequencer(List<String> log) {
 		this.log = log;
@@ -46,6 +50,11 @@ class FakeSequencer implements MidiSequencer {
 	public void start() throws MidiPlayerException {
 		fail("start");
 		log.add("start");
+		this.startedOn = this.clock;
+	}
+
+	public void setClock(MidiSampleClock clock) {
+		this.clock = clock;
 	}
 
 	public void stop() {

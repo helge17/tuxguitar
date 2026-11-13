@@ -3,7 +3,7 @@ package app.tuxguitar.player.base;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MidiTransmitter {
+public class MidiTransmitter implements MidiReceiver {
 
 	private List<MidiReceiverItem> receivers;
 

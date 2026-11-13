@@ -23,4 +23,8 @@ public interface MidiSequencer extends MidiDevice{
 
 	public void setMute(int index,boolean mute) throws MidiPlayerException;
 
+	// the sample clock to play on from the next start, or null to play on the sequencer's own timer; a sequencer that
+	// cannot play on a sample clock keeps its timer
+	public default void setClock(MidiSampleClock clock) throws MidiPlayerException {
+	}
 }

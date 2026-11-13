@@ -259,7 +259,8 @@ public class MidiPlayer{
 		}
 	}
 
-	// a running player starts its sequencer, from the new position if one was set; then reads where it is
+	// a running player starts its sequencer, from the new position if one was set, on the sample clock of the
+	// synthesizer when it has one; then reads where it is
 	private void startSequencer() throws MidiPlayerException {
 		try {
 			this.lock();
@@ -267,6 +268,7 @@ public class MidiPlayer{
 				if( this.isChangeTickPosition() ){
 					this.changeTickPosition();
 				}
+				this.getSequencer().setClock(this.getSampleClock());
 				this.getSequencer().start();
 			}
 
@@ -1364,6 +1366,11 @@ public class MidiPlayer{
 			this.channelRouter = new MidiChannelRouter();
 		}
 		return this.channelRouter;
+	}
+
+	private MidiSampleClock getSampleClock(){
+		MidiSynthesizer synthesizer = this.getSynthesizerProxy().getMidiSynthesizer();
+		return (synthesizer instanceof MidiSampleClock ? (MidiSampleClock) synthesizer : null);
 	}
 
 	public MidiSynthesizerProxy getSynthesizerProxy(){

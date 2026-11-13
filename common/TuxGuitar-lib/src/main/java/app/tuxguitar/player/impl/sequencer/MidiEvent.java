@@ -46,6 +46,15 @@ public class MidiEvent {
 		return this.data;
 	}
 
+	// a tempo change: a system event whose data are 0x51 then the microseconds per quarter, low byte first
+	public boolean isTempo() {
+		return (this.type == MIDI_SYSTEM_EVENT && this.data[0] == 0x51);
+	}
+
+	public int getTempoInUSQ() {
+		return ((this.data[1] & 0xff) | ((this.data[2] & 0xff) << 8) | ((this.data[3] & 0xff) << 16));
+	}
+
 	public static MidiEvent systemReset(long tick){
 		return new MidiEvent(tick,MIDI_SYSTEM_EVENT,ALL_TRACKS,null);
 	}

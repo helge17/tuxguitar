@@ -1,6 +1,8 @@
 package app.tuxguitar.player.impl.sequencer;
 
 import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiReceiver;
+import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiSequencer;
 import app.tuxguitar.player.base.MidiTransmitter;
@@ -12,6 +14,8 @@ import app.tuxguitar.util.TGContext;
 
 public class MidiSequencerImpl implements MidiSequencer {
 
+	private static final int DEFAULT_TEMPO_IN_USQ = 500000;
+
 	private boolean reset;
 	private boolean running;
 	private boolean stopped;
@@ -22,6 +26,15 @@ public class MidiSequencerImpl implements MidiSequencer {
 	private MidiEventPlayer midiEventPlayer;
 	private MidiEventDispacher midiEventDispacher;
 	private MidiTrackController midiTrackController;
+	private MidiBlockPlayer midiBlockPlayer;
+	// the clock to play on from the next start, and the one played on now
+	private volatile MidiSampleClock clock;
+	private MidiSampleClock playingClock;
+	private final MidiSampleClock.Listener clockListener = (clock, frames) -> this.process(() -> this.midiBlockPlayer.process(clock, frames));
+	private final Step timerStep = () -> {
+		this.midiTickPlayer.process();
+		this.midiEventPlayer.process();
+	};
 
 	public MidiSequencerImpl(TGContext context) {
 		this.running = false;
@@ -32,10 +45,11 @@ public class MidiSequencerImpl implements MidiSequencer {
 		this.midiEventPlayer = new MidiEventPlayer(this);
 		this.midiEventDispacher = new MidiEventDispacher(this);
 		this.midiTrackController = new MidiTrackController(this);
+		this.midiBlockPlayer = new MidiBlockPlayer(this);
 	}
 
 	public MidiSequenceHandler createSequence(int tracks) throws MidiPlayerException {
-		this.midiEventPlayer.clearEvents();
+		this.clearEvents();
 		this.midiTickPlayer.clearTick();
 		return new MidiSequenceHandlerImpl(this, tracks);
 	}
@@ -77,14 +91,25 @@ public class MidiSequencerImpl implements MidiSequencer {
 		}
 	}
 
+	// an event of a block played on the clock, to the receiver of its frame
+	void sendEvent(MidiEvent event, MidiReceiver receiver) throws MidiPlayerException {
+		this.midiEventDispacher.dispatch(event, receiver);
+	}
+
 	public void addEvent(MidiEvent event) {
 		synchronized (this.lock) {
 			this.midiEventPlayer.addEvent(event);
+			this.midiBlockPlayer.addEvent(event);
 			this.midiTickPlayer.notifyTick(event.getTick());
 		}
 	}
 
+	// one step of the timer
 	protected boolean process() throws MidiPlayerException {
+		return this.process(this.timerStep);
+	}
+
+	private boolean process(Step step) throws MidiPlayerException {
 		synchronized (this.lock) {
 			boolean running = this.isRunning();
 			if (running) {
@@ -92,17 +117,16 @@ public class MidiSequencerImpl implements MidiSequencer {
 					this.reset();
 					this.reset = false;
 					this.midiEventPlayer.reset();
+					this.midiBlockPlayer.reset();
 				}
 				this.stopped = false;
-				this.midiTickPlayer.process();
-				this.midiEventPlayer.process();
+				step.run();
 				if (this.getTickPosition() > this.getTickLength()) {
 					this.stop();
 				}
 			} else if (!this.stopped) {
 				this.stopped = true;
-				this.midiEventPlayer.clearEvents();
-				this.midiTickPlayer.clearTick();
+				this.clearEvents();
 				this.reset();
 			}
 			return running;
@@ -113,18 +137,54 @@ public class MidiSequencerImpl implements MidiSequencer {
 		synchronized (this.lock) {
 			this.running = running;
 			if (this.running) {
-				this.setTempo(120);
+				this.setTempoInUSQ(DEFAULT_TEMPO_IN_USQ);
 				this.setTickPosition(this.getTickPosition());
-				new MidiTimer(this).start();
+				this.startClock();
 			} else {
 				this.process();
+				this.leaveClock();
 			}
 		}
+	}
+
+	// on the clock when given one, else on the timer
+	private void startClock() {
+		this.playingClock = this.clock;
+		if (this.playingClock != null) {
+			this.playingClock.setListener(this.clockListener);
+		} else {
+			new MidiTimer(this).start();
+		}
+	}
+
+	private void leaveClock() {
+		if (this.playingClock != null) {
+			this.playingClock.setListener(null);
+			this.playingClock = null;
+		}
+	}
+
+	public void setClock(MidiSampleClock clock) {
+		this.clock = clock;
+	}
+
+	private void clearEvents() {
+		this.midiEventPlayer.clearEvents();
+		this.midiBlockPlayer.clearEvents();
+		this.midiTickPlayer.clearTick();
 	}
 
 	public void setTempo(int tempo) {
 		synchronized (this.lock) {
 			this.midiTickPlayer.setTempo(tempo);
+		}
+	}
+
+	// the timer plays a whole bpm, as it always has; the clock plays the exact tempo
+	public void setTempoInUSQ(int usq) {
+		synchronized (this.lock) {
+			this.setTempo((int) ((60.00 * 1000.00) / (usq / 1000.00)));
+			this.midiBlockPlayer.setTempoInUSQ(usq);
 		}
 	}
 
@@ -157,6 +217,10 @@ public class MidiSequencerImpl implements MidiSequencer {
 		return this.running;
 	}
 
+	MidiTickPlayer getMidiTickPlayer() {
+		return this.midiTickPlayer;
+	}
+
 	public MidiTrackController getMidiTrackController() {
 		return this.midiTrackController;
 	}
@@ -183,6 +247,10 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 	public TGContext getContext() {
 		return this.context;
+	}
+
+	private interface Step {
+		void run() throws MidiPlayerException;
 	}
 
 	private class MidiTimer implements Runnable {
