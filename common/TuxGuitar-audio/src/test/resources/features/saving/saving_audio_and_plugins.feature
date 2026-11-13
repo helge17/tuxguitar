@@ -55,7 +55,6 @@ Feature: Saving audio tracks and plugins
     Then track 2 records input channel 2
     And track 3 records input channels 1 and 2
 
-  @planned
   Scenario: sound chains come back with each plugin's state
     Given I have added an audio track recording input channel 1
     And I have chosen the VST3 instrument "Test Sine" for track 1
@@ -71,7 +70,6 @@ Feature: Saving audio tracks and plugins
     And "Gain" of VST3 effect 2 of track 2 is 2.0
     And the state of every VST3 plugin is byte for byte what the plugin gave when the song was saved
 
-  @planned
   Scenario: the General MIDI program a VST3 instrument replaced comes back after reopening
     Given I have set the General MIDI program of track 1's channel to "Distortion Electric Guitar"
     And I have chosen the VST3 instrument "Test Sine" for track 1
@@ -125,7 +123,6 @@ Feature: Saving audio tracks and plugins
     When I open the format 2.0 file "saving/no-audio.tg"
     Then the song has 1 track and 4 measures
 
-  @planned
   Scenario: a song with VST3 plugins and no audio track stays in format 2.0, and older readers see only its General MIDI program
     Given I have set the General MIDI program of track 1's channel to "Distortion Electric Guitar"
     And I have chosen the VST3 instrument "Test Sine" for track 1

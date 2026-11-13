@@ -2,26 +2,37 @@ package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.file.TGWriteSongAction;
 import app.tuxguitar.io.base.TGFileFormatException;
 import app.tuxguitar.io.base.TGSongReaderHandle;
 import app.tuxguitar.io.tg.TGSongReaderImpl;
 import app.tuxguitar.io.tg.TGStream;
+import app.tuxguitar.midi.synth.TGProgram;
+import app.tuxguitar.midi.synth.TGProgramElement;
+import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.util.TGMessagesManager;
+import app.tuxguitar.vst3.TGVst3Element;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -38,6 +49,8 @@ public class SavingSteps {
 	private static final String TG_VERSION = "<TGVersion[^>]*/>";
 
 	private final AudioWorld world;
+	// the state each VST3 plugin gave when the song was saved, as the song keeps it, by track and place in the chain
+	private Map<String, String> savedStates;
 
 	public SavingSteps(AudioWorld world) {
 		this.world = world;
@@ -55,6 +68,30 @@ public class SavingSteps {
 		context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT, TGStream.TG_FORMAT);
 		TGActionManager.getInstance(world.fixture().context).execute(TGWriteSongAction.NAME, context);
 		world.setSaved(file.toByteArray());
+		this.savedStates = pluginStates(world.song());
+	}
+
+	@Then("the state of every VST3 plugin is byte for byte what the plugin gave when the song was saved")
+	public void everyPluginStateIsWhatItWas() {
+		assertTrue(this.savedStates.size() > 1 && !this.savedStates.containsValue(null), "states saved: " + this.savedStates);
+		assertEquals(this.savedStates, pluginStates(world.song()));
+	}
+
+	// each VST3 plugin's state (component, then controller) as each track's chain keeps it, by track and place
+	private Map<String, String> pluginStates(TGSong song) {
+		Map<String, String> states = new LinkedHashMap<String, String>();
+		song.getTracks().forEachRemaining(track -> {
+			TGProgram chain = TGSoundChain.get(world.channel(track));
+			List<TGProgramElement> elements = new ArrayList<TGProgramElement>(Collections.singletonList(chain.getReceiver()));
+			IntStream.range(0, chain.countOutputs()).forEach(i -> elements.add(chain.getOutput(i)));
+			elements.stream().filter(TGVst3Element::isVst3).forEach(element -> states.put(track.getNumber() + ":" + elements.indexOf(element), state(element)));
+		});
+		return states;
+	}
+
+	private static String state(TGProgramElement element) {
+		String component = element.getParameters().get("vst3.state");
+		return (component != null ? component + "/" + element.getParameters().get("vst3.controller") : null);
 	}
 
 	@Given("I have opened it again")
@@ -101,6 +138,18 @@ public class SavingSteps {
 			refusal = refusal.getCause();
 		}
 		assertEquals(message, refusal.getMessage());
+	}
+
+	// the channel's General MIDI program by name, then the keys of its parameters with the prefix
+	@Then("a reader of file format {double} finds track {int}'s channel on the General MIDI program {string} with no {string} keys")
+	public void aReaderFindsTheGeneralMidiProgram(double version, int number, String program, String prefix) throws TGFileFormatException {
+		assertEquals(2.0, version, 0.0, "the only older reader kept");
+		TGSong song = readAsFormat20(world.saved());
+		TGChannel channel = world.fixture().songManager.getChannel(song, world.fixture().songManager.getTrack(song, number).getChannelId());
+		List<String> keys = new ArrayList<String>();
+		channel.getParameters().forEachRemaining(parameter -> keys.add(parameter.getKey()));
+		keys.removeIf(key -> !key.startsWith(prefix + "."));
+		assertEquals(program + " " + Collections.emptyList(), TGMessagesManager.getMidiInstrument(channel.getProgram()).getName() + " " + keys);
 	}
 
 	static TGSong readAsFormat20(byte[] file) throws TGFileFormatException {
