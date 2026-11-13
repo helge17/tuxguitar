@@ -28,6 +28,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	private List<TGSynthChannel> channels;
 	private volatile Listener listener;
 	private final MidiTransport transport = new MidiTransport();
+	private volatile int outputLatency;
 
 	public TGSynthModel(TGContext context){
 		this(context, TGAudioBuffer.SAMPLE_RATE);
@@ -109,6 +110,19 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 			latency = Math.max(latency, channel.getLatency());
 		}
 		return latency;
+	}
+
+	// the audio device's output latency, in frames: how long after it renders a frame the device sounds it. Seam for
+	// the desktop: its synthesizer output sets it from the device's reported latency plus the frames its line buffers
+	// (not done yet); 0 until then
+	public void setOutputLatency(int frames){
+		this.outputLatency = frames;
+	}
+
+	// how many frames after an event's frame the output sounds it: the chains' latency, then the output latency. The
+	// sequencer playing on this clock reports the position sounding, that many frames behind the one it schedules
+	public int getSoundingDelay(){
+		return this.getLatency() + this.outputLatency;
 	}
 
 	public int countChannels(){

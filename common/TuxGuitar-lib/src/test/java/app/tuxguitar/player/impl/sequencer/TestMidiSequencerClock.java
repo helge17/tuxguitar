@@ -48,6 +48,8 @@ public class TestMidiSequencerClock {
 	private MidiSampleClock.Listener listener;
 	// the first frame of the next block
 	private long blockStart;
+	// how many frames after an event's frame the clock's output sounds it
+	private int delay;
 
 	private final MidiTransport transport = new MidiTransport();
 	private final MidiSampleClock clock = new MidiSampleClock() {
@@ -57,6 +59,10 @@ public class TestMidiSequencerClock {
 
 		public MidiTransport getTransport() {
 			return transport;
+		}
+
+		public int getSoundingDelay() {
+			return delay;
 		}
 
 		public void setListener(Listener listener) {
@@ -349,6 +355,91 @@ public class TestMidiSequencerClock {
 		blocks(1);
 
 		assertEquals("22 44", first + " " + sequencer.getTickPosition());
+	}
+
+	// where the sequencer is after each of the blocks
+	private String positions(int count) throws MidiPlayerException {
+		StringBuilder positions = new StringBuilder();
+		for (int b = 0; b < count; b++) {
+			blocks(1);
+			positions.append(positions.length() > 0 ? " " : "").append(sequencer.getTickPosition());
+		}
+		return positions.toString();
+	}
+
+	// the position is the tick the output sounds at the end of the block, 1024 frames behind: before the first two
+	// blocks are heard it is before where playing started (512 frames before tick 0: tick -23)
+	@Test
+	public void thePositionIsTheTickTheOutputSoundsAtTheEndOfTheBlock() throws MidiPlayerException {
+		delay = 1024;
+		playOnTheClockFrom(0);
+
+		assertEquals("-23 0 22 44", positions(4));
+	}
+
+	// a move is the position at once; the output sounds it 1024 frames after the next block starts
+	@Test
+	public void aMoveIsHeardTheDelayAfterTheNextBlockStarts() throws MidiPlayerException {
+		delay = 1024;
+		playOnTheClockFrom(0);
+		blocks(3);
+		sequencer.setTickPosition(2000);
+		long moved = sequencer.getTickPosition();
+
+		assertEquals("2000 | 1977 2000 2022", moved + " | " + positions(3));
+	}
+
+	// 60 bpm from the tick on, the output sounding the clock the delay late: the positions after the blocks played from
+	// the position
+	private String positionsAt60BpmFrom(long tick, int delay, long position, int blocks) throws MidiPlayerException {
+		this.delay = delay;
+		sequence.addTempoInUSQ(tick, 0, 1000000);
+		playOnTheClockFrom(position);
+		return positions(blocks);
+	}
+
+	// each on a sequencer of its own: 60 bpm from tick 10 (frame 230): frame 256, heard at the end of the first block, is
+	// 0.57 of a 45.9 frame tick past it; the tempo in force where playing starts (60 bpm, set before tick 2000) is the one
+	// the position runs at from there
+	@Test
+	public void thePositionRunsAtTheTempoTheOutputSounds() throws MidiPlayerException {
+		String fromATempoChange = new TestMidiSequencerClock().positionsAt60BpmFrom(10, 256, 0, 1);
+		String fromWherePlayingStarts = new TestMidiSequencerClock().positionsAt60BpmFrom(0, 512, 2000, 2);
+
+		assertEquals("10 | 2000 2011", fromATempoChange + " | " + fromWherePlayingStarts);
+	}
+
+	// the last note is on tick 30: the sequencer stops once the output sounds past it, two blocks (1024 frames) later
+	// than it would without the delay
+	@Test
+	public void theSequencerStopsOnceTheOutputSoundsPastTheLastEvent() throws MidiPlayerException {
+		delay = 1024;
+		notes(0, 30);
+		playToTheEndFrom(0);
+		int count = 0;
+		while (listener != null && count < 10) {
+			blocks(1);
+			count++;
+		}
+
+		assertEquals("4 false", count + " " + sequencer.isRunning());
+	}
+
+	// the sequencer keeps the position on the audio thread, which must not allocate per block
+	@Test
+	public void keepingThePositionAllocatesNothingPerBlock() throws MidiPlayerException {
+		com.sun.management.ThreadMXBean threads = (com.sun.management.ThreadMXBean) java.lang.management.ManagementFactory.getThreadMXBean();
+		delay = 1024;
+		sequence.addTempoInUSQ(0, 0, 500000);
+		playOnTheClockFrom(0);
+		blocks(1);
+		long before = threads.getThreadAllocatedBytes(Thread.currentThread().getId());
+		for (int b = 0; b < 1000; b++) {
+			listener.beforeBlock(clock, BLOCK);
+		}
+		long allocated = threads.getThreadAllocatedBytes(Thread.currentThread().getId()) - before;
+
+		assertEquals(true, allocated < 64 * 1024 && sequencer.getTickPosition() > 20000, allocated + " bytes allocated by 1000 blocks");
 	}
 
 	@Test

@@ -100,6 +100,18 @@ public class TestSynthClock {
 		assertEquals("0 700", none + " " + this.model.getLatency());
 	}
 
+	// the output sounds an event sent on a frame the slowest chain's latency (channel 4's, 700) and the audio device's
+	// output latency (1024) after it: the sequencer reports that sounding position
+	@Test
+	public void theOutputSoundsAnEventTheChainsLatencyAndTheOutputLatencyAfterItsFrame() throws MidiPlayerException {
+		int none = this.model.getSoundingDelay();
+		this.model.getChannelById(4).sendProgramChange(7);
+		this.other.last().latency = 700;
+		this.model.setOutputLatency(1024);
+
+		assertEquals("0 1724", none + " " + this.model.getSoundingDelay());
+	}
+
 	// what plays on is not stopped by a failing listener
 	@Test
 	public void aFailingListenerLeavesTheBlockToRender() {

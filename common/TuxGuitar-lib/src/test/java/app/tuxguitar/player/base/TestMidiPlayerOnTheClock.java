@@ -31,6 +31,8 @@ public class TestMidiPlayerOnTheClock {
 	private final SteppedThreads threads = new SteppedThreads();
 	private final List<String> notified = new ArrayList<String>();
 	private MidiSampleClock.Listener listener;
+	// how many frames after an event's frame the synthesizer's output sounds it
+	private int delay;
 
 	private final class ClockedSynthesizer implements MidiSynthesizer, MidiSampleClock {
 		public MidiChannel openChannel(int channelId) { return null; }
@@ -38,6 +40,7 @@ public class TestMidiPlayerOnTheClock {
 		public boolean isChannelOpen(MidiChannel midiChannel) { return false; }
 		public boolean isBusy() { return false; }
 		public float getSampleRate() { return 44100; }
+		public int getSoundingDelay() { return delay; }
 		public void setListener(Listener listener) { TestMidiPlayerOnTheClock.this.listener = listener; }
 		public MidiReceiver at(int frame) { return new MidiReceiverRecorder(new ArrayList<String>()); }
 	}
@@ -92,12 +95,29 @@ public class TestMidiPlayerOnTheClock {
 		return count;
 	}
 
+	// plays to the end: the blocks rendered | where the player is, whether it runs, what it notified meanwhile
+	private String playedToTheEnd() throws MidiPlayerException {
+		play();
+		notified.clear();
+		int blocks = blocksToTheEnd();
+		return blocks + " | " + player.getTickPosition() + " " + player.isRunning() + " " + notified;
+	}
+
 	// 10 blocks from tick 960 reach 5120 frames: 222.9 ticks
 	@Test
 	public void whilePlayingThePlayerIsWhereTheSequencerIsAfterTheLastBlock() throws MidiPlayerException {
 		play();
 
 		assertEquals(1182, blocks(10));
+	}
+
+	// the output sounds the clock 1024 frames late: the player is where the output is, 4096 frames from tick 960
+	@Test
+	public void whilePlayingThePlayerIsWhereTheOutputIs() throws MidiPlayerException {
+		delay = 1024;
+		play();
+
+		assertEquals(1138, blocks(10));
 	}
 
 	@Test
@@ -111,15 +131,32 @@ public class TestMidiPlayerOnTheClock {
 		assertEquals("1182 1204", resumed + " " + blocks(1));
 	}
 
+	// resumed where the output was; until the output sounds the resumed play (1024 frames on) the player is before it
+	@Test
+	public void afterAPausePlayingResumesWhereTheOutputWas() throws MidiPlayerException {
+		delay = 1024;
+		play();
+		blocks(10);
+		player.pause();
+		play();
+		long resumed = player.getTickPosition();
+
+		assertEquals("1138 1115 1138 1160", resumed + " " + blocks(1) + " " + blocks(1) + " " + blocks(1));
+	}
+
 	// the sequence ends at tick 16320, which the end of block 689 reaches (16319.9): the sequencer stops after block
 	// 690, then the player returns to where it began and notifies the stop (2)
 	@Test
 	public void theSongEndsOnTheFirstBlockPastTheEndOfItsSequence() throws MidiPlayerException {
-		play();
-		notified.clear();
-		int blocks = blocksToTheEnd();
+		assertEquals("690 | 960 false [2]", playedToTheEnd());
+	}
 
-		assertEquals("690 | 960 false [2]", blocks + " | " + player.getTickPosition() + " " + player.isRunning() + " " + notified);
+	// the output sounds the end of the sequence two blocks (1024 frames) later: the song ends then, its last notes heard
+	@Test
+	public void theSongEndsOnceTheOutputSoundsPastTheEndOfItsSequence() throws MidiPlayerException {
+		delay = 1024;
+
+		assertEquals("692 | 960 false [2]", playedToTheEnd());
 	}
 
 	// the loop (5) plays again from the song's start: the sequencer is moved there, to start once the new start runs (the
@@ -127,10 +164,15 @@ public class TestMidiPlayerOnTheClock {
 	@Test
 	public void inLoopModeThePlayerPlaysTheSongAgainOnceItsEndIsReached() throws MidiPlayerException {
 		player.getMode().setLoop(true);
-		play();
-		notified.clear();
-		int blocks = blocksToTheEnd();
 
-		assertEquals("690 | 960 true [5] | 1 started, 1 looped", blocks + " | " + player.getTickPosition() + " " + player.isRunning() + " " + notified + " | " + threads.pending());
+		assertEquals("690 | 960 true [5] | 1 started, 1 looped", playedToTheEnd() + " | " + threads.pending());
+	}
+
+	@Test
+	public void inLoopModeThePlayerPlaysTheSongAgainOnceTheOutputSoundsItsEnd() throws MidiPlayerException {
+		delay = 1024;
+		player.getMode().setLoop(true);
+
+		assertEquals("692 | 960 true [5]", playedToTheEnd());
 	}
 }

@@ -21,6 +21,12 @@ public interface MidiSampleClock {
 		return null;
 	}
 
+	// how many frames after the frame an event is sent on the output sounds it (the synthesizer's chains, then the audio
+	// device's output latency): a sequencer playing on the clock reports the position that many frames behind
+	default int getSoundingDelay() {
+		return 0;
+	}
+
 	interface Listener {
 
 		// the clock is about to render the frames of its next block
