@@ -20,7 +20,7 @@ public class TGFileFormatDetectorImpl extends TGStream implements TGFileFormatDe
 		} catch (IOException e) {
 			return null;
 		}
-		if ((version != null) && (version.getMajor() == FILE_FORMAT_TGVERSION.getMajor())) {
+		if ((version != null) && (version.getMajor() >= FILE_FORMAT_TGVERSION.getMajor())) {
 			return TG_FORMAT;
 		}
 		return null;

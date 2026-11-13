@@ -317,6 +317,19 @@ public class TestFileFormat30 {
 		return bytes.toByteArray();
 	}
 
+	// the detector hands a file of format 2.0 or newer to the TuxGuitar reader, so a too-new file gets "please upgrade"
+	// rather than "unsupported"; older versions belong to the readers of older formats
+	@Test
+	public void theDetectorRecognisesFormat20AndEveryNewerMajorVersion() throws IOException {
+		StringJoiner detected = new StringJoiner(" ");
+		for (int major = 1; major <= 4; major++) {
+			byte[] file = zip("TuxGuitar_file_format " + major + ".0", "version.txt", "content.xml");
+			detected.add(major + ":" + (new TGFileFormatDetectorImpl().getFileFormat(new ByteArrayInputStream(file)) == TGStream.TG_FORMAT));
+		}
+
+		assertEquals("1:false 2:true 3:true 4:true", detected.toString());
+	}
+
 	// without a take codec there is nothing to write a take with
 	@Test
 	public void aSongWithAnAudioChannelCannotBeWrittenWithoutATakeCodec() {
