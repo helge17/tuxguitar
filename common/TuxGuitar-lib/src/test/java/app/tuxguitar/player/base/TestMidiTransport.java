@@ -48,6 +48,16 @@ public class TestMidiTransport {
 		assertEquals("false true false", live + " " + offline + " " + transport.isOffline());
 	}
 
+	// a span from the frame the last one starts on replaces it: no span is empty
+	@Test
+	public void aSpanFromTheLastOnesFrameReplacesIt() {
+		MidiTransport transport = new MidiTransport();
+		transport.add(0, true, 96, 3, 4, 2.5, 1000);
+		transport.add(300, true, 96, 3, 4, 3, 1300);
+		transport.add(300, true, 60, 6, 8, 3, 1300);
+		assertEquals("@0 true 96.0 3/4 q2.5 s1000; @300 true 60.0 6/8 q3.0 s1300; ", read(transport));
+	}
+
 	// a span past the most a block holds is left out: the last one runs on
 	@Test
 	public void aSpanPastTheMostIsLeftOut() {

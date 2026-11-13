@@ -2,8 +2,10 @@ package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import app.tuxguitar.audio.LivePlay;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.action.TGPlayAction;
+import app.tuxguitar.player.base.MidiPlayerException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
@@ -18,20 +20,16 @@ public class PlaySteps {
 		this.world = world;
 	}
 
-	@When("I play the song from {position}")
+	@When("I play the song from {position}( until the song ends)")
 	public void playFrom(SongPosition from) {
 		play(from, Long.MAX_VALUE, 1);
 	}
 
 	// stopped there: what was sounding stops with it
 	@Given("I have played the song from {position} and stopped at {position}")
-	public void havePlayedAndStopped(SongPosition from, SongPosition to) {
+	@When("I play the song from {position} to {position}")
+	public void playTo(SongPosition from, SongPosition to) {
 		play(from, to.tick(world.song()), 1);
-	}
-
-	@When("I play the song from {position} until the song ends")
-	public void playUntilTheSongEnds(SongPosition from) {
-		play(from, Long.MAX_VALUE, 1);
 	}
 
 	@When("I play the song from {position} for {int} passes")
@@ -39,9 +37,10 @@ public class PlaySteps {
 		play(from, Long.MAX_VALUE, passes);
 	}
 
-	@When("I play the song from {position} to {position}")
-	public void playTo(SongPosition from, SongPosition to) {
-		play(from, to.tick(world.song()), 1);
+	// live, on the synthesizer's sample clock (see LivePlay), not offline
+	@When("I play the song live from {position}")
+	public void playLive(SongPosition from) throws MidiPlayerException {
+		LivePlay.play(world.fixture().context, world.fixture().songManager, world.song(), from.tick(world.song()), world.session().getDevice().getSampleRate());
 	}
 
 	private void play(SongPosition from, long stop, int passes) {

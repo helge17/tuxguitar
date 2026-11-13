@@ -104,6 +104,13 @@ public class MidiSequencerImpl implements MidiSequencer {
 		}
 	}
 
+	// only playing on a clock tells plugins the time signature; it is no MIDI message, and does not lengthen the sequence
+	void addTimeSignature(MidiEvent event) {
+		synchronized (this.lock) {
+			this.midiBlockPlayer.addEvent(event);
+		}
+	}
+
 	// one step of the timer
 	protected boolean process() throws MidiPlayerException {
 		return this.process(this.timerStep);

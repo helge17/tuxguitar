@@ -35,8 +35,11 @@ public final class MidiTransport {
 		this.count = 0;
 	}
 
-	// a span from the frame on, after the ones added before it
+	// a span from the frame on, after the ones added before it; one from the frame the last one starts on replaces it
 	public void add(int frame, boolean playing, double tempo, int numerator, int denominator, double quarters, long samples) {
+		if (this.count > 0 && this.spans[this.count - 1].frame == frame) {
+			this.count--;
+		}
 		if (this.count < MAX_SPANS) {
 			this.spans[this.count++].set(frame, playing, tempo, numerator, denominator, quarters, samples);
 		}

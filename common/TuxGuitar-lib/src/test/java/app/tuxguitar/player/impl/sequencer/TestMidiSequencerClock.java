@@ -205,6 +205,52 @@ public class TestMidiSequencerClock {
 		assertEquals("all notes off, pitch bend reset, @0 on 1 60 100 1 0, all notes off, pitch bend reset | false", blocks(1) + " | " + sequencer.isRunning());
 	}
 
+	private String signatures() {
+		StringBuilder told = new StringBuilder();
+		for (int i = 0; i < transport.count(); i++) {
+			MidiTransport.Span span = transport.get(i);
+			told.append("@" + span.getFrame() + " " + span.getNumerator() + "/" + span.getDenominator() + " q" + Math.round(span.getQuarters() * 1000) + "; ");
+		}
+		return told.toString();
+	}
+
+	// the transport is told a time signature from the frame its tick sounds on (tick 20: frame 459), in a span of its own
+	// at the position reached there, and from the first frame of the blocks after
+	@Test
+	public void theTransportIsToldEachTimeSignatureFromItsFrame() throws MidiPlayerException {
+		sequence.addTimeSignature(0, 0, signature(4, 4));
+		sequence.addTimeSignature(980, 0, signature(3, 4));
+		playOnTheClockFrom(960);
+		blocks(1);
+		String first = signatures();
+		blocks(1);
+
+		assertEquals("@0 4/4 q0; @459 3/4 q21; | @0 3/4 q23; ", first + "| " + signatures());
+	}
+
+	// playing from a position, the transport is told the time signature in force there from the first frame
+	@Test
+	public void playingFromAPositionIsToldTheTimeSignatureInForceThere() throws MidiPlayerException {
+		sequence.addTimeSignature(0, 0, signature(3, 4));
+		sequence.addTimeSignature(1000, 0, signature(6, 8));
+		sequence.addTimeSignature(9000, 0, signature(2, 2));
+		playOnTheClockFrom(2000);
+		blocks(1);
+
+		assertEquals("@0 6/8 q1083; ", signatures());
+	}
+
+	// playing from the tick of a time signature (where a measure starts), it holds from the first frame, in one span
+	@Test
+	public void playingFromTheTickOfATimeSignatureIsToldItInOneSpan() throws MidiPlayerException {
+		sequence.addTimeSignature(0, 0, signature(4, 4));
+		sequence.addTimeSignature(4800, 0, signature(3, 4));
+		playOnTheClockFrom(4800);
+		blocks(1);
+
+		assertEquals("@0 3/4 q4000; ", signatures());
+	}
+
 	@Test
 	public void playingFromAPositionSendsTheChannelSetupBeforeItOnTheFirstFrame() throws MidiPlayerException {
 		sequence.addProgramChange(0, 0, 1, 25);

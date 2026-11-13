@@ -85,7 +85,7 @@ public final class TGMidiTaps {
 
 	// the channel's parameters, its custom program (its sound chain) among them, go out before its events, as the player
 	// sends them when playing starts
-	private static void sendParameters(TGSynthModel model, TGSongManager songManager, TGSong song, int channel) throws MidiPlayerException {
+	static void sendParameters(TGSynthModel model, TGSongManager songManager, TGSong song, int channel) throws MidiPlayerException {
 		MidiReceiver receiver = model.at(0);
 		receiver.sendParameter(channel, MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
 		Iterator<TGChannelParameter> parameters = songManager.getChannel(song, channel).getParameters();
@@ -98,7 +98,7 @@ public final class TGMidiTaps {
 	}
 
 	// General MIDI programs from Gervill for every bank and program
-	private static TGSynthModel model(TGContext context, int sampleRate) {
+	static TGSynthModel model(TGContext context, int sampleRate) {
 		TGSynthManager manager = TGSynthManager.getInstance(context);
 		if (manager.findMidiProcessorFactory(GervillProcessorFactory.TYPE) == null) {
 			manager.addExtension(TGMidiProcessorFactory.class, new GervillProcessorFactory(context));

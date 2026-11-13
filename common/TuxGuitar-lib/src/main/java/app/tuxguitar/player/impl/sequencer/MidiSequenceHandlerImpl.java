@@ -42,7 +42,7 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	}
 
 	public void addTimeSignature(long tick,int track,TGTimeSignature ts) {
-		//not implemented
+		this.seq.addTimeSignature(MidiEvent.timeSignature(tick, track, ts.getNumerator(), ts.getDenominator().getValue()));
 	}
 
 	public void notifyFinish(){

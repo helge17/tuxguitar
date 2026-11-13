@@ -13,7 +13,8 @@ import app.tuxguitar.song.models.TGDuration;
  * Plays the sequence on a sample clock, a block of frames at a time: each event whose tick sounds in the block goes to
  * the clock's receiver of its frame. A tick sounds on the frame its time from the anchor reaches at the tempo, rounded
  * to the nearest frame. Playing from a position anchors it on the first frame of the next block, and sends again the
- * channel setup before it there; a tempo event moves the anchor to its own tick and frame.
+ * channel setup before it there; a tempo event moves the anchor to its own tick and frame. A time signature is sent to
+ * no receiver: the clock's transport is told it from its frame on.
  */
 class MidiBlockPlayer {
 
@@ -29,6 +30,10 @@ class MidiBlockPlayer {
 	// the anchor's frame, counted from the first frame of the next block
 	private long anchorFrame;
 	private int usq;
+	// the last time signature reached; none since playing moved: the one told before is kept
+	private MidiEvent signature;
+	// told when the clock has no transport
+	private final MidiTransport untold = new MidiTransport();
 
 	MidiBlockPlayer(MidiSequencerImpl sequencer) {
 		this.sequencer = sequencer;
@@ -57,7 +62,8 @@ class MidiBlockPlayer {
 		if (this.moved) {
 			this.move(clock, this.sequencer.getTickPosition());
 		}
-		this.tell(clock.getTransport(), rate);
+		MidiTransport transport = (clock.getTransport() != null ? clock.getTransport() : this.untold);
+		this.tell(transport, rate);
 		for (; this.next < this.events.size(); this.next++) {
 			MidiEvent event = this.events.get(this.next);
 			long frame = this.frameOf(event.getTick(), rate);
@@ -67,7 +73,10 @@ class MidiBlockPlayer {
 			if (event.isTempo()) {
 				this.anchor(event.getTick(), frame);
 			}
-			if (this.sequencer.getMidiTrackController().isAudible(event.getTrack())) {
+			if (event.isTimeSignature()) {
+				this.signature = event;
+				this.span(transport, frame, rate);
+			} else if (this.sequencer.getMidiTrackController().isAudible(event.getTrack())) {
 				this.sequencer.sendEvent(event, clock.at((int) frame));
 			}
 		}
@@ -75,16 +84,23 @@ class MidiBlockPlayer {
 		this.anchorFrame -= frames;
 	}
 
-	// the transport is told the song plays over the block, at the tempo and from the quarter note it starts at (the
-	// song's first measure starts a quarter note in: at tick 960); the time signature is not known here, so it is left
+	// the transport is told the song plays over the block, from its first frame, and from the frame of each time signature
+	// reached in it
 	private void tell(MidiTransport transport, float rate) {
-		if (transport != null) {
+		if (this.signature == null) {
 			MidiTransport.Span last = transport.get(transport.count() - 1);
-			double quarters = (this.anchorTick - TGDuration.QUARTER_TIME - this.anchorFrame * MICROSECONDS_PER_QUARTER / (this.usq * (double) rate)) / TGDuration.QUARTER_TIME;
-			double tempo = 60000000.0 / this.usq;
-			transport.clear();
-			transport.add(0, true, tempo, last.getNumerator(), last.getDenominator(), quarters, Math.round(quarters * 60 / tempo * rate));
+			this.signature = MidiEvent.timeSignature(this.anchorTick, MidiEvent.ALL_TRACKS, last.getNumerator(), last.getDenominator());
 		}
+		transport.clear();
+		this.span(transport, 0, rate);
+	}
+
+	// a span from the frame: the song plays at the tempo, in the time signature, from the quarter note reached there (the
+	// song's first measure starts a quarter note in: at tick 960)
+	private void span(MidiTransport transport, long frame, float rate) {
+		double quarters = (this.anchorTick - TGDuration.QUARTER_TIME + (frame - this.anchorFrame) * MICROSECONDS_PER_QUARTER / (this.usq * (double) rate)) / TGDuration.QUARTER_TIME;
+		double tempo = 60000000.0 / this.usq;
+		transport.add((int) frame, true, tempo, this.signature.getNumerator(), this.signature.getDenominator(), quarters, Math.round(quarters * 60 / tempo * rate));
 	}
 
 	// the channel setup before the position, on the first frame, then the events from the position
@@ -92,10 +108,13 @@ class MidiBlockPlayer {
 		this.moved = false;
 		this.events.sort(Comparator.comparingLong(MidiEvent::getTick));
 		this.anchor(position, 0);
+		this.signature = null;
 		this.next = 0;
 		for (; this.next < this.events.size() && this.events.get(this.next).getTick() < position; this.next++) {
 			MidiEvent event = this.events.get(this.next);
-			if (MidiEventPlayer.isChannelSetup(event.getType())) {
+			if (event.isTimeSignature()) {
+				this.signature = event;
+			} else if (MidiEventPlayer.isChannelSetup(event.getType())) {
 				this.sequencer.sendEvent(event, clock.at(0));
 			}
 		}
