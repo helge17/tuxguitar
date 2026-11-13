@@ -26,7 +26,11 @@ public class MidiSequenceHandlerImpl extends MidiSequenceHandler{
 	}
 
 	public void addPitchBend(long tick,int track,int channel, int value, int voice, boolean bendMode) {
-		this.seq.addEvent(MidiEvent.pitchBend(tick, track, channel, value, voice, bendMode));
+		this.addPitchBend(tick, track, channel, value, MidiSequenceHandler.semitones(value), voice, bendMode);
+	}
+
+	public void addPitchBend(long tick,int track,int channel, int value, double semitones, int voice, boolean bendMode) {
+		this.seq.addEvent(MidiEvent.pitchBend(tick, track, channel, value, semitones, voice, bendMode));
 	}
 
 	public void addProgramChange(long tick,int track,int channel, int instrument) {

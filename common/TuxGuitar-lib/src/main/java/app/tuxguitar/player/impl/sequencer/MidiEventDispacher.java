@@ -23,7 +23,7 @@ public class MidiEventDispacher{
 			receiver.sendNoteOff(event.getData()[0],event.getData()[1],event.getData()[2],event.getData()[3],(event.getData()[4] == 1));
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_PITCH_BEND){
-			receiver.sendPitchBend(event.getData()[0],event.getData()[1],event.getData()[2],(event.getData()[3] == 1));
+			receiver.sendPitchBend(event.getData()[0],event.getData()[1],event.getSemitones(),event.getData()[2],(event.getData()[3] == 1));
 		}
 		else if(event.getType() == MidiEvent.MIDI_EVENT_CONTROL_CHANGE){
 			receiver.sendControlChange(event.getData()[0],event.getData()[1],event.getData()[2]);

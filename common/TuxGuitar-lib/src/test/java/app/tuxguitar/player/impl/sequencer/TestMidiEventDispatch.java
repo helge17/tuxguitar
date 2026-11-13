@@ -47,10 +47,53 @@ public class TestMidiEventDispatch {
 		assertEquals("off 7 63 103 8 1", send(MidiEvent.noteOff(0, 0, 7, 63, 103, 8, true)));
 	}
 
+	// through the transmitter (a MIDI Port without a sample clock) a bend is its 7-bit value
 	@Test
 	public void sendsPitchBendsWithTheirChannelValueVoiceAndBendMode() throws Exception {
-		assertEquals("bend 1 64 2 1", send(MidiEvent.pitchBend(0, 0, 1, 64, 2, true)));
-		assertEquals("bend 3 65 4 0", send(MidiEvent.pitchBend(0, 0, 3, 65, 4, false)));
+		assertEquals("bend 1 64 2 1", send(MidiEvent.pitchBend(0, 0, 1, 64, 0.0, 2, true)));
+		assertEquals("bend 3 75 4 0", send(MidiEvent.pitchBend(0, 0, 3, 75, 2.0, 4, false)));
+	}
+
+	// a receiver of a block played on the clock that takes a bend's exact semitones: "bend CHANNEL VALUE SEMITONES
+	// VOICE BENDMODE"
+	private final MidiReceiverRecorder tuned = new MidiReceiverRecorder(received) {
+		public void sendPitchBend(int channel, int value, double semitones, int voice, boolean bendMode) {
+			received.add("bend " + channel + " " + value + " " + semitones + " " + voice + " " + (bendMode ? 1 : 0));
+		}
+	};
+
+	// what the sequence holds: the events its handler adds
+	private final List<MidiEvent> sequence = new ArrayList<MidiEvent>();
+
+	private final MidiSequenceHandlerImpl handler = new MidiSequenceHandlerImpl(new MidiSequencerImpl(new TGContext()) {
+		public void addEvent(MidiEvent event) {
+			sequence.add(event);
+		}
+	}, 3);
+
+	// the bends the handler added, sent on the clock to a receiver that takes their semitones
+	private String sentTuned() throws Exception {
+		received.clear();
+		for (MidiEvent event : sequence) {
+			sequencer.sendEvent(event, tuned);
+		}
+		return String.join(", ", received);
+	}
+
+	@Test
+	public void aBendOfTheSequenceReachesAReceiverOnTheClockWithItsSemitones() throws Exception {
+		handler.addPitchBend(960, 1, 2, 75, 2.0, 3, true);
+
+		assertEquals("bend 2 75 2.0 3 1", sentTuned());
+	}
+
+	// a bend added as a 7-bit value alone has the semitones that value plays in the pitch bend range of 12 semitones
+	@Test
+	public void aBendAddedAsA7BitValueCarriesTheSemitonesItPlays() throws Exception {
+		handler.addPitchBend(960, 1, 2, 75, 3, true);
+		handler.addPitchBend(960, 1, 2, 32, -1, false);
+
+		assertEquals("bend 2 75 2.0625 3 1, bend 2 32 -6.0 -1 0", sentTuned());
 	}
 
 	@Test

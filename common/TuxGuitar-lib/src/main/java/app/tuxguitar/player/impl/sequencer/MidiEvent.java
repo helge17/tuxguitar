@@ -20,6 +20,8 @@ public class MidiEvent {
 	private int type;
 	private int track;
 	private byte[] data;
+	// of a pitch bend: its exact semitones
+	private double semitones;
 
 	public MidiEvent(long tick,int type,byte[] data){
 		this(tick,type,ALL_TRACKS,data);
@@ -46,6 +48,10 @@ public class MidiEvent {
 
 	public byte[] getData() {
 		return this.data;
+	}
+
+	public double getSemitones() {
+		return this.semitones;
 	}
 
 	// a tempo change: a system event whose data are 0x51 then the microseconds per quarter, low byte first
@@ -83,8 +89,11 @@ public class MidiEvent {
 		return new MidiEvent(tick,MIDI_EVENT_NOTEOFF,track,new byte[]{(byte)channel,(byte)key,(byte)velocity,(byte)voice,(byte)(bendMode?1:0)});
 	}
 
-	public static MidiEvent pitchBend(long tick,int track,int channel,int value,int voice,boolean bendMode){
-		return new MidiEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value,(byte)voice,(byte)(bendMode?1:0)});
+	// a bend as its 7-bit value and its exact semitones
+	public static MidiEvent pitchBend(long tick,int track,int channel,int value,double semitones,int voice,boolean bendMode){
+		MidiEvent event = new MidiEvent(tick,MIDI_EVENT_PITCH_BEND,track,new byte[]{(byte)channel,(byte)value,(byte)voice,(byte)(bendMode?1:0)});
+		event.semitones = semitones;
+		return event;
 	}
 
 	public static MidiEvent controlChange(long tick,int track,int channel,int controller,int value){
