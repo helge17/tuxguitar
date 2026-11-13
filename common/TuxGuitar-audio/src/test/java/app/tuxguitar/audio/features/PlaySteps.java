@@ -37,6 +37,7 @@ public class PlaySteps {
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_START, from.tick(world.song()));
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_STOP, stop);
 		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_PASSES, passes);
+		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_STOP_SAMPLE, null);
 		world.execute(new TGPlayAction(world.fixture().context));
 		assertTrue(world.succeeded());
 	}

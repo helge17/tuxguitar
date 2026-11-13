@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.function.LongToDoubleFunction;
 
 import app.tuxguitar.audio.TGAudioSession;
-import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRecording;
 import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.audio.TGSongTime;
@@ -53,13 +52,13 @@ public class TakeSteps {
 	public void hasATake(int number, String signal, SongPosition from, SongPosition to) {
 		TestInterface device = new TestInterface();
 		device.setSampleRate(world.device().getSampleRate());
-		List<TGPlayedMeasure> played = TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1);
-		device.setPlayed(new TGTimeline(world.song(), played, device.getSampleRate()));
+		TGTimeline timeline = new TGTimeline(world.song(), TGSongTime.play(world.song(), new MidiPlayerMode(), from.tick(world.song()), to.tick(world.song()), 1), device.getSampleRate());
+		device.setPlayed(timeline);
 		device.play(world.channel(world.track(number)).getAudioInput().getChannel(0), Signals.parse(signal, world.song(), device, from.measure()));
 		TGAudioSession session = TGAudioSession.getInstance(new TGContext());
 		session.setDevice(device);
 		TGRecording recording = new TGRecording(world.fixture().songManager, world.song(), session);
-		recording.record(List.of(world.track(number)), played);
+		recording.record(List.of(world.track(number)), timeline);
 		world.rememberTakes(number);
 	}
 

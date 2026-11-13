@@ -28,6 +28,11 @@ public final class TGPlayedMeasure {
 		this.step = step;
 	}
 
+	// played only up to the tick
+	public TGPlayedMeasure until(long tick) {
+		return new TGPlayedMeasure(this.header, this.from, tick, this.jump, this.pass, this.percent, this.step);
+	}
+
 	public int getStep() {
 		return this.step;
 	}

@@ -4,9 +4,8 @@ import java.util.List;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.audio.TGAudioSession;
-import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRecording;
-import app.tuxguitar.audio.TGSongTime;
+import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.player.base.MidiPlayer;
@@ -28,6 +27,8 @@ public class TGRecordAction extends TGActionBase {
 	public static final String ATTRIBUTE_START = "start";
 	public static final String ATTRIBUTE_STOP = "stop";
 	public static final String ATTRIBUTE_PASSES = "passes";
+	// where I stopped: a sample of what plays, from where playing starts (none: at the stop position)
+	public static final String ATTRIBUTE_STOP_SAMPLE = "stop sample";
 	// how many takes it made
 	public static final String ATTRIBUTE_TAKES = "takes";
 
@@ -53,13 +54,10 @@ public class TGRecordAction extends TGActionBase {
 	}
 
 	private void record(TGActionContext context, TGSong song, TGAudioSession session, List<TGTrack> tracks) {
-		Long start = context.getAttribute(ATTRIBUTE_START);
-		Long stop = context.getAttribute(ATTRIBUTE_STOP);
-		Integer passes = context.getAttribute(ATTRIBUTE_PASSES);
-		List<TGPlayedMeasure> played = TGSongTime.play(song, MidiPlayer.getInstance(getContext()).getMode(), start, stop, passes);
-		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, TGPlayAction.play(getContext(), context, getSongManager(context), true));
+		TGRender render = TGPlayAction.play(getContext(), context, getSongManager(context), true);
+		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, render);
 		TGRecording recording = new TGRecording(getSongManager(context), song, session);
-		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, played));
+		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, render.getTimeline()));
 		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 }

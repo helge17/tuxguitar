@@ -63,7 +63,7 @@ public class TestRecording {
 		TGRecording recording = new TGRecording(songManager, song, session);
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setCurrentPercent(percent);
-		return recording.record(List.of(track), TGSongTime.play(song, mode, origin + start, origin + stop, 1));
+		return recording.record(List.of(track), new TGTimeline(song, TGSongTime.play(song, mode, origin + start, origin + stop, 1), device.getSampleRate()));
 	}
 
 	@Test

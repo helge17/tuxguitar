@@ -166,7 +166,6 @@ Feature: Recording line-in audio
 
   # Count In
 
-  @planned
   Scenario Outline: Count In clicks one beat apart before recording starts, and the take starts where recording started
     Given the player plays clicks of -0.25 on every beat on input channel 1
     And <percussion>

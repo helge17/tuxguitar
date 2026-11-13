@@ -1,5 +1,6 @@
 package app.tuxguitar.audio.features;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -68,6 +69,19 @@ public class ChannelSteps {
 	@When("I make track {int}'s channel a percussion channel")
 	public void makeAPercussionChannel(int number) {
 		updateChannel(number, TGChannel.DEFAULT_PERCUSSION_BANK, TGChannel.DEFAULT_PERCUSSION_PROGRAM);
+	}
+
+	// a new track, last, on a channel of its own made a percussion channel
+	@Given("I have added a percussion track")
+	public void addAPercussionTrack() {
+		world.executeUndoable(new TGAddNewTrackAction(world.fixture().context), new TGUndoableAddTrackController());
+		makeAPercussionChannel(world.song().countTracks());
+		assertTrue(world.channel(world.lastTrack()).isPercussionChannel());
+	}
+
+	@Given("the song has no percussion channel")
+	public void theSongHasNoPercussionChannel() {
+		world.song().getChannels().forEachRemaining(channel -> assertFalse(channel.isPercussionChannel(), "channel " + channel.getChannelId()));
 	}
 
 	// the General MIDI program with this name

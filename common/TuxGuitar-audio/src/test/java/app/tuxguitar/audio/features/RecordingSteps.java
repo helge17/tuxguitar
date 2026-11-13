@@ -61,8 +61,8 @@ public class RecordingSteps {
 	}
 
 	@ParameterType(RecordingStop.PATTERN)
-	public RecordingStop stop(String to, String passes, String inTheSecondPass) {
-		return RecordingStop.of(to, passes, inTheSecondPass);
+	public RecordingStop stop(String to, String passes, String inTheSecondPass, String afterTheSecondClick) {
+		return RecordingStop.of(to, passes, inTheSecondPass, afterTheSecondClick);
 	}
 
 	@When("I record from {position} {stop}")
@@ -73,6 +73,8 @@ public class RecordingSteps {
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_START, start);
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_STOP, stop.tick(world.song()));
 		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_PASSES, stop.passes());
+		int percent = MidiPlayer.getInstance(world.fixture().context).getMode().getCurrentPercent();
+		world.fixture().actionContext.setAttribute(TGRecordAction.ATTRIBUTE_STOP_SAMPLE, stop.sample(from, world.song(), percent, world.device().getSampleRate()));
 		world.executeUndoable(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController());
 		for (int number = 1; number <= world.song().countTracks(); number++) {
 			world.rememberTakes(number);

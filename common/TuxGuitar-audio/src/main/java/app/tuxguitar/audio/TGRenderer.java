@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.song.managers.TGSongManager;
@@ -16,10 +17,12 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Renders a timeline of the song offline, on the audio device's sample clock: each channel's tap (an audio track's
- * takes, or the General MIDI program a track with notes plays, see TGMidiTaps), then the output mix,
- * where each channel heard is scaled by its Volume and Balance (today's constant-power law). Muted tracks, and tracks
- * other than the soloed ones, are not heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard
- * here: audio tracks need it, and the other tracks play on that port.
+ * takes, or the General MIDI program a track with notes plays, see TGMidiTaps) and the drum tap (the Count In, see
+ * TGDrumTap), then the output mix, where each channel heard is scaled by its Volume and Balance (today's
+ * constant-power law) and the drum tap joins as it is. Muted tracks, and tracks other than the soloed ones, are not
+ * heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard here: audio tracks and the drums need
+ * it, and the other tracks and today's Count In play on that port. Plugin delay compensation, when it comes, delays
+ * each tap, the drum tap included, where it joins the mix.
  */
 public final class TGRenderer {
 
@@ -41,6 +44,7 @@ public final class TGRenderer {
 	// Synthesizer
 	public TGRender render(TGTimeline timeline, MidiPlayerMode mode, boolean recording, boolean synthesizer) throws MidiPlayerException {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
+		float[][] drums = new float[2][(int) timeline.length()];
 		float[][] output = new float[2][(int) timeline.length()];
 		if (synthesizer) {
 			Iterator<TGTrack> tracks = this.song.getTracks();
@@ -51,9 +55,10 @@ public final class TGRenderer {
 				}
 			}
 			taps.putAll(TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, new HashSet<Integer>(taps.keySet())));
-			this.mix(taps, output);
+			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
+			this.mix(taps, drums, output);
 		}
-		return new TGRender(timeline, taps, output);
+		return new TGRender(timeline, taps, drums, output);
 	}
 
 	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording) {
@@ -85,19 +90,23 @@ public final class TGRenderer {
 		return sources;
 	}
 
-	private void mix(Map<Integer, float[][]> taps, float[][] output) {
+	private void mix(Map<Integer, float[][]> taps, float[][] drums, float[][] output) {
 		boolean solo = this.anySolo();
 		Iterator<TGTrack> tracks = this.song.getTracks();
 		while (tracks.hasNext()) {
 			TGTrack track = tracks.next();
 			float[][] tap = taps.get(track.getChannelId());
 			if (tap != null && !track.isMute() && (!solo || track.isSolo())) {
-				float[] gains = gains(this.channel(track));
-				for (int side = 0; side < output.length; side++) {
-					for (int i = 0; i < output[side].length; i++) {
-						output[side][i] += tap[side][i] * gains[side];
-					}
-				}
+				add(tap, gains(this.channel(track)), output);
+			}
+		}
+		add(drums, new float[] {1f, 1f}, output);
+	}
+
+	private static void add(float[][] tap, float[] gains, float[][] output) {
+		for (int side = 0; side < output.length; side++) {
+			for (int i = 0; i < output[side].length; i++) {
+				output[side][i] += tap[side][i] * gains[side];
 			}
 		}
 	}

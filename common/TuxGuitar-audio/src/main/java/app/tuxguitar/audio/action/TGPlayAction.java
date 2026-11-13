@@ -1,7 +1,11 @@
 package app.tuxguitar.audio.action;
 
+import java.util.List;
+
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.audio.TGCountIn;
+import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.TGRenderer;
 import app.tuxguitar.audio.TGSongTime;
@@ -16,7 +20,9 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Plays the song offline, on the audio device's clock, from a position until another one is reached in the last pass,
- * or until that pass ends; what it sounded is left in the context as ATTRIBUTE_RENDER.
+ * or until that pass ends, after the Count In when it is on; stopped at a sample of what plays (ATTRIBUTE_STOP_SAMPLE,
+ * counted from where playing starts) it plays up to there. What it sounded is left in the context as
+ * ATTRIBUTE_RENDER.
  */
 public class TGPlayAction extends TGActionBase {
 
@@ -25,6 +31,7 @@ public class TGPlayAction extends TGActionBase {
 	public static final String ATTRIBUTE_START = TGRecordAction.ATTRIBUTE_START;
 	public static final String ATTRIBUTE_STOP = TGRecordAction.ATTRIBUTE_STOP;
 	public static final String ATTRIBUTE_PASSES = TGRecordAction.ATTRIBUTE_PASSES;
+	public static final String ATTRIBUTE_STOP_SAMPLE = TGRecordAction.ATTRIBUTE_STOP_SAMPLE;
 	public static final String ATTRIBUTE_RENDER = "render";
 
 	public TGPlayAction(TGContext context) {
@@ -44,7 +51,11 @@ public class TGPlayAction extends TGActionBase {
 		Long start = actionContext.getAttribute(ATTRIBUTE_START);
 		Long stop = actionContext.getAttribute(ATTRIBUTE_STOP);
 		Integer passes = actionContext.getAttribute(ATTRIBUTE_PASSES);
-		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, player.getMode(), start, stop, passes), session.getDevice().getSampleRate());
+		Long stopSample = actionContext.getAttribute(ATTRIBUTE_STOP_SAMPLE);
+		int sampleRate = session.getDevice().getSampleRate();
+		List<TGPlayedMeasure> played = TGSongTime.play(song, player.getMode(), start, stop, passes);
+		TGCountIn countIn = TGCountIn.before(player.getCountDown(), played, sampleRate);
+		TGTimeline timeline = new TGTimeline(song, played, sampleRate, countIn).until(stopSample != null ? stopSample : Long.MAX_VALUE);
 		TGRenderer renderer = new TGRenderer(context, songManager, song, session);
 		try {
 			return renderer.render(timeline, player.getMode(), recording, player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY));

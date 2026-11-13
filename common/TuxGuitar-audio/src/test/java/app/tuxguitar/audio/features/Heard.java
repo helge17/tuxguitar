@@ -24,6 +24,11 @@ final class Heard {
 		return this.render.getTap(track);
 	}
 
+	// a side of the drum tap (0 left, 1 right)
+	float[] drums(int side) {
+		return this.render.getDrums(side);
+	}
+
 	float[] left() {
 		return this.render.getLeft();
 	}
