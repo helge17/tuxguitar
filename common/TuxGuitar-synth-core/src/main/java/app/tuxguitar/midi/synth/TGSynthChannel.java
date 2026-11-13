@@ -89,8 +89,13 @@ public class TGSynthChannel implements MidiChannel {
 	}
 
 	public void fillBuffer(TGAudioBuffer buffer){
+		this.fillBuffer(buffer, 0);
+	}
+
+	// what the chain sounds, delayed by the frames (plugin delay compensation), at the channel's Volume and Balance
+	public void fillBuffer(TGAudioBuffer buffer, int delay){
 		if( this.processor != null){
-			this.processor.fillBuffer(buffer, this.volume, this.balance);
+			this.processor.fillBuffer(buffer, this.volume, this.balance, delay);
 		}
 	}
 

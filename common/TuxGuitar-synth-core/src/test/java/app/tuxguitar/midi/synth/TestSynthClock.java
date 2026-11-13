@@ -80,6 +80,26 @@ public class TestSynthClock {
 		assertEquals("[512 on the synthesizer, 512 on the synthesizer]", this.log.toString());
 	}
 
+	// plugin delay compensation: each channel sounds as late as the slowest chain. Channel 4's chain (program 7, at
+	// 0.125) reports 700 frames, so channel 3's (at 0.25, none) is heard 700 frames later than its source sounds
+	@Test
+	public void eachChannelIsDelayedToTheSlowestChain() throws MidiPlayerException {
+		int none = this.model.getLatency();
+		this.model.getChannelById(4).sendProgramChange(7);
+		this.other.last().latency = 700;
+		TGAudioBufferProcessor blocks = new TGAudioBufferProcessor(this.model);
+		float[] left = new float[2 * FakeProcessors.FRAMES];
+		for (int b = 0; b < 2; b++) {
+			blocks.process();
+			System.arraycopy(FakeProcessors.read(blocks.getBuffer())[0], 0, left, b * FakeProcessors.FRAMES, FakeProcessors.FRAMES);
+		}
+		float gain = (float) Math.cos(64 / 127.0 * Math.PI / 2);
+		assertEquals(0.125f * gain, left[0], 0.001f);
+		assertEquals(0.125f * gain, left[699], 0.001f);
+		assertEquals(0.375f * gain, left[700], 0.001f);
+		assertEquals("0 700", none + " " + this.model.getLatency());
+	}
+
 	// what plays on is not stopped by a failing listener
 	@Test
 	public void aFailingListenerLeavesTheBlockToRender() {

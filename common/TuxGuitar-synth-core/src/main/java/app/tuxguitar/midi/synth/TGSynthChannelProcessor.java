@@ -11,6 +11,7 @@ import app.tuxguitar.util.TGContext;
 public class TGSynthChannelProcessor {
 
 	private TGAudioBuffer buffer;
+	private TGDelayLine delayLine;
 	private TGMidiProcessor processor;
 	private List<TGAudioProcessor> outputs;
 	private Map<TGProgramElement, TGAudioProcessor> processorMap;
@@ -22,6 +23,7 @@ public class TGSynthChannelProcessor {
 		this.sampleRate = sampleRate;
 		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
+		this.delayLine = new TGDelayLine();
 		this.outputs = new ArrayList<TGAudioProcessor>();
 		this.processorMap = new HashMap<TGProgramElement, TGAudioProcessor>();
 	}
@@ -192,11 +194,13 @@ public class TGSynthChannelProcessor {
 		}
 	}
 
-	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance) {
+	// the chain delayed by the frames, at the volume and balance, mixed into the buffer
+	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance, int delay) {
 		synchronized (this.lock) {
 			if( this.isOpen() ){
 				this.buffer.clear();
 				this.fillProcessors(this.buffer);
+				this.delayLine.delay(this.buffer, delay);
 				this.balance(this.buffer, volume, balance);
 
 				buffer.mix(this.buffer);

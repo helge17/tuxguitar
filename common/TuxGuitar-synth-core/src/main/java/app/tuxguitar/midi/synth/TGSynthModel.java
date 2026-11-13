@@ -99,6 +99,16 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 		return Collections.unmodifiableList(this.channels);
 	}
 
+	// how many frames later than its events the output sounds them: the slowest channel's chain, to which plugin delay
+	// compensation delays every channel
+	public int getLatency(){
+		int latency = 0;
+		for(TGSynthChannel channel : this.channels) {
+			latency = Math.max(latency, channel.getLatency());
+		}
+		return latency;
+	}
+
 	public int countChannels(){
 		return this.channels.size();
 	}
