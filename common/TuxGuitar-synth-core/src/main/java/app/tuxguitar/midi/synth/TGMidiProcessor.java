@@ -39,4 +39,11 @@ public interface TGMidiProcessor extends TGAudioProcessor {
 	default void sendControlChange(int controller, int value, long frame) {
 		this.sendControlChange(controller, value);
 	}
+
+	// plugin delay compensation: before each block, the frames the chain is delayed by before it joins the output. A
+	// source that returns true delays what it renders itself (so it can sound some of it, such as a monitored input,
+	// without that delay), and the chain is not delayed again; by default it is
+	default boolean compensate(int frames) {
+		return false;
+	}
 }

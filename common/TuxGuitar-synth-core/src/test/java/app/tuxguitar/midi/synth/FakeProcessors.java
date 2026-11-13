@@ -174,6 +174,19 @@ final class FakeProcessors {
 		}
 	}
 
+	// a source that delays what it renders itself: it writes the delay it is told
+	static class CompensatingSource extends TimedSource {
+
+		CompensatingSource(float level) {
+			super(level);
+		}
+
+		public boolean compensate(int frames) {
+			this.received.add("delay " + frames);
+			return true;
+		}
+	}
+
 	static class SourceFactory implements TGMidiProcessorFactory {
 		private final String type;
 		private final Function<Float, Source> make;

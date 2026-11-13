@@ -205,13 +205,14 @@ public class TGSynthChannelProcessor {
 		}
 	}
 
-	// the chain delayed by the frames, at the volume and balance, written in 16 bits (clipped there) and mixed into the
-	// buffer
+	// the chain delayed by the frames (unless its source delays itself), at the volume and balance, written in 16 bits
+	// (clipped there) and mixed into the buffer
 	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance, int delay) {
 		synchronized (this.lock) {
 			if( this.isOpen() ){
+				boolean compensated = this.processor.compensate(delay);
 				this.fillChain(this.block);
-				this.delayLine.delay(this.block, delay);
+				this.delayLine.delay(this.block, (compensated ? 0 : delay));
 				float[] gains = gains(volume, balance);
 				for( int side = 0 ; side < this.block.length ; side ++ ) {
 					for( int i = 0 ; i < this.block[side].length ; i ++ ) {

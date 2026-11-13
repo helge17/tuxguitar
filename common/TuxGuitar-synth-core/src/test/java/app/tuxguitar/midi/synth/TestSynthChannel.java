@@ -425,6 +425,60 @@ public class TestSynthChannel {
 		assertEquals(0, this.source.created.size());
 	}
 
+	private FakeProcessors.SourceFactory sendAudioChannel(String chainSource) throws MidiPlayerException {
+		FakeProcessors.SourceFactory takes = new FakeProcessors.SourceFactory(TGSynthChannel.TAKES, SOURCE);
+		TGSynthManager.getInstance(this.context).addExtension(TGMidiProcessorFactory.class, takes);
+		this.model.getProgram(0, 5).copyFrom(program("other"));
+		this.channel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
+		if (chainSource != null) {
+			sendProgram(TGSynthChannel.SOUND_CHAIN_PREFIX, chainSource);
+		}
+		this.channel.sendParameter(MidiParameters.AUDIO_CHANNEL, Boolean.TRUE.toString());
+		this.channel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
+		this.channel.sendProgramChange(5);
+		return takes;
+	}
+
+	// an audio track's channel sounds its takes, a source told which channel it is, whatever its Program
+	@Test
+	public void anAudioChannelSoundsItsTakesWhateverItsProgram() throws MidiPlayerException {
+		FakeProcessors.SourceFactory takes = sendAudioChannel(null);
+		assertEquals(SOURCE, left(), QUANTUM);
+		assertEquals("{" + TGSynthChannel.TAKES_CHANNEL + "=3}", takes.last().restored.toString());
+		assertEquals(0, this.otherSource.created.size());
+	}
+
+	// its sound chain's source is its takes too
+	@Test
+	public void anAudioChannelsSoundChainsTakesAreToldTheChannel() throws MidiPlayerException {
+		FakeProcessors.SourceFactory takes = sendAudioChannel(TGSynthChannel.TAKES);
+		assertEquals("{" + TGSynthChannel.TAKES_CHANNEL + "=3}", takes.last().restored.toString());
+	}
+
+	// plugin delay compensation: a source that delays what it renders itself is told the delay, and the chain is not
+	// delayed again; another source's chain is
+	@Test
+	public void aSourceThatCompensatesIsToldTheDelayAndItsChainIsNotDelayedAgain() throws MidiPlayerException {
+		FakeProcessors.SourceFactory compensating = new FakeProcessors.SourceFactory("compensating", SOURCE, FakeProcessors.CompensatingSource::new);
+		TGSynthManager.getInstance(this.context).addExtension(TGMidiProcessorFactory.class, compensating);
+		this.model.getProgram(0, 5).copyFrom(program("compensating"));
+		this.model.getProgram(0, 6).copyFrom(program("source"));
+		this.channel.sendProgramChange(5);
+		float[][] own = delayed(100);
+		this.channel.sendProgramChange(6);
+		float[][] delayed = delayed(100);
+		assertEquals(Arrays.asList("delay 100"), compensating.last().received);
+		assertEquals(SOURCE, own[0][0], QUANTUM);
+		assertEquals(0f, delayed[0][99], 0f);
+		assertEquals(SOURCE, delayed[0][100], QUANTUM);
+	}
+
+	private float[][] delayed(int frames) {
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		this.channel.fillBuffer(buffer, frames);
+		return FakeProcessors.read(buffer);
+	}
+
 	@Test
 	public void updatingTheProgramReopensItsProcessors() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source"));

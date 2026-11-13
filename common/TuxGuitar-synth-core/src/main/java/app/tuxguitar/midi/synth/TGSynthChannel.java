@@ -13,6 +13,9 @@ public class TGSynthChannel implements MidiChannel {
 	public static final String CUSTOM_PROGRAM_PREFIX = "synth.program";
 	// the sound chain as this version saves it, outside the custom program's keys
 	public static final String SOUND_CHAIN_PREFIX = "sound.chain";
+	// the source of an audio track's channel: its takes; the source's parameter naming the channel
+	public static final String TAKES = "takes";
+	public static final String TAKES_CHANNEL = "takes.channel";
 
 	private int id;
 	private int midiBank;
@@ -240,10 +243,25 @@ public class TGSynthChannel implements MidiChannel {
 		}
 	}
 
-	// the sound chain, else the custom program older versions save; null without either
+	// the sound chain, else the custom program older versions save; null without either. An audio track's channel plays
+	// its sound chain, else its takes alone, and its source is told the channel
 	private TGProgram customProgram() {
 		TGProgram chain = TGProgramPropertiesUtil.getProgram(this.parameters, SOUND_CHAIN_PREFIX);
+		if( Boolean.parseBoolean(this.parameters.getValue(MidiParameters.AUDIO_CHANNEL)) ) {
+			return this.takes(chain != null ? chain : new TGProgram());
+		}
 		return (chain != null ? chain : TGProgramPropertiesUtil.getProgram(this.parameters, CUSTOM_PROGRAM_PREFIX));
+	}
+
+	private TGProgram takes(TGProgram chain) {
+		if( chain.getReceiver() == null ) {
+			TGProgramElement takes = new TGProgramElement();
+			takes.setId("source");
+			takes.setType(TAKES);
+			chain.setReceiver(takes);
+		}
+		chain.getReceiver().setParameter(TAKES_CHANNEL, Integer.toString(this.id));
+		return chain;
 	}
 
 	public boolean isBusy() {
