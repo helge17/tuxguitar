@@ -37,7 +37,11 @@ public class GervillProcessor implements TGMidiProcessor {
 	private AudioSynthesizer synth;
 	private AudioInputStream stream;
 	private Receiver receiver;
-	private GervillProgram program;
+	// what it plays: replaced, never changed in place, so an instrument that loaded for an older one is dropped
+	private volatile GervillProgram program;
+	// the channel's bank and program it follows (see setProgram); none until told
+	private int followedBank;
+	private int followedProgram = -1;
 	private GervillSoundbankFactory soundbankFactory;
 	private byte[] buffer;
 	private float[][] outputs;
@@ -100,9 +104,39 @@ public class GervillProcessor implements TGMidiProcessor {
 
 	public void loadProgram(GervillProgram program) {
 		if(!this.program.equals(program)) {
-			this.program.copyFrom(program);
+			this.program = copy(program);
 			this.loadInstrument();
 		}
+	}
+
+	private static GervillProgram copy(GervillProgram program) {
+		GervillProgram copy = new GervillProgram();
+		copy.copyFrom(program);
+		return copy;
+	}
+
+	// plays the channel's bank and program with the program's soundbank and channel mode from now on, whatever program
+	// its parameters name. Once open, only the instrument changes: the stream, and the controls sent to it, are kept
+	public void setProgram(int bank, int program) {
+		this.followedBank = bank;
+		this.followedProgram = program;
+		GervillProgram followed = this.followed(this.program);
+		if( this.stream == null ) {
+			this.loadProgram(followed);
+		} else if(!this.program.equals(followed)) {
+			this.program = followed;
+			this.requestInstrument();
+		}
+	}
+
+	// the program with the bank and program followed, if any
+	private GervillProgram followed(GervillProgram program) {
+		GervillProgram followed = copy(program);
+		if( this.followedProgram >= 0 ) {
+			followed.setBank(this.followedBank);
+			followed.setProgram(this.followedProgram);
+		}
+		return followed;
 	}
 
 	public void loadInstrument() {
@@ -114,13 +148,21 @@ public class GervillProcessor implements TGMidiProcessor {
 			this.frames = 0;
 			this.receiver = this.synth.getReceiver();
 
-			this.soundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
-				public void onCreate(Instrument instrument) {
-					GervillProcessor.this.loadInstrument(instrument);
-				}
-			});
+			this.requestInstrument();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	// the program's instrument loads on a thread of its own; one that loaded for a program no longer played is dropped
+	private void requestInstrument() {
+		GervillProgram requested = this.program;
+		this.soundbankFactory.create(this.context, requested, instrument -> this.instrumentLoaded(requested, instrument));
+	}
+
+	void instrumentLoaded(GervillProgram requested, Instrument instrument) {
+		if( requested == this.program ) {
+			this.loadInstrument(instrument);
 		}
 	}
 
@@ -175,7 +217,7 @@ public class GervillProcessor implements TGMidiProcessor {
 			}
 			program.setSoundbankPath(soundbankPathParam);
 
-			this.loadProgram(program);
+			this.loadProgram(this.followed(program));
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}

@@ -10,6 +10,11 @@ public interface TGMidiProcessor extends TGAudioProcessor {
 
 	void sendControlChange(int controller, int value);
 
+	// the channel's Bank and Program, given to the source of a custom program: a General MIDI source plays them (with
+	// its own soundbank and channel mode); a source that has no programs ignores them
+	default void setProgram(int bank, int program) {
+	}
+
 	// a timed event reaches the instrument on a frame of the processor's next fill, counted from its first frame; a
 	// processor that cannot time events sends it at once
 

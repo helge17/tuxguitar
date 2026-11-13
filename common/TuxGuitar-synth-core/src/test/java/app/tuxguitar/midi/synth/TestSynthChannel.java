@@ -262,11 +262,11 @@ public class TestSynthChannel {
 		assertTrue(this.source.last().received.isEmpty());
 	}
 
-	// a bank select silences the channel until the next program change plays the program of that bank. Today a custom
-	// program freezes the channel's sound: it ignores both (the README's deliberate changes make the source follow the
-	// channel's Bank and Program instead)
+	// a bank select silences the channel until the next program change plays the program of that bank. A custom
+	// program keeps sounding: its source follows the channel's Bank and Program, told them when the program loads and
+	// on each Bank select and Program change that changes them
 	@Test
-	public void aBankSelectSilencesTheChannelUntilTheNextProgramChangeUnlessACustomProgramPlays() throws MidiPlayerException {
+	public void aBankSelectSilencesTheChannelUntilTheNextProgramChangeWhileACustomProgramsSourceFollowsBoth() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source"));
 		this.model.getProgram(1, 5).copyFrom(program("other"));
 		this.channel.sendProgramChange(5);
@@ -277,10 +277,12 @@ public class TestSynthChannel {
 		sendCustomProgram("source");
 		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 0);
 		this.channel.sendProgramChange(5);
+		this.channel.sendProgramChange(6);
 
 		assertEquals(0f, selected, 0f);
 		assertEquals(OTHER_SOURCE, changed, QUANTUM);
 		assertEquals(SOURCE, left(), QUANTUM);
+		assertEquals(Arrays.asList("program 1:5", "program 0:5", "program 0:6"), this.source.last().received);
 	}
 
 	private void sendCustomProgram(String type) throws MidiPlayerException {
@@ -293,7 +295,8 @@ public class TestSynthChannel {
 	}
 
 	// without a custom program the parameters silence a channel that had no program change, and bring back the bank and
-	// program of one that had (program 0 too)
+	// program of one that had (program 0 too). A custom program's source has no program to follow before a program
+	// change, and follows program 0 after one
 	@Test
 	public void withoutACustomProgramTheParametersBringBackTheBankAndProgramOrSilenceTheChannel() throws MidiPlayerException {
 		this.model.getProgram(0, 0).copyFrom(program("source"));
@@ -308,6 +311,7 @@ public class TestSynthChannel {
 		assertEquals("0.0 null", silenced);
 		assertEquals(OTHER_SOURCE, custom, QUANTUM);
 		assertEquals(SOURCE, left(), QUANTUM);
+		assertEquals("[] [program 0:0]", this.otherSource.created.get(0).received + " " + this.otherSource.last().received);
 	}
 
 	@Test

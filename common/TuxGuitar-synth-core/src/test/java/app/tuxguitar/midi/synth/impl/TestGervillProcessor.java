@@ -81,12 +81,23 @@ public class TestGervillProcessor {
 		}
 		parameters.put("gervil.soundbank.path", soundbank);
 		processor.restoreParameters(parameters);
+		return idle(processor);
+	}
+
+	// once its instrument has loaded
+	private static GervillProcessor idle(GervillProcessor processor) throws InterruptedException {
 		long deadline = System.currentTimeMillis() + 30000;
 		while (processor.isBusy() && System.currentTimeMillis() < deadline) {
 			Thread.sleep(5);
 		}
 		assertFalse(processor.isBusy());
 		return processor;
+	}
+
+	private static Map<String, String> stored(GervillProcessor processor) {
+		Map<String, String> parameters = new java.util.TreeMap<String, String>();
+		processor.storeParameters(parameters);
+		return parameters;
 	}
 
 	// the left side of the next buffers
@@ -242,9 +253,75 @@ public class TestGervillProcessor {
 	@Test
 	public void theProgramIsKeptInItsParameters() throws InterruptedException {
 		GervillProcessor processor = loaded(" 0 : 25 ", "3");
+		assertEquals("{gervil.channel.mode=3, gervil.program=0:25, gervil.soundbank.path=null}", stored(processor).toString());
+	}
+
+	// the channel's Bank and Program replace the program's own: a note then sounds, sample for sample, as it does on
+	// that program loaded, whether the processor had a program or none yet
+	@Test
+	public void aFollowedProgramSoundsAsThatProgramLoaded() throws InterruptedException {
+		GervillProcessor followed = loaded("0:80", null);
+		GervillProcessor fresh = (GervillProcessor) new GervillProcessorFactory(this.context).createProcessor();
+		GervillProcessor piano = loaded("0:0", null);
+		followed.setProgram(0, 0);
+		fresh.setProgram(0, 0);
+		float[][] sounded = new float[3][];
+		GervillProcessor[] processors = {idle(followed), idle(fresh), piano};
+		for (int i = 0; i < processors.length; i++) {
+			processors[i].sendNoteOn(69, 127, 0, false);
+			sounded[i] = render(processors[i], 8);
+		}
+		assertTrue(peak(sounded[2]) > 0.05);
+		assertArrayEquals(sounded[2], sounded[0]);
+		assertArrayEquals(sounded[2], sounded[1]);
+	}
+
+	// following a program keeps the stream, so the controls sent before still apply (Volume 0 silences the note), and
+	// keeps the program's channel mode and soundbank; the parameters store the program followed
+	@Test
+	public void aFollowedProgramKeepsTheControlsTheChannelModeAndTheSoundbank() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", "3", "");
+		processor.sendControlChange(7, 0);
+		processor.setProgram(0, 0);
+		idle(processor).sendNoteOn(69, 127, 0, false);
+		assertEquals(0, peak(render(processor, 8)), 0.0001);
+		assertEquals("{gervil.channel.mode=3, gervil.program=0:0, gervil.soundbank.path=}", stored(processor).toString());
+	}
+
+	// the instruments load on threads of their own: one that loaded for a program no longer played is dropped, so the
+	// program played keeps sounding
+	@Test
+	public void anInstrumentLoadedForAProgramNoLongerPlayedIsDropped() throws InterruptedException {
+		java.util.concurrent.atomic.AtomicReference<javax.sound.midi.Instrument> square = new java.util.concurrent.atomic.AtomicReference<>();
+		GervillProgram older = new GervillProgram();
+		older.setProgram(80);
+		GervillSoundbankFactory factory = new GervillSoundbankFactory();
+		factory.create(this.context, older, square::set);
+		while (factory.isBusy()) {
+			Thread.sleep(5);
+		}
+		float[][] sounded = new float[3][];
+		GervillProcessor[] processors = {loaded("0:0", null), loaded("0:0", null), loaded("0:0", null)};
+		processors[0].instrumentLoaded(older, square.get());
+		processors[1].instrumentLoaded(processors[1].getProgram(), square.get());
+		for (int i = 0; i < processors.length; i++) {
+			processors[i].sendNoteOn(69, 127, 0, false);
+			sounded[i] = render(processors[i], 8);
+		}
+		assertArrayEquals(sounded[2], sounded[0]);
+		assertNotEquals(sounded[2][1000], sounded[1][1000]);
+	}
+
+	// restoring the program's parameters (as each channel update does) keeps the program followed: no new load
+	@Test
+	public void theParametersRestoredKeepTheProgramFollowed() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.setProgram(0, 0);
 		Map<String, String> parameters = new HashMap<String, String>();
-		processor.storeParameters(parameters);
-		assertEquals("{gervil.channel.mode=3, gervil.program=0:25, gervil.soundbank.path=null}", new java.util.TreeMap<String, String>(parameters).toString());
+		parameters.put("gervil.program", "0:80");
+		parameters.put("gervil.channel.mode", "3");
+		idle(processor).restoreParameters(parameters);
+		assertEquals("{gervil.channel.mode=3, gervil.program=0:0, gervil.soundbank.path=null}", stored(idle(processor)).toString());
 	}
 
 	@Test

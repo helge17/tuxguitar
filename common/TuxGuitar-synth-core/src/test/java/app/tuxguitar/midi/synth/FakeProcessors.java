@@ -90,6 +90,10 @@ final class FakeProcessors {
 		public void sendControlChange(int controller, int value) {
 			this.record("cc " + controller + " " + value);
 		}
+
+		public void setProgram(int bank, int program) {
+			this.record("program " + bank + ":" + program);
+		}
 	}
 
 	// a source that times events: it writes " @frame" after a timed one

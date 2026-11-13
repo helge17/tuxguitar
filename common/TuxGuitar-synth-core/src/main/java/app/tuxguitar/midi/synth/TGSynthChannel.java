@@ -129,13 +129,16 @@ public class TGSynthChannel implements MidiChannel {
 		this.sendControlChange(controller, value, source -> source.sendControlChange(controller, value, frame));
 	}
 
-	// Bank select, Volume and Balance are the channel's; other controls go to the source, or wait for one, untimed
+	// Bank select, Volume and Balance are the channel's; other controls go to the source, or wait for one, untimed. A
+	// bank select silences the channel until the next program change, but a custom program's source follows it
 	private void sendControlChange(int controller, int value, Consumer<TGMidiProcessor> send) throws MidiPlayerException {
 		try{
 			if( controller == MidiControllers.BANK_SELECT ){
 				if( this.midiBank != value ){
 					this.midiBank = value;
-					if(!this.customProgram) {
+					if( this.customProgram ) {
+						this.followProgram();
+					} else {
 						this.closeProcessor();
 					}
 				}
@@ -161,16 +164,27 @@ public class TGSynthChannel implements MidiChannel {
 		return (source != null);
 	}
 
+	// a custom program's source follows the channel's Bank and Program; otherwise the program of that bank and program
+	// plays
 	public void sendProgramChange(int value) throws MidiPlayerException {
 		try{
 			if( this.midiProgram != value || this.processor == null ){
 				this.midiProgram = value;
-				if(!this.customProgram) {
+				if( this.customProgram ) {
+					this.followProgram();
+				} else {
 					this.loadProgram(this.synthesizer.getProgram(this.midiBank, this.midiProgram));
 				}
 			}
 		}catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
+		}
+	}
+
+	// the source of a custom program plays the channel's Bank and Program, once a program change gave one
+	private void followProgram() {
+		if( this.midiProgram >= 0 ) {
+			this.toSource(source -> source.setProgram(this.midiBank, this.midiProgram));
 		}
 	}
 
@@ -188,6 +202,7 @@ public class TGSynthChannel implements MidiChannel {
 				this.customProgram = (program != null);
 				if( this.customProgram ) {
 					this.loadProgram(program);
+					this.followProgram();
 				} else if(this.midiProgram >= 0){
 					this.loadProgram(this.synthesizer.getProgram(this.midiBank, this.midiProgram));
 				} else {
