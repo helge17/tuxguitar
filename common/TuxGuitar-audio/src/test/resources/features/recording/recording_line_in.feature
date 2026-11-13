@@ -357,6 +357,45 @@ Feature: Recording line-in audio
       | 300   | 1024   | 0   | 1324 |
       | 300   | 1024   | 128 | 1452 |
 
+  # live: on the audio device's clock, through the native backend, while it runs
+  Scenario Outline: live, with monitoring on Auto I hear the input while stopped, late by its own path only
+    Given I have set the audio device to "Test Interface" with <input> samples of input latency and <output> of output latency
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to 2048
+    And I have added the VST3 effect "Test Latency" to track 2
+    And I have set "Latency" of VST3 effect 1 of track 2 to <own>
+    And I have armed track 2
+    And I have set track 2's monitoring to Auto
+    And the player plays one click of -0.25 at measure 1 beat 2 on input channel 1
+    When the input has delivered 1 second live
+    Then the click reaches the output <late> samples after the player played it, within 1 sample, live
+
+    Examples:
+      | input | output | own | late |
+      | 0     | 0      | 0   | 0    |
+      | 300   | 1024   | 0   | 1324 |
+      | 300   | 1024   | 128 | 1452 |
+
+  Scenario Outline: live, just playing, monitoring decides whether I hear the takes or my input
+    Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
+    And I have armed track 2
+    And I have set track 2's monitoring to <monitoring>
+    And the player plays a 880 Hz tone peaking at 0.4 on input channel 1
+    When I play the song live from measure 1 beat 1
+    Then the output sounds a <heard> Hz tone and no <silent> Hz tone above -60 dBFS in measures 2 to 3, live
+
+    Examples:
+      | monitoring | heard | silent |
+      | Off        | 440   | 880    |
+      | Auto       | 440   | 880    |
+      | Always     | 880   | 440    |
+
+  Scenario: live, the input level of an armed track follows its input while the song plays
+    Given I have armed track 2
+    And the player plays a 440 Hz tone peaking at -6 dBFS on input channel 1
+    When I play the song live from measure 1 beat 1
+    Then track 2's input level reads -6 dBFS within 0.01 dB
+
   # Recording at another Percentage of Tempo
 
   Scenario: a take recorded at a lower Percentage of Tempo is stored as played

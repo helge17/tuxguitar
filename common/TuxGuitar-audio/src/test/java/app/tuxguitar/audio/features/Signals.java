@@ -42,11 +42,15 @@ final class Signals {
 
 	// at the song's first tempo, from the start of the song
 	private static LongToDoubleFunction oneClick(Matcher matcher, TGSong song, TestInterface device, int firstMeasure) {
-		int sampleRate = device.getSampleRate();
 		double value = Double.parseDouble(matcher.group(1));
-		long ticks = SongPosition.parse(matcher.group(2)).tick(song) - song.getMeasureHeader(0).getStart();
-		long at = Math.round(ticks * sampleRate * 60.0 / (960.0 * song.getMeasureHeader(0).getTempo().getQuarterValue()));
+		long at = sampleOf(SongPosition.parse(matcher.group(2)), song, device.getSampleRate());
 		return sample -> (sample == at ? value : 0);
+	}
+
+	// the sample of the device's clock where the position is, at the song's first tempo
+	static long sampleOf(SongPosition position, TGSong song, int sampleRate) {
+		long ticks = position.tick(song) - song.getMeasureHeader(0).getStart();
+		return Math.round(ticks * sampleRate * 60.0 / (960.0 * song.getMeasureHeader(0).getTempo().getQuarterValue()));
 	}
 
 	private Signals() {

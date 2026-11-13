@@ -67,6 +67,27 @@ public class LiveSteps {
 		assertTrue(Meters.level(left, 0, left.length, frequency, TestInterface.SAMPLE_RATE) < SILENT);
 	}
 
+	// the player played it when it heard what the clock had reached at the click's sample, the chain delay and the
+	// output latency later (see TestInterface); the output sounds the click the output latency after its frame
+	@Then("the click reaches the output {int} samples after the player played it, within 1 sample, live")
+	public void theClickReachesTheOutputLate(int late) {
+		float[] left = world.live()[0];
+		List<Integer> clicks = Meters.clicks(left, 0, left.length);
+		assertEquals(1, clicks.size(), "clicks at " + clicks);
+		long played = Signals.sampleOf(world.playedClick(), world.song(), TestInterface.SAMPLE_RATE) + world.device().getChainDelay();
+		assertEquals(late, clicks.get(0) - played, 1);
+	}
+
+	// played from the start of the song: the device's clock is the song's (measures at its first tempo)
+	@Then("the output sounds a {int} Hz tone and no {int} Hz tone above -60 dBFS in measures {int} to {int}, live")
+	public void soundsAToneAndNoOther(int frequency, int silent, int first, int last) {
+		float[] left = world.live()[0];
+		int from = (int) Signals.sampleOf(SongPosition.parse("measure " + first + " beat 1"), world.song(), TestInterface.SAMPLE_RATE);
+		int to = (int) Signals.sampleOf(SongPosition.parse("the end of measure " + last), world.song(), TestInterface.SAMPLE_RATE);
+		assertEquals(frequency, Meters.frequency(left, from, to, TestInterface.SAMPLE_RATE), frequency / 100.0);
+		assertTrue(Meters.level(left, from, to, silent, TestInterface.SAMPLE_RATE) < SILENT, "a " + silent + " Hz tone sounds");
+	}
+
 	// the tone starts sounding within the seconds, then holds the frequency for as long as it sounds in twice that time
 	@Then("the output sounds a {int} Hz tone within 1 Hz within {double} seconds of entering it")
 	public void soundsAToneWithinSecondsOfEntering(int frequency, double seconds) throws InterruptedException, MidiPlayerException {

@@ -1,6 +1,5 @@
 package app.tuxguitar.audio;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
 import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.player.base.MidiTransport;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -27,6 +27,8 @@ public final class TGLiveTakes implements TGMidiProcessor {
 
 	private final TGContext context;
 	private final TGLiveTimeline followed;
+	// the monitored input of the block being rendered
+	private final TGTapInput input = new TGTapInput(0, null);
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
 	private MidiTransport transport;
 	private int channel;
@@ -73,23 +75,49 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	}
 
 	public void process(float[][] block) {
+		TGSong song = TGDocumentManager.getInstance(this.context).getSong();
+		TGTrack track = this.track(song);
+		TGAudioSession session = TGAudioSession.getInstance(this.context);
+		boolean monitored = (TGTrackSource.stopped(session.isArmed(track), session.getMonitoring(track)) == TGTrackSource.INPUT);
 		MidiTransport.Span span = this.transport.get(0);
 		if (!span.isPlaying()) {
 			this.followed.stop();
+			this.monitor(block, session, song, track, monitored);
 			return;
 		}
 		if (this.followed.follow(span, block[0].length)) {
-			this.start();
+			this.start(session, song, track);
 		}
-		this.tap.render(block, this.followed.getPosition() - this.delay);
+		long from = this.followed.getPosition() - this.delay;
+		this.deliver(session, song, track, from, block[0].length, monitored);
+		this.tap.render(block, from);
 	}
 
-	private void start() {
-		TGSong song = TGDocumentManager.getInstance(this.context).getSong();
+	// while stopped, a monitored input sounds as it is delivered
+	private void monitor(float[][] block, TGAudioSession session, TGSong song, TGTrack track, boolean monitored) {
+		this.deliver(session, song, track, 0, block[0].length, monitored);
+		for (int side = 0; monitored && side < block.length; side++) {
+			for (int i = 0; i < block[side].length; i++) {
+				block[side][i] += this.input.at(side, i);
+			}
+		}
+	}
+
+	// the input the device delivered for the block (the input the session's device is playing), from the tap's sample
+	// on: undelayed, the input sounds as soon as its own chain lets it
+	private void deliver(TGAudioSession session, TGSong song, TGTrack track, long from, int frames, boolean monitored) {
+		if (monitored) {
+			TGAudioDevice device = session.getDevice();
+			TGAudioInput input = TGDocumentManager.getInstance(this.context).getSongManager().getChannel(song, track.getChannelId()).getAudioInput();
+			this.input.set(from, device.capture(input, device.getClock(), frames));
+		}
+	}
+
+	// the track's tap on the timeline just started: what it sounds in each measure, as offline
+	private void start(TGAudioSession session, TGSong song, TGTrack track) {
 		TGTimeline timeline = this.followed.getTimeline();
-		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
-		Arrays.fill(sources, TGTrackSource.TAKES);
-		this.tap = TGTakeTap.of(this.track(song), timeline, new TGWsolaStretcher(Math.round(this.sampleRate)), sources, null);
+		TGTrackSource[] sources = TGTrackSource.of(session, song, track, timeline, session.isRecording(), session.isArmed(track));
+		this.tap = TGTakeTap.of(track, timeline, new TGWsolaStretcher(Math.round(this.sampleRate)), sources, this.input);
 	}
 
 	// the audio track of the channel (an audio channel is its track's own)
