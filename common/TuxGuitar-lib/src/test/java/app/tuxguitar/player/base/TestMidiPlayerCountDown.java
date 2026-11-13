@@ -142,6 +142,18 @@ public class TestMidiPlayerCountDown {
 		assertEquals("on 76 @0 v127 s-1 bfalse, off 76 @1 v127 s-1 bfalse -> end @511", start());
 	}
 
+	// on a synthesizer that plays on a sample clock (the TuxGuitar Synthesizer) Count In is the same: on the percussion
+	// channel at once, through its sound chain, nothing on the clock
+	@Test
+	public void onASynthesizerWithASampleClockItTicksOnThePercussionChannelAtOnce() {
+		withPercussion();
+		countDown.setTickCount(1);
+		List<String> clocked = new ArrayList<String>();
+		player.getSynthesizerProxy().setMidiSynthesizer(new ClockedSynthesizer(clocked));
+
+		assertEquals("on 37 @0, off 37 @1 -> end @511 | []", start() + " | " + clocked);
+	}
+
 	@Test
 	public void stopsWithThePlayer() {
 		withPercussion();
