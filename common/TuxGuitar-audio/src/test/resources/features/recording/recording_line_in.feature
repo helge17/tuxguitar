@@ -213,7 +213,6 @@ Feature: Recording line-in audio
     Then the output holds 4 Count In clicks, 22050 samples apart within 1 sample
     And the last Count In click sounds 22050 samples before measure 2 beat 3, within 1 sample
 
-  @planned
   Scenario: stopping during Count In keeps no take and adds no undo step
     Given I have turned Count In on
     And I have armed track 2
