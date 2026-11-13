@@ -45,6 +45,22 @@ public class TestSynthClock {
 		return this.source.created.get(channel - 3).received;
 	}
 
+	// the transport tells what the song does over each block: a block its listener tells nothing about (the song has
+	// stopped, or nothing plays on the clock) is a stopped block, not the last one told again
+	@Test
+	public void aBlockTheListenerTellsNothingAboutIsStopped() {
+		TGSynthModel model = new TGSynthModel(new TGContext());
+		model.setListener((clock, frames) -> clock.getTransport().add(0, true, 90, 3, 4, 2, 100));
+		model.beforeBlock(512);
+		boolean told = model.getTransport().get(0).isPlaying();
+		model.setListener((clock, frames) -> { });
+		model.beforeBlock(512);
+		boolean untold = model.getTransport().get(0).isPlaying();
+		model.setListener(null);
+		model.beforeBlock(512);
+		assertEquals("true false false", told + " " + untold + " " + model.getTransport().get(0).isPlaying());
+	}
+
 	@Test
 	public void eventsOnAFrameReachTheChannelsSourceOnIt() throws MidiPlayerException {
 		this.model.at(30).sendNoteOn(3, 60, 100, 2, true);

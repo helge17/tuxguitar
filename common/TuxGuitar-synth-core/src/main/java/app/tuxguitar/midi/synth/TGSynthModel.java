@@ -183,8 +183,10 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 		return new TGSynthFrameReceiver(this, frame);
 	}
 
-	// the listener sends the events of the next frames; one that fails does not stop the synthesizer from rendering
+	// the listener sends the events of the next frames, and tells the transport what the song does over them (a block
+	// it tells nothing about is stopped); one that fails does not stop the synthesizer from rendering
 	public void beforeBlock(int frames) {
+		this.transport.stop();
 		Listener listener = this.listener;
 		if( listener != null ) {
 			try {
