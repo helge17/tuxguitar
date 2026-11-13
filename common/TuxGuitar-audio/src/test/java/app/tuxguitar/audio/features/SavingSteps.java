@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -24,13 +26,24 @@ import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.file.TGWriteSongAction;
 import app.tuxguitar.io.base.TGFileFormatException;
+import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.io.base.TGSongReader;
 import app.tuxguitar.io.base.TGSongReaderHandle;
+import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.io.base.TGSongWriter;
+import app.tuxguitar.io.gtp.GP5InputStream;
+import app.tuxguitar.io.gtp.GP5OutputStream;
+import app.tuxguitar.io.gtp.GTPSettings;
+import app.tuxguitar.io.midi.MidiSongReader;
+import app.tuxguitar.io.midi.MidiSongWriter;
 import app.tuxguitar.io.tg.TGSongReaderImpl;
 import app.tuxguitar.io.tg.TGStream;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMessagesManager;
 import app.tuxguitar.vst3.TGVst3Element;
 import io.cucumber.java.en.Given;
@@ -48,9 +61,15 @@ public class SavingSteps {
 	// the node that holds the TuxGuitar release a file was written with
 	private static final String TG_VERSION = "<TGVersion[^>]*/>";
 
+	// the other file formats' writers and readers, as their plugins make them
+	private static final Map<String, Supplier<TGSongWriter>> WRITERS = Map.of("MIDI", MidiSongWriter::new, "GP5", () -> new GP5OutputStream(new GTPSettings()));
+	private static final Map<String, Function<TGContext, TGSongReader>> READERS = Map.of("MIDI", MidiSongReader::new, "GP5", context -> new GP5InputStream(new GTPSettings()));
+
 	private final AudioWorld world;
 	// the state each VST3 plugin gave when the song was saved, as the song keeps it, by track and place in the chain
 	private Map<String, String> savedStates;
+	// the song exported last, as read back
+	private TGSong exported;
 
 	public SavingSteps(AudioWorld world) {
 		this.world = world;
@@ -169,6 +188,41 @@ public class SavingSteps {
 			}
 		}
 		return entries;
+	}
+
+	// another file format, as TuxGuitar's plugins write it (the export goes through the write action, as the app's), then
+	// as they read it back
+	@When("I export the song as a {word} file")
+	public void export(String format) throws TGFileFormatException {
+		TGSongWriter writer = WRITERS.get(format).get();
+		TGSongReader reader = READERS.get(format).apply(world.fixture().context);
+		TGFileFormatManager.getInstance(world.fixture().context).addWriter(writer);
+		ByteArrayOutputStream file = new ByteArrayOutputStream();
+		TGActionContext context = new TGActionContext() {
+		};
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, world.song());
+		context.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG_MANAGER, world.fixture().songManager);
+		context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, file);
+		context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT, writer.getFileFormat());
+		TGActionManager.getInstance(world.fixture().context).execute(TGWriteSongAction.NAME, context);
+		TGSongReaderHandle handle = new TGSongReaderHandle();
+		handle.setFactory(world.fixture().songManager.getFactory());
+		handle.setContext(new TGSongStreamContext());
+		handle.setInputStream(new ByteArrayInputStream(file.toByteArray()));
+		reader.read(handle);
+		this.exported = handle.getSong();
+	}
+
+	@Then("TuxGuitar reads the exported file back with {int} track")
+	public void readsTheExportedFileBackWith(int tracks) {
+		assertEquals(tracks, this.exported.countTracks());
+	}
+
+	@Then("TuxGuitar reads the exported file back with track {int} on the General MIDI program {string}")
+	public void readsTheExportedFileBackOnTheProgram(int number, String program) {
+		TGTrack track = world.fixture().songManager.getTrack(this.exported, number);
+		TGChannel channel = world.fixture().songManager.getChannel(this.exported, track.getChannelId());
+		assertEquals(program, TGMessagesManager.getMidiInstrument(channel.getProgram()).getName());
 	}
 
 	// a file of the features folder

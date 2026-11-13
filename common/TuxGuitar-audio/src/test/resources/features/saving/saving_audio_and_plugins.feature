@@ -131,7 +131,6 @@ Feature: Saving audio tracks and plugins
 
   # Other file formats
 
-  @planned
   Scenario Outline: file formats that cannot hold audio leave the audio tracks out
     Given I have entered fret 5 on string 1
     And I have added an audio track recording input channel 1
@@ -144,7 +143,6 @@ Feature: Saving audio tracks and plugins
       | MIDI   |
       | GP5    |
 
-  @planned
   Scenario Outline: a track with a VST3 instrument exports with the General MIDI program it had
     Given I have entered fret 5 on string 1
     And I have set the General MIDI program of track 1's channel to "Distortion Electric Guitar"

@@ -131,6 +131,19 @@
 			<artifactId>tuxguitar-gm-utils</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- the other file formats a song is exported to: MIDI and Guitar Pro 5 -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-midi</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-gtp</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
