@@ -56,12 +56,12 @@ public final class TGTimeline {
 		return TGSampleTime.samples(ticks, measure.getTempo(), sampleRate);
 	}
 
-	// what plays before the sample: the Count In up to it, the measures that start before it, the last one cut at the
-	// first of its ticks that sounds at the sample or after
+	// what plays before the sample: the Count In up to it, the measures that start before it, each up to the first of
+	// its ticks that sounds at the sample or after (its end, for a measure that ends before the sample)
 	public TGTimeline until(long sample) {
 		List<TGPlayedMeasure> kept = new ArrayList<TGPlayedMeasure>();
 		for (int i = 0; i < this.count() && this.start(i) < sample; i++) {
-			kept.add(this.end(i) <= sample ? this.get(i) : this.get(i).until(this.tickAt(i, sample)));
+			kept.add(this.get(i).until(this.tickAt(i, sample)));
 		}
 		return new TGTimeline(kept, this.sampleRate, this.countIn.until(sample), this.clock);
 	}
