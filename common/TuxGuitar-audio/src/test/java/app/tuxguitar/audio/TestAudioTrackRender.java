@@ -44,6 +44,11 @@ public class TestAudioTrackRender {
 
 	// synthesizer: the MIDI Port is the TuxGuitar Synthesizer
 	private TGRender render(boolean synthesizer) throws MidiPlayerException {
+		return this.renderer().render(this.timeline(), new MidiPlayerMode(), false, synthesizer);
+	}
+
+	// the input delivers a constant level of 0.75
+	private TGRenderer renderer() {
 		TGAudioSession session = TGAudioSession.getInstance(this.context);
 		session.setDevice(new TGAudioDevice() {
 			public int getSampleRate() {
@@ -51,13 +56,27 @@ public class TestAudioTrackRender {
 			}
 
 			public float[] capture(int inputChannel, long from, int count) {
-				return new float[count];
+				float[] input = new float[count];
+				Arrays.fill(input, 0.75f);
+				return input;
 			}
 		});
-		MidiPlayerMode mode = new MidiPlayerMode();
-		long start = song.getMeasureHeader(0).getStart();
-		TGTimeline timeline = new TGTimeline(song, TGSongTime.play(song, mode, start, Long.MAX_VALUE, 1), 44100);
-		return new TGRenderer(this.context, this.songManager, this.song, session).render(timeline, mode, false, synthesizer);
+		return new TGRenderer(this.context, this.songManager, this.song, session);
+	}
+
+	private TGTimeline timeline() {
+		return new TGTimeline(song, TGSongTime.play(song, new MidiPlayerMode(), song.getMeasureHeader(0).getStart(), Long.MAX_VALUE, 1), 44100);
+	}
+
+	// an armed track monitoring Always sounds its input when playing; an export holds its takes instead
+	@Test
+	public void anExportLeavesOutTheInputOfAnArmedTrack() throws MidiPlayerException {
+		TGAudioSession.getInstance(this.context).arm(track);
+		TGAudioSession.getInstance(this.context).setMonitoring(track, TGMonitoring.ALWAYS);
+		float played = render().getTap(track)[1000];
+		float exported = this.renderer().export(this.timeline()).getTap(track)[1000];
+
+		assertEquals("0.75 1.0", played + " " + exported);
 	}
 
 	@Test

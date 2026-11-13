@@ -37,13 +37,17 @@ public class SyncSteps {
 	// the output, or the file exported
 	@Then("the {sound}'s left side holds {int} clicks and its right side {int} clicks")
 	public void theOutputHoldsClicks(Heard sound, int left, int right) {
+		assertClicks(sound, left, right);
+	}
+
+	static void assertClicks(Heard sound, int left, int right) {
 		assertEquals(left, clicks(sound, 0).size(), "left clicks at " + clicks(sound, 0));
 		assertEquals(right, clicks(sound, 1).size(), "right clicks at " + clicks(sound, 1));
 	}
 
 	@Then("the output's left side holds {int} clicks and its right side none")
 	public void theOutputHoldsLeftClicksOnly(int left) {
-		theOutputHoldsClicks(heard(), left, 0);
+		assertClicks(heard(), left, 0);
 	}
 
 	static void assertTogether(Heard heard, int within) {

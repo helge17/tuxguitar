@@ -179,7 +179,7 @@ public class ListeningSteps {
 		assertTone(tap(number), bounds[0] + FADE, bounds[1] - FADE, tone, Arrays.asList(tone), "measure " + measure);
 	}
 
-	private static void assertOnBeats(List<Integer> clicks, List<Integer> beats, int within) {
+	static void assertOnBeats(List<Integer> clicks, List<Integer> beats, int within) {
 		for (int click : clicks) {
 			int nearest = beats.stream().min((a, b) -> Integer.compare(Math.abs(a - click), Math.abs(b - click))).get();
 			assertEquals(nearest, click, within, "click at " + click + " of " + clicks);

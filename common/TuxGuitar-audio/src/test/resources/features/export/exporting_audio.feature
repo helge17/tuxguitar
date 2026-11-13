@@ -75,14 +75,12 @@ Feature: Exporting audio
       | disabled VST3 effect 1 of track 2     | 352800 |
       | muted track 2                         | 352800 |
 
-  @planned
   Scenario: the exported file follows the repeats of the song
     Given I have repeated measures 2 to 3 once
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 529200 samples, within 1 sample
     And the file's right side holds 24 clicks, each within 1 sample of a beat in song time
 
-  @planned
   Scenario: what only plays live is not in the exported file
     Given I have set the Percentage of Tempo to 80
     And I have turned Play looped on over measures 2 to 3
@@ -96,7 +94,6 @@ Feature: Exporting audio
     And the file's left side holds 16 clicks and its right side 16 clicks, and nothing else above -60 dBFS
     And the file's left and right clicks of measure 2 beat 1 are at sample 88200 within 1 sample
 
-  @planned
   Scenario Outline: muted and soloed tracks are left out, as when the song plays
     Given I have <done>
     When I export the song as a WAVE file at 44100 Hz in 16 bits
@@ -109,7 +106,6 @@ Feature: Exporting audio
       | soloed track 2 | 0    | 16    |
       | soloed track 1 | 16   | 0     |
 
-  @planned
   Scenario: exporting renders through the TuxGuitar Synthesizer whatever the MIDI Port
     Given I have set the MIDI Port to "Test MIDI Out"
     When I export the song as a WAVE file at 44100 Hz in 16 bits

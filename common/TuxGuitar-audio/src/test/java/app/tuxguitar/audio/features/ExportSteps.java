@@ -1,6 +1,7 @@
 package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
@@ -20,6 +21,9 @@ import io.cucumber.java.en.When;
  * 1's clicks, right: track 2's), on the timeline of the song as written.
  */
 public class ExportSteps {
+
+	// how far from a click its own samples go
+	private static final int CLICK = 32;
 
 	private final AudioWorld world;
 
@@ -77,6 +81,27 @@ public class ExportSteps {
 	@Then("the file holds the echo of the click of {position}, {int} samples after it, within 1 sample")
 	public void theFileHoldsTheEcho(SongPosition position, int samples) {
 		SyncSteps.assertClickAt(world.exported(), world.exported().sampleAt(position, 0) + samples);
+	}
+
+	@Then("the file's right side holds {int} clicks, each within 1 sample of a beat in song time")
+	public void theRightSideHoldsClicksOnTheBeats(int count) {
+		List<Integer> clicks = SyncSteps.clicks(world.exported(), 1);
+		assertEquals(count, clicks.size(), "clicks at " + clicks);
+		ListeningSteps.assertOnBeats(clicks, world.exported().beats(), 1);
+	}
+
+	// the clicks, and below -60 dBFS everywhere more than a few samples from one
+	@Then("the file's left side holds {int} clicks and its right side {int} clicks, and nothing else above -60 dBFS")
+	public void theFileHoldsClicksAndNothingElse(int left, int right) {
+		Heard file = world.exported();
+		SyncSteps.assertClicks(file, left, right);
+		for (int side = 0; side < 2; side++) {
+			float[] rest = file.output(side).clone();
+			for (int click : SyncSteps.clicks(file, side)) {
+				java.util.Arrays.fill(rest, Math.max(0, click - CLICK), Math.min(rest.length, click + CLICK), 0f);
+			}
+			assertTrue(Meters.peak(rest, 0, rest.length) < 0.001f, "side " + side + " peaks at " + Meters.peak(rest, 0, rest.length));
+		}
 	}
 
 	@Then("the file lasts {int} samples, within 1 sample")

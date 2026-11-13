@@ -10,6 +10,7 @@ import java.util.Arrays;
 import app.tuxguitar.audio.Meters;
 import app.tuxguitar.audio.TGDrumTap;
 import app.tuxguitar.editor.action.transport.TGTransportCountDownAction;
+import app.tuxguitar.editor.action.transport.TGTransportMetronomeAction;
 import app.tuxguitar.player.base.MidiClick;
 import app.tuxguitar.player.base.MidiPlayer;
 import io.cucumber.java.en.Given;
@@ -40,6 +41,12 @@ public class CountInSteps {
 	public void turnCountInOn() {
 		world.execute(new TGTransportCountDownAction(world.fixture().context));
 		assertTrue(player().getCountDown().isEnabled());
+	}
+
+	@Given("I have turned the Metronome on")
+	public void turnTheMetronomeOn() {
+		world.execute(new TGTransportMetronomeAction(world.fixture().context));
+		assertTrue(player().isMetronomeEnabled());
 	}
 
 	// as the transport dialog sets them
