@@ -66,7 +66,7 @@ public final class TGRenderer {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
 		Map<Integer, Integer> tails = new HashMap<Integer, Integer>();
 		for (TGTrack track : this.audioTracks()) {
-			if (this.session.isArmed(track) && this.session.getMonitoring(track) != TGMonitoring.OFF) {
+			if (TGTrackSource.stopped(this.session.isArmed(track), this.session.getMonitoring(track)) == TGTrackSource.INPUT) {
 				TGEffects effects = TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), stopped.getSampleRate());
 				TGTap tap = effects.process(sides(this.input(track, stopped, 0)), stopped);
 				effects.close();
@@ -147,7 +147,7 @@ public final class TGRenderer {
 
 	// the track's takes or input, through its effects
 	private TGTap tap(TGTrack track, TGTimeline timeline, boolean recording, boolean live, int latency, TGEffects effects) {
-		TGTrackSource[] sources = this.sources(track, timeline, recording, live);
+		TGTrackSource[] sources = TGTrackSource.of(this.session, this.song, track, timeline, recording, live && this.session.isArmed(track));
 		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
 		TGTimeStretcher stretcher = new TGWsolaStretcher(timeline.getSampleRate());
 		TGLivePlugins plugins = this.plugins(live);
@@ -168,27 +168,6 @@ public final class TGRenderer {
 	// effects, so it is read the render's latency later, less its effects' (which are taken out of the tap)
 	private float[][] input(TGTrack track, TGTimeline timeline, int delay) {
 		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock() + delay, (int) timeline.length());
-	}
-
-	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring
-	// Always an armed track sounds its input everywhere else too. Not live (an export), no track is armed
-	private TGTrackSource[] sources(TGTrack track, TGTimeline timeline, boolean recording, boolean live) {
-		boolean armed = (live && this.session.isArmed(track));
-		TGMonitoring monitoring = this.session.getMonitoring(track);
-		TGPunchRange punchRange = this.session.getPunchRange(this.song);
-		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
-		for (int i = 0; i < sources.length; i++) {
-			boolean records = recording && armed && (punchRange == null || punchRange.contains(timeline.get(i).getHeader().getNumber()));
-			sources[i] = source(records, armed, monitoring);
-		}
-		return sources;
-	}
-
-	private static TGTrackSource source(boolean records, boolean armed, TGMonitoring monitoring) {
-		if (records) {
-			return (monitoring == TGMonitoring.OFF ? TGTrackSource.SILENCE : TGTrackSource.INPUT);
-		}
-		return (armed && monitoring == TGMonitoring.ALWAYS ? TGTrackSource.INPUT : TGTrackSource.TAKES);
 	}
 
 	// the output; the longest tail of the taps heard

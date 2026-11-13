@@ -2,7 +2,6 @@ package app.tuxguitar.audio;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import app.tuxguitar.document.TGDocumentManager;
@@ -11,10 +10,7 @@ import app.tuxguitar.midi.synth.TGMidiProcessor;
 import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
 import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
-import app.tuxguitar.player.base.MidiPlayer;
-import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.player.base.MidiTransport;
-import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -22,30 +18,24 @@ import app.tuxguitar.util.TGContext;
 /**
  * An audio track's takes, live: the source of its channel on the TuxGuitar Synthesizer (TGSynthChannel.TAKES), so its
  * sound chain's effects follow it and its channel joins the output like any other. While the transport says the song
- * plays, it renders the track's tap (TGTakeTap: time-stretched, crossfaded, as offline) a block at a time on a
- * timeline of what plays from where playing started; when the transport is not where that timeline is (playing
- * started, moved, or the song jumped other than the timeline did) it starts a new timeline there. It delays the tap
- * itself by plugin delay compensation (it renders the timeline's samples that many frames back), so what else it
- * sounds can go undelayed.
+ * plays, it renders the track's tap (TGTakeTap: time-stretched, crossfaded, as offline) a block at a time on the
+ * timeline of what plays (TGLiveTimeline: two passes of the Loop Range when looped). It delays the tap itself by
+ * plugin delay compensation (it renders the timeline's samples that many frames back), so what else it sounds can go
+ * undelayed.
  */
 public final class TGLiveTakes implements TGMidiProcessor {
 
-	// how far, in quarter notes, the transport may be from the timeline and still be on it
-	private static final double ON_THE_TIMELINE = 1.0 / 64;
-
 	private final TGContext context;
-	private final MidiTransport expected = new MidiTransport();
+	private final TGLiveTimeline followed;
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
 	private MidiTransport transport;
 	private int channel;
 	private int delay;
-	private TGTimeline timeline;
 	private TGTakeTap tap;
-	// the timeline's sample the next block starts on
-	private long position;
 
 	TGLiveTakes(TGContext context) {
 		this.context = context;
+		this.followed = new TGLiveTimeline(context, 2);
 	}
 
 	// audio tracks sound their takes on the TuxGuitar Synthesizer of the context
@@ -66,6 +56,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 
 	public void setSampleRate(float sampleRate) {
 		this.sampleRate = sampleRate;
+		this.followed.setSampleRate(Math.round(sampleRate));
 	}
 
 	public void setTransport(MidiTransport transport) {
@@ -84,33 +75,21 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	public void process(float[][] block) {
 		MidiTransport.Span span = this.transport.get(0);
 		if (!span.isPlaying()) {
-			this.tap = null;
+			this.followed.stop();
 			return;
 		}
-		if (this.tap == null || !this.isOnTheTimeline(span, block[0].length)) {
-			this.start(span);
+		if (this.followed.follow(span, block[0].length)) {
+			this.start();
 		}
-		this.tap.render(block, this.position - this.delay);
-		this.position += block[0].length;
+		this.tap.render(block, this.followed.getPosition() - this.delay);
 	}
 
-	private boolean isOnTheTimeline(MidiTransport.Span span, int frames) {
-		this.timeline.tell(this.expected, this.position, frames);
-		return Math.abs(this.expected.get(0).getQuarters() - span.getQuarters()) < ON_THE_TIMELINE;
-	}
-
-	// a timeline from the transport's position: to the end of the song, or for two passes of the Loop Range
-	private void start(MidiTransport.Span span) {
+	private void start() {
 		TGSong song = TGDocumentManager.getInstance(this.context).getSong();
-		MidiPlayerMode mode = MidiPlayer.getInstance(this.context).getMode();
-		long tick = Math.round(span.getQuarters() * TGDuration.QUARTER_TIME) + TGDuration.QUARTER_TIME;
-		List<TGPlayedMeasure> played = TGSongTime.play(song, mode, tick, Long.MAX_VALUE, (mode.isLoop() ? 2 : 1));
-		int rate = Math.round(this.sampleRate);
-		this.timeline = new TGTimeline(song, played, rate);
-		TGTrackSource[] sources = new TGTrackSource[played.size()];
+		TGTimeline timeline = this.followed.getTimeline();
+		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		Arrays.fill(sources, TGTrackSource.TAKES);
-		this.tap = TGTakeTap.of(this.track(song), this.timeline, new TGWsolaStretcher(rate), sources, null);
-		this.position = 0;
+		this.tap = TGTakeTap.of(this.track(song), timeline, new TGWsolaStretcher(Math.round(this.sampleRate)), sources, null);
 	}
 
 	// the audio track of the channel (an audio channel is its track's own)
@@ -137,7 +116,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	}
 
 	public void close() {
-		this.tap = null;
+		this.followed.stop();
 	}
 
 	public void finalize() {
