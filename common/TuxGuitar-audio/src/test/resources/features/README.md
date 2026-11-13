@@ -63,7 +63,10 @@ recording or playing from A is under way when the `When` happens.
 
 The test plugins are real VST3 bundles built for the tests, so scanning, loading in the helper process and the
 plugin's own editor are exercised for real; their audio behaviour is fixed below, so every number can be checked
-exactly. One integration test outside the features loads the VST3 SDK's `again` example.
+exactly. One integration test outside the features loads the VST3 SDK's `again` example. Their C++ source, and the
+helper process's, is in `common/TuxGuitar-vst3/native`: before the tests of this module (and of `TuxGuitar-vst3`) Maven
+runs its build (CMake, against the VST3 SDK pinned there) into `common/TuxGuitar-vst3/native-build`, once, and stops
+saying what to install when no C++ toolchain is found. No binary is committed.
 
 The module needs, besides `tuxguitar-lib`: `tuxguitar-editor-utils` (editing actions and undo), the synthesizer host
 core and Gervill moved out of `desktop/TuxGuitar-synth` so they run headless, and at test scope `tuxguitar-midi` and
@@ -241,7 +244,7 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Plugin delay compensation**: delaying each track, the Count In and the Metronome so that all reach the output as
   late as the slowest track: the slowest sound chain's latency, Gervill's included, a muted track's too, and the
   General MIDI drums' (Count In and Metronome) whether or not they click. A monitored input is not delayed by it. When a plugin's latency changes while playing, the
-  tracks are together again from the next beat. Playing to the end of the song runs on until the most delayed track has
+  tracks are together again from the next beat (TuxGuitar realigns them at the next block it renders). Playing to the end of the song runs on until the most delayed track has
   sounded its last beat.
 - **Time-stretch**: playing a take faster or slower without changing its pitch.
 - **Tail**: what an effect still sounds after its input stops, as long as it reports (an echo, a reverb). Tails carry
