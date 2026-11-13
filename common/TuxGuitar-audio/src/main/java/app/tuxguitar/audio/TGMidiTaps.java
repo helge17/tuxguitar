@@ -2,6 +2,7 @@ package app.tuxguitar.audio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,12 +17,14 @@ import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
+import app.tuxguitar.player.base.MidiParameters;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
 import app.tuxguitar.player.base.MidiReceiver;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiSequenceParser;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.util.TGContext;
@@ -54,6 +57,9 @@ public final class TGMidiTaps {
 				open(model, taps, event.channel, (int) timeline.length());
 			}
 		}
+		for (Integer channel : taps.keySet()) {
+			sendParameters(model, songManager, song, channel);
+		}
 		for (long block = 0; block < timeline.length() + model.getLatency(); block += FRAMES) {
 			send(model, events.headMap(block + FRAMES), block);
 			fill(model, taps, block);
@@ -74,6 +80,20 @@ public final class TGMidiTaps {
 			}
 		}
 		due.clear();
+	}
+
+	// the channel's parameters, its custom program (its sound chain) among them, go out before its events, as the player
+	// sends them when playing starts
+	private static void sendParameters(TGSynthModel model, TGSongManager songManager, TGSong song, int channel) throws MidiPlayerException {
+		MidiReceiver receiver = model.at(0);
+		receiver.sendParameter(channel, MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
+		Iterator<TGChannelParameter> parameters = songManager.getChannel(song, channel).getParameters();
+		while (parameters.hasNext()) {
+			TGChannelParameter parameter = parameters.next();
+			receiver.sendParameter(channel, parameter.getKey(), parameter.getValue());
+		}
+		receiver.sendParameter(channel, MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
+		waitWhileLoading(model);
 	}
 
 	// General MIDI programs from Gervill for every bank and program
