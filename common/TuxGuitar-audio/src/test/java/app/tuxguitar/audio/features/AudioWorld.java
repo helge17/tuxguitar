@@ -75,6 +75,7 @@ public class AudioWorld {
 	private final TGUndoableBuffer undoHistory = new TGUndoableBuffer();
 	private final TestInterface device = new TestInterface();
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
+	private SongPosition playedClick;
 
 	public AudioWorld() {
 		this.fixture.map(new TGAddTrackAction(this.fixture.context), new TGRemoveTrackAction(this.fixture.context),
@@ -122,6 +123,15 @@ public class AudioWorld {
 
 	public TestInterface device() {
 		return this.device;
+	}
+
+	// where the player's one click is played, when it plays one
+	void setPlayedClick(SongPosition position) {
+		this.playedClick = position;
+	}
+
+	SongPosition playedClick() {
+		return this.playedClick;
 	}
 
 	public void execute(TGActionBase action) {

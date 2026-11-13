@@ -21,6 +21,7 @@ public class TestBlocks {
 	public void aBlockTakesTheSamplesFromItsStartAndNothingPastTheEnd() {
 		assertArrayEquals(new float[] {2f, 3f, 4f}, take(1));
 		assertArrayEquals(new float[] {4f, 5f, 0f}, take(3));
+		assertArrayEquals(new float[] {5f, 0f, 0f}, take(4));
 		assertArrayEquals(new float[] {0f, 0f, 0f}, take(5));
 		assertArrayEquals(new float[] {0f, 0f, 0f}, take(9));
 	}

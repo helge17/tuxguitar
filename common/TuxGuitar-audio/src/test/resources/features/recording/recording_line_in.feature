@@ -280,7 +280,6 @@ Feature: Recording line-in audio
     When I arm track 2
     Then track 2's monitoring is Always
 
-  @planned
   Scenario: with monitoring on Auto I hear the input through the armed track's sound chain while recording
     Given I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2
@@ -307,7 +306,6 @@ Feature: Recording line-in audio
     Then track 2 sounds a 440 Hz tone peaking at 0.8 within 0.01
     And track 2's takes read ""
 
-  @planned
   Scenario Outline: just playing, monitoring decides whether I hear the takes or my input
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
     And I have added the VST3 effect "Test Gain" to track 2
@@ -324,7 +322,6 @@ Feature: Recording line-in audio
       | Auto       | 440   | 880    |
       | Always     | 880   | 440    |
 
-  @planned
   Scenario: with monitoring on Always I practise through the sound chain along with a looped, slowed song
     Given I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2
@@ -344,7 +341,6 @@ Feature: Recording line-in audio
     Then the output holds a 440 Hz tone above -60 dBFS in measures 1, 3 and 4
     And the output holds no 440 Hz tone above -60 dBFS in measure 2
 
-  @planned
   Scenario Outline: the monitored input is late by its own path only, not by other tracks' latency
     Given I have set the audio device to "Test Interface" with <input> samples of input latency and <output> of output latency
     And I have added the VST3 effect "Test Latency" to track 1

@@ -171,6 +171,16 @@ public class SyncSteps {
 		assertTrue(passes > 1);
 	}
 
+	// the player played the click when it heard its position (the output's chain delay after the clock); the output
+	// sounds the render its latency after the clock, plus the output latency, which both sides have
+	@Then("the click reaches the output {int} samples after the player played it, within 1 sample")
+	public void theClickReachesTheOutputLate(int late) {
+		List<Integer> clicks = Meters.clicks(heard().left(), 0, heard().left().length);
+		assertEquals(1, clicks.size(), "clicks at " + clicks);
+		int played = heard().sampleAt(world.playedClick(), 0) + world.device().getChainDelay();
+		assertEquals(late, clicks.get(0) + heard().latency() - played, 1);
+	}
+
 	// live, the output sounds the render its latency later than the clock
 	@Then("every left click reaches the output {int} samples after its beat, within 1 sample")
 	public void everyLeftClickReachesTheOutputLate(int late) {

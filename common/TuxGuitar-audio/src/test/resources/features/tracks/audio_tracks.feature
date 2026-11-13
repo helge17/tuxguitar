@@ -61,7 +61,6 @@ Feature: Audio tracks
       | change                                    |
       | give track 1's channel the source "takes" |
 
-  @planned
   Scenario: cloning an audio track clones its takes and sound chain onto a new channel
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1

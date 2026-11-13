@@ -136,7 +136,6 @@ Feature: Takes
     Then track 2's takes read "take 1: m1b1 to m2b1"
     And take 1 of track 2 is sample for sample what it was
 
-  @planned
   Scenario: undo steps back through recordings and sound chain changes in the order they were made
     Given I have recorded from measure 1 beat 1 to measure 2 beat 1
     And I have added the VST3 effect "Test Gain" to track 2

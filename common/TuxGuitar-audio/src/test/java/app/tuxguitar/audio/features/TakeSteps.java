@@ -35,6 +35,9 @@ import io.cucumber.java.en.When;
  */
 public class TakeSteps {
 
+	// a signal of one click, and where it is played
+	private static final java.util.regex.Pattern ONE_CLICK = java.util.regex.Pattern.compile("one click of -?[\\d.]+ at (measure \\d+ beat [\\d.]+)");
+
 	private final AudioWorld world;
 
 	public TakeSteps(AudioWorld world) {
@@ -68,6 +71,10 @@ public class TakeSteps {
 	@Given("the player plays {signal}(,) on input channel {int}")
 	public void thePlayerPlays(String signal, int inputChannel) {
 		world.device().play(inputChannel, Signals.parse(signal, world.song(), world.device(), 1));
+		java.util.regex.Matcher click = ONE_CLICK.matcher(signal);
+		if (click.matches()) {
+			world.setPlayedClick(SongPosition.parse(click.group(1)));
+		}
 	}
 
 	@Given("the player plays {signal} on input channel {int} on the first pass and {signal} on the second")

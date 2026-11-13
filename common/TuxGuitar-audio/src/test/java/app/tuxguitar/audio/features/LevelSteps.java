@@ -61,6 +61,29 @@ public class LevelSteps {
 		assertTone(tap(number, side), frequency, level, within, measure);
 	}
 
+	// the measures from the first's start to the last's end
+	@Then("track {int} sounds a {int} Hz tone peaking at {float} within {float} and no {int} Hz tone above -60 dBFS in measures {int} to {int}")
+	public void soundsAToneAndNoOtherInMeasures(int number, int frequency, float level, float within, int silent, int first, int last) {
+		float[] tap = tap(number, 0);
+		int from = heard().measure(first)[0];
+		int to = heard().measure(last)[1];
+		assertEquals(frequency, Meters.frequency(tap, from, to, TestInterface.SAMPLE_RATE), frequency / 100.0);
+		assertEquals(level, Meters.peak(tap, from, to), within);
+		assertTrue(Meters.level(tap, from, to, silent, TestInterface.SAMPLE_RATE) < SILENT);
+	}
+
+	@Then("track {int} sounds a {int} Hz tone peaking at {float} within {float} on every pass")
+	public void soundsATonePeakingOnEveryPass(int number, int frequency, float level, float within) {
+		float[] tap = tap(number, 0);
+		int passes = heard().timeline().get(heard().timeline().count() - 1).getPass() + 1;
+		for (int pass = 0; pass < passes; pass++) {
+			int end = (pass + 1 < passes ? heard().passStart(pass + 1) : (int) heard().timeline().length());
+			assertEquals(frequency, Meters.frequency(tap, heard().passStart(pass), end, TestInterface.SAMPLE_RATE), frequency / 100.0, "pass " + (pass + 1));
+			assertEquals(level, Meters.peak(tap, heard().passStart(pass), end), within, "pass " + (pass + 1));
+		}
+		assertTrue(passes > 1);
+	}
+
 	@Then("track {int} sounds a {int} Hz tone within 1 Hz in measure {int}")
 	public void soundsAToneWithinOneHertz(int number, int frequency, int measure) {
 		assertEquals(frequency, frequency(tap(number, 0), measure), 1.0);

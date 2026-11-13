@@ -29,6 +29,7 @@ import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
+import app.tuxguitar.vst3.TGVst3EffectProcessor;
 import app.tuxguitar.vst3.TGVst3Element;
 import app.tuxguitar.vst3.TGVst3Exception;
 import app.tuxguitar.vst3.TGVst3Host;
@@ -251,6 +252,19 @@ public class PluginSteps {
 	@Given("I have set {string} of VST3 effect {int} of track {int} to {double}")
 	public void haveSetAnEffectsParameter(String title, int effect, int track, double value) throws TGVst3Exception {
 		setParameter(title, effect, track, value);
+	}
+
+	// the value the plugin holds once opened from the effect's element
+	@Then("{string} of VST3 effect {int} of track {int} is {double}")
+	public void theParameterIs(String title, int effect, int track, double value) throws TGVst3Exception {
+		TGProgramElement element = element(effect, track);
+		TGVst3EffectProcessor processor = new TGVst3EffectProcessor(hosting());
+		processor.restoreParameters(element.getParameters());
+		try {
+			assertEquals(value, processor.getInstance().getParameter(parameter(element, title)), 1e-9);
+		} finally {
+			processor.close();
+		}
 	}
 
 	@Given("I have set {string} of the VST3 instrument of track {int} to {double}")

@@ -62,6 +62,10 @@ final class TestInterface implements TGAudioDevice {
 		this.chainDelay = chainDelay;
 	}
 
+	int getChainDelay() {
+		return this.chainDelay;
+	}
+
 	public int getSampleRate() {
 		return this.sampleRate;
 	}
