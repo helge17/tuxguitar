@@ -235,7 +235,6 @@ Feature: Takes
     When I record from measure 2 beat 1 and stop at measure 3 beat 2 of the second pass
     Then track 2's takes read "take 2: m2b1 to m3b2, take 1: m2b1 to m4b1"
 
-  @planned
   Scenario: Count In sounds only before the first pass
     Given I have turned Play looped on over measures 2 to 3
     And I have turned Count In on
