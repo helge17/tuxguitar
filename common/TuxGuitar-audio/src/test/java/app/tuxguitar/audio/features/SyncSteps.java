@@ -29,25 +29,26 @@ public class SyncSteps {
 		return PlaySteps.heard(world);
 	}
 
-	private List<Integer> clicks(int side) {
-		float[] output = heard().output(side);
+	static List<Integer> clicks(Heard heard, int side) {
+		float[] output = heard.output(side);
 		return Meters.clicks(output, 0, output.length);
 	}
 
-	@Then("the output's left side holds {int} clicks and its right side {int} clicks")
-	public void theOutputHoldsClicks(int left, int right) {
-		assertEquals(left, clicks(0).size(), "left clicks at " + clicks(0));
-		assertEquals(right, clicks(1).size(), "right clicks at " + clicks(1));
+	// the output, or the file exported
+	@Then("the {sound}'s left side holds {int} clicks and its right side {int} clicks")
+	public void theOutputHoldsClicks(Heard sound, int left, int right) {
+		assertEquals(left, clicks(sound, 0).size(), "left clicks at " + clicks(sound, 0));
+		assertEquals(right, clicks(sound, 1).size(), "right clicks at " + clicks(sound, 1));
 	}
 
 	@Then("the output's left side holds {int} clicks and its right side none")
 	public void theOutputHoldsLeftClicksOnly(int left) {
-		theOutputHoldsClicks(left, 0);
+		theOutputHoldsClicks(heard(), left, 0);
 	}
 
-	private void assertTogether(int within) {
-		List<Integer> left = clicks(0);
-		List<Integer> right = clicks(1);
+	static void assertTogether(Heard heard, int within) {
+		List<Integer> left = clicks(heard, 0);
+		List<Integer> right = clicks(heard, 1);
 		assertFalse(left.isEmpty());
 		assertEquals(left.size(), right.size(), "left " + left + ", right " + right);
 		for (int i = 0; i < left.size(); i++) {
@@ -57,12 +58,12 @@ public class SyncSteps {
 
 	@Then("on every beat the left and right clicks reach the output within 1 sample of each other")
 	public void togetherWithinASample() {
-		assertTogether(1);
+		assertTogether(heard(), 1);
 	}
 
 	@Then("on every beat the left and right clicks reach the output within 5 ms of each other")
 	public void togetherWithinFiveMilliseconds() {
-		assertTogether(TestInterface.SAMPLE_RATE / 200);
+		assertTogether(heard(), TestInterface.SAMPLE_RATE / 200);
 	}
 
 	// track 1's click nearest to where the position sounds, in its tap (where it joins the mix, as the output has it)
@@ -180,7 +181,7 @@ public class SyncSteps {
 	// live, the output sounds the render its latency later than the clock
 	@Then("every {side} click reaches the output {int} samples after its beat, within 1 sample")
 	public void everyClickReachesTheOutputLate(int side, int late) {
-		List<Integer> clicks = clicks(side);
+		List<Integer> clicks = clicks(heard(), side);
 		List<Integer> beats = heard().beats();
 		assertEquals(beats.size(), clicks.size(), "clicks at " + clicks);
 		for (int i = 0; i < clicks.size(); i++) {

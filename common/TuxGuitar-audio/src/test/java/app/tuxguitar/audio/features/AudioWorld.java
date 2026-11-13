@@ -77,6 +77,8 @@ public class AudioWorld {
 	private final ReportingEffects reporting = new ReportingEffects();
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
 	private SongPosition playedClick;
+	// the file exported last, as read back, on the timeline it follows
+	private Heard exported;
 
 	public AudioWorld() {
 		this.fixture.map(new TGAddTrackAction(this.fixture.context), new TGRemoveTrackAction(this.fixture.context),
@@ -95,6 +97,14 @@ public class AudioWorld {
 			TGAddMeasureAction.NAME, TGRemoveMeasureAction.NAME, TGRemoveMeasureRangeAction.NAME, TGInsertMeasuresAction.NAME,
 			TGPasteMeasureAction.NAME, TGChangeTempoAction.NAME, TGChangeTempoRangeAction.NAME, TGChangeTimeSignatureAction.NAME,
 			TGSetTrackChannelAction.NAME, TGChangeNoteAction.NAME, TGUndoAction.NAME, TGRedoAction.NAME);
+	}
+
+	Heard exported() {
+		return this.exported;
+	}
+
+	void setExported(Heard exported) {
+		this.exported = exported;
 	}
 
 	// what the VST3 effects that closed were told

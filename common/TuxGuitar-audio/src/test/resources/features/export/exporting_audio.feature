@@ -1,4 +1,3 @@
-@planned
 Feature: Exporting audio
   Exporting the song as audio renders every audible track through its sound chain into one file: General MIDI
   programs, VST3 instruments, and audio tracks' takes, with their effects. The file follows the song as written,
@@ -26,6 +25,10 @@ Feature: Exporting audio
     Examples:
       | type | rate  | bits         | second measure |
       | WAVE | 44100 | 16 bits      | 88200          |
+
+    @planned
+    Examples:
+      | type | rate  | bits         | second measure |
       | WAVE | 48000 | 24 bits      | 96000          |
       | WAVE | 44100 | 32-bit float | 88200          |
       | AIFF | 44100 | 16 bits      | 88200          |
@@ -39,26 +42,31 @@ Feature: Exporting audio
     And on every beat the file's left and right clicks are within 1 sample of each other
     And the file lasts 352800 samples, within 1 sample
 
+  @planned
   Scenario: VST3 effects are in the exported file
     Given I have added the VST3 effect "Test Gain" to track 2
     When I export the song as a WAVE file at 44100 Hz in 32-bit float
     Then the file's right clicks peak at 0.5 within 1%
 
+  @planned
   Scenario: a take recorded at 44100 Hz keeps its pitch in a file exported at 48000 Hz
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     When I export the song as a WAVE file at 48000 Hz in 24 bits
     Then the file's right side sounds a 440 Hz tone within 1% in measure 1
 
+  @planned
   Scenario: without tails the file ends with the last measure
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 352800 samples, within 1 sample
 
+  @planned
   Scenario: the file runs on for the longest tail the effects report
     Given I have added the VST3 effect "Test Echo" to track 2
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 366030 samples, within 1 sample
     And the file holds the echo of the click of measure 4 beat 4, 13230 samples after it, within 1 sample
 
+  @planned
   Scenario Outline: an effect with an endless tail runs the file on for 10 seconds, unless it is not heard
     Given I have added the VST3 effect "Test Drone" to track 2
     And I have <done>
@@ -71,12 +79,14 @@ Feature: Exporting audio
       | disabled VST3 effect 1 of track 2     | 352800 |
       | muted track 2                         | 352800 |
 
+  @planned
   Scenario: the exported file follows the repeats of the song
     Given I have repeated measures 2 to 3 once
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 529200 samples, within 1 sample
     And the file's right side holds 24 clicks, each within 1 sample of a beat in song time
 
+  @planned
   Scenario: what only plays live is not in the exported file
     Given I have set the Percentage of Tempo to 80
     And I have turned Play looped on over measures 2 to 3
@@ -90,6 +100,7 @@ Feature: Exporting audio
     And the file's left side holds 16 clicks and its right side 16 clicks, and nothing else above -60 dBFS
     And the file's left and right clicks of measure 2 beat 1 are at sample 88200 within 1 sample
 
+  @planned
   Scenario Outline: muted and soloed tracks are left out, as when the song plays
     Given I have <done>
     When I export the song as a WAVE file at 44100 Hz in 16 bits
@@ -102,6 +113,7 @@ Feature: Exporting audio
       | soloed track 2 | 0    | 16    |
       | soloed track 1 | 16   | 0     |
 
+  @planned
   Scenario: exporting renders through the TuxGuitar Synthesizer whatever the MIDI Port
     Given I have set the MIDI Port to "Test MIDI Out"
     When I export the song as a WAVE file at 44100 Hz in 16 bits

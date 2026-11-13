@@ -37,19 +37,27 @@ public final class TGRenderer {
 	private final TGSongManager songManager;
 	private final TGSong song;
 	private final TGAudioSession session;
-	private final TGTimeStretcher stretcher;
 
 	public TGRenderer(TGContext context, TGSongManager songManager, TGSong song, TGAudioSession session) {
 		this.context = context;
 		this.songManager = songManager;
 		this.song = song;
 		this.session = session;
-		this.stretcher = new TGWsolaStretcher(session.getDevice().getSampleRate());
 	}
 
 	// recording: the armed tracks record where the punch range lets them; synthesizer: the MIDI Port is the TuxGuitar
 	// Synthesizer
 	public TGRender render(TGTimeline timeline, MidiPlayerMode mode, boolean recording, boolean synthesizer) throws MidiPlayerException {
+		return this.render(timeline, mode, recording, synthesizer, true);
+	}
+
+	// what an export sounds: through the TuxGuitar Synthesizer, as the song is written, without what only plays live (no
+	// track is armed: there is no input and no monitoring)
+	public TGRender export(TGTimeline timeline) throws MidiPlayerException {
+		return this.render(timeline, new MidiPlayerMode(), false, true, false);
+	}
+
+	private TGRender render(TGTimeline timeline, MidiPlayerMode mode, boolean recording, boolean synthesizer, boolean live) throws MidiPlayerException {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
 		float[][] drums = new float[2][(int) timeline.length()];
 		float[][] output = new float[2][(int) timeline.length()];
@@ -65,7 +73,7 @@ public final class TGRenderer {
 			audioTracks.forEach(track -> effects.put(track, TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), timeline.getSampleRate())));
 			latency = latency(midi.values(), effects.values(), timeline);
 			for (TGTrack track : audioTracks) {
-				taps.put(track.getChannelId(), this.tap(track, timeline, recording, latency, effects.get(track)));
+				taps.put(track.getChannelId(), this.tap(track, timeline, recording, live, latency, effects.get(track)));
 			}
 			this.mix(taps, drums, output);
 		}
@@ -97,10 +105,11 @@ public final class TGRenderer {
 	}
 
 	// the track's takes or input, through its effects
-	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, int latency, TGEffects effects) {
-		TGTrackSource[] sources = this.sources(track, timeline, recording);
+	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, boolean live, int latency, TGEffects effects) {
+		TGTrackSource[] sources = this.sources(track, timeline, recording, live);
 		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
-		float[][] tap = effects.process(TGTakeTap.render(track, timeline, this.stretcher, sources, input), timeline).getSamples();
+		TGTimeStretcher stretcher = new TGWsolaStretcher(timeline.getSampleRate());
+		float[][] tap = effects.process(TGTakeTap.render(track, timeline, stretcher, sources, input), timeline).getSamples();
 		effects.close();
 		return tap;
 	}
@@ -113,21 +122,24 @@ public final class TGRenderer {
 	}
 
 	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring
-	// Always an armed track sounds its input everywhere else too
-	private TGTrackSource[] sources(TGTrack track, TGTimeline timeline, boolean recording) {
-		boolean armed = this.session.isArmed(track);
+	// Always an armed track sounds its input everywhere else too. Not live (an export), no track is armed
+	private TGTrackSource[] sources(TGTrack track, TGTimeline timeline, boolean recording, boolean live) {
+		boolean armed = (live && this.session.isArmed(track));
 		TGMonitoring monitoring = this.session.getMonitoring(track);
 		TGPunchRange punchRange = this.session.getPunchRange(this.song);
 		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		for (int i = 0; i < sources.length; i++) {
 			boolean records = recording && armed && (punchRange == null || punchRange.contains(timeline.get(i).getHeader().getNumber()));
-			if (records) {
-				sources[i] = (monitoring == TGMonitoring.OFF ? TGTrackSource.SILENCE : TGTrackSource.INPUT);
-			} else {
-				sources[i] = (armed && monitoring == TGMonitoring.ALWAYS ? TGTrackSource.INPUT : TGTrackSource.TAKES);
-			}
+			sources[i] = source(records, armed, monitoring);
 		}
 		return sources;
+	}
+
+	private static TGTrackSource source(boolean records, boolean armed, TGMonitoring monitoring) {
+		if (records) {
+			return (monitoring == TGMonitoring.OFF ? TGTrackSource.SILENCE : TGTrackSource.INPUT);
+		}
+		return (armed && monitoring == TGMonitoring.ALWAYS ? TGTrackSource.INPUT : TGTrackSource.TAKES);
 	}
 
 	private void mix(Map<Integer, float[][]> taps, float[][] drums, float[][] output) {
