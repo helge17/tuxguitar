@@ -38,6 +38,7 @@ import app.tuxguitar.vst3.TGVst3Instance;
 import app.tuxguitar.vst3.TGVst3Plugin;
 import app.tuxguitar.vst3.TGVst3Processors;
 import io.cucumber.java.After;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -51,6 +52,8 @@ public class PluginSteps {
 
 	private final AudioWorld world;
 	private List<TGVst3Plugin> scanned = new ArrayList<TGVst3Plugin>();
+	// a plugin a Then opened to look at its process (closed with the hosting)
+	private TGVst3Instance opened;
 
 	public PluginSteps(AudioWorld world) {
 		this.world = world;
@@ -104,14 +107,10 @@ public class PluginSteps {
 		return this.scanned.stream().filter(plugin -> plugin.isInstrument() == instruments).map(TGVst3Plugin::getName).collect(Collectors.joining(", "));
 	}
 
-	@Then("the VST3 effects read {string}")
-	public void theVst3EffectsRead(String expected) {
-		assertEquals(expected, names(false));
-	}
-
-	@Then("the VST3 instruments read {string}")
-	public void theVst3InstrumentsRead(String expected) {
-		assertEquals(expected, names(true));
+	// "the VST3 effects read ..." or "the VST3 instruments read ..."
+	@Then("the VST3 {word} read {string}")
+	public void theVst3PluginsRead(String kind, String expected) {
+		assertEquals(expected, names(kind.equals("instruments")));
 	}
 
 	@Then("neither the VST3 effects nor the VST3 instruments name {string}")
@@ -121,17 +120,20 @@ public class PluginSteps {
 		assertFalse(this.scanned.isEmpty());
 	}
 
+	// each plugin runs in a host process of its own, which ends when the plugin closes (the render closed the one that
+	// played): the plugin is opened again as TuxGuitar opens it, and its process looked at
 	@Then("{string} runs in a process other than TuxGuitar's")
 	public void runsInAnotherProcess(String name) throws TGVst3Exception {
-		TGVst3Host host = hosting().getHost();
-		assertTrue(host.getOpened().contains(name), "opened in the host: " + host.getOpened());
+		this.opened = hosting().open(plugin(name), TestInterface.SAMPLE_RATE, 512);
+		TGVst3Host host = this.opened.getHost();
+		assertEquals(Arrays.asList(name), host.getOpened());
 		assertNotEquals(ProcessHandle.current().pid(), host.getPid());
 		assertTrue(ProcessHandle.of(host.getPid()).isPresent());
 	}
 
 	@Then("neither TuxGuitar nor the plugin process listens on a network port")
 	public void nothingListensOnANetworkPort() throws TGVst3Exception {
-		TGVst3Host host = hosting().getHost();
+		TGVst3Host host = this.opened.getHost();
 		assertEquals(0, host.networkListeners(ProcessHandle.current().pid()));
 		assertEquals(0, host.networkListeners(host.getPid()));
 	}
@@ -204,20 +206,17 @@ public class PluginSteps {
 		assertTrue(world.succeeded());
 	}
 
-	private void setEnabled(int effect, int track, boolean enabled) {
+	@ParameterType("enable|have disabled")
+	public Boolean enabling(String enabling) {
+		return enabling.equals("enable");
+	}
+
+	// "I enable ..." (a When) and "I have disabled ..." (a Given)
+	@When("I {enabling} VST3 effect {int} of track {int}")
+	public void setEnabled(boolean enabled, int effect, int track) {
 		world.fixture().actionContext.setAttribute(TGSetEffectEnabledAction.ATTRIBUTE_ENABLED, enabled);
 		changeEffect(effect, track, new TGSetEffectEnabledAction(world.fixture().context));
 		assertTrue(world.succeeded());
-	}
-
-	@When("I enable VST3 effect {int} of track {int}")
-	public void enable(int effect, int track) {
-		setEnabled(effect, track, true);
-	}
-
-	@Given("I have disabled VST3 effect {int} of track {int}")
-	public void haveDisabled(int effect, int track) {
-		setEnabled(effect, track, false);
 	}
 
 	@Given("I have kept VST3 effect {int} of track {int} enabled")

@@ -67,6 +67,11 @@ public final class TGVst3Instance implements AutoCloseable {
 		return new TGVst3Request(operation).writeInt(this.id);
 	}
 
+	// the host process it runs in
+	public TGVst3Host getHost() {
+		return this.host;
+	}
+
 	// the channels of its main input (none for an instrument) and main output
 	public int getInputs() {
 		return this.inputs;

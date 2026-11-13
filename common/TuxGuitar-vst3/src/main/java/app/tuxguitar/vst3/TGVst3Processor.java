@@ -99,9 +99,9 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 		return Collections.emptyList();
 	}
 
-	// the host process stopped and the plugin with it
+	// the host process stopped and the plugin with it (or refused it): closed, it is silent until opened again
 	private void lost() {
-		this.instance = null;
+		this.close();
 	}
 
 	public int getLatency() {

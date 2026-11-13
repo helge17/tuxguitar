@@ -2,6 +2,7 @@ package app.tuxguitar.vst3;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -196,7 +197,7 @@ public class TestVst3Processors {
 	@Test
 	public void anEffectWhoseHostStoppedSoundsNothingAndTheStopIsReported() throws TGVst3Exception {
 		TGAudioProcessor processor = effect(element("Test Gain"));
-		TestPlugins.kill(this.hosting.getHost().getPid());
+		TestPlugins.kill(((TGVst3Processor) processor).getInstance().getHost().getPid());
 		float[][] block = level(0.25f);
 		processor.process(block);
 		assertEquals(0f, block[0][0]);
@@ -207,6 +208,40 @@ public class TestVst3Processors {
 		assertEquals(0.5f, block[0][0]);
 		assertEquals(1, this.hosting.getStops().size());
 		assertTrue(this.hosting.getStops().get(0).startsWith("the VST3 host stopped"), this.hosting.getStops().get(0));
+	}
+
+	// one host process per plugin: a plugin that crashes takes only its own process down, and is reported
+	@Test
+	public void aPluginThatCrashesSilencesOnlyItselfWhileAnotherKeepsSounding() throws TGVst3Exception {
+		TGVst3Processor crashing = (TGVst3Processor) effect(element("Test Gain"));
+		TGVst3Processor other = (TGVst3Processor) effect(element("Test Gain"));
+		assertNotEquals(crashing.getInstance().getHost().getPid(), other.getInstance().getHost().getPid());
+		assertThrows(TGVst3Exception.class, () -> crashing.getInstance().message("TG.crash", new HashMap<String, Long>(), new HashMap<String, byte[]>()));
+		float[][] silenced = level(0.25f);
+		crashing.process(silenced);
+		float[][] sounding = level(0.25f);
+		other.process(sounding);
+		assertEquals(0f, silenced[0][0]);
+		assertEquals(0.5f, sounding[0][0]);
+		assertTrue(other.getInstance().getHost().isRunning());
+		assertEquals(Arrays.asList("the VST3 host stopped (exit code 70)"), this.hosting.getStops());
+	}
+
+	// each plugin's host process ends when the plugin closes, which is no stop; a scan leaves no host process running
+	@Test
+	public void closingAPluginEndsItsHostProcessWhichIsNoStop() {
+		long scanning = hostProcesses();
+		TGVst3Processor processor = (TGVst3Processor) effect(element("Test Gain"));
+		TGVst3Host host = processor.getInstance().getHost();
+		long playing = hostProcesses();
+		processor.close();
+		assertEquals("0 1 0", scanning + " " + playing + " " + hostProcesses());
+		assertFalse(host.isRunning());
+		assertTrue(this.hosting.getStops().isEmpty());
+	}
+
+	private static long hostProcesses() {
+		return ProcessHandle.current().children().filter(process -> process.info().command().orElse("").contains("tuxguitar-vst3-host")).count();
 	}
 
 	@Test
@@ -242,7 +277,7 @@ public class TestVst3Processors {
 	@Test
 	public void hostingNeedsTheHostConfigured() {
 		TGVst3Hosting unconfigured = TGVst3Hosting.getInstance(new TGContext());
-		TGVst3Exception refused = assertThrows(TGVst3Exception.class, unconfigured::getHost);
+		TGVst3Exception refused = assertThrows(TGVst3Exception.class, () -> unconfigured.open(this.hosting.find("Test Gain"), 44100f, FRAMES));
 		assertEquals("no VST3 host is configured", refused.getMessage());
 		assertNotNull(this.hosting.getFolders());
 		assertEquals(2, this.hosting.getFolders().size());

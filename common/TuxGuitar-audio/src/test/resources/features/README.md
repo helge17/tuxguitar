@@ -97,6 +97,8 @@ These features change how TuxGuitar works today. They are requirements, not side
   TuxGuitar over pipes or shared memory and never listens on a network port. For VST3 the helper's commands and replies
   go over the helper's own standard input and output (anonymous pipes: no name, so no other process can connect to
   them), and the audio stays in shared memory (a file both map); there is no named pipe, Unix socket or network port.
+  Each VST3 plugin runs in a helper process of its own, so a plugin that crashes or hangs silences only itself; it is
+  opened again, with its last state, the next time its sound chain opens.
   LV2 moves off its TCP socket
   (`TGRemoteHost`). Plugins load only from the VST3 (or LV2) folders. VST2 hosting was removed in 2024 because its
   bridge listened on a network port and was flagged as a Trojan (issue #312); the VST3 SDK is MIT-licensed since 3.8

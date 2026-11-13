@@ -32,6 +32,10 @@ public final class TGVst3Host implements AutoCloseable {
 	private final List<String> opened = new ArrayList<String>();
 	private long pid;
 	private String exitReport;
+	// ended by TuxGuitar while it ran
+	private boolean closed;
+	// it runs one plugin and ends when that plugin closes
+	private boolean dedicated;
 
 	private TGVst3Host(Process process, File shared) {
 		this.process = process;
@@ -65,6 +69,16 @@ public final class TGVst3Host implements AutoCloseable {
 
 	public synchronized boolean isRunning() {
 		return (this.getExitReport() == null);
+	}
+
+	// whether TuxGuitar ended it while it ran (rather than it stopping)
+	public synchronized boolean isClosed() {
+		return this.closed;
+	}
+
+	// from now on it ends when its last plugin closes
+	synchronized void dedicate() {
+		this.dedicated = true;
 	}
 
 	// why the host stopped, or null while it runs
@@ -116,8 +130,11 @@ public final class TGVst3Host implements AutoCloseable {
 		this.instances.put(id, instance);
 	}
 
-	void closed(int id) {
+	synchronized void closed(int id) {
 		this.instances.remove(id);
+		if (this.dedicated && this.instances.isEmpty()) {
+			this.close();
+		}
 	}
 
 	// sends the request and reads its reply, then what the plugins told the host
@@ -170,6 +187,7 @@ public final class TGVst3Host implements AutoCloseable {
 
 	// the process ends when its input closes; it is ended if it has not within 5 seconds
 	public synchronized void close() {
+		this.closed = this.closed || this.isRunning();
 		try {
 			this.requests.close();
 			this.process.waitFor(5, TimeUnit.SECONDS);
