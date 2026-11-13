@@ -4,7 +4,10 @@ Specification of audio tracks, line-in recording, VST3 effects and instruments, 
 exporting it. It is written ahead of the implementation: a scenario not implemented yet is tagged `@planned` (on the
 scenario, on an `Examples` block, or on the whole feature), and the normal run leaves it out
 (`src/test/resources/junit-platform.properties`). Remove the tag from a scenario when you start implementing it.
-Implemented so far: the model-level scenarios of `tracks/audio_tracks` and `recording/takes` (no rendering yet).
+Implemented so far: `tracks/audio_tracks` and `recording/takes` but for VST3 plugins, and `recording/recording_line_in`
+but for VST3 plugins and monitoring through a sound chain: takes, playing and recording rendered offline on the Test
+Interface (takes, General MIDI programs, the mix, time-stretching), input channels and levels, the round trip, refusals
+during a recording, and Count In. VST3 hosting, sync, saving (file format 3.0) and export are not implemented yet.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
@@ -51,7 +54,9 @@ Where playing and recording stop: "play the song from A" plays until the song en
 pass N; "to B" or "until B" stops at B. All of them run on until the most delayed track has sounded everything before
 the stop point, and a recording keeps taking input for one round trip after it, so what was played before the stop
 point is in the take. That run-on is TuxGuitar's, not the step's: the step captures the output until TuxGuitar reports
-it has stopped. "Stop at X" stops at once; "stop after X" stops at the first block after X sounds. "And do not stop it"
+it has stopped. "Stop at X" stops at once; "stop after X" stops at the first block after X sounds, but "stop after the
+second Count In click" stops half a beat after that click's note reaches the drums, clear of its attack and of the third
+click. "And do not stop it"
 waits up to 10 seconds past the end of the song for TuxGuitar to stop on its own, and fails if it does not. A range
 "from A to B" includes A and ends just before B. "I am recording from A" and "I am playing the song from A" mean that
 recording or playing from A is under way when the `When` happens.
@@ -139,7 +144,9 @@ These features change how TuxGuitar works today. They are requirements, not side
   through a repeated or looped range. "Until the song ends" follows song time; "to the end of measure 4" is a position.
 - **Percentage of Tempo, Play looped, Loop Range, Training Mode, Count In, Count In ticks, Metronome**: the existing
   Play Mode and transport settings. Training Mode raises the percentage after each pass of the Loop Range, from its
-  start percentage to its end, by its increment.
+  start percentage to its end, by its increment. Count In starts playing: its first click is where the output starts.
+- **Click sound**: the drum note and velocity Count In and the Metronome play, a TuxGuitar setting (not saved in the
+  song, not undoable): Side Stick (note 37) at velocity 95 until I change it.
 
 ### Tracks and sound
 
@@ -235,10 +242,16 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **A track's tap**: the audio of the track's channel where it joins the output mix: after its sound chain and plugin
   delay compensation, before Volume and Balance. "Track 2 sounds ..." is measured at track 2's tap.
 - **The output**: what the audio device plays, left and right: every channel after Volume and Balance, the Count In and
-  the Metronome. Count In and Metronome clicks are counted where they join the mix.
+  the Metronome.
+- **The drum tap**: the General MIDI drums Count In and the Metronome play on, where they join the mix. Count In and
+  Metronome clicks are counted there, in two parts: a click's position is the sample on which TuxGuitar sends its note to
+  the drums (a drum's attack is no click, so the position is not measured from the audio), and each click must sound on
+  the drum tap, and in the output, above -60 dBFS within its beat. **Every Count In click sounds drum note N at velocity
+  V**: the drum tap is, sample for sample, what the General MIDI drums sound playing that note at that velocity on the
+  clicks' samples.
 - **A track plays for N seconds**: how long its audio lasts as the song plays; **a take is N samples long**: how long it
   is stored.
-- **Click**: a one-sample impulse. Its position is its first sample above half its peak; next to a tone, a click is a
+- **Click** (in a take or a signal): a one-sample impulse. Its position is its first sample above half its peak; next to a tone, a click is a
   jump of more than 0.1 between two samples. A time-stretched click is no longer one sample.
 - **Peak**: the largest absolute sample value, 1.0 being full scale (0 dBFS).
 - **A tone within 1% (or 1 Hz)**: by its fundamental frequency. **No ... above -60 dBFS**: by the level at that

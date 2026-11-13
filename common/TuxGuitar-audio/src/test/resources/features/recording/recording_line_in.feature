@@ -221,6 +221,14 @@ Feature: Recording line-in audio
     And track 2's takes read ""
     And the undo history is as it was before the recording
 
+  Scenario: Count In sounds the click sound I have set
+    Given I have set the click sound to drum note 42 at velocity 127
+    And I have turned Count In on
+    And I have armed track 2
+    When I record from measure 2 beat 1 to measure 3 beat 1
+    Then the output holds 4 Count In clicks, 22050 samples apart within 1 sample
+    And every Count In click sounds drum note 42 at velocity 127
+
   # Input level
 
   Scenario Outline: the input level shows the peak an input channel delivered, and whether it is clipping
