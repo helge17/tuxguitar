@@ -138,6 +138,15 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 		return (this.instance != null ? this.instance.getLatency() : 0);
 	}
 
+	// a plugin that never stops sounding has an endless tail
+	public int getTail() {
+		if (this.instance == null) {
+			return 0;
+		}
+		int tail = this.instance.getTail();
+		return (tail == TGVst3Instance.INFINITE_TAIL ? TGAudioProcessor.INFINITE_TAIL : tail);
+	}
+
 	// the plugin as it is open in the host process, or null
 	public TGVst3Instance getInstance() {
 		return this.instance;

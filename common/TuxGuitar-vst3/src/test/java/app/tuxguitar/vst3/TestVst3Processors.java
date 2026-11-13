@@ -129,6 +129,16 @@ public class TestVst3Processors {
 		assertEquals(2048, effect(element).getLatency());
 	}
 
+	// a plugin's tail as it reports it; one that never ends is endless; a closed one has none
+	@Test
+	public void anEffectReportsItsPluginsTail() {
+		TGAudioProcessor echo = effect(element("Test Echo"));
+		int echoTail = echo.getTail();
+		int droneTail = effect(element("Test Drone")).getTail();
+		echo.close();
+		assertEquals("13230 " + TGAudioProcessor.INFINITE_TAIL + " 0", echoTail + " " + droneTail + " " + echo.getTail());
+	}
+
 	@Test
 	public void anInstrumentPlaysEachNoteOnItsFrame() {
 		TGMidiProcessor click = instrument("Test Click");

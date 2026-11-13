@@ -6,6 +6,9 @@ import app.tuxguitar.player.base.MidiTransport;
 
 public interface TGAudioProcessor {
 
+	// the tail of a processor that sounds on for ever
+	int INFINITE_TAIL = Integer.MAX_VALUE;
+
 	void close();
 
 	void finalize();
@@ -42,5 +45,16 @@ public interface TGAudioProcessor {
 	// how many frames later than its input (or, for a source, than the events it is sent) it sounds them
 	default int getLatency() {
 		return 0;
+	}
+
+	// how many frames it sounds on after its input stops (or, for a source, after its last note ends), as it reports;
+	// INFINITE_TAIL when it never stops
+	default int getTail() {
+		return 0;
+	}
+
+	// frames along a chain (latencies, tails) add up; an endless tail stays endless
+	static int along(int frames, int more) {
+		return (int) Math.min(INFINITE_TAIL, (long) frames + more);
 	}
 }

@@ -3,6 +3,7 @@ package app.tuxguitar.midi.synth;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,5 +20,35 @@ public class TestAudioProcessor {
 		new FakeProcessors.Effect(sample -> sample * 2).process(block);
 		assertEquals(0.5f, block[0][0], 0.0001f);
 		assertEquals(-0.25f, block[1][FakeProcessors.FRAMES - 1], 0.0001f);
+	}
+
+	// a processor that reports neither a latency nor a tail has none
+	@Test
+	public void aProcessorThatReportsNothingHasNoLatencyAndNoTail() {
+		TGAudioProcessor plain = new TGAudioProcessor() {
+			public void close() {
+			}
+
+			public void finalize() {
+			}
+
+			public boolean isOpen() {
+				return true;
+			}
+
+			public boolean isBusy() {
+				return false;
+			}
+
+			public void fillBuffer(TGAudioBuffer buffer) {
+			}
+
+			public void storeParameters(Map<String, String> parameters) {
+			}
+
+			public void restoreParameters(Map<String, String> parameters) {
+			}
+		};
+		assertEquals("0 0", plain.getLatency() + " " + plain.getTail());
 	}
 }

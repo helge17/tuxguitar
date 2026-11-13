@@ -94,6 +94,11 @@ public class TGSynthChannel implements MidiChannel {
 		return (this.processor != null ? this.processor.getLatency() : 0);
 	}
 
+	// how many frames its chain sounds on after its last note: the tails along it
+	public int getTail(){
+		return (this.processor != null ? this.processor.getTail() : 0);
+	}
+
 	public void fillBuffer(TGAudioBuffer buffer){
 		this.fillBuffer(buffer, 0);
 	}

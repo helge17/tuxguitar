@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.ToIntFunction;
 
 import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.util.TGContext;
@@ -240,20 +241,29 @@ public class TGSynthChannelProcessor {
 
 	// the latencies of the enabled processors along the chain; none when the receiver is not open
 	public int getLatency() {
+		return this.along(TGAudioProcessor::getLatency);
+	}
+
+	// the tails of the enabled processors along the chain; none when the receiver is not open
+	public int getTail() {
+		return this.along(TGAudioProcessor::getTail);
+	}
+
+	private int along(ToIntFunction<TGAudioProcessor> frames) {
 		synchronized (this.lock) {
-			int latency = 0;
+			int sum = 0;
 			if( this.isOpen() ){
-				latency += this.getLatency(this.processor);
+				sum = TGAudioProcessor.along(sum, this.of(this.processor, frames));
 				for( TGAudioProcessor output : this.outputs ){
-					latency += this.getLatency(output);
+					sum = TGAudioProcessor.along(sum, this.of(output, frames));
 				}
 			}
-			return latency;
+			return sum;
 		}
 	}
 
-	private int getLatency(TGAudioProcessor processor) {
-		return (this.isEnabled(processor) ? processor.getLatency() : 0);
+	private int of(TGAudioProcessor processor, ToIntFunction<TGAudioProcessor> frames) {
+		return (this.isEnabled(processor) ? frames.applyAsInt(processor) : 0);
 	}
 
 	private boolean isOpen() {

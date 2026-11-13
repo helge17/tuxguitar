@@ -192,6 +192,28 @@ public class TestSynthChannel {
 		assertEquals(0.35f, left(), QUANTUM);
 	}
 
+	// the tails of the enabled processors along the chain add up (an echo of an echo rings on for both), and one that
+	// never ends makes the chain's endless; a channel without a program has none
+	@Test
+	public void theChainsTailIsTheSumOfItsEnabledProcessorsTails() throws MidiPlayerException {
+		TGProgram program = program("source", "twice", "lift");
+		this.model.getProgram(0, 5).copyFrom(program);
+		program.getOutput(0).setEnabled(false);
+		this.model.getProgram(0, 6).copyFrom(program);
+		int none = this.channel.getTail();
+		this.channel.sendProgramChange(5);
+		this.source.last().tail = 100;
+		this.twice.created.get(0).tail = 13230;
+		this.lift.created.get(0).tail = 441;
+		int all = this.channel.getTail();
+		this.channel.sendProgramChange(6);
+		int enabled = this.channel.getTail();
+		this.lift.created.get(0).tail = TGAudioProcessor.INFINITE_TAIL;
+		int endless = this.channel.getTail();
+
+		assertEquals("0 13771 541 " + Integer.MAX_VALUE, none + " " + all + " " + enabled + " " + endless);
+	}
+
 	// the latencies of the enabled processors along the chain add up; a channel without a program, or whose source is
 	// closed, sounds nothing and has none
 	@Test

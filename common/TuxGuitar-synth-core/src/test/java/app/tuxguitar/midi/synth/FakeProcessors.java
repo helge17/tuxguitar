@@ -26,6 +26,7 @@ final class FakeProcessors {
 		boolean busy;
 		// what it reports, not what it does
 		int latency;
+		int tail;
 		// the transport it was given
 		MidiTransport transport;
 
@@ -72,6 +73,10 @@ final class FakeProcessors {
 
 		public int getLatency() {
 			return this.latency;
+		}
+
+		public int getTail() {
+			return this.tail;
 		}
 
 		public void setTransport(MidiTransport transport) {
