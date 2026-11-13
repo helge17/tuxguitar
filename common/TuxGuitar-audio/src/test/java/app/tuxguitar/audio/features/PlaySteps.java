@@ -22,6 +22,11 @@ public class PlaySteps {
 		play(from, Long.MAX_VALUE, 1);
 	}
 
+	@When("I play the song from {position} until the song ends")
+	public void playUntilTheSongEnds(SongPosition from) {
+		play(from, Long.MAX_VALUE, 1);
+	}
+
 	@When("I play the song from {position} for {int} passes")
 	public void playPasses(SongPosition from, int passes) {
 		play(from, Long.MAX_VALUE, passes);

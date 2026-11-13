@@ -1,6 +1,8 @@
 package app.tuxguitar.audio.features;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,12 @@ import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.util.properties.TGPropertiesManager;
 import app.tuxguitar.audio.TGSongTime;
+import app.tuxguitar.audio.TGSoundChain;
+import app.tuxguitar.midi.synth.TGProgram;
+import app.tuxguitar.midi.synth.TGProgramElement;
+import app.tuxguitar.midi.synth.impl.GervillProcessor;
+import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
+import app.tuxguitar.vst3.TGVst3Element;
 import app.tuxguitar.audio.TGTimeline;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerMode;
@@ -131,10 +139,35 @@ public class AudioWorld {
 		}
 	}
 
-	// the player (the scenario's musician) plays along with what is about to be played
+	// the player (the scenario's musician) plays along with what is about to be played, as the output sounds it
 	public void playAlong(long start, long stop, int passes) {
 		MidiPlayerMode mode = MidiPlayer.getInstance(this.fixture.context).getMode();
 		this.device.setPlayed(new TGTimeline(song(), TGSongTime.play(song(), mode, start, stop, passes), this.device.getSampleRate()));
+		this.device.setChainDelay(this.chainDelay());
+	}
+
+	// plugin delay compensation as the README defines it: the slowest sound chain, the General MIDI drums' (Gervill's
+	// latency) at least, a muted track's too. Of the test plugins, Test Latency and Test Click delay by their one
+	// parameter, Latency; a disabled effect does not count
+	private int chainDelay() {
+		int gervill = GervillProcessor.latency(this.device.getSampleRate());
+		int delay = gervill;
+		Iterator<TGTrack> tracks = song().getTracks();
+		while (tracks.hasNext()) {
+			TGProgram chain = TGSoundChain.get(channel(tracks.next()));
+			int latency = (GervillProcessorFactory.TYPE.equals(chain.getReceiver().getType()) ? gervill : latency(chain.getReceiver()));
+			for (int i = 0; i < chain.countOutputs(); i++) {
+				latency += (chain.getOutput(i).isEnabled() ? latency(chain.getOutput(i)) : 0);
+			}
+			delay = Math.max(delay, latency);
+		}
+		return delay;
+	}
+
+	private static int latency(TGProgramElement element) {
+		boolean delays = TGVst3Element.isVst3(element) && Arrays.asList("Test Latency", "Test Click").contains(TGVst3Element.getName(element));
+		return (int) (delays ? element.getParameters().entrySet().stream().filter(parameter -> parameter.getKey().startsWith("vst3.parameter."))
+			.mapToLong(parameter -> Math.round(Double.parseDouble(parameter.getValue()))).sum() : 0);
 	}
 
 	// runs the action on a thread of its own and an action context of its own, as the app runs a recording on the audio

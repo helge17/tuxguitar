@@ -210,10 +210,23 @@ public class ListeningSteps {
 	// how long the track's takes play as the song plays: the samples of the played measures where a take plays
 	@Then("track {int} plays for {double} seconds within 5 ms")
 	public void playsFor(int number, double seconds) {
+		assertEquals(seconds, playing(number, 0) / (double) TestInterface.SAMPLE_RATE, 0.005);
+	}
+
+	@Then("track {int} plays measure {int} for {double} seconds within 5 ms")
+	public void playsMeasureFor(int number, int measure, double seconds) {
+		assertEquals(seconds, playing(number, measure) / (double) TestInterface.SAMPLE_RATE, 0.005);
+	}
+
+	// the samples where the track's takes play in the measure, or (0) in every measure
+	private long playing(int number, int measure) {
 		TGTimeline timeline = heard().timeline();
 		long samples = 0;
 		for (int i = 0; i < timeline.count(); i++) {
 			TGPlayedMeasure played = timeline.get(i);
+			if (measure != 0 && played.getHeader().getNumber() != measure) {
+				continue;
+			}
 			List<TGTakeSegment> segments = TGTakes.playback(world.track(number).getMeasure(played.getHeader().getNumber() - 1));
 			for (int k = 0; k < segments.size(); k++) {
 				long from = Math.max(segments.get(k).getStart(), played.getFrom());
@@ -221,7 +234,7 @@ public class ListeningSteps {
 				samples += (segments.get(k).getTake() != null && to > from ? timeline.sampleAt(i, to) - timeline.sampleAt(i, from) : 0);
 			}
 		}
-		assertEquals(seconds, samples / (double) TestInterface.SAMPLE_RATE, 0.005);
+		return samples;
 	}
 
 	@Then("track {int} sounds take {int} sample for sample in measure(s) {int}")

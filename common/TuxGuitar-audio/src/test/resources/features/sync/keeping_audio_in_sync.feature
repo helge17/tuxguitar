@@ -1,4 +1,3 @@
-@planned
 Feature: Keeping audio in sync
   Takes, the notes of other tracks, the Count In, the Metronome and the player's position stay together, whatever
   plugins and the audio device delay. Every track is delayed to the latest one (plugin delay compensation). A take is
@@ -53,6 +52,7 @@ Feature: Keeping audio in sync
     Then the output's left side holds 16 clicks and its right side none
     And every left click reaches the output 2048 samples after its beat, within 1 sample
 
+  @planned
   Scenario: when a plugin's latency changes while playing, the tracks are together again from the next beat
     Given I have added the VST3 effect "Test Latency" to track 2
     And I am playing the song from measure 1 beat 1
@@ -65,6 +65,7 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1 until the song ends
     Then the output's left side holds 16 clicks and its right side 16 clicks
 
+  @planned
   Scenario: the Metronome sounds with the tracks whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1
     And I have set "Latency" of VST3 effect 1 of track 1 to 2048
@@ -79,6 +80,7 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1
     Then the last Count In click reaches the output 22050 samples before the left click of measure 1 beat 1, within 1 sample
 
+  @planned
   Scenario Outline: TuxGuitar reports a beat as played when the output sounds it
     Given I have set the audio device to "Test Interface" with 0 samples of input latency and <output> of output latency
     And I have added the VST3 effect "Test Latency" to track 2
@@ -132,6 +134,7 @@ Feature: Keeping audio in sync
 
   # Starting, stopping, looping, repeats
 
+  @planned
   Scenario Outline: playing from the middle of a take starts at the matching point of the take
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have added the VST3 effect "Test Latency" to track 1
@@ -145,12 +148,14 @@ Feature: Keeping audio in sync
       | 100     | 1 sample  |
       | 80      | 5 ms      |
 
+  @planned
   Scenario: stopping and playing again starts the take back at the matching point
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have played the song from measure 1 beat 1 and stopped at measure 2 beat 3
     When I play the song from measure 2 beat 3
     Then track 2 sounds 330 Hz, then 440 Hz from the left click of measure 3 beat 1 on, within 1 sample
 
+  @planned
   Scenario: stopping clears the effects' tails
     Given I have added the VST3 effect "Test Echo" to track 2
     And I have played the song from measure 1 beat 1 and stopped at measure 1 beat 4.5
@@ -165,6 +170,7 @@ Feature: Keeping audio in sync
     Then the output's left side holds 24 clicks and its right side 24 clicks
     And on every beat the left and right clicks reach the output within 1 sample of each other
 
+  @planned
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
@@ -172,6 +178,7 @@ Feature: Keeping audio in sync
     When I play the song from measure 2 beat 1 for 2 passes
     Then the echo of the click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample
 
+  @planned
   Scenario: a tail carries across a repeat
     Given I have repeated measures 2 to 3 once
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
@@ -219,12 +226,14 @@ Feature: Keeping audio in sync
       | 1       | 200     |
       | 500     | 0.4     |
 
+  @planned
   Scenario: in Training Mode each pass stretches the take to that pass's Percentage of Tempo
     Given I have turned Training Mode on from 80% to 100% by 10% over measures 2 to 3
     When I play the song from measure 2 beat 1 for 3 passes
     Then the passes last 5, 4.444 and 4 seconds within 5 ms
     And on every beat the left and right clicks reach the output within 5 ms of each other
 
+  @planned
   Scenario: in Training Mode a take keeps its pitch on every pass
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 2 beat 1 to measure 4 beat 1
     And I have turned Training Mode on from 80% to 100% by 10% over measures 2 to 3

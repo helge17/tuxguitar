@@ -60,6 +60,22 @@ public final class Meters {
 		return 2 * Math.sqrt(re * re + im * im) / weights;
 	}
 
+	// the clicks next to a tone: jumps of more than 0.1 between two samples, a click ending where none is for CLICK_GAP
+	// samples; each at the sample after its first jump
+	public static List<Integer> jumps(float[] samples, int from, int to) {
+		List<Integer> clicks = new ArrayList<Integer>();
+		int lastJump = Integer.MIN_VALUE / 2;
+		for (int i = Math.max(from, 1); i < to; i++) {
+			if (Math.abs(samples[i] - samples[i - 1]) > 0.1f) {
+				if (i - lastJump > CLICK_GAP) {
+					clicks.add(i);
+				}
+				lastJump = i;
+			}
+		}
+		return clicks;
+	}
+
 	// the clicks: runs of samples above half the peak, a run ending where none is for CLICK_GAP samples; each at its
 	// first sample above half the peak
 	public static List<Integer> clicks(float[] samples, int from, int to) {

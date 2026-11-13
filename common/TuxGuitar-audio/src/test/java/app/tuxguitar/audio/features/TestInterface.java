@@ -57,6 +57,11 @@ final class TestInterface implements TGAudioDevice {
 		this.chainDelay = 0;
 	}
 
+	// how much later than the clock the TuxGuitar Synthesizer sends to the output what it plays
+	void setChainDelay(int chainDelay) {
+		this.chainDelay = chainDelay;
+	}
+
 	public int getSampleRate() {
 		return this.sampleRate;
 	}
