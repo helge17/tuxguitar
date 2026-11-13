@@ -153,6 +153,27 @@ public class TestSynthChannel {
 		assertEquals(0.35f, left(), QUANTUM);
 	}
 
+	// the latencies of the enabled processors along the chain add up; a channel without a program, or whose source is
+	// closed, sounds nothing and has none
+	@Test
+	public void theChainsLatencyIsTheSumOfItsEnabledProcessorsLatencies() throws MidiPlayerException {
+		TGProgram program = program("source", "twice", "lift");
+		this.model.getProgram(0, 5).copyFrom(program);
+		program.getOutput(0).setEnabled(false);
+		this.model.getProgram(0, 6).copyFrom(program);
+		int none = this.channel.getLatency();
+		this.channel.sendProgramChange(5);
+		this.source.last().latency = 600;
+		this.twice.created.get(0).latency = 2048;
+		this.lift.created.get(0).latency = 256;
+		int all = this.channel.getLatency();
+		this.channel.sendProgramChange(6);
+		int enabled = this.channel.getLatency();
+		this.source.last().close();
+
+		assertEquals("0 2904 856 0", none + " " + all + " " + enabled + " " + this.channel.getLatency());
+	}
+
 	@Test
 	public void aDisabledSourceSilencesTheChain() throws MidiPlayerException {
 		TGProgram program = program("source", "lift");

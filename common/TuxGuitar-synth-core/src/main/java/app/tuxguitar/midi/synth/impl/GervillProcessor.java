@@ -270,6 +270,10 @@ public class GervillProcessor implements TGMidiProcessor {
 		return 2 * (int) (sampleRate / CONTROL_RATE);
 	}
 
+	public int getLatency() {
+		return latency(this.format.getSampleRate());
+	}
+
 	public void sendPitchBend(int value, int voice, boolean bendMode) {
 		this.synth.getChannels()[resolveChannel(voice, bendMode)].setPitchBend(value * 128);
 	}

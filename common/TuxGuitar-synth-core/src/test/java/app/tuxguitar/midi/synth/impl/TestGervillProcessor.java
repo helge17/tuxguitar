@@ -470,6 +470,15 @@ public class TestGervillProcessor {
 		assertEquals("gervill", new GervillProcessorFactory(this.context).getType());
 	}
 
+	// a processor reports Gervill's latency at its rate
+	@Test
+	public void theLatencyIsGervillsAtTheProcessorsRate() throws InterruptedException {
+		GervillProcessor processor = loaded("0:0", null);
+		int at44100 = processor.getLatency();
+		processor.setSampleRate(48000);
+		assertEquals(GervillProcessor.latency(44100) + " " + GervillProcessor.latency(48000), at44100 + " " + processor.getLatency());
+	}
+
 	// a synthesizer opened at the audio device's rate renders its notes at that rate, so they keep their pitch
 	@Test
 	public void aSynthesizerAtAnotherSampleRateSoundsNotesAtTheirPitch() throws Exception {

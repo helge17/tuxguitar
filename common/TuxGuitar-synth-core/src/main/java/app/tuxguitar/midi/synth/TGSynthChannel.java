@@ -83,6 +83,11 @@ public class TGSynthChannel implements MidiChannel {
 		}
 	}
 
+	// how many frames later than its events the channel's chain sounds them: the latencies along it
+	public int getLatency(){
+		return (this.processor != null ? this.processor.getLatency() : 0);
+	}
+
 	public void fillBuffer(TGAudioBuffer buffer){
 		if( this.processor != null){
 			this.processor.fillBuffer(buffer, this.volume, this.balance);

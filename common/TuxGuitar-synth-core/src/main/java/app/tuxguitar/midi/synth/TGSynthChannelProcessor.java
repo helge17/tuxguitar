@@ -213,6 +213,24 @@ public class TGSynthChannelProcessor {
 		}
 	}
 
+	// the latencies of the enabled processors along the chain; none when the receiver is not open
+	public int getLatency() {
+		synchronized (this.lock) {
+			int latency = 0;
+			if( this.isOpen() ){
+				latency += this.getLatency(this.processor);
+				for( TGAudioProcessor output : this.outputs ){
+					latency += this.getLatency(output);
+				}
+			}
+			return latency;
+		}
+	}
+
+	private int getLatency(TGAudioProcessor processor) {
+		return (this.isEnabled(processor) ? processor.getLatency() : 0);
+	}
+
 	private boolean isOpen() {
 		return (this.processor != null && this.processor.isOpen());
 	}

@@ -22,6 +22,8 @@ final class FakeProcessors {
 		final Map<String, String> restored = new HashMap<String, String>();
 		boolean open = true;
 		boolean busy;
+		// what it reports, not what it does
+		int latency;
 
 		Effect(DoubleUnaryOperator change) {
 			this.change = change;
@@ -58,6 +60,10 @@ final class FakeProcessors {
 
 		public void restoreParameters(Map<String, String> parameters) {
 			this.restored.putAll(parameters);
+		}
+
+		public int getLatency() {
+			return this.latency;
 		}
 	}
 

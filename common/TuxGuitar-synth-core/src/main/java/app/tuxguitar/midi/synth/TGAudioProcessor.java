@@ -21,4 +21,9 @@ public interface TGAudioProcessor {
 	// the sample rate it renders at, given before its parameters; 44100 Hz unless told
 	default void setSampleRate(float sampleRate) {
 	}
+
+	// how many frames later than its input (or, for a source, than the events it is sent) it sounds them
+	default int getLatency() {
+		return 0;
+	}
 }
