@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.midi.synth.impl.GervillDrums;
+import app.tuxguitar.midi.synth.impl.GervillProcessor;
 import app.tuxguitar.player.base.MidiClick;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerCountDown;
@@ -21,8 +22,8 @@ import app.tuxguitar.util.properties.TGPropertiesManager;
 
 /**
  * The drum tap over a timeline: from its first sample, what the General MIDI drums sound clicking the Count In, each
- * click on its sample and held a beat; silence without a Count In. The song has 2 measures of 4/4 at 120 bpm, played
- * from measure 2 at 44100 Hz.
+ * click heard from its sample (Gervill's latency taken out) and held a beat; silence without a Count In. The song has 2
+ * measures of 4/4 at 120 bpm, played from measure 2 at 44100 Hz.
  */
 public class TestDrumTap {
 
@@ -41,13 +42,14 @@ public class TestDrumTap {
 		return new TGTimeline(song, played, 44100, TGCountIn.before(countDown, played, 44100));
 	}
 
-	// the drums themselves, filled a block at a time from their first frame
+	// the drums themselves, filled a block at a time, from their latency on
 	private float[][] drums(TGTimeline timeline, MidiClick click) {
 		GervillDrums drums = new GervillDrums(context, 44100);
 		for (long position : timeline.getCountIn().positions()) {
 			drums.click(click, position, timeline.getCountIn().hold());
 		}
-		int blocks = (int) (timeline.length() / GervillDrums.FRAMES) + 1;
+		int latency = GervillProcessor.latency(44100);
+		int blocks = (int) ((timeline.length() + latency) / GervillDrums.FRAMES) + 1;
 		float[][] sides = new float[2][blocks * GervillDrums.FRAMES];
 		float[][] block = new float[2][GervillDrums.FRAMES];
 		for (int b = 0; b < blocks; b++) {
@@ -57,7 +59,8 @@ public class TestDrumTap {
 			}
 		}
 		drums.close();
-		return new float[][] {Arrays.copyOf(sides[0], (int) timeline.length()), Arrays.copyOf(sides[1], (int) timeline.length())};
+		int end = latency + (int) timeline.length();
+		return new float[][] {Arrays.copyOfRange(sides[0], latency, end), Arrays.copyOfRange(sides[1], latency, end)};
 	}
 
 	// one Count In tick: one click, on the first sample
@@ -73,16 +76,14 @@ public class TestDrumTap {
 		assertArrayEquals(drums(timeline, MidiClick.DEFAULT)[1], tap[1]);
 	}
 
-	// today the tap lags the timeline by Gervill's latency, two control periods (600 samples at 44100 Hz): the click on
-	// the first sample is heard from sample 600
+	// Gervill's latency (600 samples at 44100 Hz) is taken out: the click on the first sample is heard from it
 	@Test
-	public void aClickIsHeardTheLatencyAfterItsSample() {
+	public void aClickIsHeardFromItsSample() {
 		countDown.setEnabled(true);
 		countDown.setTickCount(1);
 		float[] left = TGDrumTap.render(context, fromMeasure2(), MidiClick.DEFAULT)[0];
 
-		assertEquals(0, Meters.peak(left, 0, 600), 0);
-		assertTrue(Meters.peak(left, 600, 1000) > 0);
+		assertTrue(Meters.peak(left, 0, 50) > 0);
 	}
 
 	@Test

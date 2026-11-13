@@ -96,7 +96,12 @@ These features change how TuxGuitar works today. They are requirements, not side
   (October 2025), which fits TuxGuitar's LGPL-2.1.
 - **Sample-accurate playback.** While the TuxGuitar Synthesizer plays, the audio device's sample clock drives the
   player, and every note reaches its instrument on its exact sample inside a block. The player reports a beat when the
-  output sounds it, so the played beat is no longer highlighted early by the output buffer.
+  output sounds it, so the played beat is no longer highlighted early by the output buffer. Live and offline the same
+  synthesizer code times the events: before each block the sequencer sends the block's events, each on its frame (a
+  note starts on that sample; Gervill starts its other events with the control period that holds it). Gervill's
+  stream sounds what it renders two control periods later (600 samples at 44100 Hz): live that is a constant
+  latency, offline it is taken out, so a note is heard from its sample. A MIDI Port other than the TuxGuitar
+  Synthesizer keeps today's timing.
 - **Seamless loops.** With Play looped on, the jump back to the start of the Loop Range is seamless: no restart, no gap,
   tails carry across. Count In sounds once, before the first pass, at the first pass's Percentage of Tempo.
 - **Count In and Metronome** sound through the TuxGuitar Synthesizer's General MIDI drums, outside every sound chain,

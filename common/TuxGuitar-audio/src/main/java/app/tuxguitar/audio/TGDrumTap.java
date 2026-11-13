@@ -7,7 +7,8 @@ import app.tuxguitar.util.TGContext;
 /**
  * The drum tap: what the TuxGuitar Synthesizer's General MIDI drums sound over a timeline, outside every sound chain,
  * where they join the output mix, left and right. They click the Count In: each click's note reaches the drums on its
- * sample and is held a beat. (The Metronome will click here too.)
+ * sample, is heard from it (Gervill's latency is taken out, see TGGervillBlocks) and is held a beat. (The Metronome
+ * will click here too.)
  */
 public final class TGDrumTap {
 
@@ -15,8 +16,7 @@ public final class TGDrumTap {
 	}
 
 	public static float[][] render(TGContext context, TGTimeline timeline, MidiClick click) {
-		int length = (int) timeline.length();
-		float[][] tap = new float[2][length];
+		float[][] tap = new float[2][(int) timeline.length()];
 		long[] clicks = timeline.getCountIn().positions();
 		// no drums to open when nothing clicks
 		if (clicks.length == 0) {
@@ -26,12 +26,10 @@ public final class TGDrumTap {
 		for (long position : clicks) {
 			drums.click(click, position, timeline.getCountIn().hold());
 		}
-		float[][] block = new float[2][GervillDrums.FRAMES];
-		for (int start = 0; start < length; start += GervillDrums.FRAMES) {
+		float[][] block = new float[2][TGGervillBlocks.FRAMES];
+		for (long start = 0; start < TGGervillBlocks.end(timeline); start += TGGervillBlocks.FRAMES) {
 			drums.fill(block);
-			for (int side = 0; side < tap.length; side++) {
-				System.arraycopy(block[side], 0, tap[side], start, Math.min(GervillDrums.FRAMES, length - start));
-			}
+			TGGervillBlocks.place(block, tap, start - TGGervillBlocks.latency(timeline));
 		}
 		drums.close();
 		return tap;

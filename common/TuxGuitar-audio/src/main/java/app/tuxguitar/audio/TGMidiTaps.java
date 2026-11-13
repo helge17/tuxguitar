@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import app.tuxguitar.midi.synth.TGAudioBuffer;
 import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
-import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.player.base.MidiReceiver;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiSequenceParser;
 import app.tuxguitar.song.managers.TGSongManager;
@@ -28,12 +29,13 @@ import app.tuxguitar.util.TGContext;
  * The taps of the channels of tracks with notes, headless: the TuxGuitar Synthesizer's channels at the audio device's
  * rate, each playing the General MIDI program of its channel through Gervill (the programs kept in the synthesizer's
  * settings are not read here), fed the events of the MIDI sequence parser on the timeline's clock and rendered in
- * blocks of 512 samples. An event is sent at the start of the block it falls in, as the synthesizer does today. Each
- * tap is the channel's chain before Volume and Balance, left and right.
+ * blocks of 512 samples. Before each block its events go to the synthesizer's receiver of their frames, as the
+ * sequencer sends them live: a note starts on its own sample, and is heard from it (Gervill's latency is taken out,
+ * see TGGervillBlocks). Each tap is the channel's chain before Volume and Balance, left and right.
  */
 public final class TGMidiTaps {
 
-	private static final int FRAMES = TGAudioBuffer.BUFFER_SIZE / 2;
+	private static final int FRAMES = TGGervillBlocks.FRAMES;
 	private static final int FLAGS = MidiSequenceParser.ADD_DEFAULT_CONTROLS | MidiSequenceParser.ADD_MIXER_MESSAGES | MidiSequenceParser.ADD_BANK_SELECT;
 
 	private TGMidiTaps() {
@@ -50,19 +52,24 @@ public final class TGMidiTaps {
 				open(model, taps, event.channel, (int) timeline.length());
 			}
 		}
-		long length = timeline.length();
-		for (long block = 0; block < length; block += FRAMES) {
-			for (List<Event> at : events.headMap(block + FRAMES).values()) {
-				for (Event event : at) {
-					event.send(model.getChannelById(event.channel));
-					waitWhileLoading(model);
-				}
-			}
-			events.headMap(block + FRAMES).clear();
-			fill(model, taps, block, length);
+		for (long block = 0; block < TGGervillBlocks.end(timeline); block += FRAMES) {
+			send(model, events.headMap(block + FRAMES), block);
+			fill(model, taps, block - TGGervillBlocks.latency(timeline));
 		}
 		model.closeChannels();
 		return taps;
+	}
+
+	// the events before the end of the block, on their frames of it (those before it on its first), then forgotten
+	private static void send(TGSynthModel model, SortedMap<Long, List<Event>> due, long block) throws MidiPlayerException {
+		for (Map.Entry<Long, List<Event>> at : due.entrySet()) {
+			MidiReceiver receiver = model.at((int) Math.max(0, at.getKey() - block));
+			for (Event event : at.getValue()) {
+				event.send(receiver);
+				waitWhileLoading(model);
+			}
+		}
+		due.clear();
 	}
 
 	// General MIDI programs from Gervill for every bank and program
@@ -105,16 +112,14 @@ public final class TGMidiTaps {
 		}
 	}
 
-	private static void fill(TGSynthModel model, Map<Integer, float[][]> taps, long block, long length) {
+	// the next block of every channel, heard from the start (a sample of the taps)
+	private static void fill(TGSynthModel model, Map<Integer, float[][]> taps, long start) {
 		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
-		int count = (int) Math.min(FRAMES, length - block);
 		for (Map.Entry<Integer, float[][]> tap : taps.entrySet()) {
 			TGAudioBuffer buffer = new TGAudioBuffer();
 			model.getChannelById(tap.getKey()).fillChain(buffer);
 			buffer.read(samples);
-			for (int side = 0; side < samples.length; side++) {
-				System.arraycopy(samples[side], 0, tap.getValue()[side], (int) block, count);
-			}
+			TGGervillBlocks.place(samples, tap.getValue(), start);
 		}
 	}
 
@@ -143,7 +148,7 @@ public final class TGMidiTaps {
 	}
 
 	private interface Send {
-		void to(TGSynthChannel channel) throws MidiPlayerException;
+		void to(MidiReceiver receiver) throws MidiPlayerException;
 	}
 
 	private static final class Event {
@@ -157,8 +162,8 @@ public final class TGMidiTaps {
 			this.send = send;
 		}
 
-		void send(TGSynthChannel channel) throws MidiPlayerException {
-			this.send.to(channel);
+		void send(MidiReceiver receiver) throws MidiPlayerException {
+			this.send.to(receiver);
 		}
 	}
 
@@ -182,23 +187,23 @@ public final class TGMidiTaps {
 		}
 
 		public void addNoteOn(long tick, int track, int channel, int note, int velocity, int voice, boolean bendMode) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendNoteOn(note, velocity, voice, bendMode)));
+			this.events.add(new Event(tick, channel, synth -> synth.sendNoteOn(channel, note, velocity, voice, bendMode)));
 		}
 
 		public void addNoteOff(long tick, int track, int channel, int note, int velocity, int voice, boolean bendMode) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendNoteOff(note, velocity, voice, bendMode)));
+			this.events.add(new Event(tick, channel, synth -> synth.sendNoteOff(channel, note, velocity, voice, bendMode)));
 		}
 
 		public void addPitchBend(long tick, int track, int channel, int value, int voice, boolean bendMode) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendPitchBend(value, voice, bendMode)));
+			this.events.add(new Event(tick, channel, synth -> synth.sendPitchBend(channel, value, voice, bendMode)));
 		}
 
 		public void addControlChange(long tick, int track, int channel, int controller, int value) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendControlChange(controller, value)));
+			this.events.add(new Event(tick, channel, synth -> synth.sendControlChange(channel, controller, value)));
 		}
 
 		public void addProgramChange(long tick, int track, int channel, int instrument) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendProgramChange(instrument)));
+			this.events.add(new Event(tick, channel, synth -> synth.sendProgramChange(channel, instrument)));
 		}
 
 		public void addTempoInUSQ(long tick, int track, int usq) {

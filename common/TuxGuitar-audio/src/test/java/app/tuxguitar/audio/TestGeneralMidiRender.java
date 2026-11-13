@@ -130,23 +130,31 @@ public class TestGeneralMidiRender {
 		assertTrue(Meters.peak(render.getRight(), 0, 20000) > 0.01);
 	}
 
-	// today the tap lags the timeline by Gervill's latency, two control periods (600 samples at 44100 Hz): a note on the
-	// first sample is heard from sample 600
+	// Gervill's latency (600 samples at 44100 Hz) is taken out: a note on the first sample is heard from it
 	@Test
-	public void aNoteOnTheFirstSampleIsHeardTheLatencyLater() throws MidiPlayerException {
-		float[] tap = render(44100).getTap(song.getTrack(0));
-
-		assertEquals(0, Meters.peak(tap, 0, 600), 0);
-		assertTrue(Meters.peak(tap, 600, 700) > 0);
+	public void aNoteOnTheFirstSampleIsHeardFromIt() throws MidiPlayerException {
+		assertTrue(Meters.peak(render(44100).getTap(song.getTrack(0)), 0, 50) > 0);
 	}
 
-	// as the synthesizer does today, an event goes out at the start of the block of 512 samples it falls in
+	// the tap runs to the timeline's end: a note on beat 4 still sounds in its last samples
 	@Test
-	public void aNoteSoundsFromTheStartOfTheBlockOfItsBeat() throws MidiPlayerException {
+	public void aNoteSoundsToTheLastSample() throws MidiPlayerException {
+		song.getTrack(0).getMeasure(0).clear();
+		note(song.getTrack(0).getMeasure(0), 2880);
+		float[] tap = render(44100).getTap(song.getTrack(0));
+
+		assertTrue(Meters.peak(tap, 88100, 88200) > 0.01);
+	}
+
+	// each note starts on its own sample: the note of beat 2 (sample 22050, inside a block) 22050 samples after the note
+	// of beat 1
+	@Test
+	public void aNoteSoundsFromItsOwnSample() throws MidiPlayerException {
+		int beat1 = firstSound(render(44100).getTap(song.getTrack(0)));
 		song.getTrack(0).getMeasure(0).clear();
 		note(song.getTrack(0).getMeasure(0), 960);
-		int first = firstSound(render(44100).getTap(song.getTrack(0)));
-		assertTrue(first >= 22016 && first < 22016 + 512, "the note of beat 2 (sample 22050) sounds from " + first);
+
+		assertEquals(22050, firstSound(render(44100).getTap(song.getTrack(0))) - beat1);
 	}
 
 	@Test
@@ -155,11 +163,14 @@ public class TestGeneralMidiRender {
 		assertTrue(Meters.peak(render(44100).getTap(song.getTrack(0)), 0, 20000) > 0.01);
 	}
 
-	// at 48000 Hz and 120 bpm a tick is 25 samples: a note at tick 512 falls on sample 12800, the first of a block, so
-	// it goes out with a note at tick 513 (sample 12825), not with the block before
+	// at 48000 Hz and 120 bpm a tick is 25 samples: notes at ticks 511, 512 and 513 (sample 12800 is the first of a
+	// block) sound 25 samples apart
 	@Test
-	public void aNoteOnTheFirstSampleOfABlockGoesOutWithThatBlock() throws MidiPlayerException {
-		assertEquals(firstSoundOfANoteAt(513), firstSoundOfANoteAt(512));
+	public void notesATickApartSoundATickApartAcrossABlock() throws MidiPlayerException {
+		int before = firstSoundOfANoteAt(511);
+		int first = firstSoundOfANoteAt(512);
+
+		assertEquals("25 25", (first - before) + " " + (firstSoundOfANoteAt(513) - first));
 	}
 
 	private int firstSoundOfANoteAt(long tick) throws MidiPlayerException {
