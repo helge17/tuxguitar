@@ -112,6 +112,13 @@
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- the native audio backend's interface (the scenarios drive a double of it, see TestBackend) -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-audio-device</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- editing actions and undo -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
