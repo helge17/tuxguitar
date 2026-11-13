@@ -2,6 +2,8 @@ package app.tuxguitar.io.base;
 
 import java.io.IOException;
 
+import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
 
 public class TGSongWriterHelper extends TGSongPersistenceHelper {
@@ -21,6 +23,7 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 			if( handle.getFormat() != null ) {
 				TGSongWriter writer = TGFileFormatManager.getInstance(this.getContext()).findSongWriter(handle.getFormat());
 				if( writer != null ){
+					this.leaveAudioOut(handle);
 					writer.write(handle);
 					success = true;
 				}
@@ -39,6 +42,22 @@ public class TGSongWriterHelper extends TGSongPersistenceHelper {
 			} catch (IOException e) {
 				throw new TGFileFormatException(e);
 			}
+		}
+	}
+
+	// a format other than TuxGuitar's cannot hold audio: its writer gets a copy of the song without the audio tracks (and
+	// their channels); the song itself is left as it is
+	private void leaveAudioOut(TGSongWriterHandle handle) {
+		TGSong song = handle.getSong();
+		if( song != null && !TGFileFormatManager.getInstance(this.getContext()).isNativeFileFormat(handle.getFormat()) ) {
+			TGSongManager songManager = new TGSongManager();
+			TGSong copy = song.clone(songManager.getFactory());
+			for( int number = copy.countTracks(); number > 0; number -- ) {
+				if( songManager.getTrack(copy, number).isAudio() ) {
+					songManager.removeTrack(copy, number);
+				}
+			}
+			handle.setSong(copy);
 		}
 	}
 

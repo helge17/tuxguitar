@@ -223,9 +223,27 @@ public class TestSongReadWrite {
 		}
 
 		public void write(TGSongWriterHandle handle) throws TGFileFormatException {
-			calls.add("write " + handle.getFormat().getName());
+			calls.add("write " + handle.getFormat().getName() + (handle.getSong() != null ? " of " + handle.getSong().countTracks() + " tracks" : ""));
 			failIfAsked();
 		}
+	}
+
+	// a format other than TuxGuitar's cannot hold audio: its writer gets a copy of the song without the audio tracks
+	// (and their channels), the song itself is left as it is. The song: an audio track, a guitar track, an audio track
+	@Test
+	public void anotherFormatIsWrittenWithoutTheAudioTracks() throws Exception {
+		TGSongManager songManager = new TGSongManager(new TGFactory());
+		TGSong song = songManager.newSong();
+		songManager.addAudioTrack(song, app.tuxguitar.song.models.TGAudioInput.mono(1));
+		songManager.removeTrack(song, 1);
+		songManager.addTrack(song);
+		songManager.addAudioTrack(song, app.tuxguitar.song.models.TGAudioInput.mono(2));
+		int channels = song.countChannels();
+		TGSongWriterHandle handle = writing(new ByteArrayOutputStream(), FAKE, new TGSongStreamContext());
+		handle.setSong(song);
+		manager.write(handle);
+
+		assertEquals("[write Fake of 1 tracks] 3 " + channels, calls + " " + song.countTracks() + " " + song.countChannels());
 	}
 
 	private void failIfAsked() {
