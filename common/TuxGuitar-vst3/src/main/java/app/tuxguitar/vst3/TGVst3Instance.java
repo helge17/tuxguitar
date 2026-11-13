@@ -18,6 +18,8 @@ public final class TGVst3Instance implements AutoCloseable {
 
 	// a tail that never ends (a drone, say)
 	public static final int INFINITE_TAIL = -1;
+	// the flag of a parameter that chooses the plugin's presets (Vst::ParameterInfo::kIsProgramChange)
+	private static final int PROGRAM_CHANGE = 1 << 15;
 
 	private final TGVst3Host host;
 	private final TGVst3SharedBlocks blocks;
@@ -49,8 +51,7 @@ public final class TGVst3Instance implements AutoCloseable {
 		boolean editor = (in.readInt() == 1);
 		List<TGVst3Parameter> parameters = new ArrayList<TGVst3Parameter>();
 		for (int count = in.readInt(); count > 0; count--) {
-			parameters.add(new TGVst3Parameter(in.readInt(), TGVst3Request.readString(in), in.readDouble()));
-			in.readInt();
+			parameters.add(new TGVst3Parameter(in.readInt(), TGVst3Request.readString(in), in.readDouble(), (in.readInt() & PROGRAM_CHANGE) != 0));
 		}
 		TGVst3Instance instance = new TGVst3Instance(host, blocks, id, inputs, outputs, editor, Collections.unmodifiableList(parameters));
 		instance.readTiming(in);

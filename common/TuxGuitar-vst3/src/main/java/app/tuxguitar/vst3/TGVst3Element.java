@@ -56,6 +56,17 @@ public final class TGVst3Element {
 		element.setParameter(PARAMETER + id, Double.toString(plain));
 	}
 
+	// the plugin's state, which holds every parameter: the parameters set before it are dropped
+	public static void setState(TGProgramElement element, TGVst3State state) {
+		setState(element.getParameters(), state);
+	}
+
+	private static void setState(Map<String, String> parameters, TGVst3State state) {
+		parameters.keySet().removeIf(key -> key.startsWith(PARAMETER));
+		parameters.put(STATE, Base64.getEncoder().encodeToString(state.getComponent()));
+		parameters.put(CONTROLLER, Base64.getEncoder().encodeToString(state.getController()));
+	}
+
 	// the parameters set since the state, by id
 	static Map<Integer, Double> parameters(Map<String, String> parameters) {
 		Map<Integer, Double> set = new TreeMap<Integer, Double>();
@@ -76,12 +87,10 @@ public final class TGVst3Element {
 
 	// the plugin and its state, which holds every parameter: none is kept apart
 	static void store(Map<String, String> parameters, TGVst3Plugin plugin, TGVst3State state) {
-		parameters.keySet().removeIf(key -> key.startsWith(PARAMETER));
 		parameters.put(MODULE, plugin.getModule());
 		parameters.put(CLASS_ID, plugin.getClassId());
 		parameters.put(NAME, plugin.getName());
-		parameters.put(STATE, Base64.getEncoder().encodeToString(state.getComponent()));
-		parameters.put(CONTROLLER, Base64.getEncoder().encodeToString(state.getController()));
+		setState(parameters, state);
 	}
 
 	private static byte[] decode(String value) {

@@ -73,10 +73,7 @@ public class TestVst3Processors {
 	}
 
 	private static float[][] level(float value) {
-		float[][] block = new float[2][FRAMES];
-		Arrays.fill(block[0], value);
-		Arrays.fill(block[1], value);
-		return block;
+		return TestPlugins.block(FRAMES, value, value);
 	}
 
 	private int parameter(String plugin, String title) throws TGVst3Exception {
@@ -336,6 +333,19 @@ public class TestVst3Processors {
 		assertEquals(0f, block[1][0]);
 		assertFalse(processor.isOpen());
 		assertFalse(processor.isBusy());
+	}
+
+	// the state a plugin holds replaces the parameters set on the element before it
+	@Test
+	public void anElementGivenAStateOpensWithItAndDropsTheParametersSetBefore() throws TGVst3Exception {
+		TGProgramElement element = element("Test Gain");
+		TGVst3Element.setParameter(element, 1, 3.0);
+		TGVst3EffectProcessor source = (TGVst3EffectProcessor) effect(element("Test Gain"));
+		source.getInstance().setParameter(1, 5.0);
+		TGVst3Element.setState(element, source.getInstance().getState());
+		TGVst3EffectProcessor reopened = (TGVst3EffectProcessor) effect(element);
+		assertEquals("5.0 [vst3.class, vst3.controller, vst3.module, vst3.name, vst3.state]",
+			reopened.getInstance().getParameter(1) + " " + new java.util.TreeSet<String>(element.getParameters().keySet()));
 	}
 
 	@Test

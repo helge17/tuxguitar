@@ -35,6 +35,14 @@ public final class TestPlugins {
 		return new File(folder(), name + ".vst3");
 	}
 
+	// a block of frames, each side at a constant level
+	public static float[][] block(int frames, float left, float right) {
+		float[][] block = new float[2][frames];
+		java.util.Arrays.fill(block[0], left);
+		java.util.Arrays.fill(block[1], right);
+		return block;
+	}
+
 	// ends the process, as a crash would, and waits until it is gone
 	public static void kill(long pid) {
 		ProcessHandle process = ProcessHandle.of(pid).get();

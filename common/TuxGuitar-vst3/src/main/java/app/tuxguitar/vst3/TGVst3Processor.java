@@ -13,7 +13,7 @@ import app.tuxguitar.player.base.MidiTransport;
  * plugin they name, its state, the parameters set since), and each block goes through it in 32-bit float. When the host
  * process stops, the plugin is gone: it sounds nothing, and the hosting reports the stop.
  */
-abstract class TGVst3Processor implements TGAudioProcessor {
+abstract class TGVst3Processor implements TGAudioProcessor, TGVst3PluginProcessor {
 
 	static final int FRAMES = TGAudioBuffer.BUFFER_SIZE / 2;
 

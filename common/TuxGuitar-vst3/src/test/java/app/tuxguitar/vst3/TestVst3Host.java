@@ -47,10 +47,7 @@ public class TestVst3Host {
 	}
 
 	private static float[][] block(float left, float right) {
-		float[][] block = new float[2][FRAMES];
-		Arrays.fill(block[0], left);
-		Arrays.fill(block[1], right);
-		return block;
+		return TestPlugins.block(FRAMES, left, right);
 	}
 
 	private static float[][] process(TGVst3Instance instance, float[][] block) throws TGVst3Exception {
@@ -144,9 +141,9 @@ public class TestVst3Host {
 	public void aPluginListsItsParametersWithTheirValues() throws TGVst3Exception {
 		List<String> read = new ArrayList<String>();
 		for (TGVst3Parameter parameter : open("Test Gain").getParameters()) {
-			read.add(parameter.getTitle() + "=" + parameter.getPlain());
+			read.add(parameter.getTitle() + "=" + parameter.getPlain() + (parameter.choosesPresets() ? " (presets)" : ""));
 		}
-		assertEquals(Arrays.asList("Gain=2.0", "Preset=0.0"), read);
+		assertEquals(Arrays.asList("Gain=2.0", "Preset=0.0 (presets)"), read);
 	}
 
 	@Test
@@ -236,6 +233,27 @@ public class TestVst3Host {
 		gain.message("TG.gesture", Collections.singletonMap("id", (long) id), Collections.singletonMap("values", TGVst3Instance.doubles(2.5, 3.0)));
 		assertEquals(Arrays.asList("BEGIN_EDIT 1 0.0", "PERFORM_EDIT 1 2.5", "PERFORM_EDIT 1 3.0", "END_EDIT 1 0.0"), heard);
 		assertEquals(3.0, gain.getParameter(id));
+	}
+
+	// a gesture ends when the edit that began it ends: a preset choice begins the preset and every parameter it sets
+	@Test
+	public void aGestureAndAPresetChoiceAreEachHeardAsOneGestureOnceItEnds() throws TGVst3Exception {
+		TGVst3Instance gain = open("Test Gain");
+		int id = gain.findParameter("Gain");
+		List<Double> ended = new ArrayList<Double>();
+		gain.setListener(new TGVst3Gestures(() -> ended.add(this.parameter(gain, id))));
+		gain.message("TG.gesture", Collections.singletonMap("id", (long) id), Collections.singletonMap("values", TGVst3Instance.doubles(2.5, 3.0)));
+		gain.message("TG.preset", Collections.singletonMap("index", 1L), Collections.<String, byte[]>emptyMap());
+		gain.message("TG.gesture", Collections.singletonMap("id", (long) id), Collections.singletonMap("values", TGVst3Instance.doubles(5.0)));
+		assertEquals(Arrays.asList(3.0, 4.0, 5.0), ended);
+	}
+
+	private double parameter(TGVst3Instance instance, int id) {
+		try {
+			return instance.getParameter(id);
+		} catch (TGVst3Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Test
