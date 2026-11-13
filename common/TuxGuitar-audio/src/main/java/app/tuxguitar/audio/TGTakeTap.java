@@ -31,12 +31,13 @@ public final class TGTakeTap {
 	// as long as the timeline (or null when no measure plays it); the tap's left and right sides
 	public static float[][] render(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, float[][] input) {
 		float[][] tap = new float[2][(int) timeline.length()];
-		of(track, timeline, stretcher, sources, input).render(tap, 0);
+		of(track, timeline, stretcher, sources, new TGTapInput(0, input)).render(tap, 0);
 		return tap;
 	}
 
-	// the same, to be rendered a block at a time (live); a stretch is made when a block first reaches it
-	public static TGTakeTap of(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, float[][] input) {
+	// the same, to be rendered a block at a time (live; the input as the block being rendered delivers it); a stretch is
+	// made when a block first reaches it
+	static TGTakeTap of(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input) {
 		List<TGTakePiece> pieces = pieces(track, timeline, stretcher, sources, input);
 		fade(pieces);
 		return new TGTakeTap(pieces);
@@ -52,7 +53,7 @@ public final class TGTakeTap {
 		}
 	}
 
-	private static List<TGTakePiece> pieces(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, float[][] input) {
+	private static List<TGTakePiece> pieces(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input) {
 		Map<TGTake, float[][]> samples = new HashMap<TGTake, float[][]>();
 		List<TGTakePiece> pieces = new ArrayList<TGTakePiece>();
 		for (int i = 0; i < timeline.count(); i++) {

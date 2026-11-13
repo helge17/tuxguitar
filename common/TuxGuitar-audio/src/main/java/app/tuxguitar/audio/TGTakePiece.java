@@ -37,6 +37,7 @@ final class TGTakePiece {
 	private Supplier<float[][]> stretch;
 	private float[][] audio;
 	private final float[][] source;
+	private final TGTapInput monitored;
 
 	boolean fadeIn;
 	boolean fadeOut;
@@ -56,12 +57,13 @@ final class TGTakePiece {
 		this.takeStart = takeStart;
 		this.takeEnd = takeEnd;
 		this.source = source;
+		this.monitored = null;
 		this.stretch = audio;
 		this.under = under;
 	}
 
 	// the monitored input (its samples on the output clock), or silence when input is null
-	TGTakePiece(long start, long end, boolean jump, float[][] input, Map<TGTake, int[]> under) {
+	TGTakePiece(long start, long end, boolean jump, TGTapInput input, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
 		this.jump = jump;
@@ -71,7 +73,8 @@ final class TGTakePiece {
 		this.rank = INPUT_RANK;
 		this.takeStart = 0;
 		this.takeEnd = 0;
-		this.source = input;
+		this.source = null;
+		this.monitored = input;
 		this.under = under;
 	}
 
@@ -115,9 +118,8 @@ final class TGTakePiece {
 		long first = Math.max(Math.max(0, from), this.start - (this.head ? FADE : 0));
 		long last = Math.min(from + block[0].length, this.end + (this.tail ? FADE : 0));
 		for (int side = 0; side < block.length; side++) {
-			int own = Math.min(side, this.source.length - 1);
 			for (long o = first; o < last; o++) {
-				block[side][(int) (o - from)] += (float) (this.gain(o) * this.sample(own, o));
+				block[side][(int) (o - from)] += (float) (this.gain(o) * this.sample(side, o));
 			}
 		}
 	}
@@ -139,16 +141,18 @@ final class TGTakePiece {
 		return gain;
 	}
 
-	// the audio at the output sample: the stretched audio inside, the take's own samples next to it
+	// the audio at the output sample on the tap's side: the input's; the stretched audio inside, the take's own samples
+	// next to it (a mono take's one side on both)
 	private float sample(int side, long o) {
 		if (this.input) {
-			return this.source[side][(int) o];
+			return this.monitored.at(side, o);
 		}
+		int own = Math.min(side, this.source.length - 1);
 		float[][] audio = this.audio();
 		if (audio != null && o >= this.start && o < this.end) {
-			return audio[side][(int) (o - this.start)];
+			return audio[own][(int) (o - this.start)];
 		}
-		return this.takeSample(this.source[side], o);
+		return this.takeSample(this.source[own], o);
 	}
 
 	private float[][] audio() {
