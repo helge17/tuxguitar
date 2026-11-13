@@ -96,12 +96,14 @@ These features change how TuxGuitar works today. They are requirements, not side
   (October 2025), which fits TuxGuitar's LGPL-2.1.
 - **Sample-accurate playback.** While the TuxGuitar Synthesizer plays, the audio device's sample clock drives the
   player, and every note reaches its instrument on its exact sample inside a block. The player reports a beat when the
-  output sounds it, so the played beat is no longer highlighted early by the output buffer. Live and offline the same
+  output sounds it (the plugin delay compensation and the output latency after the beat's events), so the played beat
+  is no longer highlighted early by the output buffer. Live and offline the same
   synthesizer code times the events: before each block the sequencer sends the block's events, each on its frame (a
   note starts on that sample; Gervill starts its other events with the control period that holds it). Gervill's
-  stream sounds what it renders two control periods later (600 samples at 44100 Hz): live that is a constant
-  latency, offline it is taken out, so a note is heard from its sample. A MIDI Port other than the TuxGuitar
-  Synthesizer keeps today's timing.
+  stream sounds what it renders two control periods later (600 samples at 44100 Hz): that is the latency of a sound
+  chain with a General MIDI source, counted like a plugin's by plugin delay compensation and so by the round trip;
+  offline each track's chain latency is taken out, so a note is heard from its sample. A MIDI Port other than the
+  TuxGuitar Synthesizer keeps today's timing.
 - **Seamless loops.** With Play looped on, the jump back to the start of the Loop Range is seamless: no restart, no gap,
   tails carry across. Count In sounds once, before the first pass, at the first pass's Percentage of Tempo.
 - **Count In and Metronome** sound through the TuxGuitar Synthesizer's General MIDI drums, outside every sound chain,
@@ -228,7 +230,8 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Input level**: the peak of what a track's input channel(s) delivered in the last second, in dBFS (the higher of
   the two for a pair). At -0.1 dBFS or above the input is **clipping**; it shows **has clipped** until I reset it.
 - **Round trip**: output latency + the plugin delay compensation of what I hear + input latency + recording offset.
-  A take is placed earlier by its round trip.
+  A take is placed earlier by its round trip, so one recorded against General MIDI tracks or the Count In lands on the
+  beat although Gervill sounds them 600 samples late (at 44100 Hz).
 - **Latency**: how many samples late something delivers its sound: a plugin, the audio input or the audio output.
 - **Recording offset**: a setting, in samples, added to the input latency the audio device reports, because drivers
   sometimes report it wrong.
@@ -236,7 +239,8 @@ These features change how TuxGuitar works today. They are requirements, not side
 ### Sync
 
 - **Plugin delay compensation**: delaying each track, the Count In and the Metronome so that all reach the output as
-  late as the slowest track. A monitored input is not delayed by it. When a plugin's latency changes while playing, the
+  late as the slowest track: the slowest sound chain's latency, Gervill's included, a muted track's too, and the
+  General MIDI drums' (Count In and Metronome) whether or not they click. A monitored input is not delayed by it. When a plugin's latency changes while playing, the
   tracks are together again from the next beat. Playing to the end of the song runs on until the most delayed track has
   sounded its last beat.
 - **Time-stretch**: playing a take faster or slower without changing its pitch.
