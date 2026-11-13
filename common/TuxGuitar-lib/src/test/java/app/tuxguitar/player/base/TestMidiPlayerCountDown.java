@@ -18,7 +18,7 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Pins the count down played before the song (MidiPlayerCountDown.start): on the percussion channel, a side stick
- * (key 37, default velocity) per beat of the time signature of the measure being played (or the chosen number of ticks), at its tempo
+ * (key 37, default velocity: the player's click sound until changed) per beat of the time signature of the measure being played (or the chosen number of ticks), at its tempo
  * scaled by the tempo percent; the first tick at once, and the count down lasts until the beat after the last tick.
  * It stops as soon as the player stops; without a percussion channel or a measure being played, it plays nothing.
  *
@@ -134,11 +134,29 @@ public class TestMidiPlayerCountDown {
 	}
 
 	@Test
+	public void ticksTheClickSound() {
+		withPercussion();
+		countDown.setTickCount(1);
+		player.setClick(new MidiClick(76, 127));
+
+		assertEquals("on 76 @0 v127 s-1 bfalse, off 76 @1 v127 s-1 bfalse -> end @511", start());
+	}
+
+	@Test
 	public void stopsWithThePlayer() {
 		withPercussion();
 		countDown.stopAt = 600;
 
 		assertEquals("on 37 @0, off 37 @1, on 37 @501, off 37 @502 -> end @602", start());
+	}
+
+	// the measure that starts on the player's tick, not the one that ends there
+	@Test
+	public void findsTheMeasureFromItsFirstTick() {
+		player.updateLoop(true);
+		player.setTickPosition(song.getMeasureHeader(1).getStart());
+
+		assertEquals(2, countDown.findMeasureHeader().getNumber());
 	}
 
 	@Test

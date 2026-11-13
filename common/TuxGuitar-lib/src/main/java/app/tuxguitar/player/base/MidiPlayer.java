@@ -50,6 +50,7 @@ public class MidiPlayer{
 	private boolean paused;
 	private boolean changeTickPosition;
 	private boolean metronomeEnabled;
+	private MidiClick click = MidiClick.DEFAULT;
 	private int metronomeTrack;
 	private int infoTrack;
 	private int loopSHeader;
@@ -545,6 +546,7 @@ public class MidiPlayer{
 				midiSequenceParser.setEHeader( getLoopEHeader() );
 			}
 			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
+			midiSequenceParser.setMetronomeClick(getClick());
 			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
 			this.tempoMap = midiSequenceParser.getTempoMap();
 			this.timestampMap = midiSequenceParser.getTimestampMap();
@@ -801,6 +803,15 @@ public class MidiPlayer{
 
 	public boolean isMetronomeEnabled() {
 		return this.metronomeEnabled;
+	}
+
+	// the click sound Count In and the Metronome play (the Metronome's from the next sequence made)
+	public MidiClick getClick() {
+		return this.click;
+	}
+
+	public void setClick(MidiClick click) {
+		this.click = click;
 	}
 
 	public void setMetronomeEnabled(boolean metronomeEnabled) {

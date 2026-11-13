@@ -3,7 +3,6 @@ package app.tuxguitar.player.base;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
-import app.tuxguitar.song.models.TGVelocities;
 
 public class MidiPlayerCountDown {
 
@@ -55,14 +54,15 @@ public class MidiPlayerCountDown {
 		int tickIndex = 0;
 
 		int localTickCount = (this.tickCount != 0) ? this.tickCount : header.getTimeSignature().getNumerator();
+		MidiClick click = this.player.getClick();
 		while( this.isRunning() && tickIndex <= localTickCount ){
 			if( tickStart <= this.currentTime() ){
 				tickStart += tickLength;
 				tickIndex ++;
 				if( tickIndex <= localTickCount ){
-					this.player.getOutputTransmitter().sendNoteOn(channelId, 37, TGVelocities.DEFAULT, -1, false);
+					this.player.getOutputTransmitter().sendNoteOn(channelId, click.getNote(), click.getVelocity(), -1, false);
 					this.pause( 1 );
-					this.player.getOutputTransmitter().sendNoteOff(channelId, 37, TGVelocities.DEFAULT, -1, false);
+					this.player.getOutputTransmitter().sendNoteOff(channelId, click.getNote(), click.getVelocity(), -1, false);
 				}
 			}
 			this.pause( 10 );

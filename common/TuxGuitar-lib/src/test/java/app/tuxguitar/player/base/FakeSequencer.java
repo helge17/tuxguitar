@@ -16,6 +16,8 @@ class FakeSequencer implements MidiSequencer {
 	long position = 1234;
 	boolean running = false;
 	boolean broken = false;
+	// the last sequence it made
+	MidiEventRecorder sequence;
 
 	FakeSequencer(List<String> log) {
 		this.log = log;
@@ -26,7 +28,7 @@ class FakeSequencer implements MidiSequencer {
 	public void open() { }
 	public void close() { }
 	public void setTransmitter(MidiTransmitter transmitter) { }
-	public MidiSequenceHandler createSequence(int tracks) { return new MidiEventRecorder(tracks); }
+	public MidiSequenceHandler createSequence(int tracks) { this.sequence = new MidiEventRecorder(tracks); return this.sequence; }
 	public void setSolo(int index, boolean solo) { }
 	public void setMute(int index, boolean mute) { }
 	public boolean isRunning() { return this.running; }

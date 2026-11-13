@@ -40,7 +40,6 @@ public class MidiSequenceParser {
 	public static final int DEFAULT_PLAY_FLAGS = (ADD_METRONOME);
 	public static final int DEFAULT_EXPORT_FLAGS = (ADD_FIRST_TICK_MOVE | ADD_DEFAULT_CONTROLS | ADD_MIXER_MESSAGES);
 
-	private static final int DEFAULT_METRONOME_KEY = 37;
 	private static final int DEFAULT_DURATION_PM = 60;
 	private static final int DEFAULT_DURATION_DEAD = 30;
 	private static final int DEFAULT_BEND = 64;
@@ -52,6 +51,7 @@ public class MidiSequenceParser {
 	private int infoTrack;
 	private int metronomeTrack;
 	private int metronomeChannelId;
+	private MidiClick metronomeClick = MidiClick.DEFAULT;
 	private int firstTickMove;
 	private int tempoPercent;
 	private int transpose;
@@ -103,6 +103,11 @@ public class MidiSequenceParser {
 
 	public void setMetronomeChannelId(int metronomeChannelId) {
 		this.metronomeChannelId = metronomeChannelId;
+	}
+
+	// the drum note and velocity of the Metronome's ticks
+	public void setMetronomeClick(MidiClick metronomeClick) {
+		this.metronomeClick = metronomeClick;
 	}
 
 	public void setTempoPercent(int tempoPercent) {
@@ -354,7 +359,7 @@ public class MidiSequenceParser {
 				long start = (startMove + header.getStart());
 				long length = header.getTimeSignature().getDenominator().getTime();
 				for(int i = 1; i <= header.getTimeSignature().getNumerator();i ++){
-					addNote(sh,getMetronomeTrack(),DEFAULT_METRONOME_KEY,start,length,TGVelocities.DEFAULT,this.metronomeChannelId,-1,false);
+					addNote(sh,getMetronomeTrack(),this.metronomeClick.getNote(),start,length,this.metronomeClick.getVelocity(),this.metronomeChannelId,-1,false);
 					start += length;
 				}
 			}
