@@ -4,10 +4,11 @@ Specification of audio tracks, line-in recording, VST3 effects and instruments, 
 exporting it. It is written ahead of the implementation: a scenario not implemented yet is tagged `@planned` (on the
 scenario, on an `Examples` block, or on the whole feature), and the normal run leaves it out
 (`src/test/resources/junit-platform.properties`). Remove the tag from a scenario when you start implementing it.
-Implemented so far: `tracks/audio_tracks` and `recording/takes` but for VST3 plugins, and `recording/recording_line_in`
-but for VST3 plugins and monitoring through a sound chain: takes, playing and recording rendered offline on the Test
-Interface (takes, General MIDI programs, the mix, time-stretching), input channels and levels, the round trip, refusals
-during a recording, and Count In. VST3 hosting, sync, saving (file format 3.0) and export are not implemented yet.
+Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks`, `recording/takes`,
+`recording/recording_line_in`, `plugins/hosting_vst3_plugins` and `sync/keeping_audio_in_sync`, but for the scenarios
+still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
+round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
+helper processes, and plugin delay compensation. Saving (file format 3.0) and export are not implemented yet.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
@@ -93,7 +94,10 @@ These features change how TuxGuitar works today. They are requirements, not side
   per-instrument presets in the synthesizer settings (`synth.program.<bank>.<program>`) are not changed by this
   feature: they apply where they apply today.
 - **Plugins run apart from TuxGuitar, with no network port.** VST3 and LV2 plugins run in a helper process that talks to
-  TuxGuitar over pipes or shared memory and never listens on a network port. LV2 moves off its TCP socket
+  TuxGuitar over pipes or shared memory and never listens on a network port. For VST3 the helper's commands and replies
+  go over the helper's own standard input and output (anonymous pipes: no name, so no other process can connect to
+  them), and the audio stays in shared memory (a file both map); there is no named pipe, Unix socket or network port.
+  LV2 moves off its TCP socket
   (`TGRemoteHost`). Plugins load only from the VST3 (or LV2) folders. VST2 hosting was removed in 2024 because its
   bridge listened on a network port and was flagged as a Trojan (issue #312); the VST3 SDK is MIT-licensed since 3.8
   (October 2025), which fits TuxGuitar's LGPL-2.1.
@@ -316,7 +320,9 @@ measures 1 to 3" means each measure sounds its tone, within 1%, and no other abo
 ## Out of scope
 
 - Failure handling: a plugin that crashes or hangs, a plugin missing on another machine, an audio device unplugged
-  while recording, a song opened on a device whose sample rate differs from its takes'.
+  while recording, a song opened on a device whose sample rate differs from its takes'. One narrow exception: a VST3
+  plugin that hangs goes silent for each block it does not answer in time while the other tracks keep playing on their
+  beats, and is restarted (on its own, with its last state) after a longer wait.
 - Importing audio or backing tracks from Guitar Pro 7 files (they are dropped on import today).
 - Android (it shares the file reader, so it refuses a song with audio tracks as older desktop versions do).
 - Recording MIDI from a MIDI input.
