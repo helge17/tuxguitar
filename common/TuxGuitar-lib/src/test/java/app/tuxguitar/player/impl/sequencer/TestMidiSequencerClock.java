@@ -17,6 +17,8 @@ import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiTransmitter;
 import app.tuxguitar.player.base.MidiTransport;
+import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGTimeSignature;
 import app.tuxguitar.thread.TGThreadHandler;
 import app.tuxguitar.thread.TGThreadLoop;
 import app.tuxguitar.thread.TGThreadManager;
@@ -182,6 +184,25 @@ public class TestMidiSequencerClock {
 		assertEquals("1 true 60.0 1.0 44100", told);
 		assertEquals(1 + 512 / 44100.0, transport.get(0).getQuarters(), 1e-9);
 		assertEquals("@0 44612 3/4", "@" + transport.get(0).getFrame() + " " + transport.get(0).getSamples() + " " + transport.get(0).getNumerator() + "/" + transport.get(0).getDenominator());
+	}
+
+	static TGTimeSignature signature(int numerator, int denominator) {
+		TGTimeSignature signature = new TGFactory().newTimeSignature();
+		signature.setNumerator(numerator);
+		signature.getDenominator().setValue(denominator);
+		return signature;
+	}
+
+	// a time signature is no MIDI message: on the clock nothing is sent for it, and it does not make the sequence longer
+	// (the sequencer stops after the first block, silencing again)
+	@Test
+	public void aTimeSignatureSendsNothingOnTheClock() throws MidiPlayerException {
+		notes(0);
+		sequence.addTimeSignature(10, 0, signature(3, 4));
+		sequence.addTimeSignature(5000, 0, signature(6, 8));
+		playToTheEndFrom(0);
+
+		assertEquals("all notes off, pitch bend reset, @0 on 1 60 100 1 0, all notes off, pitch bend reset | false", blocks(1) + " | " + sequencer.isRunning());
 	}
 
 	@Test

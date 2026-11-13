@@ -26,12 +26,13 @@ public class TestMidiSequencerProcess {
 
 	private final List<String> received = new ArrayList<String>();
 	private final MidiSequencerImpl sequencer = new MidiSequencerImpl(new TGContext());
+	private final MidiSequenceHandler sequence;
 
 	public TestMidiSequencerProcess() throws MidiPlayerException {
 		MidiTransmitter transmitter = new MidiTransmitter();
 		transmitter.addReceiver("recorder", new MidiReceiverRecorder(received));
 		sequencer.setTransmitter(transmitter);
-		MidiSequenceHandler sequence = sequencer.createSequence(1);
+		sequence = sequencer.createSequence(1);
 		sequence.addNoteOn(0, 0, 1, 60, 100, 1, false);
 		sequence.addNoteOn(500, 0, 1, 62, 100, 1, false);
 	}
@@ -96,5 +97,15 @@ public class TestMidiSequencerProcess {
 		String stopping = String.join(", ", received);
 
 		assertEquals("all notes off, pitch bend reset /  | false | false", stopping + " / " + step());
+	}
+
+	// a time signature is no MIDI message: on the timer nothing is sent for it, and it does not make the sequence longer,
+	// so the sequencer stops (silencing again) past the last note although the time signature comes later
+	@Test
+	public void aTimeSignatureSendsNothingAndDoesNotLengthenTheSequence() throws MidiPlayerException {
+		sequence.addTimeSignature(1000, 0, TestMidiSequencerClock.signature(3, 4));
+		startAt(1000);
+
+		assertEquals("all notes off, pitch bend reset, all notes off, pitch bend reset | true | false", step());
 	}
 }
