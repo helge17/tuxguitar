@@ -43,6 +43,8 @@ public class TestDelayCompensation {
 	private final TGSongManager songManager = new TGSongManager();
 	private final TGSong song = songManager.newSong();
 
+	private static final long INPUT_CLICK = 30000;
+
 	private final TGTrack track = song.getTrack(0);
 
 	public TestDelayCompensation() {
@@ -97,6 +99,15 @@ public class TestDelayCompensation {
 			public int getSampleRate() {
 				return sampleRate;
 			}
+
+			// input channel 1 delivers a one-sample click on the clock's sample INPUT_CLICK
+			public float[] capture(int inputChannel, long from, int count) {
+				float[] samples = super.capture(inputChannel, from, count);
+				if (inputChannel == 1 && INPUT_CLICK >= from && INPUT_CLICK < from + count) {
+					samples[(int) (INPUT_CLICK - from)] = 1f;
+				}
+				return samples;
+			}
 		});
 		MidiPlayerMode mode = new MidiPlayerMode();
 		List<TGPlayedMeasure> played = TGSongTime.play(this.song, mode, this.song.getMeasureHeader(0).getStart(), Long.MAX_VALUE, 1);
@@ -129,6 +140,24 @@ public class TestDelayCompensation {
 		this.soundChain(256);
 		this.track.setMute(true);
 		assertEquals(GervillProcessor.latency(44100) + 256, render(44100).getLatency());
+	}
+
+	// a monitored input is not delayed by the compensation: what the input delivers on a sample of the clock is in the
+	// output the compensation earlier, so the output sounds it as it arrives (and the output latency later)
+	@Test
+	public void aMonitoredInputIsNotDelayed() throws MidiPlayerException {
+		TGTrack audio = this.songManager.addAudioTrack(this.song, TGAudioInput.mono(1));
+		TGAudioSession.getInstance(this.context).arm(audio);
+		TGAudioSession.getInstance(this.context).setMonitoring(audio, TGMonitoring.ALWAYS);
+		TGRender render = render(44100);
+		float[] tap = render.getTap(audio);
+		int click = 0;
+		while (click < tap.length && tap[click] < 0.5f) {
+			click++;
+		}
+
+		assertEquals(INPUT_CLICK - GervillProcessor.latency(44100), click);
+		assertEquals(GervillProcessor.latency(44100), render.getLatency());
 	}
 
 	// with another MIDI Port nothing is heard here, so nothing is delayed

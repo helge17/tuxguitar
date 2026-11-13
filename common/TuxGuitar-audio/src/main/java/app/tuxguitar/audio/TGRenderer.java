@@ -1,11 +1,14 @@
 package app.tuxguitar.audio;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
@@ -50,20 +53,31 @@ public final class TGRenderer {
 		float[][] output = new float[2][(int) timeline.length()];
 		int latency = 0;
 		if (synthesizer) {
-			Iterator<TGTrack> tracks = this.song.getTracks();
-			while (tracks.hasNext()) {
-				TGTrack track = tracks.next();
-				if (track.isAudio()) {
-					taps.put(track.getChannelId(), this.tap(track, timeline, recording));
-				}
-			}
-			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, new HashSet<Integer>(taps.keySet()));
+			List<TGTrack> audioTracks = this.audioTracks();
+			Set<Integer> audioChannels = new HashSet<Integer>();
+			audioTracks.forEach(track -> audioChannels.add(track.getChannelId()));
+			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, audioChannels);
 			midi.forEach((channel, tap) -> taps.put(channel, tap.getSamples()));
 			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
 			latency = latency(midi.values(), timeline);
+			for (TGTrack track : audioTracks) {
+				taps.put(track.getChannelId(), this.tap(track, timeline, recording, latency));
+			}
 			this.mix(taps, drums, output);
 		}
 		return new TGRender(timeline, taps, drums, output, latency);
+	}
+
+	private List<TGTrack> audioTracks() {
+		List<TGTrack> audioTracks = new ArrayList<TGTrack>();
+		Iterator<TGTrack> tracks = this.song.getTracks();
+		while (tracks.hasNext()) {
+			TGTrack track = tracks.next();
+			if (track.isAudio()) {
+				audioTracks.add(track);
+			}
+		}
+		return audioTracks;
 	}
 
 	// plugin delay compensation: the slowest chain's latency, the drums' included (audio tracks' takes have none yet)
@@ -75,15 +89,16 @@ public final class TGRenderer {
 		return latency;
 	}
 
-	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording) {
+	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, int latency) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
-		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline) : null);
+		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency) : null);
 		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
 	}
 
-	// what the track's input channel(s) deliver over the timeline
-	private float[][] input(TGTrack track, TGTimeline timeline) {
-		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock(), (int) timeline.length());
+	// what the track's input channel(s) deliver over the timeline as the output sounds it: the output sounds the render
+	// its latency after the clock, and a monitored input is not delayed, so it is read that much later
+	private float[][] input(TGTrack track, TGTimeline timeline, int latency) {
+		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock() + latency, (int) timeline.length());
 	}
 
 	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring
