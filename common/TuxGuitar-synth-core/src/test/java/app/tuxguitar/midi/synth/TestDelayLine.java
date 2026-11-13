@@ -1,6 +1,9 @@
 package app.tuxguitar.midi.synth;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.management.ManagementFactory;
 
 import org.junit.jupiter.api.Test;
 
@@ -79,11 +82,48 @@ public class TestDelayLine {
 		assertBlock(gap(3), regrown);
 	}
 
+	// growing from 256 to 700 frames while holding 256 keeps them, newest last, after 444 frames of silence
+	@Test
+	public void aDelayGrowingWhileItHoldsFramesKeepsThemAfterTheGap() {
+		block(0, 256);
+		block(1, 256);
+		assertBlock(gap(2, 700, 444), block(2, 700));
+		assertBlock(expected(3, 700), block(3, 700));
+	}
+
+	// shrinking from 700 to 256 frames drops the 444 oldest frames held: the next block is the stream 256 frames earlier
+	@Test
+	public void aShrinkingDelayLongerThanABlockDropsTheOldestFrames() {
+		block(0, 700);
+		block(1, 700);
+		assertBlock(expected(2, 256), block(2, 256));
+		assertBlock(expected(3, 256), block(3, 256));
+	}
+
+	// the line runs on the audio thread, which must not allocate per block: once the delay is set, it allocates nothing
+	@Test
+	public void delayingAllocatesNothingPerBlockOnceTheDelayIsSet() {
+		com.sun.management.ThreadMXBean threads = (com.sun.management.ThreadMXBean) ManagementFactory.getThreadMXBean();
+		TGAudioBuffer buffer = shifted(0, 0);
+		this.line.delay(buffer, 700);
+		long before = threads.getThreadAllocatedBytes(Thread.currentThread().getId());
+		for (int b = 0; b < 1000; b++) {
+			this.line.delay(buffer, 700);
+		}
+		long allocated = threads.getThreadAllocatedBytes(Thread.currentThread().getId()) - before;
+		assertTrue(allocated < 64 * 1024, allocated + " bytes allocated by 1000 blocks");
+	}
+
 	// the block delayed by 256 frames after 256 frames of silence
 	private static float[][] gap(int block) {
-		float[][] gap = expected(block, 256);
+		return gap(block, 256, 256);
+	}
+
+	// the block delayed by the frames, its first frames silent
+	private static float[][] gap(int block, int delay, int silent) {
+		float[][] gap = expected(block, delay);
 		for (int side = 0; side < gap.length; side++) {
-			java.util.Arrays.fill(gap[side], 0, 256, 0f);
+			java.util.Arrays.fill(gap[side], 0, silent, 0f);
 		}
 		return gap;
 	}
