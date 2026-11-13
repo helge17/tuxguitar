@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
+import java.util.function.Function;
 
 import app.tuxguitar.player.base.MidiTransport;
 
@@ -161,10 +162,22 @@ final class FakeProcessors {
 		}
 	}
 
+	// a source that times events and takes a bend's exact semitones: it writes them after the 7-bit value
+	static class TunedSource extends TimedSource {
+
+		TunedSource(float level) {
+			super(level);
+		}
+
+		public void sendPitchBend(int value, double semitones, int voice, boolean bendMode, long frame) {
+			this.received.add("bend " + value + " " + semitones + " " + voice + " " + bendMode + " @" + frame);
+		}
+	}
+
 	static class SourceFactory implements TGMidiProcessorFactory {
 		private final String type;
+		private final Function<Float, Source> make;
 		private final float level;
-		private final boolean timed;
 		final List<Source> created = new ArrayList<Source>();
 
 		SourceFactory(String type, float level) {
@@ -172,9 +185,13 @@ final class FakeProcessors {
 		}
 
 		SourceFactory(String type, float level, boolean timed) {
+			this(type, level, (timed ? TimedSource::new : Source::new));
+		}
+
+		SourceFactory(String type, float level, Function<Float, Source> make) {
 			this.type = type;
 			this.level = level;
-			this.timed = timed;
+			this.make = make;
 		}
 
 		public String getType() {
@@ -182,7 +199,7 @@ final class FakeProcessors {
 		}
 
 		public Source createProcessor() {
-			Source source = (this.timed ? new TimedSource(this.level) : new Source(this.level));
+			Source source = this.make.apply(this.level);
 			this.created.add(source);
 			return source;
 		}

@@ -30,6 +30,12 @@ public interface TGMidiProcessor extends TGAudioProcessor {
 		this.sendPitchBend(value, voice, bendMode);
 	}
 
+	// a bend with its exact semitones, which its 7-bit value only comes close to: a source that cannot bend by semitones
+	// (Gervill's General MIDI) plays the 7-bit value
+	default void sendPitchBend(int value, double semitones, int voice, boolean bendMode, long frame) {
+		this.sendPitchBend(value, voice, bendMode, frame);
+	}
+
 	default void sendControlChange(int controller, int value, long frame) {
 		this.sendControlChange(controller, value);
 	}

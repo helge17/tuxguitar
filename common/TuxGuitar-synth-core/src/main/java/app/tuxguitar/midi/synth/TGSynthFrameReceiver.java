@@ -47,6 +47,10 @@ final class TGSynthFrameReceiver implements MidiReceiver {
 		this.toChannel(channel, to -> to.sendPitchBend(value, voice, bendMode, this.frame));
 	}
 
+	public void sendPitchBend(int channel, int value, double semitones, int voice, boolean bendMode) throws MidiPlayerException {
+		this.toChannel(channel, to -> to.sendPitchBend(value, semitones, voice, bendMode, this.frame));
+	}
+
 	public void sendControlChange(int channel, int controller, int value) throws MidiPlayerException {
 		this.toChannel(channel, to -> to.sendControlChange(controller, value, this.frame));
 	}

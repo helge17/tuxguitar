@@ -53,6 +53,20 @@ public class TestSynthClock {
 		assertEquals("[on 60 100 2 true @30, bend 70 2 true @31, cc 91 40 @32, off 60 0 2 true @33] []", received(3) + " " + received(4));
 	}
 
+	// a bend with its exact semitones reaches a source that takes them (a VST3 instrument) with them, on its frame; a
+	// source that does not (Gervill, channel 3's) gets its 7-bit value there
+	@Test
+	public void aBendsSemitonesReachASourceThatTakesThemOnItsFrame() throws MidiPlayerException {
+		FakeProcessors.SourceFactory tuned = new FakeProcessors.SourceFactory("tuned", 0.25f, FakeProcessors.TunedSource::new);
+		TGSynthManager.getInstance(this.context).addExtension(TGMidiProcessorFactory.class, tuned);
+		this.model.getProgram(0, 9).copyFrom(program("tuned"));
+		this.model.getChannelById(4).sendProgramChange(9);
+		this.model.at(31).sendPitchBend(3, 75, 2.0, 2, true);
+		this.model.at(32).sendPitchBend(4, 75, 2.0, 2, true);
+
+		assertEquals("[bend 75 2 true @31] [bend 75 2.0 2 true @32]", received(3) + " " + tuned.last().received);
+	}
+
 	// channel 3 gets program 7 (another source), channel 4 a custom program of that source
 	@Test
 	public void programChangesParametersAndResetsApplyAtTheBlocksStart() throws MidiPlayerException {

@@ -135,7 +135,12 @@ public class TGSynthChannel implements MidiChannel {
 		this.sendPitchBend(value, voice, bendMode, source -> source.sendPitchBend(value, voice, bendMode, frame));
 	}
 
-	// without a source yet, the bend waits for one, untimed
+	// with its exact semitones (see TGMidiProcessor)
+	public void sendPitchBend(int value, double semitones, int voice, boolean bendMode, int frame) throws MidiPlayerException {
+		this.sendPitchBend(value, voice, bendMode, source -> source.sendPitchBend(value, semitones, voice, bendMode, frame));
+	}
+
+	// without a source yet, the bend waits for one, untimed, as its 7-bit value
 	private void sendPitchBend(int value, int voice, boolean bendMode, Consumer<TGMidiProcessor> send) throws MidiPlayerException {
 		if(!this.toSource(send)) {
 			this.pendingEvents.addPitchBend(value, voice, bendMode);
