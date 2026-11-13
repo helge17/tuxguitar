@@ -100,6 +100,7 @@ public class AudioWorld {
 	private final TestInterface device = new TestInterface();
 	private final ReportingEffects reporting = new ReportingEffects();
 	private final KeptThreads threads = new KeptThreads();
+	private float[][] live;
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
 	private SongPosition playedClick;
 	// the file exported last, as read back, on the timeline it follows
@@ -154,6 +155,15 @@ public class AudioWorld {
 	// the threads TuxGuitar started, not run yet
 	KeptThreads threads() {
 		return this.threads;
+	}
+
+	// what the output sounded when the song played live last, left and right
+	float[][] live() {
+		return this.live;
+	}
+
+	void setLive(float[][] live) {
+		this.live = live;
 	}
 
 	// the document's song: the one opened last

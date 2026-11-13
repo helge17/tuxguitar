@@ -91,17 +91,18 @@ public final class Meters {
 	// the clicks: runs of samples above half the peak, a run ending where none is for CLICK_GAP samples; each at its
 	// first sample above half the peak
 	public static List<Integer> clicks(float[] samples, int from, int to) {
-		float half = peak(samples, from, to) / 2;
-		List<Integer> clicks = new ArrayList<Integer>();
-		int lastAbove = Integer.MIN_VALUE / 2;
-		for (int i = from; i < to; i++) {
-			if (half > 0 && Math.abs(samples[i]) > half) {
-				if (i - lastAbove > CLICK_GAP) {
-					clicks.add(i);
-				}
-				lastAbove = i;
-			}
-		}
-		return clicks;
+		return onsets(samples, from, to, peak(samples, from, to) / 2);
+	}
+
+	// where sounds start: runs of samples above the level, a run ending where none is for CLICK_GAP samples; each at its
+	// first sample above the level (none at level 0)
+	public static List<Integer> onsets(float[] samples, int from, int to, double level) {
+		int[] above = above(samples, from, to, level);
+		return java.util.stream.IntStream.range(0, above.length).filter(i -> i == 0 || above[i] - above[i - 1] > CLICK_GAP)
+			.mapToObj(i -> above[i]).collect(java.util.stream.Collectors.toList());
+	}
+
+	private static int[] above(float[] samples, int from, int to, double level) {
+		return java.util.stream.IntStream.range(from, to).filter(i -> level > 0 && Math.abs(samples[i]) > level).toArray();
 	}
 }

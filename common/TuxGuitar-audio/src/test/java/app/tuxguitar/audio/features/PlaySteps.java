@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import app.tuxguitar.audio.LivePlay;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.action.TGPlayAction;
+import app.tuxguitar.midi.synth.TGSynthModel;
+import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
@@ -49,10 +52,17 @@ public class PlaySteps {
 		play(from, Long.MAX_VALUE, passes);
 	}
 
-	// live, on the synthesizer's sample clock (see LivePlay), not offline
+	// live, as the player plays the song on the TuxGuitar Synthesizer's sample clock (see LivePlay), not offline: what the
+	// output sounded is kept (see LiveSteps); then the synthesizer's channels close
 	@When("I play the song live from {position}")
 	public void playLive(SongPosition from) throws MidiPlayerException {
-		LivePlay.play(world.fixture().context, world.fixture().songManager, world.song(), from.tick(world.song()), world.session().getDevice().getSampleRate());
+		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
+		player.loadSequencer(new MidiSequencerImpl(world.fixture().context));
+		player.setTickPosition(from.tick(world.song()));
+		player.play();
+		world.threads().runStartHere();
+		world.setLive(LivePlay.play(player, (TGSynthModel) player.getSynthesizerProxy().getMidiSynthesizer()));
+		player.closeChannels();
 	}
 
 	private void play(SongPosition from, long stop, int passes) {

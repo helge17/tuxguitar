@@ -282,6 +282,14 @@ Feature: Hosting VST3 plugins
     Then the output holds 16 Metronome clicks
     And track 2 sounds no tone above -60 dBFS
 
+  # the click, Side Stick (key 37), is a 69.3 Hz tone on Test Sine
+  Scenario: while the song plays live, the Metronome does not go through a percussion track's VST3 instrument
+    Given I have added a percussion track
+    And I have chosen the VST3 instrument "Test Sine" for track 2
+    And I have turned the Metronome on
+    When I play the song live from measure 1 beat 1
+    Then the output's left side holds 16 clicks and no 69.3 Hz tone above -60 dBFS
+
   Scenario Outline: VST3 plugins are told the tempo, time signature and play state that sound
     Given I have set the tempo of measure 3 only to 60 bpm
     And I have set the time signature of measure 3 only to 3/4

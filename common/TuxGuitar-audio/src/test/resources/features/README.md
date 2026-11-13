@@ -20,8 +20,14 @@ block the same way. The desktop does not feed the audio device's output latency 
 sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
 parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
 `TGSetPluginStateAction`; the desktop does not map those actions or bind its synthesizer's chains yet. The Metronome
-clicks on the General MIDI drums in offline renders (`TGMetronome`); live, it is still the sequencer's metronome track.
-Two scenarios are still `@planned`: a bend on one note of a chord, and entering a note sounding it.
+clicks on the General MIDI drums outside every sound chain: offline (`TGMetronome`), and live on the TuxGuitar
+Synthesizer's own drums (the channel `MidiSampleClock.DRUMS`, at the percussion channel's Volume and Balance, delayed by
+plugin delay compensation like the tracks); with another MIDI Port it is still the sequencer's metronome track on the
+percussion channel, and Count In clicks on the percussion channel as before. A bend carries its exact semitones next to
+its 7-bit value, and a VST3 instrument tunes the note of the bent string alone. Entering a note sounds it
+(`TGNoteEntry.install`, a headless twin of the desktop's note controller: an app installs one of the two). "Live"
+scenarios play through the player on a live synthesizer of the scenario (`LivePlay`, `LiveOutput`); the audio tracks'
+takes do not play live yet. No scenario is `@planned` any more.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions

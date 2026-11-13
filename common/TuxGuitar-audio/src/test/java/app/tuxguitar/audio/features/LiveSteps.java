@@ -46,6 +46,27 @@ public class LiveSteps {
 		}
 	}
 
+	// the clicks on the side of the output the song sounded live (see Meters.clicks)
+	private List<Integer> clicks(int side) {
+		float[] samples = world.live()[side];
+		return Meters.clicks(samples, 0, samples.length);
+	}
+
+	@Then("the output's right side holds {int} clicks, each within {int} samples of a click on its left side")
+	public void rightClicksWithTheLeftOnes(int count, int within) {
+		List<Integer> right = clicks(1);
+		List<Integer> left = clicks(0);
+		assertEquals(count, right.size(), "right " + right);
+		right.forEach(click -> assertTrue(left.stream().anyMatch(other -> Math.abs(other - click) <= within), "right " + right + " left " + left));
+	}
+
+	@Then("the output's left side holds {int} clicks and no {double} Hz tone above -60 dBFS")
+	public void leftClicksAndNoTone(int count, double frequency) {
+		float[] left = world.live()[0];
+		assertEquals(count, Meters.clicks(left, 0, left.length).size(), "clicks " + Meters.clicks(left, 0, left.length));
+		assertTrue(Meters.level(left, 0, left.length, frequency, TestInterface.SAMPLE_RATE) < SILENT);
+	}
+
 	// the tone starts sounding within the seconds, then holds the frequency for as long as it sounds in twice that time
 	@Then("the output sounds a {int} Hz tone within 1 Hz within {double} seconds of entering it")
 	public void soundsAToneWithinSecondsOfEntering(int frequency, double seconds) throws InterruptedException, MidiPlayerException {

@@ -71,6 +71,15 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1
     Then the output holds 16 Metronome clicks, each within 1 sample of the left click on its beat
 
+  # Live, the audio track's takes are not heard yet (the desktop plays them): the right side holds the Metronome alone.
+  # A click is where it first reaches half its peak: the Side Stick's, 7 samples into its note
+  Scenario: while the song plays live, the Metronome sounds with the tracks whatever the plugins delay
+    Given I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to 2048
+    And I have turned the Metronome on
+    When I play the song live from measure 1 beat 1
+    Then the output's right side holds 16 clicks, each within 10 samples of a click on its left side
+
   Scenario: Count In sounds one beat before the first beat, whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1
     And I have set "Latency" of VST3 effect 1 of track 1 to 2048
