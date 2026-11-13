@@ -132,7 +132,10 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **File format 3.0** for a song with an audio track. A reader of format 2.0 opening it as a `.tg` file refuses it with
   its "please upgrade" message (the step compares the message of the innermost cause). This version still opens format 2.0 files, and saves
   a song without audio tracks as format 2.0. A VST3 sound chain is saved under channel parameter keys outside the
-  `synth.program` prefix, which older versions keep but do not use, so they play the General MIDI program.
+  `synth.program` prefix, which older versions keep but do not use, so they play the General MIDI program. Which
+  message an older version gives depends on the release: the released 2.1.x readers check the zip's entries before the
+  version and refuse a 3.0 file with "Unsupported file format"; 2.0.x, and versions from this one on (whose format
+  detector takes every major version from 2 up, and whose reader checks the version first), say "please upgrade".
 - **Audio export** gets sample rate and bit depth options (16 bits, 24 bits, 32-bit float) next to its File Type
   (as today: WAVE, AIFF, AU) and File Encoding; 32-bit float is the PCM_FLOAT encoding it offers today. Takes recorded at
   another sample rate are resampled. Exporting always renders through the TuxGuitar Synthesizer, whatever the MIDI
