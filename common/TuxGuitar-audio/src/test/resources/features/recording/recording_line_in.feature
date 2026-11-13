@@ -182,7 +182,6 @@ Feature: Recording line-in audio
       | the song has no percussion channel   |
       | I have added a percussion track      |
 
-  @planned
   Scenario Outline: Count In follows the time signature, tempo and Percentage of Tempo of the measure recording starts in
     Given I have set the time signature of measure 2 only to <signature>
     And I have set the tempo from measure 2 to the end to <bpm> bpm
