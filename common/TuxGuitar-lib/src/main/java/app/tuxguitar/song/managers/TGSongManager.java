@@ -274,14 +274,19 @@ public class TGSongManager {
 	}
 
 	public boolean isAnyPercussionChannel(TGSong song){
+		return (this.getPercussionChannel(song) != null);
+	}
+
+	// the song's first percussion channel, the one Count In and the Metronome click on; null when it has none
+	public TGChannel getPercussionChannel(TGSong song){
 		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
 			TGChannel channel = it.next();
 			if( channel.isPercussionChannel() ){
-				return true;
+				return channel;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public boolean isAnyTrackConnectedToChannel(TGSong song, int channelId ){

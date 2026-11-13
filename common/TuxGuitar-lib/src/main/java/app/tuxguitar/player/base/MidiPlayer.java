@@ -914,14 +914,8 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
-			while( tgChannels.hasNext() ){
-				TGChannel tgChannel = tgChannels.next();
-				if( tgChannel.isPercussionChannel() ){
-					return tgChannel.getChannelId();
-				}
-			}
-			return -1;
+			TGChannel percussion = this.getSongManager().getPercussionChannel(this.getSong());
+			return (percussion != null ? percussion.getChannelId() : -1);
 		} finally {
 			this.unlock();
 		}
