@@ -266,6 +266,13 @@ Feature: Recording line-in audio
     Then track 2's input level reads -20 dBFS within 0.01 dB
     And track 2's input has clipped
 
+  Scenario: the input level goes on showing what the input delivers while the song plays
+    Given I have armed track 2
+    And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
+    When I play the song from measure 1 beat 1 to measure 2 beat 1
+    Then track 2's input level reads -20 dBFS within 0.01 dB
+    And track 2's input has clipped
+
   # Monitoring
 
   Scenario: a track's monitoring is Off until I set it

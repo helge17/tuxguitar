@@ -101,8 +101,15 @@ public final class TGAudioSession {
 		return from;
 	}
 
+	// what the audio device delivered while the timeline played offline (playing or recording): what was played in
+	// time with it, one round trip after the clock (compensation: the plugin delay compensation of what was heard),
+	// feeds the armed tracks' input meters
+	public void meterPlayed(TGSongManager songManager, TGSong song, TGTimeline timeline, int compensation) {
+		this.meter(songManager, song, timeline.getClock() + this.getRoundTrip(compensation), (int) timeline.length());
+	}
+
 	// what the audio device delivered over count samples of its clock from the given one: each armed track's input
-	// channel(s) feed its input meter, a block at a time (while stopped, and while recording)
+	// channel(s) feed its input meter, a block at a time
 	public void meter(TGSongManager songManager, TGSong song, long from, int count) {
 		for (int done = 0; done < count; done += BLOCK) {
 			int frames = Math.min(BLOCK, count - done);

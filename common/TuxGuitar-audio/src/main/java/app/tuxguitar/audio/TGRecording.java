@@ -23,25 +23,39 @@ public final class TGRecording {
 	private final TGAudioSession session;
 	private final TGAudioDevice device;
 	private final TGPunchRange punchRange;
+	private final int compensation;
 	private final int roundTrip;
 
 	// compensation: the plugin delay compensation of what is heard while recording (the render's latency)
 	public TGRecording(TGSongManager songManager, TGSong song, TGAudioSession session, int compensation) {
+		this(songManager, song, session, session.getDevice(), compensation);
+	}
+
+	// the input read from the device given (its clock the timeline's), the latencies from the session's
+	TGRecording(TGSongManager songManager, TGSong song, TGAudioSession session, TGAudioDevice device, int compensation) {
 		this.songManager = songManager;
 		this.song = song;
 		this.session = session;
-		this.device = session.getDevice();
+		this.device = device;
 		this.punchRange = session.getPunchRange(song);
+		this.compensation = compensation;
 		this.roundTrip = session.getRoundTrip(compensation);
 	}
 
-	// records the measures of the timeline on the tracks; returns how many takes it made
+	// records the measures of the timeline on the tracks, offline: what the inputs delivered meanwhile feeds the input
+	// meters; returns how many takes it made
 	public int record(List<TGTrack> tracks, TGTimeline timeline) {
+		int takes = this.takes(tracks, timeline);
+		this.session.meterPlayed(this.songManager, this.song, timeline, this.compensation);
+		return takes;
+	}
+
+	// the takes alone (live, the input meters follow the device); how many
+	int takes(List<TGTrack> tracks, TGTimeline timeline) {
 		int takes = 0;
 		for (int[] stretch : stretches(timeline)) {
 			takes += take(tracks, timeline, stretch[0], stretch[1]);
 		}
-		this.session.meter(this.songManager, this.song, timeline.getClock() + this.roundTrip, (int) timeline.length());
 		return takes;
 	}
 

@@ -22,7 +22,7 @@ import app.tuxguitar.util.TGContext;
  * Plays the song offline, on the audio device's clock, from a position until another one is reached in the last pass,
  * or until that pass ends, after the Count In when it is on; stopped at a sample of what plays (ATTRIBUTE_STOP_SAMPLE,
  * counted from where playing starts) it plays up to there. What it sounded is left in the context as
- * ATTRIBUTE_RENDER.
+ * ATTRIBUTE_RENDER. What the inputs delivered meanwhile feeds the armed tracks' input meters, as when recording.
  */
 public class TGPlayAction extends TGActionBase {
 
@@ -39,7 +39,10 @@ public class TGPlayAction extends TGActionBase {
 	}
 
 	protected void processAction(TGActionContext context) {
-		context.setAttribute(ATTRIBUTE_RENDER, play(getContext(), context, getSongManager(context), false));
+		TGRender render = play(getContext(), context, getSongManager(context), false);
+		TGSong song = context.getAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG);
+		TGAudioSession.getInstance(getContext()).meterPlayed(getSongManager(context), song, render.getTimeline(), render.getLatency());
+		context.setAttribute(ATTRIBUTE_RENDER, render);
 		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
 
