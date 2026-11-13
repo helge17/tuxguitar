@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.audio.device.TGAudioDeviceException;
@@ -137,6 +141,44 @@ class TestLiveDevice {
 			backend.getStream().run(1);
 			assertArrayEquals(new float[] {RAMPS.capture(1, 511, 1)[0], 0f}, device.capture(1, 511, 2));
 		}
+	}
+
+	// what the device delivered over the block of the clock, as read while rendering it or after: "<clock> <frames> <the
+	// first and last frames read as the input delivered them>"
+	private static String read(TGLiveDevice device, String when, int frames) {
+		long clock = device.getClock();
+		boolean first = device.capture(2, clock, 1)[0] == RAMPS.capture(2, clock, 1)[0];
+		boolean last = device.capture(1, clock + frames - 1, 1)[0] == RAMPS.capture(1, clock + frames - 1, 1)[0];
+		return when + " " + clock + " " + frames + " " + first + " " + last;
+	}
+
+	// a source reads the block's input while the synthesizer renders it; a listener is told the block after
+	@Test
+	void whileABlockIsRenderedAndAfterItsInputIsReadWhereTheClockIs() throws TGAudioDeviceException {
+		TestBackend backend = new TestBackend(RAMPS, 0, 0);
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.context, RATE);
+		List<String> read = new ArrayList<String>();
+		try (TGLiveDevice device = open(backend)) {
+			synthesizer.setListener((clock, frames) -> read.add(read(device, "rendering", frames)));
+			device.play(synthesizer);
+			device.addListener((clock, frames) -> read.add(read(device, "told " + clock, frames)));
+			backend.getStream().run(2);
+		}
+		assertEquals(Arrays.asList("rendering 0 512 true true", "told 0 0 512 true true", "rendering 512 512 true true", "told 512 512 512 true true"), read);
+	}
+
+	@Test
+	void aListenerRemovedIsToldNoMore() throws TGAudioDeviceException {
+		TestBackend backend = new TestBackend(RAMPS, 0, 0);
+		List<Long> told = new ArrayList<Long>();
+		try (TGLiveDevice device = open(backend)) {
+			TGLiveDevice.Listener listener = (clock, frames) -> told.add(clock);
+			device.addListener(listener);
+			backend.getStream().run(1);
+			device.removeListener(listener);
+			backend.getStream().run(1);
+		}
+		assertEquals(Arrays.asList(0L), told);
 	}
 
 	@Test

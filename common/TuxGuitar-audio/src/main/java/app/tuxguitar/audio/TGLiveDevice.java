@@ -1,5 +1,8 @@
 package app.tuxguitar.audio;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import app.tuxguitar.audio.device.TGAudioBackend;
 import app.tuxguitar.audio.device.TGAudioCallback;
 import app.tuxguitar.audio.device.TGAudioDeviceException;
@@ -10,9 +13,10 @@ import app.tuxguitar.midi.synth.TGSynthModel;
 /**
  * The audio device live: a stream of the audio backend on the chosen devices, at the output device's sample rate, in
  * blocks of 512 frames the device asks for on its own thread. Its clock counts the frames since the stream started.
- * Each block it keeps what the input channels delivered (the last KEPT_SECONDS, read back by capture) and plays what
- * the TuxGuitar Synthesizer playing through it renders (silence while none does). It reports the stream's latencies,
- * and tells the synthesizer the output latency, so the position the player reports is the one the device sounds.
+ * Each block it keeps what the input channels delivered (the last KEPT_SECONDS, read back by capture), plays what
+ * the TuxGuitar Synthesizer playing through it renders (silence while none does), which can read the block's input
+ * already, then tells its listeners. It reports the stream's latencies, and tells the synthesizer the output latency,
+ * so the position the player reports is the one the device sounds.
  */
 public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoCloseable {
 
@@ -22,8 +26,10 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	// per input channel, a ring of the frames delivered: frame f of the clock at f % its length
 	private final float[][] kept;
 	private final float[][] block = new float[2][TGBlocks.FRAMES];
-	// the frames delivered so far: written by the device's thread only
+	private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+	// where the block being played starts, and the frames delivered so far: written by the device's thread only
 	private volatile long clock;
+	private volatile long delivered;
 	private volatile TGAudioBufferProcessor synthesizer;
 
 	private TGLiveDevice(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice) throws TGAudioDeviceException {
@@ -64,14 +70,16 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	// on the device's thread
 	public void process(float[][] input, float[][] output, int frames) {
 		this.keep(input, frames);
+		this.delivered += frames;
 		this.render(output, frames);
+		this.listeners.forEach(listener -> listener.played(this.clock, frames));
 		this.clock += frames;
 	}
 
 	private void keep(float[][] input, int frames) {
 		for (int c = 0; c < this.kept.length; c++) {
 			for (int i = 0; i < frames; i++) {
-				this.kept[c][(int) ((this.clock + i) % this.kept[c].length)] = input[c][i];
+				this.kept[c][(int) ((this.delivered + i) % this.kept[c].length)] = input[c][i];
 			}
 		}
 	}
@@ -91,18 +99,36 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	// the others
 	public float[] capture(int inputChannel, long from, int count) {
 		float[] kept = this.kept[inputChannel - 1];
-		long clock = this.clock;
+		long delivered = this.delivered;
 		float[] samples = new float[count];
 		for (int i = 0; i < count; i++) {
 			long frame = from + i;
-			if (frame < clock && frame >= clock - kept.length) {
+			if (frame < delivered && frame >= delivered - kept.length) {
 				samples[i] = kept[(int) (frame % kept.length)];
 			}
 		}
 		return samples;
 	}
 
+	public long getClock() {
+		return this.clock;
+	}
+
+	// from the next block on, until removed
+	public void addListener(Listener listener) {
+		this.listeners.add(listener);
+	}
+
+	public void removeListener(Listener listener) {
+		this.listeners.remove(listener);
+	}
+
 	public void close() {
 		this.stream.close();
+	}
+
+	// told each block once it is played, on the device's thread: where on the clock it starts, and its frames
+	public interface Listener {
+		void played(long clock, int frames);
 	}
 }

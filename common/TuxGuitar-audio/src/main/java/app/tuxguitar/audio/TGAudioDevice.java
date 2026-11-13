@@ -21,6 +21,11 @@ public interface TGAudioDevice {
 		return 0;
 	}
 
+	// live, the clock where the block being played starts (its input is delivered and can be captured); 0 offline
+	default long getClock() {
+		return 0;
+	}
+
 	// what the input channel (from 1) delivered over count samples of the clock, from the given one
 	float[] capture(int inputChannel, long from, int count);
 
