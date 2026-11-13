@@ -461,6 +461,21 @@ public class TestTakeTap {
 		assertSamples(new double[] {0.5, 0.5}, tap[1], 0, 4 * M - 1);
 	}
 
+	// live, the input is only the block's: read from the sample of the tap the block starts on
+	@Test
+	public void liveTheMonitoredInputIsTheBlocksFromWhereItStarts() {
+		TGTrackSource[] sources = new TGTrackSource[4];
+		Arrays.fill(sources, TGTrackSource.INPUT);
+		TGTapInput input = new TGTapInput(0, null);
+		TGTakeTap tap = TGTakeTap.of(track, wholeSong(100), halfOfTheFirstSample, sources, input);
+		float[][] block = new float[2][2];
+		input.set(M + 1000, new float[][] {{0.25f, 0.75f}});
+		tap.render(block, M + 1000);
+
+		assertArrayEquals(new float[] {0.25f, 0.75f}, block[0]);
+		assertArrayEquals(new float[] {0.25f, 0.75f}, block[1]);
+	}
+
 	private TGTakeTap takesOf(TGTimeline timeline) {
 		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		Arrays.fill(sources, TGTrackSource.TAKES);

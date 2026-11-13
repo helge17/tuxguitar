@@ -34,7 +34,7 @@ class TestLiveDevice {
 	}
 
 	// each input channel delivers its number tenths, rising by a millionth a sample of the clock
-	private static final TGAudioDevice RAMPS = new SilentDevice() {
+	static final TGAudioDevice RAMPS = new SilentDevice() {
 		public int getSampleRate() {
 			return RATE;
 		}
