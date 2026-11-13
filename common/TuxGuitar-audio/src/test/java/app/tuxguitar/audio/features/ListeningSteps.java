@@ -179,22 +179,6 @@ public class ListeningSteps {
 		assertTone(tap(number), bounds[0] + FADE, bounds[1] - FADE, tone, Arrays.asList(tone), "measure " + measure);
 	}
 
-	// the beats of the measures played, where they sound: each played measure's beats from where it starts playing
-	private List<Integer> beats() {
-		TGTimeline timeline = heard().timeline();
-		List<Integer> beats = new ArrayList<Integer>();
-		for (int i = 0; i < timeline.count(); i++) {
-			TGPlayedMeasure measure = timeline.get(i);
-			long beat = measure.getHeader().getTimeSignature().getDenominator().getTime();
-			for (long tick = 0; tick < measure.getHeader().getLength(); tick += beat) {
-				if (tick >= measure.getFrom() && tick < measure.getTo()) {
-					beats.add((int) timeline.sampleAt(i, tick));
-				}
-			}
-		}
-		return beats;
-	}
-
 	private static void assertOnBeats(List<Integer> clicks, List<Integer> beats, int within) {
 		for (int click : clicks) {
 			int nearest = beats.stream().min((a, b) -> Integer.compare(Math.abs(a - click), Math.abs(b - click))).get();
@@ -206,14 +190,14 @@ public class ListeningSteps {
 	public void theOutputHoldsClicksOnTheBeats(int count) {
 		List<Integer> clicks = Meters.clicks(heard().left(), 0, heard().left().length);
 		assertEquals(count, clicks.size(), "clicks at " + clicks);
-		assertOnBeats(clicks, beats(), 1);
+		assertOnBeats(clicks, heard().beats(), 1);
 	}
 
 	@Then("track {int} sounds {int} clicks, each within 5 ms of a beat")
 	public void soundsClicksOnTheBeats(int number, int count) {
 		List<Integer> clicks = Meters.clicks(tap(number), 0, tap(number).length);
 		assertEquals(count, clicks.size(), "clicks at " + clicks);
-		assertOnBeats(clicks, beats(), TestInterface.SAMPLE_RATE / 200);
+		assertOnBeats(clicks, heard().beats(), TestInterface.SAMPLE_RATE / 200);
 	}
 
 	@Then("track {int} sounds its click at {position} within 5 ms")

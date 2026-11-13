@@ -66,6 +66,35 @@ public class ChannelSteps {
 		updateChannel(number, TGChannel.DEFAULT_BANK, program(program));
 	}
 
+	@Given("I have set the General MIDI program of track {int}'s channel to {string}")
+	public void haveSetTheGeneralMidiProgram(int number, String program) {
+		setTheGeneralMidiProgram(number, program);
+		assertTrue(world.succeeded());
+	}
+
+	// Volume and Balance as the channel's mixer sets them
+	@Given("I have set the Volume of track {int}'s channel to {int}")
+	public void haveSetTheVolume(int number, int volume) {
+		world.fixture().actionContext.setAttribute(TGUpdateChannelAction.ATTRIBUTE_VOLUME, (short) volume);
+		updateChannel(number);
+		assertTrue(world.succeeded());
+	}
+
+	@Given("I have set the Balance of track {int}'s channel to {int}")
+	public void haveSetTheBalance(int number, int balance) {
+		world.fixture().actionContext.setAttribute(TGUpdateChannelAction.ATTRIBUTE_BALANCE, (short) balance);
+		updateChannel(number);
+		assertTrue(world.succeeded());
+	}
+
+	// a new guitar track, last, then set to play on the channel of the other track
+	@Given("I have added a guitar track on the channel of track {int}")
+	public void haveAddedAGuitarTrackOnTheChannelOf(int other) {
+		world.executeUndoable(new TGAddNewTrackAction(world.fixture().context), new TGUndoableAddTrackController());
+		setTrackChannel(world.song().countTracks(), other);
+		assertTrue(world.succeeded());
+	}
+
 	@When("I make track {int}'s channel a percussion channel")
 	public void makeAPercussionChannel(int number) {
 		updateChannel(number, TGChannel.DEFAULT_PERCUSSION_BANK, TGChannel.DEFAULT_PERCUSSION_PROGRAM);
@@ -91,9 +120,18 @@ public class ChannelSteps {
 	}
 
 	private void updateChannel(int number, short bank, short program) {
-		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, world.channel(world.track(number)));
 		world.fixture().actionContext.setAttribute(TGUpdateChannelAction.ATTRIBUTE_BANK, bank);
 		world.fixture().actionContext.setAttribute(TGUpdateChannelAction.ATTRIBUTE_PROGRAM, program);
+		updateChannel(number);
+	}
+
+	// the update the context's attributes hold, which are then forgotten so the next update keeps what they set
+	private void updateChannel(int number) {
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, world.channel(world.track(number)));
 		world.executeUndoable(new TGUpdateChannelAction(world.fixture().context), new TGUndoableModifyChannelController());
+		for (String attribute : new String[] {TGUpdateChannelAction.ATTRIBUTE_BANK, TGUpdateChannelAction.ATTRIBUTE_PROGRAM,
+			TGUpdateChannelAction.ATTRIBUTE_VOLUME, TGUpdateChannelAction.ATTRIBUTE_BALANCE}) {
+			world.fixture().actionContext.setAttribute(attribute, null);
+		}
 	}
 }

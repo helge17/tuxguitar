@@ -1,5 +1,8 @@
 package app.tuxguitar.audio.features;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.TGTimeline;
@@ -22,6 +25,16 @@ final class Heard {
 
 	float[] tap(TGTrack track) {
 		return this.render.getTap(track);
+	}
+
+	// a side of the track's tap (0 left, 1 right)
+	float[] tap(TGTrack track, int side) {
+		return this.render.getTap(track, side);
+	}
+
+	// a side of the output (0 left, 1 right)
+	float[] output(int side) {
+		return (side == 0 ? this.left() : this.right());
 	}
 
 	// a side of the drum tap (0 left, 1 right)
@@ -60,6 +73,27 @@ final class Heard {
 			}
 		}
 		throw new IllegalArgumentException("not played: " + position);
+	}
+
+	// the plugin delay compensation: live, the output sounds the render this much later than the clock
+	int latency() {
+		return this.render.getLatency();
+	}
+
+	// the beats of the measures played, where they sound: each played measure's beats from where it starts playing
+	List<Integer> beats() {
+		TGTimeline timeline = this.timeline();
+		List<Integer> beats = new ArrayList<Integer>();
+		for (int i = 0; i < timeline.count(); i++) {
+			TGPlayedMeasure measure = timeline.get(i);
+			long beat = measure.getHeader().getTimeSignature().getDenominator().getTime();
+			for (long tick = 0; tick < measure.getHeader().getLength(); tick += beat) {
+				if (tick >= measure.getFrom() && tick < measure.getTo()) {
+					beats.add((int) timeline.sampleAt(i, tick));
+				}
+			}
+		}
+		return beats;
 	}
 
 	// where the pass starts, and where the one before it ends

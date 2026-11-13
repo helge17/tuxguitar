@@ -1,6 +1,7 @@
 package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
@@ -36,6 +37,30 @@ public class NoteSteps {
 	// no strings and no beats), then the fret typed there
 	@When("I enter fret {int} on string {int}")
 	public void enterFret(int fret, int string) {
+		enterFret(fret, string, TGVelocities.DEFAULT);
+	}
+
+	// on track 1 unless the caret was moved
+	@Given("I have entered fret {int} on string {int}")
+	public void haveEnteredFret(int fret, int string) {
+		haveEnteredFret(fret, string, "f");
+	}
+
+	@Given("I have entered fret {int} on string {int} at dynamic {word}")
+	public void haveEnteredFret(int fret, int string, String dynamic) {
+		caretTrack = (caretTrack != null ? caretTrack : world.track(1));
+		if (caretTrack.getMeasure(0).countBeats() == 0) {
+			world.fixture().beat(caretTrack.getMeasure(0), 0);
+		}
+		enterFret(fret, string, DYNAMICS.get(dynamic));
+		assertTrue(world.succeeded());
+	}
+
+	private static final java.util.Map<String, Integer> DYNAMICS = java.util.Map.of("ppp", TGVelocities.PIANO_PIANISSIMO, "pp", TGVelocities.PIANISSIMO,
+		"p", TGVelocities.PIANO, "mp", TGVelocities.MEZZO_PIANO, "mf", TGVelocities.MEZZO_FORTE, "f", TGVelocities.FORTE,
+		"ff", TGVelocities.FORTISSIMO, "fff", TGVelocities.FORTE_FORTISSIMO);
+
+	private void enterFret(int fret, int string, int velocity) {
 		TGMeasure measure = caretTrack.getMeasure(0);
 		TGBeat beat = measure.getBeat(0);
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, caretTrack);
@@ -45,7 +70,7 @@ public class NoteSteps {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_STRING, string <= caretTrack.stringCount() ? caretTrack.getString(string) : null);
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_POSITION, measure.getStart());
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_FRET, fret);
-		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, TGVelocities.DEFAULT);
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_VELOCITY, velocity);
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_DURATION, world.fixture().songManager.getFactory().newDuration());
 		world.executeUndoable(new TGChangeNoteAction(world.fixture().context), new TGUndoableMeasureGenericController());
 	}

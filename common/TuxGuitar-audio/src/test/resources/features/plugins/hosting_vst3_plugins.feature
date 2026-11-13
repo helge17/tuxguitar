@@ -1,4 +1,3 @@
-@planned
 Feature: Hosting VST3 plugins
   Each track sounds through its sound chain: a source followed by effects, in order. The source is a General MIDI
   program played by the TuxGuitar Synthesizer, a VST3 instrument, or an audio track's takes. A disabled effect is
@@ -226,6 +225,7 @@ Feature: Hosting VST3 plugins
       | choose the VST3 instrument "Test Gain" for track 1 |
       | add the VST3 effect "Test Sine" to track 1         |
 
+  @planned
   Scenario: entering a note sounds it through the VST3 instrument
     Given I have chosen the VST3 instrument "Test Sine" for track 1
     When I enter fret 5 on string 1
@@ -243,6 +243,7 @@ Feature: Hosting VST3 plugins
       | mf      | 0.311 |
       | ppp     | 0.059 |
 
+  @planned
   Scenario: a bend on one note of a chord reaches the VST3 instrument for that note only, in exact semitones
     Given I have entered fret 5 on string 1 with a full bend
     And I have entered fret 5 on string 2
@@ -251,6 +252,7 @@ Feature: Hosting VST3 plugins
     Then track 1 sounds a 440 Hz tone rising to 493.9 Hz within 1 Hz in measure 1
     And track 1 sounds a 329.6 Hz tone that stays within 1 Hz in measure 1
 
+  @planned
   Scenario: the Metronome does not go through a percussion track's VST3 instrument
     Given I have added a percussion track
     And I have chosen the VST3 instrument "Test Sine" for track 2
@@ -259,6 +261,7 @@ Feature: Hosting VST3 plugins
     Then the output holds 16 Metronome clicks
     And track 2 sounds no tone above -60 dBFS
 
+  @planned
   Scenario Outline: VST3 plugins are told the tempo, time signature and play state that sound
     Given I have set the tempo of measure 3 only to 60 bpm
     And I have set the time signature of measure 3 only to 3/4
@@ -273,6 +276,7 @@ Feature: Hosting VST3 plugins
       | 100     | 120   | 60    |
       | 80      | 96    | 48    |
 
+  @planned
   Scenario: VST3 plugins are told the musical position, which jumps back with a loop
     Given I have turned Play looped on over measures 2 to 3
     And I have added the VST3 effect "Test Tempo" to track 1
@@ -281,6 +285,7 @@ Feature: Hosting VST3 plugins
 
   # Plugin editors, parameters and presets
 
+  @planned
   Scenario: opening a VST3 plugin's editor shows the plugin's own editor without modifying the song
     Given I have added the VST3 effect "Test Gain" to track 1
     And I have saved the song as a TuxGuitar file
@@ -288,12 +293,14 @@ Feature: Hosting VST3 plugins
     Then the plugin's own editor of VST3 effect 1 of track 1 is open
     And the song is not modified
 
+  @planned
   Scenario: a VST3 plugin without an editor of its own is edited through its parameters
     Given I have added the VST3 effect "Test Clip 0.5" to track 1
     When I open the editor of VST3 effect 1 of track 1
     Then TuxGuitar's parameter editor of VST3 effect 1 of track 1 is open
     And the parameters of VST3 effect 1 of track 1 read "Ceiling"
 
+  @planned
   Scenario: a change made in a plugin's editor changes the sound
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.1 from measure 1 beat 1 to measure 2 beat 1
@@ -302,18 +309,21 @@ Feature: Hosting VST3 plugins
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.3 within 0.01 in measure 1
 
+  @planned
   Scenario: a change made in a plugin's editor modifies the song
     Given I have added the VST3 effect "Test Gain" to track 1
     And I have saved the song as a TuxGuitar file
     When the plugin sets "Gain" of VST3 effect 1 of track 1 to 3.0
     Then the song is modified
 
+  @planned
   Scenario: one gesture in a plugin's editor is one undo step
     Given I have added the VST3 effect "Test Gain" to track 1
     And the plugin has set "Gain" of VST3 effect 1 of track 1 through 2.5 to 3.0
     When I undo
     Then "Gain" of VST3 effect 1 of track 1 is 2.0
 
+  @planned
   Scenario: a preset chosen in a plugin's own editor modifies the song
     Given I have added the VST3 effect "Test Gain" to track 1
     And I have saved the song as a TuxGuitar file
@@ -321,6 +331,7 @@ Feature: Hosting VST3 plugins
     Then the song is modified
     And the state of VST3 effect 1 of track 1 is the preset "Loud"
 
+  @planned
   Scenario: a preset chosen in a plugin's own editor is one undo step
     Given I have added the VST3 effect "Test Gain" to track 1
     And the plugin has loaded its preset "Loud" for VST3 effect 1 of track 1

@@ -12,7 +12,7 @@ import app.tuxguitar.player.base.MidiSynthesizer;
 import io.cucumber.java.en.Given;
 
 /**
- * Steps on what is set outside the song: the MIDI Port, the audio device, the plugins installed.
+ * Steps on what is set outside the song: the MIDI Port, the audio device.
  */
 public class SessionSteps {
 
@@ -82,10 +82,5 @@ public class SessionSteps {
 	@Given("I have set the recording offset to {int} samples")
 	public void setTheRecordingOffset(int samples) {
 		world.session().setRecordingOffset(samples);
-	}
-
-	// the plugin host comes with the VST3 slice; no implemented scenario uses a plugin yet
-	@Given("the VST3 folders hold the test plugins")
-	public void theVst3FoldersHoldTheTestPlugins() {
 	}
 }

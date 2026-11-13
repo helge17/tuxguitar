@@ -9,15 +9,62 @@
 	</parent>
 
 	<!-- Audio tracks, line-in recording and VST3 hosting: a headless engine (sound chain, takes, an offline render
-		clock), so its features run without the desktop app. Only the specification exists so far: the features in
-		src/test/resources/features are @planned (see the README there). -->
+		clock), so its features run without the desktop app. The features in src/test/resources/features not
+		implemented yet are @planned (see the README there). -->
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tuxguitar-audio</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 
+	<properties>
+		<skipTests>false</skipTests>
+		<!-- the VST3 host process and the test plugins, built by TuxGuitar-vst3's native build (see its pom) -->
+		<vst3.native.dir>${project.basedir}/../TuxGuitar-vst3/native-build</vst3.native.dir>
+	</properties>
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<!-- the scenarios load the test plugins in the real host process: build them first (once; then a no-op), or
+				stop here saying what C++ toolchain to install -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>build-vst3-native</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<target name="build-vst3-native">
+								<exec executable="cmd" osfamily="windows" failonerror="true">
+									<arg value="/c" />
+									<arg value="${project.basedir}/../TuxGuitar-vst3/native/build.cmd" />
+									<arg value="${vst3.native.dir}" />
+								</exec>
+								<exec executable="sh" osfamily="unix" failonerror="true">
+									<arg value="${project.basedir}/../TuxGuitar-vst3/native/build.sh" />
+									<arg value="${vst3.native.dir}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<tg.vst3.native>${vst3.native.dir}</tg.vst3.native>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<!-- same JUnit and Cucumber lines as tuxguitar-editor-utils -->
@@ -56,6 +103,13 @@
 		<dependency>
 			<groupId>media.sound</groupId>
 			<artifactId>gervill</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- VST3 effects and instruments, in the host process -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>tuxguitar-vst3</artifactId>
+			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- editing actions and undo -->

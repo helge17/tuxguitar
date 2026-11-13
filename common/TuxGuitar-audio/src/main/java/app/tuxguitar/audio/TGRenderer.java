@@ -21,7 +21,8 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Renders a timeline of the song offline, on the audio device's sample clock: each channel's tap (an audio track's
- * takes, or the General MIDI program a track with notes plays, see TGMidiTaps) and the drum tap (the Count In, see
+ * takes through the effects of its sound chain, see TGEffects, or the sound chain a track with notes plays, see
+ * TGMidiTaps) and the drum tap (the Count In, see
  * TGDrumTap), then the output mix, where each channel heard is scaled by its Volume and Balance (today's
  * constant-power law), and the drum tap by those of the song's percussion channel (a new channel's without one).
  * Muted tracks, and tracks other than the soloed ones, are not heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard here: audio tracks and the drums need
@@ -59,9 +60,11 @@ public final class TGRenderer {
 			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, audioChannels);
 			midi.forEach((channel, tap) -> taps.put(channel, tap.getSamples()));
 			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
-			latency = latency(midi.values(), timeline);
+			Map<TGTrack, TGEffects> effects = new HashMap<TGTrack, TGEffects>();
+			audioTracks.forEach(track -> effects.put(track, TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), timeline.getSampleRate())));
+			latency = latency(midi.values(), effects.values(), timeline);
 			for (TGTrack track : audioTracks) {
-				taps.put(track.getChannelId(), this.tap(track, timeline, recording, latency));
+				taps.put(track.getChannelId(), this.tap(track, timeline, recording, latency, effects.get(track)));
 			}
 			this.mix(taps, drums, output);
 		}
@@ -80,25 +83,32 @@ public final class TGRenderer {
 		return audioTracks;
 	}
 
-	// plugin delay compensation: the slowest chain's latency, the drums' included (audio tracks' takes have none yet)
-	private static int latency(Collection<TGTap> taps, TGTimeline timeline) {
+	// plugin delay compensation: the slowest chain's latency, the drums' and the audio tracks' effects' included
+	private static int latency(Collection<TGTap> taps, Collection<TGEffects> effects, TGTimeline timeline) {
 		int latency = TGDrumTap.latency(timeline);
 		for (TGTap tap : taps) {
 			latency = Math.max(latency, tap.getLatency());
 		}
+		for (TGEffects chain : effects) {
+			latency = Math.max(latency, chain.getLatency());
+		}
 		return latency;
 	}
 
-	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, int latency) {
+	// the track's takes or input, through its effects
+	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, int latency, TGEffects effects) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
-		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency) : null);
-		return TGTakeTap.render(track, timeline, this.stretcher, sources, input);
+		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
+		float[][] tap = effects.process(TGTakeTap.render(track, timeline, this.stretcher, sources, input)).getSamples();
+		effects.close();
+		return tap;
 	}
 
 	// what the track's input channel(s) deliver over the timeline as the output sounds it: the output sounds the render
-	// its latency after the clock, and a monitored input is not delayed, so it is read that much later
-	private float[][] input(TGTrack track, TGTimeline timeline, int latency) {
-		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock() + latency, (int) timeline.length());
+	// its latency after the clock, and a monitored input is not delayed by plugin delay compensation, only by its own
+	// effects, so it is read the render's latency later, less its effects' (which are taken out of the tap)
+	private float[][] input(TGTrack track, TGTimeline timeline, int delay) {
+		return this.session.getDevice().capture(this.channel(track).getAudioInput(), timeline.getClock() + delay, (int) timeline.length());
 	}
 
 	// where the track records it sounds its input (monitoring Auto or Always) or nothing (Off); with monitoring
