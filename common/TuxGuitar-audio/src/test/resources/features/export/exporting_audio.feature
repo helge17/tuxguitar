@@ -25,13 +25,9 @@ Feature: Exporting audio
     Examples:
       | type | rate  | bits         | second measure |
       | WAVE | 44100 | 16 bits      | 88200          |
+      | WAVE | 48000 | 24 bits      | 96000          |
       | WAVE | 44100 | 32-bit float | 88200          |
       | AIFF | 44100 | 16 bits      | 88200          |
-
-    @planned
-    Examples:
-      | type | rate  | bits         | second measure |
-      | WAVE | 48000 | 24 bits      | 96000          |
 
   Scenario: plugin latency does not shift the exported file
     Given I have added the VST3 effect "Test Latency" to track 2
@@ -47,7 +43,6 @@ Feature: Exporting audio
     When I export the song as a WAVE file at 44100 Hz in 32-bit float
     Then the file's right clicks peak at 0.5 within 1%
 
-  @planned
   Scenario: a take recorded at 44100 Hz keeps its pitch in a file exported at 48000 Hz
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1
     When I export the song as a WAVE file at 48000 Hz in 24 bits

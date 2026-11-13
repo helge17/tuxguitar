@@ -108,6 +108,22 @@ public class TestTakeTap {
 		return TGTakeTap.render(track, timeline, halfOfTheFirstSample, sources, null);
 	}
 
+	// a take recorded at 44100 Hz on a timeline at 48000 Hz is resampled to it: each of its samples sounds at the same
+	// time (its sample 110250, beat 2 of measure 2, at 120000), at its level; at another tempo the stretcher is given
+	// the take's samples at 48000 Hz (measure 3 recorded at 240 bpm: its samples 192000 to 240000)
+	@Test
+	public void aTakeRecordedAtAnotherSampleRatePlaysAtTheSameTimes() {
+		float[] samples = new float[4 * M];
+		samples[M + 22050] = 1f;
+		clips(new TGTake(1, samples, 44100), 1, 2);
+		clip(new TGTake(2, samples, 44100), 3, 0, BAR, 2 * M, 240);
+		long origin = song.getMeasureHeader(0).getStart();
+		float[] tap = sides(new TGTimeline(song, TGSongTime.play(song, new MidiPlayerMode(), origin, origin + 3 * BAR, 1), 48000))[0];
+
+		assertEquals("288000 1.0", tap.length + " " + tap[120000]);
+		assertEquals("[192000-240000:96000]", stretches.toString());
+	}
+
 	private static void assertSamples(double[] expected, float[] tap, int... at) {
 		double[] actual = new double[at.length];
 		for (int i = 0; i < at.length; i++) {

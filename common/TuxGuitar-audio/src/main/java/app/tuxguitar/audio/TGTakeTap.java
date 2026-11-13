@@ -144,7 +144,7 @@ public final class TGTakeTap {
 			TGTake take = clip.getTake();
 			int takeStart = this.sampleOf(clip, from);
 			int takeEnd = this.sampleOf(clip, to);
-			float[][] source = this.samples.computeIfAbsent(clip.getSource(), TGTakeTap::samplesOf);
+			float[][] source = this.samples.computeIfAbsent(clip.getSource(), each -> samplesOf(each, this.timeline.getSampleRate()));
 			float[][] audio = (clip.getTempo() == this.played.getTempo() ? null : this.stretch(source, takeStart, takeEnd, (int) (end - start)));
 			boolean chosen = (this.measure.getChosenTake() == take);
 			return new TGTakePiece(start, end, this.jumpsTo(from), take, chosen, takeStart, takeEnd, source, audio, this.under(from, to));
@@ -167,17 +167,26 @@ public final class TGTakeTap {
 			return under;
 		}
 
-		// the sample of the take at the tick: counted on the output clock at the tempo it was recorded at, so it plays
-		// sample for sample; counted at its recording tempo otherwise
+		// the sample of the take at the tick, at the timeline's rate: counted on the output clock at the tempo it was
+		// recorded at, so it plays sample for sample; counted at its recording tempo otherwise
 		private int sampleOf(TGTakeClip clip, long tick) {
 			if (clip.getTempo() == this.played.getTempo()) {
-				return (int) (clip.getFirstSample() + this.timeline.sampleAt(this.index, tick) - this.timeline.sampleAt(this.index, clip.getStart()));
+				return (int) (this.onTimeline(clip.getFirstSample(), clip) + this.timeline.sampleAt(this.index, tick) - this.timeline.sampleAt(this.index, clip.getStart()));
 			}
-			return clip.sampleAt(tick);
+			return this.onTimeline(clip.sampleAt(tick), clip);
+		}
+
+		// a sample of the clip's source, at the timeline's rate
+		private int onTimeline(int sample, TGTakeClip clip) {
+			return (int) Math.round((double) sample * this.timeline.getSampleRate() / clip.getSource().getSampleRate());
 		}
 	}
 
-	// one array per side of the take
+	// one array per side of the take, at the sample rate (resampled when it was recorded at another)
+	private static float[][] samplesOf(TGTake take, int sampleRate) {
+		return TGResampler.resample(samplesOf(take), take.getSampleRate(), sampleRate);
+	}
+
 	private static float[][] samplesOf(TGTake take) {
 		float[][] samples = new float[take.countChannels()][take.countSamples()];
 		for (int side = 0; side < samples.length; side++) {

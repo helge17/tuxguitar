@@ -104,6 +104,14 @@ public class ExportSteps {
 		}
 	}
 
+	// at the file's own sample rate
+	@Then("the file's right side sounds a {int} Hz tone within 1% in measure {int}")
+	public void theRightSideSoundsATone(int frequency, int measure) {
+		Heard file = world.exported();
+		int[] bounds = file.measure(measure);
+		assertEquals(frequency, Meters.frequency(file.right(), bounds[0], bounds[1], file.timeline().getSampleRate()), frequency / 100.0);
+	}
+
 	@Then("the file lasts {int} samples, within 1 sample")
 	public void theFileLasts(int samples) {
 		assertEquals(samples, world.exported().left().length, 1);
