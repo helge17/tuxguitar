@@ -29,7 +29,7 @@ public class TGSetPunchRangeAction extends TGActionBase {
 		Integer last = context.getAttribute(ATTRIBUTE_LAST_MEASURE);
 		TGPunchRange range = new TGPunchRange(first, last).endingWith(song);
 		if (range != null) {
-			TGAudioSession.getInstance(getContext()).setPunchRange(range);
+			TGAudioSession.getInstance(getContext()).setPunchRange(song, range);
 			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		}
 	}

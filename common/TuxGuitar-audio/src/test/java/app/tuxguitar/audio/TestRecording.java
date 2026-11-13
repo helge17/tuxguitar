@@ -61,7 +61,7 @@ public class TestRecording {
 	// positions are in ticks from the start of measure 1
 	private int record(long start, long stop, int percent, TGPunchRange punchRange) {
 		long origin = song.getMeasureHeader(0).getStart();
-		session.setPunchRange(punchRange);
+		session.setPunchRange(song, punchRange);
 		TGRecording recording = new TGRecording(songManager, song, session, compensation);
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setCurrentPercent(percent);

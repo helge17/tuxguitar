@@ -35,6 +35,8 @@ public final class TGAudioSession {
 	private final Map<TGTrack, TGInputMeter> meters = new HashMap<TGTrack, TGInputMeter>();
 	private TGAudioDevice device;
 	private TGPunchRange punchRange;
+	// the song the punch range was set on: a song opened later has none
+	private TGSong punchSong;
 	// samples added to the input latency the audio device reports, for drivers that report it wrong
 	private int recordingOffset;
 	// the device's clock while TuxGuitar is stopped: how much input it has delivered
@@ -137,13 +139,15 @@ public final class TGAudioSession {
 		this.recording = recording;
 	}
 
-	public void setPunchRange(TGPunchRange punchRange) {
+	public void setPunchRange(TGSong song, TGPunchRange punchRange) {
+		this.punchSong = song;
 		this.punchRange = punchRange;
 	}
 
-	// the punch range stays on its measure numbers and ends with the song; none once the song ends before it starts
+	// the punch range stays on its measure numbers and ends with the song; none once the song ends before it starts, and
+	// none on another song (one opened since)
 	public TGPunchRange getPunchRange(TGSong song) {
-		if (this.punchRange == null) {
+		if (this.punchRange == null || song != this.punchSong) {
 			return null;
 		}
 		return this.punchRange.endingWith(song);

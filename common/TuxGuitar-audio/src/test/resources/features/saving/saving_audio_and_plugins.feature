@@ -78,7 +78,6 @@ Feature: Saving audio tracks and plugins
     When I go back to the General MIDI program for track 1
     Then track 1's sound chain reads "Distortion Electric Guitar"
 
-  @planned
   Scenario Outline: what is not part of the song is not saved
     Given I have added an audio track recording input channel 1
     And I have <done>
@@ -92,7 +91,6 @@ Feature: Saving audio tracks and plugins
       | armed track 2 and set its monitoring to Auto | track 2's monitoring is Off |
       | set the punch range to measures 2 to 3       | there is no punch range     |
 
-  @planned
   Scenario: the audio device is a TuxGuitar setting, not part of the song
     Given I have saved the song as a TuxGuitar file
     And I have set the audio device to "Other Interface"

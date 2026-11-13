@@ -103,6 +103,12 @@ public class LineInSteps {
 		assertFalse(world.session().isArmed(world.track(number)));
 	}
 
+	@Given("I have armed track {int} and set its monitoring to {word}")
+	public void haveArmedAndSetMonitoring(int number, String monitoring) {
+		new RecordingSteps(world).arm(number);
+		setMonitoring(number, monitoring);
+	}
+
 	@Given("I have set track {int}'s monitoring to {word}")
 	public void setMonitoring(int number, String monitoring) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
@@ -132,14 +138,10 @@ public class LineInSteps {
 		return AudioWorld.samples(take(take, number));
 	}
 
-	@Then("take {int} of track {int} is mono")
-	public void isMono(int take, int number) {
-		assertEquals(1, take(take, number).countChannels());
-	}
-
-	@Then("take {int} of track {int} is stereo")
-	public void isStereo(int take, int number) {
-		assertEquals(2, take(take, number).countChannels());
+	// "mono": one channel; "stereo": two
+	@Then("take {int} of track {int} is {word}")
+	public void isMonoOrStereo(int take, int number, String channels) {
+		assertEquals(channels, (take(take, number).countChannels() == 1 ? "mono" : "stereo"));
 	}
 
 	@Then("take {int} of track {int} is {int} samples long")

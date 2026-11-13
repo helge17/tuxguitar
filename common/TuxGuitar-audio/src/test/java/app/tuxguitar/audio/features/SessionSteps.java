@@ -1,8 +1,13 @@
 package app.tuxguitar.audio.features;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import app.tuxguitar.audio.TGAudioDevice;
 import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.player.base.MidiOutputPort;
 import app.tuxguitar.player.base.MidiOutputPortProvider;
@@ -10,6 +15,7 @@ import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiSynthesizer;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 /**
  * Steps on what is set outside the song: the MIDI Port, the audio device.
@@ -18,6 +24,7 @@ public class SessionSteps {
 
 	private final AudioWorld world;
 	private boolean portsListed;
+	private final Map<String, TGAudioDevice> devices = new HashMap<String, TGAudioDevice>();
 
 	public SessionSteps(AudioWorld world) {
 		this.world = world;
@@ -58,10 +65,20 @@ public class SessionSteps {
 		player.openOutputPort(PORTS.stream().filter(port -> port.getName().equals(name)).findFirst().get().getKey());
 	}
 
-	// only Test Interface exists so far
 	@Given("I have set the audio device to {string}")
 	public void setTheAudioDevice(String name) {
-		world.session().setDevice(world.device());
+		world.session().setDevice(device(name));
+	}
+
+	// a TuxGuitar setting: opening a song leaves it as it is
+	@Then("the audio device is {string}")
+	public void theAudioDeviceIs(String name) {
+		assertSame(device(name), world.session().getDevice());
+	}
+
+	// Test Interface is the world's; any other name is a Test Interface of its own, made once
+	private TGAudioDevice device(String name) {
+		return ("Test Interface".equals(name) ? world.device() : this.devices.computeIfAbsent(name, key -> new TestInterface()));
 	}
 
 	@Given("I have set the audio device to {string} with {int} samples of input latency and {int} of output latency")
