@@ -191,6 +191,52 @@ public class TestWsolaStretcher {
 		}
 	}
 
+	// a tone of 440 Hz for 2 seconds, then of 550 Hz for 2 more, its phase running on
+	private static float[] toneChange() {
+		float[] input = new float[4 * RATE];
+		double phase = 0;
+		for (int i = 0; i < input.length; i++) {
+			phase += 2 * Math.PI * (i < 2 * RATE ? 440 : 550) / RATE;
+			input[i] = (float) (0.4 * Math.sin(phase));
+		}
+		return input;
+	}
+
+	// a change of tone (no onset) lands within 5 ms of where the stretch puts it: 2000 samples clear of 5 ms each side
+	// sound the tone before and the tone after, within 1%
+	@Test
+	public void aChangeOfToneLandsWithin5msOfWhereTheStretchPutsIt() {
+		float[] input = toneChange();
+		for (int percent : new int[] {50, 80, 125, 200}) {
+			int length = (int) Math.round(input.length * 100.0 / percent);
+			int change = (int) Math.round(2 * RATE * 100.0 / percent);
+			float[] output = this.stretcher.stretch(new float[][] {input}, 0, input.length, length)[0];
+			int clear = RATE / 200;
+			assertEquals(440, Meters.frequency(output, change - clear - 2000, change - clear, RATE), 4.4, "before, at " + percent + "%");
+			assertEquals(550, Meters.frequency(output, change + clear, change + clear + 2000, RATE), 5.5, "after, at " + percent + "%");
+		}
+	}
+
+	// a stretch ends on the input's end: its last 2000 samples (5 ms clear of the end) keep the tone's pitch, so where
+	// one measure's stretch meets the next the tone does not waver
+	@Test
+	public void theEndOfAStretchKeepsItsPitch() {
+		float[] input = sine(440, 0.4, 3 * RATE / 2);
+		for (int percent : new int[] {25, 50, 80, 125, 200}) {
+			int length = (int) Math.round(input.length * 100.0 / percent);
+			float[] output = this.stretcher.stretch(new float[][] {input}, 0, input.length, length)[0];
+			assertEquals(440, Meters.frequency(output, length - RATE / 200 - 2000, length - RATE / 200, RATE), 4.4, "at " + percent + "%");
+		}
+	}
+
+	// sped up to less than a frame, a piece is its first frame alone: the input's first samples as they are
+	@Test
+	public void aPieceSpedUpToLessThanAFrameIsItsFirstSamples() {
+		float[] input = sine(440, 0.4, 1100);
+		float[] output = stretch(input, 0, input.length, 300);
+		assertArrayEquals(Arrays.copyOf(input, 300), output, 1e-6f);
+	}
+
 	@Test
 	public void aStretchedStretchOfTheInputUsesOnlyThatStretch() {
 		float[] input = new float[MEASURE];

@@ -145,10 +145,6 @@ Feature: Keeping audio in sync
     Examples:
       | percent | tolerance |
       | 100     | 1 sample  |
-
-    @planned
-    Examples:
-      | percent | tolerance |
       | 80      | 5 ms      |
 
   Scenario: stopping and playing again starts the take back at the matching point

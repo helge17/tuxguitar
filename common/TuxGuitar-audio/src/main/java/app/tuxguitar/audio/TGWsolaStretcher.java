@@ -14,8 +14,10 @@ import java.util.List;
  * after it read past that, so an attack is never repeated or smeared over the frames. A stretch too short for a frame
  * is resampled instead (its pitch changes).
  *
- * The search reaches 4.6 ms either side of where a frame should be read, so what happens inside the audio stays
- * within 5 ms of where it should be, and tones down to 108 Hz find a whole period to align on.
+ * The frames' starts are spread evenly over the input from its start to a frame before its end, so the last frame reads
+ * the input's end and the end keeps its pitch; the search reaches 4.6 ms either side of where a frame should be read,
+ * so what happens inside the audio (a change of tone) stays within 5 ms of where it should be at 50% and faster, and
+ * tones down to 108 Hz find a whole period to align on.
  *
  * A stereo input is cut and searched on the mean of its sides, and both sides are read at the places found there.
  */
@@ -113,13 +115,18 @@ public final class TGWsolaStretcher implements TGTimeStretcher {
 	private void overlapAdd(Piece piece, int start, int end, float[][] output, int outStart, int length) {
 		float[][] sum = new float[output.length][length];
 		float[] weight = new float[length];
-		double rate = (double) (end - start) / length;
+		// frames every hop, and the last one where it ends the output; frame starts are spread evenly from the input's
+		// start to what a frame reads before its end (a whole frame, or less in a piece too short to hold one after
+		// its attack), so the last frame reads the input's end, and no frame reads the same stretch again where the
+		// input runs out
+		int readable = Math.min(this.frame, end - start - this.hop);
+		int last = Math.max(0, length - readable);
+		double rate = (double) (end - start - readable) / Math.max(1, last);
+		this.addFrame(piece, start, end, this.firstWindow, sum, weight, 0);
 		int previous = start;
-		for (int k = 0; k * this.hop < length; k++) {
-			int ideal = start + (int) Math.round(k * this.hop * rate);
-			int position = (k == 0 ? start : this.bestPosition(piece.guide, start, end, previous + this.hop, ideal));
-			this.addFrame(piece, position, end, (k == 0 ? this.firstWindow : this.window), sum, weight, k * this.hop);
-			previous = position;
+		for (int at = Math.min(this.hop, last), placed = 0; placed < last; placed = at, at = Math.min(at + this.hop, last)) {
+			previous = this.bestPosition(piece.guide, start, end, previous + at - placed, start + (int) Math.round(at * rate));
+			this.addFrame(piece, previous, end, this.window, sum, weight, at);
 		}
 		for (int side = 0; side < output.length; side++) {
 			for (int i = 0; i < length; i++) {
