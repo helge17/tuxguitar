@@ -1,8 +1,9 @@
 package app.tuxguitar.midi.synth;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import app.tuxguitar.player.base.MidiChannel;
 import app.tuxguitar.player.base.MidiPlayerException;
@@ -15,7 +16,8 @@ import app.tuxguitar.util.TGContext;
 /**
  * The TuxGuitar Synthesizer's channels and programs. It is a sample clock: whoever renders it a block at a time runs
  * beforeBlock first, so the sequencer playing on it sends the block's events on their frames. Its channels are opened
- * and closed by the player while the audio thread renders them, so each reader sees a copy of the list.
+ * and closed by the player while the audio thread renders them, so each reader reads the array of open channels as it
+ * was, and the audio thread walks it without allocating.
  */
 public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 
@@ -25,7 +27,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	private TGContext context;
 	private float sampleRate;
 	private TGProgram[][] programs;
-	private List<TGSynthChannel> channels;
+	private volatile TGSynthChannel[] channels;
 	private volatile Listener listener;
 	private final MidiTransport transport = new MidiTransport();
 	private volatile int outputLatency;
@@ -38,7 +40,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	public TGSynthModel(TGContext context, float sampleRate){
 		this.context = context;
 		this.sampleRate = sampleRate;
-		this.channels = new CopyOnWriteArrayList<TGSynthChannel>();
+		this.channels = new TGSynthChannel[0];
 		this.programs = new TGProgram[BANKS_LENGTH][PROGRAMS_LENGTH];
 		for( int b = 0; b < BANKS_LENGTH ; b ++ ){
 			for( int p = 0; p < PROGRAMS_LENGTH ; p ++ ) {
@@ -50,7 +52,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	public MidiChannel openChannel(int channelId) throws MidiPlayerException{
 		TGSynthChannel tgChannel = new TGSynthChannel(this, channelId);
 
-		this.channels.add(tgChannel);
+		this.add(tgChannel);
 
 		return tgChannel;
 	}
@@ -59,7 +61,20 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 		TGSynthChannel tgChannel = ((TGSynthChannel) midiChannel);
 		tgChannel.closeProcessor();
 
-		this.channels.remove(tgChannel);
+		this.remove(tgChannel);
+	}
+
+	// one writer at a time replaces the array; readers keep the one they read
+	private synchronized void add(TGSynthChannel channel){
+		TGSynthChannel[] open = Arrays.copyOf(this.channels, this.channels.length + 1);
+		open[open.length - 1] = channel;
+		this.channels = open;
+	}
+
+	private synchronized void remove(TGSynthChannel channel){
+		List<TGSynthChannel> open = new ArrayList<TGSynthChannel>(Arrays.asList(this.channels));
+		open.remove(channel);
+		this.channels = open.toArray(new TGSynthChannel[0]);
 	}
 
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
@@ -82,10 +97,8 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	}
 
 	public TGSynthChannel getChannel( int index ){
-		if( index >= 0 && index < countChannels() ){
-			return this.channels.get(index);
-		}
-		return null;
+		TGSynthChannel[] open = this.channels;
+		return (index >= 0 && index < open.length ? open[index] : null);
 	}
 
 	public TGSynthChannel getChannelById( int channelId ){
@@ -99,7 +112,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 
 	// the open channels, as they are when read
 	Iterable<TGSynthChannel> channels(){
-		return Collections.unmodifiableList(this.channels);
+		return Collections.unmodifiableList(Arrays.asList(this.channels));
 	}
 
 	// how many frames later than its events the output sounds them: the slowest channel's chain, to which plugin delay
@@ -126,7 +139,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	}
 
 	public int countChannels(){
-		return this.channels.size();
+		return this.channels.length;
 	}
 
 	public TGProgram getProgram(int bank, int program){

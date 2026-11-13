@@ -112,6 +112,25 @@ public class TestSynthClock {
 		assertEquals("0 1724", none + " " + this.model.getSoundingDelay());
 	}
 
+	// the audio thread reads the chains' latency every block (plugin delay compensation and the sounding position),
+	// which must not allocate: channel 4 plays program 7 through an effect, so each channel's chain is walked
+	@Test
+	public void readingTheLatencyEveryBlockAllocatesNothing() throws MidiPlayerException {
+		TGSynthManager.getInstance(this.context).addExtension(TGAudioProcessorFactory.class, new FakeProcessors.EffectFactory("gain", sample -> sample));
+		this.model.getProgram(0, 7).copyFrom(program("other", "gain"));
+		this.model.getChannelById(4).sendProgramChange(7);
+		this.other.last().latency = 700;
+		com.sun.management.ThreadMXBean threads = (com.sun.management.ThreadMXBean) java.lang.management.ManagementFactory.getThreadMXBean();
+		long sum = this.model.getSoundingDelay();
+		long before = threads.getThreadAllocatedBytes(Thread.currentThread().getId());
+		for (int b = 0; b < 1000; b++) {
+			sum += this.model.getLatency() + this.model.getSoundingDelay();
+		}
+		long allocated = threads.getThreadAllocatedBytes(Thread.currentThread().getId()) - before;
+
+		assertTrue(sum == 700 * 2001 && allocated < 8 * 1024, sum + " frames, " + allocated + " bytes allocated by 1000 blocks");
+	}
+
 	// what plays on is not stopped by a failing listener
 	@Test
 	public void aFailingListenerLeavesTheBlockToRender() {

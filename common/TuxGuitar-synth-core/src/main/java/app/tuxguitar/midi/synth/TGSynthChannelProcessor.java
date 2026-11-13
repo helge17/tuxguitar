@@ -2,9 +2,9 @@ package app.tuxguitar.midi.synth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.ToIntFunction;
 
 import app.tuxguitar.player.base.MidiTransport;
@@ -19,6 +19,8 @@ public class TGSynthChannelProcessor {
 	private TGMidiProcessor processor;
 	private List<TGAudioProcessor> outputs;
 	private Map<TGProgramElement, TGAudioProcessor> processorMap;
+	// the element of each mapped processor, looked up without allocating (the audio thread asks every block)
+	private Map<TGAudioProcessor, TGProgramElement> elements;
 	private Object lock;
 
 	private float sampleRate;
@@ -34,6 +36,7 @@ public class TGSynthChannelProcessor {
 		this.delayLine = new TGDelayLine();
 		this.outputs = new ArrayList<TGAudioProcessor>();
 		this.processorMap = new HashMap<TGProgramElement, TGAudioProcessor>();
+		this.elements = new IdentityHashMap<TGAudioProcessor, TGProgramElement>();
 	}
 
 	public void open(TGContext context, TGProgram program) {
@@ -101,10 +104,9 @@ public class TGSynthChannelProcessor {
 	}
 
 	public void addProcessor(TGProgramElement element, TGAudioProcessor processor) {
-		if( this.processorMap.containsKey(element) ) {
-			this.processorMap.remove(element);
-		}
+		this.unmap(element);
 		this.processorMap.put(element, processor);
+		this.elements.put(processor, element);
 		this.restoreParameters(element, processor);
 	}
 
@@ -138,9 +140,14 @@ public class TGSynthChannelProcessor {
 				mappedProcessor.close();
 				mappedProcessor.finalize();
 
-				this.processorMap.remove(element);
+				this.unmap(element);
 			}
 		}
+	}
+
+	// the element no longer has a processor, nor its processor (if any) an element
+	private void unmap(TGProgramElement element) {
+		this.elements.remove(this.processorMap.remove(element));
 	}
 
 	public boolean shouldCloseProcessor(TGProgram program, TGProgramElement element) {
@@ -161,13 +168,7 @@ public class TGSynthChannelProcessor {
 
 	public TGProgramElement getElement(TGAudioProcessor processor) {
 		synchronized (this.lock) {
-			Set<Map.Entry<TGProgramElement, TGAudioProcessor>> entries = this.processorMap.entrySet();
-			for(Map.Entry<TGProgramElement, TGAudioProcessor> entry : entries) {
-				if( entry.getValue() != null && entry.getValue().equals(processor)) {
-					return entry.getKey();
-				}
-			}
-			return null;
+			return this.elements.get(processor);
 		}
 	}
 
@@ -254,8 +255,9 @@ public class TGSynthChannelProcessor {
 			int sum = 0;
 			if( this.isOpen() ){
 				sum = TGAudioProcessor.along(sum, this.of(this.processor, frames));
-				for( TGAudioProcessor output : this.outputs ){
-					sum = TGAudioProcessor.along(sum, this.of(output, frames));
+				// by index: the audio thread reads it every block, without allocating an iterator
+				for( int i = 0; i < this.outputs.size(); i ++ ){
+					sum = TGAudioProcessor.along(sum, this.of(this.outputs.get(i), frames));
 				}
 			}
 			return sum;

@@ -82,6 +82,19 @@ public class TestSynthChannel {
 		assertEquals(this.channel, this.model.getChannelById(3));
 	}
 
+	// a program change that drops an effect closes its processor, which is no longer the element's
+	@Test
+	public void aProcessorDroppedFromTheChainHasNoElement() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
+		this.model.getProgram(0, 6).copyFrom(program("source"));
+		this.channel.sendProgramChange(5);
+		TGAudioProcessor lifting = this.channel.getProcessor().getOutput(0);
+		String before = this.channel.getProcessor().getElement(lifting).getType();
+		this.channel.sendProgramChange(6);
+
+		assertEquals("lift null", before + " " + this.channel.getProcessor().getElement(lifting));
+	}
+
 	@Test
 	public void aChannelWithoutAProgramIsSilent() throws MidiPlayerException {
 		this.channel.sendProgramChange(5);
