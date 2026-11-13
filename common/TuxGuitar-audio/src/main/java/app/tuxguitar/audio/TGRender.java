@@ -56,6 +56,12 @@ public final class TGRender {
 		return this.latency;
 	}
 
+	// where the player reports the song is after each block, live, with the audio device's output latency (see
+	// TGReportedPositions)
+	public long[] getReported(int outputLatency) {
+		return TGReportedPositions.of(this.timeline, this.latency + outputLatency);
+	}
+
 	// how many samples the chains heard sound on after the last measure: the longest of their tails
 	// (TGAudioProcessor.INFINITE_TAIL: for ever)
 	public int getTail() {

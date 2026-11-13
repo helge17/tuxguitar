@@ -80,7 +80,6 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1
     Then the last Count In click reaches the output 22050 samples before the left click of measure 1 beat 1, within 1 sample
 
-  @planned
   Scenario Outline: TuxGuitar reports a beat as played when the output sounds it
     Given I have set the audio device to "Test Interface" with 0 samples of input latency and <output> of output latency
     And I have added the VST3 effect "Test Latency" to track 2

@@ -2,6 +2,7 @@ package app.tuxguitar.audio.features;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGRender;
@@ -82,18 +83,38 @@ final class Heard {
 
 	// the beats of the measures played, where they sound: each played measure's beats from where it starts playing
 	List<Integer> beats() {
-		TGTimeline timeline = this.timeline();
 		List<Integer> beats = new ArrayList<Integer>();
-		for (int i = 0; i < timeline.count(); i++) {
-			TGPlayedMeasure measure = timeline.get(i);
-			long beat = measure.getHeader().getTimeSignature().getDenominator().getTime();
-			for (long tick = 0; tick < measure.getHeader().getLength(); tick += beat) {
-				if (tick >= measure.getFrom() && tick < measure.getTo()) {
-					beats.add((int) timeline.sampleAt(i, tick));
-				}
-			}
-		}
+		this.eachBeat((sample, tick) -> beats.add(sample.intValue()));
 		return beats;
+	}
+
+	// the song tick of each beat played, in the order they play
+	List<Long> beatTicks() {
+		List<Long> ticks = new ArrayList<Long>();
+		this.eachBeat((sample, tick) -> ticks.add(tick));
+		return ticks;
+	}
+
+	// each beat played: where it sounds, its song tick
+	private void eachBeat(BiConsumer<Long, Long> beat) {
+		TGTimeline timeline = this.timeline();
+		for (int i = 0; i < timeline.count(); i++) {
+			beats(timeline, i, beat);
+		}
+	}
+
+	// the beats of the played measure, from the first one at or after where it starts playing
+	private static void beats(TGTimeline timeline, int index, BiConsumer<Long, Long> beat) {
+		TGPlayedMeasure measure = timeline.get(index);
+		long length = measure.getHeader().getTimeSignature().getDenominator().getTime();
+		for (long tick = (measure.getFrom() + length - 1) / length * length; tick < measure.getTo(); tick += length) {
+			beat.accept(timeline.sampleAt(index, tick), measure.getHeader().getStart() + tick);
+		}
+	}
+
+	// where the player reports the song is after each block of 512 samples, live with the output latency
+	long[] reported(int outputLatency) {
+		return this.render.getReported(outputLatency);
 	}
 
 	// where the pass starts, and where the one before it ends

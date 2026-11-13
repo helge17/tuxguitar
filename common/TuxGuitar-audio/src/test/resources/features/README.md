@@ -9,7 +9,11 @@ Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks
 still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
 round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
 helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module; the
-desktop export dialog does not call it yet). Saving (file format 3.0) is not implemented yet.
+desktop export dialog does not call it yet). Saving (file format 3.0) is not implemented yet. The player's position
+is the one the output sounds: live, lib's sequencer on the synthesizer's clock reports the tick the output sounds
+(chains' latency plus output latency behind what it schedules); offline, `TGReportedPositions` reports it block by
+block the same way. The desktop does not feed the audio device's output latency in yet
+(`TGSynthModel.setOutputLatency`).
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions

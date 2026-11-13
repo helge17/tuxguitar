@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import app.tuxguitar.audio.Meters;
 import app.tuxguitar.audio.TGTimeline;
@@ -27,6 +28,24 @@ public class SyncSteps {
 
 	private Heard heard() {
 		return PlaySteps.heard(world);
+	}
+
+	// a beat is reported after the first block whose reported position reaches its tick; the output sounds it where its
+	// left click is in the render, the render's latency and the output latency later
+	@Then("TuxGuitar reports each of the {int} beats within {int} samples of the output sounding it")
+	public void reportsEachBeat(int count, int within) {
+		Heard heard = heard();
+		int outputLatency = world.session().getDevice().getOutputLatency();
+		long[] reported = heard.reported(outputLatency);
+		List<Integer> clicks = clicks(heard, 0);
+		List<Long> ticks = heard.beatTicks();
+		assertEquals(count + " " + count, clicks.size() + " " + ticks.size(), "clicks and beats");
+		for (int beat = 0; beat < count; beat++) {
+			long tick = ticks.get(beat);
+			long block = IntStream.range(0, reported.length).filter(b -> reported[b] >= tick).findFirst().orElse(reported.length);
+			long sounds = clicks.get(beat) + heard.latency() + outputLatency;
+			assertEquals(sounds, (block + 1) * 512, within, "beat " + (beat + 1) + " reported");
+		}
 	}
 
 	static List<Integer> clicks(Heard heard, int side) {
