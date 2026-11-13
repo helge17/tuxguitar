@@ -16,8 +16,10 @@ final class TGBlocks {
 
 	// the samples of a side from start on, into the start of the block; past the side's end, nothing
 	static void take(float[] side, long start, float[] block) {
-		int count = (int) Math.max(0, Math.min(block.length, side.length - start));
-		System.arraycopy(side, (int) start, block, 0, count);
+		int count = (int) Math.min(block.length, side.length - start);
+		if (count > 0) {
+			System.arraycopy(side, (int) start, block, 0, count);
+		}
 	}
 
 	// the block whose first sample the chain sounds at start (in samples of the tap, after the latency), into the tap;
