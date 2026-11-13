@@ -21,6 +21,8 @@ import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.vst3.TGVst3Element;
 import app.tuxguitar.vst3.TGVst3Plugin;
+import app.tuxguitar.vst3.TGVst3Processors;
+import app.tuxguitar.vst3.TGVst3State;
 
 /**
  * The sound chain actions on a channel, without a plugin host: what they refuse, and how the chain is kept in the
@@ -34,7 +36,7 @@ public class TestSoundChainActions {
 	private final SongActionFixture fixture = SongActionFixture.onDocument();
 	private final TGChannel guitar = fixture.songManager.getChannel(fixture.song, fixture.song.getTrack(0).getChannelId());
 
-	private String run(TGChannel channel, TGSoundChainAction action) {
+	private String run(TGChannel channel, TGActionBase action) {
 		fixture.actionContext.setAttribute(TGActionBase.ATTRIBUTE_SUCCESS, null);
 		fixture.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, channel);
 		fixture.execute(action);
@@ -104,6 +106,39 @@ public class TestSoundChainActions {
 		fixture.actionContext.setAttribute(TGEffectAction.ATTRIBUTE_EFFECT, 1);
 		assertEquals("gervill > Gain success", run(guitar, new TGSetPluginParameterAction(fixture.context)));
 		assertEquals("0.5", TGSoundChain.get(guitar).getOutput(0).getParameters().get("vst3.parameter.1"));
+	}
+
+	// a plugin's state is kept on its element, found by id: an effect or the source, only when it is a VST3 plugin
+	@Test
+	public void aPluginsStateIsKeptOnTheVst3ElementWithTheId() {
+		add(GAIN);
+		String general = setState("source", 0) + " | " + setState("effect-1", 1);
+		fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, SYNTH);
+		run(guitar, new TGChooseVst3InstrumentAction(fixture.context));
+		String instrument = setState("source", 2) + " | " + setState("effect-2", 3);
+		TGProgram chain = TGSoundChain.get(guitar);
+		assertEquals("gervill > Gain | gervill > Gain success | Synth > Gain success | Synth > Gain | AQ== Ag==",
+			general + " | " + instrument + " | " + chain.getOutput(0).getParameters().get("vst3.state") + " " + chain.getReceiver().getParameters().get("vst3.state"));
+	}
+
+	// a state of one byte, kept on the element with the id
+	private String setState(String element, int value) {
+		fixture.actionContext.setAttribute(TGSetPluginStateAction.ATTRIBUTE_ELEMENT, element);
+		fixture.actionContext.setAttribute(TGSetPluginStateAction.ATTRIBUTE_STATE, new TGVst3State(new byte[] {(byte) value}, new byte[0]));
+		return run(guitar, new TGSetPluginStateAction(fixture.context));
+	}
+
+	// the editor of what is no VST3 plugin, or of a plugin that cannot be opened (no host here), does not open
+	@Test
+	public void theEditorOfNoPluginOrOfOneThatCannotOpenIsRefused() {
+		TGVst3Processors.install(fixture.context);
+		add(GAIN);
+		String refused = "";
+		for (Integer effect : new Integer[] {null, 2, 1}) {
+			fixture.actionContext.setAttribute(TGEffectAction.ATTRIBUTE_EFFECT, effect);
+			refused += run(guitar, new TGOpenPluginEditorAction(fixture.context)) + " | ";
+		}
+		assertEquals("gervill > Gain | gervill > Gain | gervill > Gain | ", refused);
 	}
 
 	@Test

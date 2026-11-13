@@ -15,9 +15,21 @@ import io.cucumber.java.en.When;
 public class PlaySteps {
 
 	private final AudioWorld world;
+	// where playing under way started (the When that happens while it plays plays it, see playUnderWay)
+	private SongPosition playingFrom;
 
 	public PlaySteps(AudioWorld world) {
 		this.world = world;
+	}
+
+	@Given("I am playing the song from {position}")
+	public void playingFrom(SongPosition from) {
+		this.playingFrom = from;
+	}
+
+	// the playing under way, until the song ends, offline: what happens while it plays is scheduled before
+	void playUnderWay() {
+		playFrom(this.playingFrom);
 	}
 
 	@When("I play the song from {position}( until the song ends)")

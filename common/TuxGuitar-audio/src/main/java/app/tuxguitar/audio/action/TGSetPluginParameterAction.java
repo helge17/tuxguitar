@@ -1,6 +1,7 @@
 package app.tuxguitar.audio.action;
 
 import app.tuxguitar.action.TGActionContext;
+import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.song.models.TGChannel;
@@ -24,9 +25,8 @@ public class TGSetPluginParameterAction extends TGSoundChainAction {
 	}
 
 	protected boolean change(TGActionContext context, TGChannel channel, TGProgram chain) {
-		Integer effect = context.getAttribute(TGEffectAction.ATTRIBUTE_EFFECT);
-		TGProgramElement plugin = (effect != null ? chain.getOutput(effect - 1) : chain.getReceiver());
-		if (plugin == null || !TGVst3Element.isVst3(plugin)) {
+		TGProgramElement plugin = TGSoundChain.plugin(chain, context.getAttribute(TGEffectAction.ATTRIBUTE_EFFECT));
+		if (plugin == null) {
 			return false;
 		}
 		TGVst3Element.setParameter(plugin, context.<Integer>getAttribute(ATTRIBUTE_PARAMETER), context.<Double>getAttribute(ATTRIBUTE_VALUE));

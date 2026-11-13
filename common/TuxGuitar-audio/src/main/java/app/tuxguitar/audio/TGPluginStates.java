@@ -54,7 +54,7 @@ final class TGPluginStates {
 	}
 
 	// a new processor of the element: the source's from the MIDI processor factories, an effect's from the audio ones
-	private static TGAudioProcessor processor(TGContext context, TGProgramElement plugin, TGProgram chain) {
+	static TGAudioProcessor processor(TGContext context, TGProgramElement plugin, TGProgram chain) {
 		TGSynthManager manager = TGSynthManager.getInstance(context);
 		if (plugin == chain.getReceiver()) {
 			TGMidiProcessorFactory factory = manager.findMidiProcessorFactory(plugin.getType());

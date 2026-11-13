@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import app.tuxguitar.audio.TGLivePlugins;
 import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.audio.action.TGAddVst3EffectAction;
 import app.tuxguitar.audio.action.TGChooseGeneralMidiAction;
@@ -85,6 +86,7 @@ public class PluginSteps {
 
 	@After
 	public void stopTheHost() {
+		TGLivePlugins.getInstance(world.fixture().context).close();
 		hosting().close();
 	}
 

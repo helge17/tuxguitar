@@ -1,6 +1,7 @@
 package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -78,6 +79,12 @@ public class SavingSteps {
 	@Given("I have saved the song as a TuxGuitar file")
 	@When("I save the song as a TuxGuitar file")
 	public void save() {
+		world.setSaved(write());
+		this.savedStates = pluginStates(world.song());
+	}
+
+	// the song as a TuxGuitar file, written as the app saves it
+	private byte[] write() {
 		ByteArrayOutputStream file = new ByteArrayOutputStream();
 		TGActionContext context = new TGActionContext() {
 		};
@@ -86,8 +93,22 @@ public class SavingSteps {
 		context.setAttribute(TGWriteSongAction.ATTRIBUTE_OUTPUT_STREAM, file);
 		context.setAttribute(TGWriteSongAction.ATTRIBUTE_FORMAT, TGStream.TG_FORMAT);
 		TGActionManager.getInstance(world.fixture().context).execute(TGWriteSongAction.NAME, context);
-		world.setSaved(file.toByteArray());
-		this.savedStates = pluginStates(world.song());
+		return file.toByteArray();
+	}
+
+	// what the app shows as unsaved changes: the song, saved now, would not be the file saved last
+	private boolean modified() throws IOException {
+		return !entries(write()).equals(entries(world.saved()));
+	}
+
+	@Then("the song is modified")
+	public void theSongIsModified() throws IOException {
+		assertTrue(modified());
+	}
+
+	@Then("the song is not modified")
+	public void theSongIsNotModified() throws IOException {
+		assertFalse(modified());
 	}
 
 	@Then("the state of every VST3 plugin is byte for byte what the plugin gave when the song was saved")

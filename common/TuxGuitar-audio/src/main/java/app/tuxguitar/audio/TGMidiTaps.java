@@ -47,7 +47,8 @@ public final class TGMidiTaps {
 
 	// the channels left out are the audio channels: they have no notes. The blocks run on until the slowest chain has
 	// sounded the timeline's last sample
-	public static Map<Integer, TGTap> render(TGContext context, TGSongManager songManager, TGSong song, MidiPlayerMode mode, TGTimeline timeline, Set<Integer> leftOut) throws MidiPlayerException {
+	// plugins: where the channels' plugins are bound while they run
+	public static Map<Integer, TGTap> render(TGContext context, TGSongManager songManager, TGSong song, MidiPlayerMode mode, TGTimeline timeline, Set<Integer> leftOut, TGLivePlugins plugins) throws MidiPlayerException {
 		TGSynthModel model = model(context, timeline.getSampleRate());
 		TreeMap<Long, List<Event>> events = schedule(songManager, song, mode, timeline);
 		events.values().forEach(at -> at.removeIf(event -> leftOut.contains(event.channel)));
@@ -59,6 +60,7 @@ public final class TGMidiTaps {
 		}
 		for (Integer channel : taps.keySet()) {
 			sendParameters(model, songManager, song, channel);
+			plugins.bind(channel, model.getChannelById(channel));
 		}
 		for (long block = 0; block < timeline.length() + model.getLatency(); block += FRAMES) {
 			send(model, events.headMap(block + FRAMES), block);
@@ -67,6 +69,7 @@ public final class TGMidiTaps {
 		}
 		Map<Integer, TGTap> rendered = new HashMap<Integer, TGTap>();
 		taps.forEach((channel, samples) -> rendered.put(channel, new TGTap(samples, model.getChannelById(channel).getLatency(), model.getChannelById(channel).getTail())));
+		taps.keySet().forEach(plugins::unbind);
 		model.closeChannels();
 		return rendered;
 	}

@@ -70,13 +70,23 @@ public class SyncSteps {
 	}
 
 	static void assertTogether(Heard heard, int within) {
-		List<Integer> left = clicks(heard, 0);
-		List<Integer> right = clicks(heard, 1);
+		assertPairs(clicks(heard, 0), clicks(heard, 1), within);
+	}
+
+	// as many on each side, each left one within the samples of its right one
+	private static void assertPairs(List<Integer> left, List<Integer> right, int within) {
 		assertFalse(left.isEmpty());
 		assertEquals(left.size(), right.size(), "left " + left + ", right " + right);
 		for (int i = 0; i < left.size(); i++) {
 			assertEquals(left.get(i), right.get(i), within, "left " + left + ", right " + right);
 		}
+	}
+
+	// from 5 ms before where the position sounds
+	@Then("from {position} on, the left and right clicks of every beat reach the output within 1 sample of each other")
+	public void togetherFrom(SongPosition position) {
+		int from = heard().sampleAt(position, 0) - TestInterface.SAMPLE_RATE / 200;
+		assertPairs(Meters.clicks(heard().left(), from, heard().left().length), Meters.clicks(heard().right(), from, heard().right().length), 1);
 	}
 
 	@Then("on every beat the left and right clicks reach the output within 1 sample of each other")
@@ -109,13 +119,7 @@ public class SyncSteps {
 	public void togetherInMeasures(int first, int last) {
 		int from = heard().measure(first)[0];
 		int to = heard().measure(last)[1];
-		List<Integer> left = Meters.jumps(heard().left(), from, to);
-		List<Integer> right = Meters.jumps(heard().right(), from, to);
-		assertFalse(left.isEmpty());
-		assertEquals(left.size(), right.size(), "left " + left + ", right " + right);
-		for (int i = 0; i < left.size(); i++) {
-			assertEquals(left.get(i), right.get(i), TestInterface.SAMPLE_RATE / 200, "left " + left + ", right " + right);
-		}
+		assertPairs(Meters.jumps(heard().left(), from, to), Meters.jumps(heard().right(), from, to), TestInterface.SAMPLE_RATE / 200);
 	}
 
 	// the beats' clicks, each followed by its echo 0.3 s later (Test Echo), and nothing else

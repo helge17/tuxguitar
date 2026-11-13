@@ -43,7 +43,7 @@ public final class TGAudioSaving {
 	}
 
 	// the audio device's, which the plugins play at
-	private static float sampleRate(TGContext context) {
+	static float sampleRate(TGContext context) {
 		TGAudioDevice device = TGAudioSession.getInstance(context).getDevice();
 		return (device != null ? device.getSampleRate() : TGAudioBuffer.SAMPLE_RATE);
 	}

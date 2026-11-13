@@ -12,6 +12,9 @@ import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.audio.MapProperties;
 import app.tuxguitar.audio.action.TGRecordingVeto;
+import app.tuxguitar.audio.action.TGSetPluginStateAction;
+import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
+import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannelController;
 import app.tuxguitar.editor.action.composition.TGChangeTempoRangeAction;
 import app.tuxguitar.editor.action.composition.TGChangeTimeSignatureAction;
 import app.tuxguitar.editor.action.edit.TGRedoAction;
@@ -111,6 +114,9 @@ public class AudioWorld {
 			new TGUpdateChannelAction(this.fixture.context), new TGWriteSongAction(this.fixture.context),
 			new TGReadSongAction(this.fixture.context), new TGLoadSongAction(this.fixture.context));
 		TGAudioSaving.install(this.fixture.context);
+		// a gesture in a plugin's editor changes the song by an action the module runs: the app maps it, undoable
+		this.fixture.map(new TGSetPluginStateAction(this.fixture.context));
+		UndoableActions.install(this.fixture.context, TGSetPluginStateAction.NAME, new TGUndoableOnSuccess(new TGUndoableModifyChannelController()));
 		TGUndoableManager.getInstance(this.fixture.context).setBuffer(this.undoHistory);
 		TGPropertiesManager.getInstance(this.fixture.context).setPropertiesFactory(MapProperties::new);
 		// as the app refuses, during a recording, the editing actions it disables while playing (desktop's

@@ -155,7 +155,6 @@ Feature: Recording line-in audio
       | move track 1 down                        | track 2 is an audio track       |
       | copy in a song of 2 measures             | the song has 4 measures         |
 
-  @planned
   Scenario: a gesture in a plugin's editor during a recording is undone after the recording
     Given I have added the VST3 effect "Test Gain" to track 1
     And I have armed track 2

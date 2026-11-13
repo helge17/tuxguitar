@@ -68,6 +68,26 @@ public final class TGSoundChain {
 		return chain;
 	}
 
+	// the VST3 plugin of the chain: an effect by its number from 1, or, without one, the source; null when that is no
+	// VST3 plugin
+	public static TGProgramElement plugin(TGProgram chain, Integer effect) {
+		TGProgramElement element = (effect != null ? chain.getOutput(effect - 1) : chain.getReceiver());
+		return (element != null && TGVst3Element.isVst3(element) ? element : null);
+	}
+
+	// the element of the chain with the id, or null
+	public static TGProgramElement element(TGProgram chain, String id) {
+		if (chain.getReceiver().getId().equals(id)) {
+			return chain.getReceiver();
+		}
+		for (int i = 0; i < chain.countOutputs(); i++) {
+			if (chain.getOutput(i).getId().equals(id)) {
+				return chain.getOutput(i);
+			}
+		}
+		return null;
+	}
+
 	// the source the type names (a General MIDI program follows the channel's Bank and Program)
 	public static TGProgramElement source(String type) {
 		TGProgramElement source = new TGProgramElement();

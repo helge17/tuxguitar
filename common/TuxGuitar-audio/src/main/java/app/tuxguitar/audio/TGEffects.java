@@ -22,11 +22,14 @@ final class TGEffects {
 	private static final int FRAMES = TGBlocks.FRAMES;
 
 	private final List<TGAudioProcessor> effects;
+	// the id of each effect's element
+	private final List<String> ids;
 	// what the song does over the block the effects process
 	private final MidiTransport transport;
 
-	private TGEffects(List<TGAudioProcessor> effects, MidiTransport transport) {
+	private TGEffects(List<TGAudioProcessor> effects, List<String> ids, MidiTransport transport) {
 		this.effects = effects;
+		this.ids = ids;
 		this.transport = transport;
 	}
 
@@ -34,6 +37,7 @@ final class TGEffects {
 		MidiTransport transport = new MidiTransport();
 		TGSynthManager manager = TGSynthManager.getInstance(context);
 		List<TGAudioProcessor> effects = new ArrayList<TGAudioProcessor>();
+		List<String> ids = new ArrayList<String>();
 		for (int i = 0; i < chain.countOutputs(); i++) {
 			TGProgramElement element = chain.getOutput(i);
 			TGAudioProcessorFactory factory = manager.findAudioProcessorFactory(element.getType());
@@ -43,9 +47,17 @@ final class TGEffects {
 				effect.setTransport(transport);
 				effect.restoreParameters(element.getParameters());
 				effects.add(effect);
+				ids.add(element.getId());
 			}
 		}
-		return new TGEffects(effects, transport);
+		return new TGEffects(effects, ids, transport);
+	}
+
+	// the channel's plugins as they run, while the render runs them
+	void bind(TGLivePlugins plugins, int channel) {
+		for (int i = 0; i < this.effects.size(); i++) {
+			plugins.bind(channel, this.ids.get(i), this.effects.get(i));
+		}
 	}
 
 	// how many samples later than its input the chain sounds it
@@ -67,13 +79,13 @@ final class TGEffects {
 	}
 
 	// the tap through the effects, its latency taken out, as long as the tap; each block is told what the song does
-	// over it on the timeline
+	// over it on the timeline. The latency is the one the effects report after each block, so a change of it (a plugin's
+	// editor, say) is taken out from the next block on, as plugin delay compensation realigns the tracks live
 	TGTap process(float[][] tap, TGTimeline timeline) {
-		int latency = this.getLatency();
 		int length = tap[0].length;
 		float[][] processed = new float[tap.length][length];
 		float[][] block = new float[tap.length][FRAMES];
-		for (long start = 0; start < length + latency; start += FRAMES) {
+		for (long start = 0; start < length + this.getLatency(); start += FRAMES) {
 			for (int side = 0; side < tap.length; side++) {
 				java.util.Arrays.fill(block[side], 0f);
 				TGBlocks.take(tap[side], start, block[side]);
@@ -82,9 +94,9 @@ final class TGEffects {
 			for (TGAudioProcessor effect : this.effects) {
 				effect.process(block);
 			}
-			TGBlocks.place(block, processed, start - latency);
+			TGBlocks.place(block, processed, start - this.getLatency());
 		}
-		return new TGTap(processed, latency, this.getTail());
+		return new TGTap(processed, this.getLatency(), this.getTail());
 	}
 
 	void close() {

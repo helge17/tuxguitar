@@ -52,7 +52,6 @@ Feature: Keeping audio in sync
     Then the output's left side holds 16 clicks and its right side none
     And every left click reaches the output 2048 samples after its beat, within 1 sample
 
-  @planned
   Scenario: when a plugin's latency changes while playing, the tracks are together again from the next beat
     Given I have added the VST3 effect "Test Latency" to track 2
     And I am playing the song from measure 1 beat 1

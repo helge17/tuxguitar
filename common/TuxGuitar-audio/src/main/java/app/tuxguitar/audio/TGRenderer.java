@@ -95,7 +95,7 @@ public final class TGRenderer {
 			List<TGTrack> audioTracks = this.audioTracks();
 			Set<Integer> audioChannels = new HashSet<Integer>();
 			audioTracks.forEach(track -> audioChannels.add(track.getChannelId()));
-			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, audioChannels);
+			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, audioChannels, this.plugins(live));
 			midi.forEach((channel, tap) -> {
 				taps.put(channel, tap.getSamples());
 				tails.put(channel, tap.getTail());
@@ -143,9 +143,17 @@ public final class TGRenderer {
 		TGTrackSource[] sources = this.sources(track, timeline, recording, live);
 		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
 		TGTimeStretcher stretcher = new TGWsolaStretcher(timeline.getSampleRate());
+		TGLivePlugins plugins = this.plugins(live);
+		effects.bind(plugins, track.getChannelId());
 		TGTap tap = effects.process(TGTakeTap.render(track, timeline, stretcher, sources, input), timeline);
 		effects.close();
+		plugins.unbind(track.getChannelId());
 		return tap;
+	}
+
+	// where a render binds the plugins it runs: live, they are the song's plugins as they run (see TGLivePlugins)
+	private TGLivePlugins plugins(boolean live) {
+		return (live ? TGLivePlugins.getInstance(this.context) : TGLivePlugins.NONE);
 	}
 
 	// what the track's input channel(s) deliver over the timeline as the output sounds it: the output sounds the render
