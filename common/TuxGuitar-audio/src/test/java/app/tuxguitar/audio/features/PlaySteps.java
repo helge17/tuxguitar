@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.action.TGPlayAction;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
 /**
@@ -20,6 +21,12 @@ public class PlaySteps {
 	@When("I play the song from {position}")
 	public void playFrom(SongPosition from) {
 		play(from, Long.MAX_VALUE, 1);
+	}
+
+	// stopped there: what was sounding stops with it
+	@Given("I have played the song from {position} and stopped at {position}")
+	public void havePlayedAndStopped(SongPosition from, SongPosition to) {
+		play(from, to.tick(world.song()), 1);
 	}
 
 	@When("I play the song from {position} until the song ends")

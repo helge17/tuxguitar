@@ -2,10 +2,14 @@ package app.tuxguitar.audio.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.tuxguitar.audio.Meters;
+import app.tuxguitar.audio.TGTimeline;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
 
 /**
@@ -88,6 +92,83 @@ public class SyncSteps {
 		for (int i = 0; i < left.size(); i++) {
 			assertEquals(left.get(i), right.get(i), TestInterface.SAMPLE_RATE / 200, "left " + left + ", right " + right);
 		}
+	}
+
+	// the beats' clicks, each followed by its echo 0.3 s later (Test Echo), and nothing else
+	@Then("the output's right side holds {int} clicks: the {int} of measure {int} and their echoes")
+	public void theRightSideHoldsClicksAndEchoes(int count, int clicks, int measure) {
+		List<Integer> right = Meters.jumps(heard().right(), 0, heard().right().length);
+		assertEquals(count, right.size(), "right clicks at " + right);
+		int[] bounds = heard().measure(measure);
+		List<Integer> beats = heard().beats().stream().filter(beat -> beat >= bounds[0] && beat < bounds[1]).collect(Collectors.toList());
+		assertEquals(clicks, beats.size());
+		int echo = (int) Math.round(0.3 * TestInterface.SAMPLE_RATE);
+		for (int beat : beats) {
+			assertTrue(right.stream().anyMatch(click -> Math.abs(click - beat) <= 1), "no click on " + beat + ": " + right);
+			assertTrue(right.stream().anyMatch(click -> Math.abs(click - beat - echo) <= 1), "no echo of " + beat + ": " + right);
+		}
+	}
+
+	// an echo is a click on the right side (track 2's), so many samples into the second pass: after the first jump back
+	// (of a loop or a repeat)
+	@Then("the echo of the click of measure {int} beat {double} reaches the output {int} samples into the second pass, within 1 sample")
+	public void theEchoReachesTheSecondPass(int measure, double beat, int samples) {
+		assertClickAt(secondPass() + samples);
+	}
+
+	@Then("the echo of the first pass's click of measure {int} beat {double} reaches the output {int} samples into the second pass, within 1 sample")
+	public void theEchoOfTheFirstPassReachesTheSecondPass(int measure, double beat, int samples) {
+		assertClickAt(secondPass() + samples);
+	}
+
+	private int secondPass() {
+		TGTimeline timeline = heard().timeline();
+		for (int i = 0; i < timeline.count(); i++) {
+			if (timeline.get(i).isJump()) {
+				return (int) timeline.start(i);
+			}
+		}
+		throw new IllegalStateException("no jump back");
+	}
+
+	private void assertClickAt(int sample) {
+		List<Integer> right = Meters.jumps(heard().right(), 0, heard().right().length);
+		assertTrue(right.stream().anyMatch(click -> Math.abs(click - sample) <= 1), "no click at " + sample + ": " + right);
+	}
+
+	@ParameterType("1 sample|5 ms")
+	public Integer tolerance(String tolerance) {
+		return (tolerance.equals("1 sample") ? 1 : TestInterface.SAMPLE_RATE / 200);
+	}
+
+	// the tone before the left click of the beat, and the other from it on, each over 2000 samples clear of the
+	// tolerance
+	@Then("track {int} sounds {int} Hz, then {int} Hz from the left click of {position} on, within {tolerance}")
+	public void soundsThenFromTheLeftClick(int number, int before, int after, SongPosition position, int tolerance) {
+		float[] tap = heard().tap(world.track(number));
+		int click = leftClickAt(position);
+		assertEquals(before, Meters.frequency(tap, click - tolerance - 2000, click - tolerance, TestInterface.SAMPLE_RATE), before / 100.0);
+		assertEquals(after, Meters.frequency(tap, click + tolerance, click + tolerance + 2000, TestInterface.SAMPLE_RATE), after / 100.0);
+	}
+
+	@Then("the passes last {double}, {double} and {double} seconds within 5 ms")
+	public void thePassesLast(double first, double second, double third) {
+		double[] expected = {first, second, third};
+		for (int pass = 0; pass < 3; pass++) {
+			int end = (pass < 2 ? heard().passStart(pass + 1) : (int) heard().timeline().length());
+			assertEquals(expected[pass], (end - heard().passStart(pass)) / (double) TestInterface.SAMPLE_RATE, 0.005, "pass " + (pass + 1));
+		}
+	}
+
+	@Then("track {int} sounds a {int} Hz tone within 1% on every pass")
+	public void soundsAToneOnEveryPass(int number, int frequency) {
+		float[] tap = heard().tap(world.track(number));
+		int passes = heard().timeline().get(heard().timeline().count() - 1).getPass() + 1;
+		for (int pass = 0; pass < passes; pass++) {
+			int end = (pass + 1 < passes ? heard().passStart(pass + 1) : (int) heard().timeline().length());
+			assertEquals(frequency, Meters.frequency(tap, heard().passStart(pass), end, TestInterface.SAMPLE_RATE), frequency / 100.0, "pass " + (pass + 1));
+		}
+		assertTrue(passes > 1);
 	}
 
 	// live, the output sounds the render its latency later than the clock

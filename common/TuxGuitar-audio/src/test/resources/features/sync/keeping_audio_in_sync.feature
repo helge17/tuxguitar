@@ -134,7 +134,6 @@ Feature: Keeping audio in sync
 
   # Starting, stopping, looping, repeats
 
-  @planned
   Scenario Outline: playing from the middle of a take starts at the matching point of the take
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have added the VST3 effect "Test Latency" to track 1
@@ -146,16 +145,18 @@ Feature: Keeping audio in sync
     Examples:
       | percent | tolerance |
       | 100     | 1 sample  |
+
+    @planned
+    Examples:
+      | percent | tolerance |
       | 80      | 5 ms      |
 
-  @planned
   Scenario: stopping and playing again starts the take back at the matching point
     Given track 2 has a take of a tone per measure of 220, 330, 440 and 550 Hz from measure 1 beat 1 to the end of measure 4
     And I have played the song from measure 1 beat 1 and stopped at measure 2 beat 3
     When I play the song from measure 2 beat 3
     Then track 2 sounds 330 Hz, then 440 Hz from the left click of measure 3 beat 1 on, within 1 sample
 
-  @planned
   Scenario: stopping clears the effects' tails
     Given I have added the VST3 effect "Test Echo" to track 2
     And I have played the song from measure 1 beat 1 and stopped at measure 1 beat 4.5
@@ -170,7 +171,6 @@ Feature: Keeping audio in sync
     Then the output's left side holds 24 clicks and its right side 24 clicks
     And on every beat the left and right clicks reach the output within 1 sample of each other
 
-  @planned
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
@@ -226,14 +226,12 @@ Feature: Keeping audio in sync
       | 1       | 200     |
       | 500     | 0.4     |
 
-  @planned
   Scenario: in Training Mode each pass stretches the take to that pass's Percentage of Tempo
     Given I have turned Training Mode on from 80% to 100% by 10% over measures 2 to 3
     When I play the song from measure 2 beat 1 for 3 passes
     Then the passes last 5, 4.444 and 4 seconds within 5 ms
     And on every beat the left and right clicks reach the output within 5 ms of each other
 
-  @planned
   Scenario: in Training Mode a take keeps its pitch on every pass
     Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 2 beat 1 to measure 4 beat 1
     And I have turned Training Mode on from 80% to 100% by 10% over measures 2 to 3
