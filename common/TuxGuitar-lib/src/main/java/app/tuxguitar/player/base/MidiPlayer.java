@@ -301,7 +301,7 @@ public class MidiPlayer{
 				} finally {
 					this.unlock();
 				}
-				return true;
+				return !this.loopsAtTheScheduledEnd();
 			}
 
 			else {
@@ -313,6 +313,19 @@ public class MidiPlayer{
 			throwable.printStackTrace();
 		}
 		return false;
+	}
+
+	// the next pass of a loop starts where this one is scheduled to end, while the output still sounds its end
+	private boolean loopsAtTheScheduledEnd() throws MidiPlayerException {
+		if( this.loopsAtTheEnd() && getSequencer().getScheduledTickPosition() >= this.tickLength ){
+			this.finish();
+			return true;
+		}
+		return false;
+	}
+
+	private boolean loopsAtTheEnd() {
+		return this.getMode().isLoop() && (this.selectionEndBeat==null);
 	}
 
 	public void runPlayEndProcess() {
@@ -345,8 +358,9 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			if( this.getMode().isLoop() && (this.selectionEndBeat==null)){
+			if( this.loopsAtTheEnd() ){
 				this.stopSequencer();
+				this.getSequencer().loopOnNextStart();
 				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
 				this.notifyLoop();

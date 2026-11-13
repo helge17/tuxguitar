@@ -17,6 +17,8 @@ public class MidiSequencerImpl implements MidiSequencer {
 	private static final int DEFAULT_TEMPO_IN_USQ = 500000;
 
 	private boolean reset;
+	// the next start plays the next pass of a loop
+	private boolean looping;
 	private boolean running;
 	private boolean stopped;
 	private Object lock;
@@ -124,11 +126,12 @@ public class MidiSequencerImpl implements MidiSequencer {
 					this.reset();
 					this.reset = false;
 					this.midiEventPlayer.reset();
-					this.midiBlockPlayer.reset();
+					this.midiBlockPlayer.reset(this.looping);
+					this.looping = false;
 				}
 				this.stopped = false;
 				step.run();
-				if (this.getTickPosition() > this.getTickLength()) {
+				if (this.getScheduledTickPosition() > this.getTickLength() && this.getTickPosition() > this.getTickLength()) {
 					this.stop();
 				}
 			} else if (!this.stopped) {
@@ -234,6 +237,19 @@ public class MidiSequencerImpl implements MidiSequencer {
 
 	public long getTickPosition() {
 		return this.midiTickPlayer.getTick();
+	}
+
+	// on the clock, the tick at the end of the last block played; on the timer, the position
+	public long getScheduledTickPosition() {
+		synchronized (this.lock) {
+			return (this.playingClock != null ? this.midiBlockPlayer.getScheduledTick() : this.getTickPosition());
+		}
+	}
+
+	public void loopOnNextStart() {
+		synchronized (this.lock) {
+			this.looping = true;
+		}
 	}
 
 	public long getTickLength() {

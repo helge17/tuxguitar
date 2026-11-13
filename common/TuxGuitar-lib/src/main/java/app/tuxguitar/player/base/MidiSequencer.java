@@ -27,4 +27,14 @@ public interface MidiSequencer extends MidiDevice{
 	// cannot play on a sample clock keeps its timer
 	public default void setClock(MidiSampleClock clock) throws MidiPlayerException {
 	}
+
+	// where the sequencer has sent its events up to; on a sample clock the output sounds that later than the position
+	public default long getScheduledTickPosition() throws MidiPlayerException {
+		return this.getTickPosition();
+	}
+
+	// the next start plays the next pass of a loop: on a sample clock the position goes on with what the output still
+	// sounds of this pass until it sounds the next one
+	public default void loopOnNextStart() throws MidiPlayerException {
+	}
 }

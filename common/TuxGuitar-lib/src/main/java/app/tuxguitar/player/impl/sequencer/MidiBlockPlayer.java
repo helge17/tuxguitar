@@ -19,7 +19,8 @@ import app.tuxguitar.song.models.TGDuration;
  *
  * The sequencer's position is the tick the clock's output sounds at the end of the block: the anchors (where playing
  * starts or moves, and each tempo) are kept by frame of the clock, and the output sounds a frame the clock's sounding
- * delay after it. Until the output sounds where playing started, the position is before it.
+ * delay after it. Until the output sounds where playing started, the position is before it; the next pass of a loop
+ * keeps the anchors, so until the output sounds it the position is where the output still sounds the last pass.
  */
 class MidiBlockPlayer {
 
@@ -29,6 +30,8 @@ class MidiBlockPlayer {
 	// put in tick order when playing starts or moves, events on the same tick in the order they were added
 	private final List<MidiEvent> events = new ArrayList<MidiEvent>();
 	private boolean moved;
+	// the move is the next pass of a loop
+	private boolean looping;
 	// the first event not sent yet
 	private int next;
 	private long anchorTick;
@@ -43,6 +46,8 @@ class MidiBlockPlayer {
 	private final MidiSoundingPosition sounding = new MidiSoundingPosition();
 	// the frames played before the next block
 	private long played;
+	// the tick at the end of the last block played
+	private volatile long scheduled;
 
 	MidiBlockPlayer(MidiSequencerImpl sequencer) {
 		this.sequencer = sequencer;
@@ -60,9 +65,14 @@ class MidiBlockPlayer {
 		this.usq = usq;
 	}
 
-	// playing goes on from the sequencer's position, with the next block
-	void reset() {
+	// playing goes on from the sequencer's position, with the next block: as the next pass of a loop, or anew
+	void reset(boolean looping) {
 		this.moved = true;
+		this.looping = looping;
+	}
+
+	long getScheduledTick() {
+		return this.scheduled;
 	}
 
 	// sends the events of the next block and moves the sequencer's position to the tick the output sounds at its end
@@ -83,6 +93,7 @@ class MidiBlockPlayer {
 		}
 		this.played += frames;
 		this.anchorFrame -= frames;
+		this.scheduled = this.sounding.tickAt(this.played);
 		this.sequencer.getMidiTickPlayer().setTick(this.sounding.tickAt(this.played - clock.getSoundingDelay()));
 	}
 
@@ -121,8 +132,8 @@ class MidiBlockPlayer {
 		transport.add((int) frame, true, tempo, this.signature.getNumerator(), this.signature.getDenominator(), quarters, Math.round(quarters * 60 / tempo * rate));
 	}
 
-	// the channel setup before the position, on the first frame, then the events from the position; the anchors before
-	// are forgotten, the position anchored at the tempo in force there
+	// the channel setup before the position, on the first frame, then the events from the position, anchored at the
+	// tempo in force there; the anchors before are forgotten, but for the next pass of a loop
 	private void move(MidiSampleClock clock, long position) throws MidiPlayerException {
 		this.moved = false;
 		this.events.sort(Comparator.comparingLong(MidiEvent::getTick));
@@ -138,7 +149,12 @@ class MidiBlockPlayer {
 		}
 		this.anchorTick = position;
 		this.anchorFrame = 0;
-		this.sounding.restart(this.played, position, MICROSECONDS_PER_QUARTER, this.usq * (double) clock.getSampleRate());
+		double frames = this.usq * (double) clock.getSampleRate();
+		if (this.looping) {
+			this.sounding.anchor(this.played, position, MICROSECONDS_PER_QUARTER, frames);
+		} else {
+			this.sounding.restart(this.played, position, MICROSECONDS_PER_QUARTER, frames);
+		}
 	}
 
 	// the tick on the frame of the next block, at the tempo played from there
