@@ -34,6 +34,8 @@ public class TestRecording {
 	private final TGTrack track;
 	private final List<String> captures = new ArrayList<String>();
 	private final TGAudioSession session = TGAudioSession.getInstance(new TGContext());
+	// the plugin delay compensation of what is heard while recording
+	private int compensation;
 
 	private final TGAudioDevice device = new TGAudioDevice() {
 		public int getSampleRate() {
@@ -60,7 +62,7 @@ public class TestRecording {
 	private int record(long start, long stop, int percent, TGPunchRange punchRange) {
 		long origin = song.getMeasureHeader(0).getStart();
 		session.setPunchRange(punchRange);
-		TGRecording recording = new TGRecording(songManager, song, session);
+		TGRecording recording = new TGRecording(songManager, song, session, compensation);
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setCurrentPercent(percent);
 		return recording.record(List.of(track), new TGTimeline(song, TGSongTime.play(song, mode, origin + start, origin + stop, 1), device.getSampleRate()));
@@ -90,6 +92,16 @@ public class TestRecording {
 		record(MEASURE, 2 * MEASURE, 100, new TGPunchRange(2, 2));
 
 		assertEquals(List.of("2:89588+88200"), captures);
+	}
+
+	// what is heard comes out of the output the plugin delay compensation later (the slowest chain's latency, Gervill's at
+	// least): it is part of the round trip
+	@Test
+	public void theDeviceIsReadLaterByThePluginDelayCompensationOfWhatIsHeard() {
+		compensation = 600;
+		record(MEASURE, 2 * MEASURE, 100, null);
+
+		assertEquals(List.of("2:88800+88200"), captures);
 	}
 
 	// while recording, an armed track's input meter is fed what its input delivered, a block at a time, whether or not

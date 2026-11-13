@@ -11,7 +11,8 @@ import app.tuxguitar.song.models.TGTrack;
  * A recording of measures as the song played them, on the session's audio device: for each armed track, what its input
  * channel delivered inside the session's punch range (everywhere, without one), one take per stretch of song time
  * without a jump. What was played in time with the output reaches the input one round trip after the clock that played
- * it: each take is read that much later, so it is placed earlier by its round trip and lands on the beat (and the
+ * it (the output sounds it the plugin delay compensation of what is heard and the output latency later): each take is
+ * read that much later, so it is placed earlier by its round trip and lands on the beat (and the
  * recording goes on taking input for one round trip past where it stops). What the inputs delivered over the timeline
  * (its Count In and its measures, kept or not) feeds the armed tracks' input meters.
  */
@@ -24,13 +25,14 @@ public final class TGRecording {
 	private final TGPunchRange punchRange;
 	private final int roundTrip;
 
-	public TGRecording(TGSongManager songManager, TGSong song, TGAudioSession session) {
+	// compensation: the plugin delay compensation of what is heard while recording (the render's latency)
+	public TGRecording(TGSongManager songManager, TGSong song, TGAudioSession session, int compensation) {
 		this.songManager = songManager;
 		this.song = song;
 		this.session = session;
 		this.device = session.getDevice();
 		this.punchRange = session.getPunchRange(song);
-		this.roundTrip = session.getRoundTrip();
+		this.roundTrip = session.getRoundTrip(compensation);
 	}
 
 	// records the measures of the timeline on the tracks; returns how many takes it made

@@ -123,10 +123,10 @@ public final class TGAudioSession {
 	}
 
 	// how much later than the output's clock the input delivers what was played in time with the output: the output
-	// latency, the input latency the device reports, and the recording offset (the plugin delay compensation of what is
-	// heard comes with plugins)
-	public int getRoundTrip() {
-		return this.device.getOutputLatency() + this.device.getInputLatency() + this.recordingOffset;
+	// latency, the plugin delay compensation of what is heard (the slowest sound chain's latency, see TGRender), the
+	// input latency the device reports, and the recording offset
+	public int getRoundTrip(int compensation) {
+		return this.device.getOutputLatency() + compensation + this.device.getInputLatency() + this.recordingOffset;
 	}
 
 	public boolean isRecording() {

@@ -13,13 +13,16 @@ import java.util.function.LongToDoubleFunction;
 import app.tuxguitar.audio.TGAudioDevice;
 import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGTimeline;
+import app.tuxguitar.midi.synth.impl.GervillProcessor;
 
 /**
  * The audio device of the features: 44100 Hz unless a scenario says otherwise; each input channel delivers the signal
  * the player plays on it, or silence. The player plays along with what is being heard: it knows where the beats and
- * passes of what is played fall on the device's clock, and hears them the output latency later; what it plays reaches
- * the input the input latency later still. It reports its input latency (or what a scenario says it reports) and its
- * output latency; none by default. Held, it keeps the next capture waiting until released, so a recording can be left
+ * passes of what is played fall on the device's clock, and hears them the chain delay and the output latency later;
+ * what it plays reaches the input the input latency later still. The chain delay is how much later than the clock the
+ * TuxGuitar Synthesizer sends to the output what it plays: it delays every track to its slowest sound chain, the
+ * General MIDI drums' at least (Gervill's two control periods, 600 samples at 44100 Hz). It reports its input latency
+ * (or what a scenario says it reports) and its output latency; none by default. Held, it keeps the next capture waiting until released, so a recording can be left
  * under way while a scenario does something else.
  */
 final class TestInterface implements TGAudioDevice {
@@ -32,6 +35,7 @@ final class TestInterface implements TGAudioDevice {
 	private final Set<Long> beats = new HashSet<Long>();
 	private final TreeMap<Long, Integer> passes = new TreeMap<Long, Integer>();
 	private int sampleRate = SAMPLE_RATE;
+	private int chainDelay = GervillProcessor.latency(SAMPLE_RATE);
 	private int inputLatency;
 	private int outputLatency;
 	private int reportedInputLatency;
@@ -45,6 +49,12 @@ final class TestInterface implements TGAudioDevice {
 
 	void setSampleRate(int sampleRate) {
 		this.sampleRate = sampleRate;
+		this.chainDelay = GervillProcessor.latency(sampleRate);
+	}
+
+	// what the player plays along with is not heard through the TuxGuitar Synthesizer (a take put on a track directly)
+	void hearNoChain() {
+		this.chainDelay = 0;
 	}
 
 	public int getSampleRate() {
@@ -140,7 +150,7 @@ final class TestInterface implements TGAudioDevice {
 	public float[] capture(int inputChannel, long from, int count) {
 		this.waitIfHeld();
 		LongToDoubleFunction signal = this.inputs.getOrDefault(inputChannel, sample -> 0);
-		long played = from - this.outputLatency - this.inputLatency;
+		long played = from - this.chainDelay - this.outputLatency - this.inputLatency;
 		float[] samples = new float[count];
 		for (int i = 0; i < count; i++) {
 			samples[i] = (float) signal.applyAsDouble(played + i);

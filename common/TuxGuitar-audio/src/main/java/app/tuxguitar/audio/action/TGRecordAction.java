@@ -56,7 +56,7 @@ public class TGRecordAction extends TGActionBase {
 	private void record(TGActionContext context, TGSong song, TGAudioSession session, List<TGTrack> tracks) {
 		TGRender render = TGPlayAction.play(getContext(), context, getSongManager(context), true);
 		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, render);
-		TGRecording recording = new TGRecording(getSongManager(context), song, session);
+		TGRecording recording = new TGRecording(getSongManager(context), song, session, render.getLatency());
 		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, render.getTimeline()));
 		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 	}
