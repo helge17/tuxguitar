@@ -706,6 +706,9 @@ public class MidiPlayer{
 				TGChannelParameter tgChannelParameter = parameters.next();
 				this.updateParameter(tgChannel, tgChannelParameter.getKey(), tgChannelParameter.getValue());
 			}
+			if( tgChannel.isAudioChannel() ){
+				this.updateParameter(tgChannel, MidiParameters.AUDIO_CHANNEL, Boolean.TRUE.toString());
+			}
 
 			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
 		} finally {
