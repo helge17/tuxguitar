@@ -114,6 +114,8 @@ public class TestSoundChainActions {
 		assertEquals("takes", run(audio, new TGChooseGeneralMidiAction(fixture.context)));
 		assertEquals("Synth success", run(guitar, new TGChooseVst3InstrumentAction(fixture.context)));
 		assertEquals("gervill success", run(guitar, new TGChooseGeneralMidiAction(fixture.context)));
+		assertEquals("gervill", run(guitar, new TGChooseTakesAction(fixture.context)));
+		assertEquals("takes success", run(audio, new TGChooseTakesAction(fixture.context)));
 	}
 
 	private void parameter(String key, String value) {

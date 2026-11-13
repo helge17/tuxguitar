@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import app.tuxguitar.audio.TGSoundChain;
 import app.tuxguitar.audio.action.TGAddVst3EffectAction;
 import app.tuxguitar.audio.action.TGChooseGeneralMidiAction;
+import app.tuxguitar.audio.action.TGChooseTakesAction;
 import app.tuxguitar.audio.action.TGChooseVst3InstrumentAction;
 import app.tuxguitar.audio.action.TGEffectAction;
 import app.tuxguitar.audio.action.TGMoveEffectUpAction;
@@ -178,6 +179,11 @@ public class PluginSteps {
 	@When("I go back to the General MIDI program for track {int}")
 	public void goBackToTheGeneralMidiProgram(int track) {
 		change(track, new TGChooseGeneralMidiAction(world.fixture().context));
+	}
+
+	@When("I give track {int}'s channel the source \"takes\"")
+	public void giveTheSourceTakes(int track) {
+		change(track, new TGChooseTakesAction(world.fixture().context));
 	}
 
 	private void changeEffect(int effect, int track, TGEffectAction action) {

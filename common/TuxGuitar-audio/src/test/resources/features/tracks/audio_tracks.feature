@@ -55,8 +55,6 @@ Feature: Audio tracks
       | set the General MIDI program of track 2's channel to "Distortion Electric Guitar" |
       | make track 2's channel a percussion channel                                       |
 
-    # choosing a sound chain's source comes with VST3 instruments
-    @planned
     Examples:
       | change                                    |
       | give track 1's channel the source "takes" |
