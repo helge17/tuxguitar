@@ -73,6 +73,18 @@ public class TestDrumTap {
 		assertArrayEquals(drums(timeline, MidiClick.DEFAULT)[1], tap[1]);
 	}
 
+	// today the tap lags the timeline by Gervill's latency, two control periods (600 samples at 44100 Hz): the click on
+	// the first sample is heard from sample 600
+	@Test
+	public void aClickIsHeardTheLatencyAfterItsSample() {
+		countDown.setEnabled(true);
+		countDown.setTickCount(1);
+		float[] left = TGDrumTap.render(context, fromMeasure2(), MidiClick.DEFAULT)[0];
+
+		assertEquals(0, Meters.peak(left, 0, 600), 0);
+		assertTrue(Meters.peak(left, 600, 1000) > 0);
+	}
+
 	@Test
 	public void isSilentWithoutACountIn() {
 		float[][] tap = TGDrumTap.render(context, fromMeasure2(), MidiClick.DEFAULT);

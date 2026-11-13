@@ -130,6 +130,16 @@ public class TestGeneralMidiRender {
 		assertTrue(Meters.peak(render.getRight(), 0, 20000) > 0.01);
 	}
 
+	// today the tap lags the timeline by Gervill's latency, two control periods (600 samples at 44100 Hz): a note on the
+	// first sample is heard from sample 600
+	@Test
+	public void aNoteOnTheFirstSampleIsHeardTheLatencyLater() throws MidiPlayerException {
+		float[] tap = render(44100).getTap(song.getTrack(0));
+
+		assertEquals(0, Meters.peak(tap, 0, 600), 0);
+		assertTrue(Meters.peak(tap, 600, 700) > 0);
+	}
+
 	// as the synthesizer does today, an event goes out at the start of the block of 512 samples it falls in
 	@Test
 	public void aNoteSoundsFromTheStartOfTheBlockOfItsBeat() throws MidiPlayerException {
