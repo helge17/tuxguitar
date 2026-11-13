@@ -112,6 +112,16 @@ public class TestTimeline {
 		assertEquals("true true", playing.isOffline() + " " + stopped.isOffline());
 	}
 
+	// running on after the last measure (for the tails of an export) the timeline is longer, its measures where they
+	// were, and the last measure's state is told past its end
+	@Test
+	public void aTimelineRunsOnAfterItsLastMeasure() {
+		TGTimeline timeline = fromMeasure2().runningOn(441000);
+		assertEquals("88200 | [] | m2:0-3840 m3:0-3840 m4:0-3840 | 705600", read(timeline));
+		assertEquals(264600, timeline.end(2));
+		assertEquals("@0 true 120 bpm 4/4 q16.0000 s352800; ", told(timeline, 264600));
+	}
+
 	@Test
 	public void withCountInOffTheFirstMeasureStartsPlaying() {
 		assertEquals("88200 | [] | m2:0-3840 m3:0-3840 m4:0-3840 | 264600", read(fromMeasure2()));

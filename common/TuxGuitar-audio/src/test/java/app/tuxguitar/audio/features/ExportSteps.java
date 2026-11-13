@@ -52,7 +52,7 @@ public class ExportSteps {
 		String bits = (samples == TGExportFormat.Samples.FLOAT_32 ? "32 bits PCM_FLOAT" : samples.name().substring(4) + " bits PCM_SIGNED");
 		assertEquals(type + " " + sampleRate + " Hz " + bits, file.describe());
 		float[][] read = file.getSamples();
-		TGRender render = new TGRender(TGAudioExporter.timeline(world.song(), sampleRate), Collections.emptyMap(), new float[2][read[0].length], read, 0);
+		TGRender render = new TGRender(TGAudioExporter.timeline(world.song(), sampleRate), Collections.emptyMap(), new float[2][read[0].length], read, 0, 0);
 		world.setExported(new Heard(render, world.song()));
 	}
 
@@ -72,6 +72,11 @@ public class ExportSteps {
 	public void theRightClicksPeakAt(float peak) {
 		float[] right = world.exported().right();
 		assertEquals(peak, Meters.peak(right, 0, right.length), peak / 100);
+	}
+
+	@Then("the file holds the echo of the click of {position}, {int} samples after it, within 1 sample")
+	public void theFileHoldsTheEcho(SongPosition position, int samples) {
+		SyncSteps.assertClickAt(world.exported(), world.exported().sampleAt(position, 0) + samples);
 	}
 
 	@Then("the file lasts {int} samples, within 1 sample")

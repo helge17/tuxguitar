@@ -66,7 +66,7 @@ public final class TGMidiTaps {
 			fill(model, taps, block);
 		}
 		Map<Integer, TGTap> rendered = new HashMap<Integer, TGTap>();
-		taps.forEach((channel, samples) -> rendered.put(channel, new TGTap(samples, model.getChannelById(channel).getLatency())));
+		taps.forEach((channel, samples) -> rendered.put(channel, new TGTap(samples, model.getChannelById(channel).getLatency(), model.getChannelById(channel).getTail())));
 		model.closeChannels();
 		return rendered;
 	}

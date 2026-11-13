@@ -57,6 +57,15 @@ final class TGEffects {
 		return latency;
 	}
 
+	// how many samples the chain sounds on after its input stops: the tails along it
+	int getTail() {
+		int tail = 0;
+		for (TGAudioProcessor effect : this.effects) {
+			tail = TGAudioProcessor.along(tail, effect.getTail());
+		}
+		return tail;
+	}
+
 	// the tap through the effects, its latency taken out, as long as the tap; each block is told what the song does
 	// over it on the timeline
 	TGTap process(float[][] tap, TGTimeline timeline) {
@@ -75,7 +84,7 @@ final class TGEffects {
 			}
 			TGBlocks.place(block, processed, start - latency);
 		}
-		return new TGTap(processed, latency);
+		return new TGTap(processed, latency, this.getTail());
 	}
 
 	void close() {

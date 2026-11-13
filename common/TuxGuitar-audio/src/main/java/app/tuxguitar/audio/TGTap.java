@@ -8,10 +8,14 @@ public final class TGTap {
 
 	private final float[][] samples;
 	private final int latency;
+	private final int tail;
 
-	public TGTap(float[][] samples, int latency) {
+	// tail: how many samples the chain sounds on after its input or its last note (TGAudioProcessor.INFINITE_TAIL: for
+	// ever)
+	public TGTap(float[][] samples, int latency, int tail) {
 		this.samples = samples;
 		this.latency = latency;
+		this.tail = tail;
 	}
 
 	public float[][] getSamples() {
@@ -20,5 +24,9 @@ public final class TGTap {
 
 	public int getLatency() {
 		return this.latency;
+	}
+
+	public int getTail() {
+		return this.tail;
 	}
 }

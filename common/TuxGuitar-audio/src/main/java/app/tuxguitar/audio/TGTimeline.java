@@ -20,6 +20,8 @@ public final class TGTimeline {
 	private final long clock;
 	private final int sampleRate;
 	private final TGCountIn countIn;
+	// samples after the last measure
+	private final long runOn;
 
 	public TGTimeline(TGSong song, List<TGPlayedMeasure> measures, int sampleRate) {
 		this(song, measures, sampleRate, TGCountIn.NONE);
@@ -27,11 +29,12 @@ public final class TGTimeline {
 
 	// the measures after the Count In
 	public TGTimeline(TGSong song, List<TGPlayedMeasure> measures, int sampleRate, TGCountIn countIn) {
-		this(measures, sampleRate, countIn, (measures.isEmpty() ? 0 : clockAt(song, measures.get(0), sampleRate) - countIn.length()));
+		this(measures, sampleRate, countIn, (measures.isEmpty() ? 0 : clockAt(song, measures.get(0), sampleRate) - countIn.length()), 0);
 	}
 
-	private TGTimeline(List<TGPlayedMeasure> measures, int sampleRate, TGCountIn countIn, long clock) {
+	private TGTimeline(List<TGPlayedMeasure> measures, int sampleRate, TGCountIn countIn, long clock, long runOn) {
 		this.measures = new ArrayList<TGPlayedMeasure>(measures);
+		this.runOn = runOn;
 		this.sampleRate = sampleRate;
 		this.countIn = countIn;
 		this.clock = clock;
@@ -58,6 +61,11 @@ public final class TGTimeline {
 		return TGSampleTime.samples(ticks, measure.getTempo(), sampleRate);
 	}
 
+	// the same, running on after its last measure for the samples (as long as an export's longest tail)
+	public TGTimeline runningOn(long samples) {
+		return new TGTimeline(this.measures, this.sampleRate, this.countIn, this.clock, samples);
+	}
+
 	// what plays before the sample: the Count In up to it, the measures that start before it, each up to the first of
 	// its ticks that sounds at the sample or after (its end, for a measure that ends before the sample)
 	public TGTimeline until(long sample) {
@@ -65,7 +73,7 @@ public final class TGTimeline {
 		for (int i = 0; i < this.count() && this.start(i) < sample; i++) {
 			kept.add(this.get(i).until(this.tickAt(i, sample)));
 		}
-		return new TGTimeline(kept, this.sampleRate, this.countIn.until(sample), this.clock);
+		return new TGTimeline(kept, this.sampleRate, this.countIn.until(sample), this.clock, 0);
 	}
 
 	// the first tick of the played measure that sounds at the sample or after
@@ -113,7 +121,7 @@ public final class TGTimeline {
 	}
 
 	public long length() {
-		return this.starts[this.measures.size()];
+		return this.starts[this.measures.size()] + this.runOn;
 	}
 
 	// what the song does over the block of frames from the sample, as plugins are told: a span from its first frame and

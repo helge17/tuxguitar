@@ -59,25 +59,32 @@ public final class TGRenderer {
 
 	private TGRender render(TGTimeline timeline, MidiPlayerMode mode, boolean recording, boolean synthesizer, boolean live) throws MidiPlayerException {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
+		Map<Integer, Integer> tails = new HashMap<Integer, Integer>();
 		float[][] drums = new float[2][(int) timeline.length()];
 		float[][] output = new float[2][(int) timeline.length()];
 		int latency = 0;
+		int tail = 0;
 		if (synthesizer) {
 			List<TGTrack> audioTracks = this.audioTracks();
 			Set<Integer> audioChannels = new HashSet<Integer>();
 			audioTracks.forEach(track -> audioChannels.add(track.getChannelId()));
 			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, audioChannels);
-			midi.forEach((channel, tap) -> taps.put(channel, tap.getSamples()));
+			midi.forEach((channel, tap) -> {
+				taps.put(channel, tap.getSamples());
+				tails.put(channel, tap.getTail());
+			});
 			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
 			Map<TGTrack, TGEffects> effects = new HashMap<TGTrack, TGEffects>();
 			audioTracks.forEach(track -> effects.put(track, TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), timeline.getSampleRate())));
 			latency = latency(midi.values(), effects.values(), timeline);
 			for (TGTrack track : audioTracks) {
-				taps.put(track.getChannelId(), this.tap(track, timeline, recording, live, latency, effects.get(track)));
+				TGTap tap = this.tap(track, timeline, recording, live, latency, effects.get(track));
+				taps.put(track.getChannelId(), tap.getSamples());
+				tails.put(track.getChannelId(), tap.getTail());
 			}
-			this.mix(taps, drums, output);
+			tail = this.mix(taps, tails, drums, output);
 		}
-		return new TGRender(timeline, taps, drums, output, latency);
+		return new TGRender(timeline, taps, drums, output, latency, tail);
 	}
 
 	private List<TGTrack> audioTracks() {
@@ -105,11 +112,11 @@ public final class TGRenderer {
 	}
 
 	// the track's takes or input, through its effects
-	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, boolean live, int latency, TGEffects effects) {
+	private TGTap tap(TGTrack track, TGTimeline timeline, boolean recording, boolean live, int latency, TGEffects effects) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording, live);
 		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
 		TGTimeStretcher stretcher = new TGWsolaStretcher(timeline.getSampleRate());
-		float[][] tap = effects.process(TGTakeTap.render(track, timeline, stretcher, sources, input), timeline).getSamples();
+		TGTap tap = effects.process(TGTakeTap.render(track, timeline, stretcher, sources, input), timeline);
 		effects.close();
 		return tap;
 	}
@@ -142,17 +149,21 @@ public final class TGRenderer {
 		return (armed && monitoring == TGMonitoring.ALWAYS ? TGTrackSource.INPUT : TGTrackSource.TAKES);
 	}
 
-	private void mix(Map<Integer, float[][]> taps, float[][] drums, float[][] output) {
+	// the output; the longest tail of the taps heard
+	private int mix(Map<Integer, float[][]> taps, Map<Integer, Integer> tails, float[][] drums, float[][] output) {
 		boolean solo = this.anySolo();
+		int tail = 0;
 		Iterator<TGTrack> tracks = this.song.getTracks();
 		while (tracks.hasNext()) {
 			TGTrack track = tracks.next();
 			float[][] tap = taps.get(track.getChannelId());
 			if (tap != null && !track.isMute() && (!solo || track.isSolo())) {
 				add(tap, gains(this.channel(track)), output);
+				tail = Math.max(tail, tails.get(track.getChannelId()));
 			}
 		}
 		add(drums, gains(this.drumChannel()), output);
+		return tail;
 	}
 
 	// the channel the drums click on today, the song's percussion channel; without one, they sound as a new channel

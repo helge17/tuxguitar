@@ -53,19 +53,16 @@ Feature: Exporting audio
     When I export the song as a WAVE file at 48000 Hz in 24 bits
     Then the file's right side sounds a 440 Hz tone within 1% in measure 1
 
-  @planned
   Scenario: without tails the file ends with the last measure
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 352800 samples, within 1 sample
 
-  @planned
   Scenario: the file runs on for the longest tail the effects report
     Given I have added the VST3 effect "Test Echo" to track 2
     When I export the song as a WAVE file at 44100 Hz in 16 bits
     Then the file lasts 366030 samples, within 1 sample
     And the file holds the echo of the click of measure 4 beat 4, 13230 samples after it, within 1 sample
 
-  @planned
   Scenario Outline: an effect with an endless tail runs the file on for 10 seconds, unless it is not heard
     Given I have added the VST3 effect "Test Drone" to track 2
     And I have <done>

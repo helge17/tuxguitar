@@ -129,7 +129,12 @@ public class SyncSteps {
 	}
 
 	private void assertClickAt(int sample) {
-		List<Integer> right = Meters.jumps(heard().right(), 0, heard().right().length);
+		assertClickAt(heard(), sample);
+	}
+
+	// a click (or an echo, next to the clicks) on the right side
+	static void assertClickAt(Heard heard, int sample) {
+		List<Integer> right = Meters.jumps(heard.right(), 0, heard.right().length);
 		assertTrue(right.stream().anyMatch(click -> Math.abs(click - sample) <= 1), "no click at " + sample + ": " + right);
 	}
 

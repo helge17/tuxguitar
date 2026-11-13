@@ -106,5 +106,9 @@ final class ReportingEffects {
 		public int getLatency() {
 			return this.effect.getLatency();
 		}
+
+		public int getTail() {
+			return this.effect.getTail();
+		}
 	}
 }

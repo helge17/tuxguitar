@@ -18,7 +18,7 @@ public final class TGAudioFileWriter {
 
 	public static void write(float[][] samples, TGExportFormat format, OutputStream out) throws IOException {
 		byte[] data = format.encode(samples);
-		AudioInputStream stream = new AudioInputStream(new ByteArrayInputStream(data), format.audioFormat(), samples[0].length);
+		AudioInputStream stream = new AudioInputStream(new ByteArrayInputStream(data), format.audioFormat(), data.length / format.audioFormat().getFrameSize());
 		AudioSystem.write(stream, format.fileType(), out);
 	}
 }

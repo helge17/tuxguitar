@@ -20,13 +20,16 @@ public final class TGRender {
 	private final float[][] drums;
 	private final float[][] output;
 	private final int latency;
+	private final int tail;
 
-	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output, int latency) {
+	// tail: the longest tail of the chains heard
+	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output, int latency, int tail) {
 		this.timeline = timeline;
 		this.taps = taps;
 		this.drums = drums;
 		this.output = output;
 		this.latency = latency;
+		this.tail = tail;
 	}
 
 	public TGTimeline getTimeline() {
@@ -51,6 +54,12 @@ public final class TGRender {
 
 	public int getLatency() {
 		return this.latency;
+	}
+
+	// how many samples the chains heard sound on after the last measure: the longest of their tails
+	// (TGAudioProcessor.INFINITE_TAIL: for ever)
+	public int getTail() {
+		return this.tail;
 	}
 
 	public float[] getLeft() {
