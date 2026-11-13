@@ -307,6 +307,39 @@ public class TestMidiSequencerClock {
 		assertEquals("[all notes off, pitch bend reset]", received.toString());
 	}
 
+	// a stop keeps the position reached (tick 44 after two blocks), where the player plays from again, and drops the
+	// sequence (the player gives it a new one): started again without one, it silences and stops
+	@Test
+	public void stoppingKeepsThePositionReachedAndDropsTheSequence() throws MidiPlayerException {
+		notes(50);
+		playOnTheClockFrom(0);
+		blocks(2);
+		sequencer.stop();
+		long stopped = sequencer.getTickPosition();
+		sequencer.start();
+
+		assertEquals("44 | all notes off, pitch bend reset, all notes off, pitch bend reset | false", stopped + " | " + blocks(1) + " | " + sequencer.isRunning());
+	}
+
+	@Test
+	public void aMoveIsThePositionAtOnce() throws MidiPlayerException {
+		playOnTheClockFrom(0);
+		blocks(1);
+		sequencer.setTickPosition(2000);
+
+		assertEquals(2000, sequencer.getTickPosition());
+	}
+
+	// tick 10 sounds on frame 230; at 60 bpm the 282 frames left reach 6.1 ticks further
+	@Test
+	public void thePositionFollowsATempoChange() throws MidiPlayerException {
+		sequence.addTempoInUSQ(10, 0, 1000000);
+		playOnTheClockFrom(0);
+		blocks(1);
+
+		assertEquals(16, sequencer.getTickPosition());
+	}
+
 	// a block from tick 0 reaches tick 22 (512 / 22.96875 = 22.3)
 	@Test
 	public void thePositionIsTheTickReachedAtTheEndOfTheBlock() throws MidiPlayerException {
