@@ -12,6 +12,7 @@ import app.tuxguitar.midi.synth.TGAudioBuffer;
 import app.tuxguitar.midi.synth.TGMidiProcessorFactory;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
+import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
@@ -30,19 +31,20 @@ import app.tuxguitar.util.TGContext;
  * rate, each playing the General MIDI program of its channel through Gervill (the programs kept in the synthesizer's
  * settings are not read here), fed the events of the MIDI sequence parser on the timeline's clock and rendered in
  * blocks of 512 samples. Before each block its events go to the synthesizer's receiver of their frames, as the
- * sequencer sends them live: a note starts on its own sample, and is heard from it (Gervill's latency is taken out,
- * see TGGervillBlocks). Each tap is the channel's chain before Volume and Balance, left and right.
+ * sequencer sends them live: a note starts on its own sample, and is heard from it (the chain's latency is taken out,
+ * see TGBlocks). Each tap is the channel's chain before Volume and Balance, left and right, with that latency.
  */
 public final class TGMidiTaps {
 
-	private static final int FRAMES = TGGervillBlocks.FRAMES;
+	private static final int FRAMES = TGBlocks.FRAMES;
 	private static final int FLAGS = MidiSequenceParser.ADD_DEFAULT_CONTROLS | MidiSequenceParser.ADD_MIXER_MESSAGES | MidiSequenceParser.ADD_BANK_SELECT;
 
 	private TGMidiTaps() {
 	}
 
-	// the channels left out are the audio channels: they have no notes
-	public static Map<Integer, float[][]> render(TGContext context, TGSongManager songManager, TGSong song, MidiPlayerMode mode, TGTimeline timeline, Set<Integer> leftOut) throws MidiPlayerException {
+	// the channels left out are the audio channels: they have no notes. The blocks run on until the slowest chain has
+	// sounded the timeline's last sample
+	public static Map<Integer, TGTap> render(TGContext context, TGSongManager songManager, TGSong song, MidiPlayerMode mode, TGTimeline timeline, Set<Integer> leftOut) throws MidiPlayerException {
 		TGSynthModel model = model(context, timeline.getSampleRate());
 		TreeMap<Long, List<Event>> events = schedule(songManager, song, mode, timeline);
 		events.values().forEach(at -> at.removeIf(event -> leftOut.contains(event.channel)));
@@ -52,12 +54,14 @@ public final class TGMidiTaps {
 				open(model, taps, event.channel, (int) timeline.length());
 			}
 		}
-		for (long block = 0; block < TGGervillBlocks.end(timeline); block += FRAMES) {
+		for (long block = 0; block < timeline.length() + model.getLatency(); block += FRAMES) {
 			send(model, events.headMap(block + FRAMES), block);
-			fill(model, taps, block - TGGervillBlocks.latency(timeline));
+			fill(model, taps, block);
 		}
+		Map<Integer, TGTap> rendered = new HashMap<Integer, TGTap>();
+		taps.forEach((channel, samples) -> rendered.put(channel, new TGTap(samples, model.getChannelById(channel).getLatency())));
 		model.closeChannels();
-		return taps;
+		return rendered;
 	}
 
 	// the events before the end of the block, on their frames of it (those before it on its first), then forgotten
@@ -112,14 +116,15 @@ public final class TGMidiTaps {
 		}
 	}
 
-	// the next block of every channel, heard from the start (a sample of the taps)
-	private static void fill(TGSynthModel model, Map<Integer, float[][]> taps, long start) {
+	// the next block of every channel, rendered at the block's start, into its tap its chain's latency earlier
+	private static void fill(TGSynthModel model, Map<Integer, float[][]> taps, long block) {
 		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
 		for (Map.Entry<Integer, float[][]> tap : taps.entrySet()) {
+			TGSynthChannel channel = model.getChannelById(tap.getKey());
 			TGAudioBuffer buffer = new TGAudioBuffer();
-			model.getChannelById(tap.getKey()).fillChain(buffer);
+			channel.fillChain(buffer);
 			buffer.read(samples);
-			TGGervillBlocks.place(samples, tap.getValue(), start);
+			TGBlocks.place(samples, tap.getValue(), block - channel.getLatency());
 		}
 	}
 

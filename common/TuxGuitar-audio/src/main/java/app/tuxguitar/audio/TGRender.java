@@ -7,7 +7,11 @@ import app.tuxguitar.song.models.TGTrack;
 /**
  * What playing (or recording) sounded, offline: the timeline it played, each channel's tap (where it joins the output
  * mix, before Volume and Balance, left and right), the drum tap (the General MIDI drums Count In clicks on, where
- * they join the mix) and the output, left and right.
+ * they join the mix) and the output, left and right; and its latency, the plugin delay compensation: live, every tap
+ * is delayed to the slowest sound chain (the General MIDI drums count, whether or not they click, and so does a muted
+ * track), so the output sounds what it holds that many samples after the timeline's clock (and the audio device's
+ * output latency after that). Offline each tap was read its own chain's latency later, so what is here is together on
+ * the timeline's clock.
  */
 public final class TGRender {
 
@@ -15,12 +19,14 @@ public final class TGRender {
 	private final Map<Integer, float[][]> taps;
 	private final float[][] drums;
 	private final float[][] output;
+	private final int latency;
 
-	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output) {
+	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output, int latency) {
 		this.timeline = timeline;
 		this.taps = taps;
 		this.drums = drums;
 		this.output = output;
+		this.latency = latency;
 	}
 
 	public TGTimeline getTimeline() {
@@ -41,6 +47,10 @@ public final class TGRender {
 	// a side of the drum tap (0 left, 1 right)
 	public float[] getDrums(int side) {
 		return this.drums[side];
+	}
+
+	public int getLatency() {
+		return this.latency;
 	}
 
 	public float[] getLeft() {

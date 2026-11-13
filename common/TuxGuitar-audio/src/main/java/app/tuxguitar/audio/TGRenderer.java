@@ -1,6 +1,7 @@
 package app.tuxguitar.audio;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,8 +22,9 @@ import app.tuxguitar.util.TGContext;
  * TGDrumTap), then the output mix, where each channel heard is scaled by its Volume and Balance (today's
  * constant-power law), and the drum tap by those of the song's percussion channel (a new channel's without one).
  * Muted tracks, and tracks other than the soloed ones, are not heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard here: audio tracks and the drums need
- * it, and the other tracks and today's Count In play on that port. Plugin delay compensation, when it comes, delays
- * each tap, the drum tap included, where it joins the mix.
+ * it, and the other tracks and today's Count In play on that port. Plugin delay compensation delays each tap, the
+ * drum tap included, to the slowest chain where it joins the mix: offline each tap is read its own latency later, and
+ * the render keeps the latency the output sounds with.
  */
 public final class TGRenderer {
 
@@ -46,6 +48,7 @@ public final class TGRenderer {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
 		float[][] drums = new float[2][(int) timeline.length()];
 		float[][] output = new float[2][(int) timeline.length()];
+		int latency = 0;
 		if (synthesizer) {
 			Iterator<TGTrack> tracks = this.song.getTracks();
 			while (tracks.hasNext()) {
@@ -54,11 +57,22 @@ public final class TGRenderer {
 					taps.put(track.getChannelId(), this.tap(track, timeline, recording));
 				}
 			}
-			taps.putAll(TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, new HashSet<Integer>(taps.keySet())));
+			Map<Integer, TGTap> midi = TGMidiTaps.render(this.context, this.songManager, this.song, mode, timeline, new HashSet<Integer>(taps.keySet()));
+			midi.forEach((channel, tap) -> taps.put(channel, tap.getSamples()));
 			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
+			latency = latency(midi.values(), timeline);
 			this.mix(taps, drums, output);
 		}
-		return new TGRender(timeline, taps, drums, output);
+		return new TGRender(timeline, taps, drums, output, latency);
+	}
+
+	// plugin delay compensation: the slowest chain's latency, the drums' included (audio tracks' takes have none yet)
+	private static int latency(Collection<TGTap> taps, TGTimeline timeline) {
+		int latency = TGDrumTap.latency(timeline);
+		for (TGTap tap : taps) {
+			latency = Math.max(latency, tap.getLatency());
+		}
+		return latency;
 	}
 
 	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording) {

@@ -86,6 +86,17 @@ public class TestDrumTap {
 		assertTrue(Meters.peak(left, 0, 50) > 0);
 	}
 
+	// stopped just after the Count In's click, the tap runs on to the timeline's end: the click sounds in its last samples
+	@Test
+	public void aClickSoundsToTheLastSample() {
+		countDown.setEnabled(true);
+		countDown.setTickCount(1);
+		float[] left = TGDrumTap.render(context, fromMeasure2().until(1000), MidiClick.DEFAULT)[0];
+
+		assertEquals(1000, left.length);
+		assertTrue(Meters.peak(left, 900, 1000) > 0.001);
+	}
+
 	@Test
 	public void isSilentWithoutACountIn() {
 		float[][] tap = TGDrumTap.render(context, fromMeasure2(), MidiClick.DEFAULT);
