@@ -9,7 +9,10 @@ Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks
 still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
 round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
 helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module; the
-desktop export dialog does not call it yet). Saving (file format 3.0) is not implemented yet. The player's position
+desktop export dialog does not call it yet). Saving is implemented in lib's TuxGuitar file format (format 3.0: a
+`TGAudio` node in content.xml, each take a 32-bit float wave entry `takes/<id>.wav` written by this module's
+`TGTakeWave`) and `TGAudioSaving.install`, which gives the take codec to the reader and writer and stores each VST3
+plugin's state before the write action; the desktop does not call it yet. The player's position
 is the one the output sounds: live, lib's sequencer on the synthesizer's clock reports the tick the output sounds
 (chains' latency plus output latency behind what it schedules); offline, `TGReportedPositions` reports it block by
 block the same way. The desktop does not feed the audio device's output latency in yet
