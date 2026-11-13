@@ -122,6 +122,17 @@ public class TestMidiPlayerCountDown {
 		assertEquals("on 37 @0, off 37 @1, on 37 @1001, off 37 @1002 -> end @2012", start());
 	}
 
+	// 117 bpm at 80% is 93.6 bpm, a beat of 641.03 ms (not 93 bpm, 645.16 ms, as a whole bpm)
+	@Test
+	public void ticksAtTheExactTempoPercent() {
+		withPercussion();
+		song.getMeasureHeader(0).getTempo().setQuarterValue(117);
+		countDown.setTickCount(2);
+		countDown.setTempoPercent(80);
+
+		assertEquals("on 37 @0, off 37 @1, on 37 @641, off 37 @642 -> end @1292", start());
+	}
+
 	@Test
 	public void stopsWithThePlayer() {
 		withPercussion();

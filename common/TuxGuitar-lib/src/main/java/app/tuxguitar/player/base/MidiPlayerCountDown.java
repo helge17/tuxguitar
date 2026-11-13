@@ -44,9 +44,10 @@ public class MidiPlayerCountDown {
 		}
 	}
 
-	// one tick per beat of the header's time signature (unless a tick count is set), at the header's tempo
+	// one tick per beat of the header's time signature (unless a tick count is set), at the header's tempo scaled
+	// exactly by the tempo percent
 	private void playTicks(int channelId, TGMeasureHeader header) throws MidiPlayerException, InterruptedException {
-		int  tgTempo = ((header.getTempo().getQuarterValue() * this.getTempoPercent()) / DEFAULT_TEMPO_PERCENT);
+		double tgTempo = ((header.getTempo().getQuarterValue() * (double) this.getTempoPercent()) / DEFAULT_TEMPO_PERCENT);
 		long tgLength = header.getTimeSignature().getDenominator().getTime();
 		long tickLength = (long)(1000.00 * (60.00 / tgTempo * tgLength) / TGDuration.QUARTER_TIME);
 		long tickStart = this.currentTime();
