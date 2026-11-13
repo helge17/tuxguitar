@@ -100,7 +100,7 @@ public final class TGRenderer {
 	private float[][] tap(TGTrack track, TGTimeline timeline, boolean recording, int latency, TGEffects effects) {
 		TGTrackSource[] sources = this.sources(track, timeline, recording);
 		float[][] input = (Arrays.asList(sources).contains(TGTrackSource.INPUT) ? this.input(track, timeline, latency - effects.getLatency()) : null);
-		float[][] tap = effects.process(TGTakeTap.render(track, timeline, this.stretcher, sources, input)).getSamples();
+		float[][] tap = effects.process(TGTakeTap.render(track, timeline, this.stretcher, sources, input), timeline).getSamples();
 		effects.close();
 		return tap;
 	}

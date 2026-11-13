@@ -74,6 +74,7 @@ public class AudioWorld {
 	private final SongActionFixture fixture = SongActionFixture.onDocument();
 	private final TGUndoableBuffer undoHistory = new TGUndoableBuffer();
 	private final TestInterface device = new TestInterface();
+	private final ReportingEffects reporting = new ReportingEffects();
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
 	private SongPosition playedClick;
 
@@ -94,6 +95,11 @@ public class AudioWorld {
 			TGAddMeasureAction.NAME, TGRemoveMeasureAction.NAME, TGRemoveMeasureRangeAction.NAME, TGInsertMeasuresAction.NAME,
 			TGPasteMeasureAction.NAME, TGChangeTempoAction.NAME, TGChangeTempoRangeAction.NAME, TGChangeTimeSignatureAction.NAME,
 			TGSetTrackChannelAction.NAME, TGChangeNoteAction.NAME, TGUndoAction.NAME, TGRedoAction.NAME);
+	}
+
+	// what the VST3 effects that closed were told
+	public ReportingEffects reporting() {
+		return this.reporting;
 	}
 
 	public SongActionFixture fixture() {

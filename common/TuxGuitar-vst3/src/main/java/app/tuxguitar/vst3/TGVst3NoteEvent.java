@@ -37,6 +37,17 @@ public final class TGVst3NoteEvent {
 		return new TGVst3NoteEvent(TUNING, offset, 0, noteId, semitones);
 	}
 
+	// the events on frames from one to the other (not included), each moved to count from the first
+	static java.util.List<TGVst3NoteEvent> between(java.util.List<TGVst3NoteEvent> events, int from, int to) {
+		java.util.List<TGVst3NoteEvent> between = new java.util.ArrayList<TGVst3NoteEvent>();
+		for (TGVst3NoteEvent event : events) {
+			if (event.offset >= from && event.offset < to) {
+				between.add(new TGVst3NoteEvent(event.type, event.offset - from, event.pitch, event.noteId, event.value));
+			}
+		}
+		return between;
+	}
+
 	public int getType() {
 		return this.type;
 	}

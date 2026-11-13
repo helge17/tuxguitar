@@ -77,6 +77,7 @@ public class PluginSteps {
 	@Given("the VST3 folders hold the test plugins")
 	public void theVst3FoldersHoldTheTestPlugins() throws TGVst3Exception {
 		hosting().configure(host(), Arrays.asList(new File(new File(nativeBuild(), "VST3"), "Release")));
+		world.reporting().install(world.fixture().context);
 		TGVst3Processors.install(world.fixture().context);
 		this.scanned = hosting().scan();
 	}

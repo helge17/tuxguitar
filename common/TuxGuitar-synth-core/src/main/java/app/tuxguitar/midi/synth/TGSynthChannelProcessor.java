@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.util.TGContext;
 
 public class TGSynthChannelProcessor {
@@ -20,9 +21,12 @@ public class TGSynthChannelProcessor {
 	private Object lock;
 
 	private float sampleRate;
+	private MidiTransport transport;
 
-	public TGSynthChannelProcessor(float sampleRate) {
+	// its processors render at the sample rate and are told the song's state over each block in the transport
+	public TGSynthChannelProcessor(float sampleRate, MidiTransport transport) {
 		this.sampleRate = sampleRate;
+		this.transport = transport;
 		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
 		this.block = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
@@ -50,6 +54,7 @@ public class TGSynthChannelProcessor {
 				if( factory != null ) {
 					processor = factory.createProcessor();
 					processor.setSampleRate(this.sampleRate);
+					processor.setTransport(this.transport);
 				}
 			}
 			if( processor != null ) {
@@ -75,6 +80,7 @@ public class TGSynthChannelProcessor {
 				if( factory != null ) {
 					processor = factory.createProcessor();
 					processor.setSampleRate(this.sampleRate);
+					processor.setTransport(this.transport);
 				}
 			}
 			if( processor != null ) {

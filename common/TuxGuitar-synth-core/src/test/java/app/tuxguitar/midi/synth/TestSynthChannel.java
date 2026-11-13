@@ -3,7 +3,9 @@ package app.tuxguitar.midi.synth;
 import static app.tuxguitar.midi.synth.FakeProcessors.program;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -146,6 +148,16 @@ public class TestSynthChannel {
 		assertEquals(2f * 32 / 127, left(), QUANTUM);
 		this.channel.sendControlChange(MidiControllers.VOLUME, 127);
 		assertEquals(1f, left(), 0f);
+	}
+
+	// the transport the synthesizer's clock is told the song's state in, read by the chain's processors
+	@Test
+	public void theChainsProcessorsAreGivenTheSynthesizersTransport() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
+		this.channel.sendProgramChange(5);
+		assertNotNull(this.model.getTransport());
+		assertSame(this.model.getTransport(), this.source.last().transport);
+		assertSame(this.model.getTransport(), this.lift.created.get(0).transport);
 	}
 
 	@Test

@@ -2,6 +2,8 @@ package app.tuxguitar.midi.synth;
 
 import java.util.Map;
 
+import app.tuxguitar.player.base.MidiTransport;
+
 public interface TGAudioProcessor {
 
 	void close();
@@ -30,6 +32,11 @@ public interface TGAudioProcessor {
 		buffer.write(block);
 		this.fillBuffer(buffer);
 		buffer.read(block);
+	}
+
+	// what the song does over each block it processes, written before the block by the clock's owner; a processor that
+	// does not need it ignores it
+	default void setTransport(MidiTransport transport) {
 	}
 
 	// how many frames later than its input (or, for a source, than the events it is sent) it sounds them

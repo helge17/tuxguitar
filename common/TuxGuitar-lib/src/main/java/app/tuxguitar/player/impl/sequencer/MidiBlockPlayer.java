@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiSampleClock;
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.song.models.TGDuration;
 
 /**
@@ -56,6 +57,7 @@ class MidiBlockPlayer {
 		if (this.moved) {
 			this.move(clock, this.sequencer.getTickPosition());
 		}
+		this.tell(clock.getTransport(), rate);
 		for (; this.next < this.events.size(); this.next++) {
 			MidiEvent event = this.events.get(this.next);
 			long frame = this.frameOf(event.getTick(), rate);
@@ -71,6 +73,18 @@ class MidiBlockPlayer {
 		}
 		this.sequencer.getMidiTickPlayer().setTick(this.tickAt(frames, rate));
 		this.anchorFrame -= frames;
+	}
+
+	// the transport is told the song plays over the block, at the tempo and from the quarter note it starts at (the
+	// song's first measure starts a quarter note in: at tick 960); the time signature is not known here, so it is left
+	private void tell(MidiTransport transport, float rate) {
+		if (transport != null) {
+			MidiTransport.Span last = transport.get(transport.count() - 1);
+			double quarters = (this.anchorTick - TGDuration.QUARTER_TIME - this.anchorFrame * MICROSECONDS_PER_QUARTER / (this.usq * (double) rate)) / TGDuration.QUARTER_TIME;
+			double tempo = 60000000.0 / this.usq;
+			transport.clear();
+			transport.add(0, true, tempo, last.getNumerator(), last.getDenominator(), quarters, Math.round(quarters * 60 / tempo * rate));
+		}
 	}
 
 	// the channel setup before the position, on the first frame, then the events from the position

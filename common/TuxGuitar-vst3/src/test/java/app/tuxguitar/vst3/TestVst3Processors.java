@@ -23,6 +23,7 @@ import app.tuxguitar.midi.synth.TGAudioProcessor;
 import app.tuxguitar.midi.synth.TGMidiProcessor;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.midi.synth.TGSynthManager;
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.util.TGContext;
 
 /**
@@ -140,6 +141,62 @@ public class TestVst3Processors {
 		assertEquals(0.5f, block[1][300]);
 		click.process(block);
 		assertEquals(0f, block[0][300]);
+	}
+
+	// a transport of two spans: the song at 120 bpm in 4/4 from quarter 3.5, then from frame 200 at 60 bpm in 3/4
+	private static MidiTransport twoSpans() {
+		MidiTransport transport = new MidiTransport();
+		transport.clear();
+		transport.add(0, true, 120, 4, 4, 3.5, 77175);
+		transport.add(200, true, 60, 3, 4, 4, 88200);
+		return transport;
+	}
+
+	// a block is processed in parts, one per span of the transport, each told its span; the signal passes whole
+	@Test
+	public void eachSpanOfTheTransportIsProcessedToldItsOwnState() throws TGVst3Exception {
+		TGVst3Processor tempo = (TGVst3Processor) effect(element("Test Tempo"));
+		tempo.setTransport(twoSpans());
+		float[][] block = level(0.25f);
+		tempo.process(block);
+		java.nio.ByteBuffer told = java.nio.ByteBuffer.wrap(tempo.getInstance().message("TG.report", new HashMap<String, Long>(), new HashMap<String, byte[]>()))
+			.order(java.nio.ByteOrder.nativeOrder());
+		StringBuilder read = new StringBuilder();
+		while (told.hasRemaining()) {
+			read.append(told.getDouble() + " " + told.getInt() + "/" + told.getInt() + " " + told.getInt() + " " + told.getDouble() + " " + told.getLong() + "; ");
+		}
+		assertEquals("120.0 4/4 1 3.5 77175; 60.0 3/4 1 4.0 88200; ", read.toString());
+		assertEquals(0.25f, block[0][199]);
+		assertEquals(0.25f, block[1][200]);
+		assertEquals(0.25f, block[0][FRAMES - 1]);
+	}
+
+	// the notes of a part of a block, each on its frame counted from the part's first
+	@Test
+	public void aPartOfABlockHoldsTheNotesOnItsFrames() {
+		List<TGVst3NoteEvent> events = Arrays.asList(TGVst3NoteEvent.noteOn(0, 60, 1, 1f), TGVst3NoteEvent.noteOn(199, 61, 2, 1f),
+			TGVst3NoteEvent.noteOn(200, 62, 3, 1f), TGVst3NoteEvent.noteOff(300, 60, 1));
+		StringBuilder read = new StringBuilder();
+		for (int[] part : new int[][] {{0, 200}, {200, FRAMES}}) {
+			for (TGVst3NoteEvent event : TGVst3NoteEvent.between(events, part[0], part[1])) {
+				read.append(event.getType() + ":" + event.getPitch() + "@" + event.getOffset() + " ");
+			}
+			read.append("| ");
+		}
+		assertEquals("1:60@0 1:61@199 | 1:62@0 2:60@100 | ", read.toString());
+	}
+
+	// a note goes to the part of the block its frame is in, on that frame
+	@Test
+	public void aNoteInALaterSpanSoundsOnItsFrame() {
+		TGMidiProcessor click = instrument("Test Click");
+		click.setTransport(twoSpans());
+		click.sendNoteOn(60, 127, 0, false, 300);
+		float[][] block = new float[2][FRAMES];
+		click.process(block);
+		assertEquals(0f, block[0][100]);
+		assertEquals(0.5f, block[0][300]);
+		assertEquals(0f, block[1][301]);
 	}
 
 	@Test

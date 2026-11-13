@@ -9,6 +9,7 @@ import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiReceiver;
 import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.util.TGContext;
 
 /**
@@ -26,6 +27,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	private TGProgram[][] programs;
 	private List<TGSynthChannel> channels;
 	private volatile Listener listener;
+	private final MidiTransport transport = new MidiTransport();
 
 	public TGSynthModel(TGContext context){
 		this(context, TGAudioBuffer.SAMPLE_RATE);
@@ -144,6 +146,11 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 				exception.printStackTrace();
 			}
 		}
+	}
+
+	// what the song does over the next block, as the listener tells it before the block
+	public MidiTransport getTransport() {
+		return this.transport;
 	}
 
 	public TGContext getContext() {

@@ -285,7 +285,6 @@ Feature: Hosting VST3 plugins
     Then the output holds 16 Metronome clicks
     And track 2 sounds no tone above -60 dBFS
 
-  @planned
   Scenario Outline: VST3 plugins are told the tempo, time signature and play state that sound
     Given I have set the tempo of measure 3 only to 60 bpm
     And I have set the time signature of measure 3 only to 3/4
@@ -300,7 +299,6 @@ Feature: Hosting VST3 plugins
       | 100     | 120   | 60    |
       | 80      | 96    | 48    |
 
-  @planned
   Scenario: VST3 plugins are told the musical position, which jumps back with a loop
     Given I have turned Play looped on over measures 2 to 3
     And I have added the VST3 effect "Test Tempo" to track 1

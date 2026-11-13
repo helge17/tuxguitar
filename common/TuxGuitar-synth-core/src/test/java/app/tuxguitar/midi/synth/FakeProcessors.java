@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 
+import app.tuxguitar.player.base.MidiTransport;
+
 /**
  * Processors for the synthesizer's tests: a source that sounds a constant level on both sides and keeps what it was
  * sent, and effects that change each sample by a function. Their factories are registered by type.
@@ -24,6 +26,8 @@ final class FakeProcessors {
 		boolean busy;
 		// what it reports, not what it does
 		int latency;
+		// the transport it was given
+		MidiTransport transport;
 
 		Effect(DoubleUnaryOperator change) {
 			this.change = change;
@@ -68,6 +72,10 @@ final class FakeProcessors {
 
 		public int getLatency() {
 			return this.latency;
+		}
+
+		public void setTransport(MidiTransport transport) {
+			this.transport = transport;
 		}
 	}
 

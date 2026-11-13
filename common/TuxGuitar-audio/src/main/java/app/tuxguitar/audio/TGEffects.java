@@ -8,6 +8,7 @@ import app.tuxguitar.midi.synth.TGAudioProcessorFactory;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.midi.synth.TGSynthManager;
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.util.TGContext;
 
 /**
@@ -21,12 +22,16 @@ final class TGEffects {
 	private static final int FRAMES = TGBlocks.FRAMES;
 
 	private final List<TGAudioProcessor> effects;
+	// what the song does over the block the effects process
+	private final MidiTransport transport;
 
-	private TGEffects(List<TGAudioProcessor> effects) {
+	private TGEffects(List<TGAudioProcessor> effects, MidiTransport transport) {
 		this.effects = effects;
+		this.transport = transport;
 	}
 
 	static TGEffects open(TGContext context, TGProgram chain, int sampleRate) {
+		MidiTransport transport = new MidiTransport();
 		TGSynthManager manager = TGSynthManager.getInstance(context);
 		List<TGAudioProcessor> effects = new ArrayList<TGAudioProcessor>();
 		for (int i = 0; i < chain.countOutputs(); i++) {
@@ -35,11 +40,12 @@ final class TGEffects {
 			if (element.isEnabled() && factory != null) {
 				TGAudioProcessor effect = factory.createProcessor();
 				effect.setSampleRate(sampleRate);
+				effect.setTransport(transport);
 				effect.restoreParameters(element.getParameters());
 				effects.add(effect);
 			}
 		}
-		return new TGEffects(effects);
+		return new TGEffects(effects, transport);
 	}
 
 	// how many samples later than its input the chain sounds it
@@ -51,8 +57,9 @@ final class TGEffects {
 		return latency;
 	}
 
-	// the tap through the effects, its latency taken out, as long as the tap
-	TGTap process(float[][] tap) {
+	// the tap through the effects, its latency taken out, as long as the tap; each block is told what the song does
+	// over it on the timeline
+	TGTap process(float[][] tap, TGTimeline timeline) {
 		int latency = this.getLatency();
 		int length = tap[0].length;
 		float[][] processed = new float[tap.length][length];
@@ -62,6 +69,7 @@ final class TGEffects {
 				java.util.Arrays.fill(block[side], 0f);
 				TGBlocks.take(tap[side], start, block[side]);
 			}
+			timeline.tell(this.transport, start, FRAMES);
 			for (TGAudioProcessor effect : this.effects) {
 				effect.process(block);
 			}

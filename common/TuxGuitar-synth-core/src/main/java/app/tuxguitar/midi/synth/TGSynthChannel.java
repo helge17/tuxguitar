@@ -63,7 +63,7 @@ public class TGSynthChannel implements MidiChannel {
 	public void openProcessor() {
 		if( this.program.getReceiver() != null ) {
 			if( this.processor == null ) {
-				this.processor = new TGSynthChannelProcessor(this.synthesizer.getSampleRate());
+				this.processor = new TGSynthChannelProcessor(this.synthesizer.getSampleRate(), this.synthesizer.getTransport());
 			}
 			this.processor.open(this.synthesizer.getContext(), this.program);
 		}

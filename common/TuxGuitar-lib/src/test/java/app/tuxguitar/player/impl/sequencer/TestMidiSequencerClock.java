@@ -16,6 +16,7 @@ import app.tuxguitar.player.base.MidiReceiverRecorder;
 import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiSequenceHandler;
 import app.tuxguitar.player.base.MidiTransmitter;
+import app.tuxguitar.player.base.MidiTransport;
 import app.tuxguitar.thread.TGThreadHandler;
 import app.tuxguitar.thread.TGThreadLoop;
 import app.tuxguitar.thread.TGThreadManager;
@@ -45,9 +46,14 @@ public class TestMidiSequencerClock {
 	// the first frame of the next block
 	private long blockStart;
 
+	private final MidiTransport transport = new MidiTransport();
 	private final MidiSampleClock clock = new MidiSampleClock() {
 		public float getSampleRate() {
 			return 44100;
+		}
+
+		public MidiTransport getTransport() {
+			return transport;
 		}
 
 		public void setListener(Listener listener) {
@@ -158,6 +164,24 @@ public class TestMidiSequencerClock {
 		playOnTheClockFrom(0);
 
 		assertEquals("all notes off, pitch bend reset, @689 on 1 60 100 1 0, @28958 on 1 61 100 1 0", blocks(57));
+	}
+
+	// before each block the clock's transport is told the song plays, at the tempo, from the quarter note reached (the
+	// song starts at tick 960, its quarter 0): at 60 bpm a quarter lasts 44100 frames
+	@Test
+	public void theTransportIsToldTheTempoAndPositionOfEachBlock() throws MidiPlayerException {
+		sequence.addTempoInUSQ(0, 0, 1000000);
+		transport.clear();
+		transport.add(0, false, 120, 3, 4, 0, 0);
+		playOnTheClockFrom(1920);
+		blocks(1);
+		MidiTransport.Span first = transport.get(0);
+		String told = transport.count() + " " + first.isPlaying() + " " + first.getTempo() + " " + first.getQuarters() + " " + first.getSamples();
+		blocks(1);
+
+		assertEquals("1 true 60.0 1.0 44100", told);
+		assertEquals(1 + 512 / 44100.0, transport.get(0).getQuarters(), 1e-9);
+		assertEquals("@0 44612 3/4", "@" + transport.get(0).getFrame() + " " + transport.get(0).getSamples() + " " + transport.get(0).getNumerator() + "/" + transport.get(0).getDenominator());
 	}
 
 	@Test

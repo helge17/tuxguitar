@@ -16,6 +16,11 @@ public interface MidiSampleClock {
 	// where the events go that reach their instruments on the frame of the block about to be rendered, counted from 0
 	MidiReceiver at(int frame);
 
+	// what the song does over the block about to be rendered, as its listener tells it; null when it has none
+	default MidiTransport getTransport() {
+		return null;
+	}
+
 	interface Listener {
 
 		// the clock is about to render the frames of its next block

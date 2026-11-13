@@ -6,6 +6,7 @@ import java.util.Map;
 
 import app.tuxguitar.midi.synth.TGAudioBuffer;
 import app.tuxguitar.midi.synth.TGAudioProcessor;
+import app.tuxguitar.player.base.MidiTransport;
 
 /**
  * A VST3 plugin as a processor of the TuxGuitar Synthesizer: its element's parameters open it in the host process (the
@@ -19,6 +20,10 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 	private final TGVst3Hosting hosting;
 	private final boolean instrument;
 	private final float[][] block = new float[TGAudioBuffer.CHANNELS][FRAMES];
+	// the part of a block told one span of the transport
+	private final float[][] part = new float[TGAudioBuffer.CHANNELS][FRAMES];
+	// what the song does over each block, as the clock's owner writes it; stopped until one is given
+	private MidiTransport transport = new MidiTransport();
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
 	private TGVst3Plugin plugin;
 	private TGVst3Instance instance;
@@ -80,10 +85,21 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 		buffer.write(this.block);
 	}
 
+	public void setTransport(MidiTransport transport) {
+		this.transport = transport;
+	}
+
+	// the block in parts, one per span of the transport, each told its span, with the notes on its frames
 	public void process(float[][] samples) {
 		try {
 			if (this.instance != null) {
-				this.instance.process(samples, FRAMES, TGVst3Transport.STOPPED, this.takeEvents());
+				List<TGVst3NoteEvent> events = this.takeEvents();
+				MidiTransport told = this.transport;
+				for (int span = 0; span < told.count(); span++) {
+					int from = told.get(span).getFrame();
+					int to = (span + 1 < told.count() ? told.get(span + 1).getFrame() : FRAMES);
+					this.process(samples, from, to, transport(told.get(span)), TGVst3NoteEvent.between(events, from, to));
+				}
 				return;
 			}
 		} catch (TGVst3Exception e) {
@@ -92,6 +108,20 @@ abstract class TGVst3Processor implements TGAudioProcessor {
 		for (float[] side : samples) {
 			java.util.Arrays.fill(side, 0f);
 		}
+	}
+
+	private void process(float[][] samples, int from, int to, TGVst3Transport transport, List<TGVst3NoteEvent> events) throws TGVst3Exception {
+		for (int side = 0; side < samples.length; side++) {
+			System.arraycopy(samples[side], from, this.part[side], 0, to - from);
+		}
+		this.instance.process(this.part, to - from, transport, events);
+		for (int side = 0; side < samples.length; side++) {
+			System.arraycopy(this.part[side], 0, samples[side], from, to - from);
+		}
+	}
+
+	private static TGVst3Transport transport(MidiTransport.Span state) {
+		return new TGVst3Transport(state.isPlaying(), state.getTempo(), state.getNumerator(), state.getDenominator(), state.getQuarters(), state.getSamples());
 	}
 
 	// the note events of the block about to be processed

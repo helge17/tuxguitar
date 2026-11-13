@@ -3,6 +3,8 @@ package app.tuxguitar.audio;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.tuxguitar.player.base.MidiTransport;
+import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGSong;
 
@@ -112,6 +114,36 @@ public final class TGTimeline {
 
 	public long length() {
 		return this.starts[this.measures.size()];
+	}
+
+	// what the song does over the block of frames from the sample, as plugins are told: a span from its first frame and
+	// one from the first frame of each played measure starting in it; before the measures (the Count In) the first one's
+	// state runs back, after them the last one's runs on; without measures the song is stopped
+	public void tell(MidiTransport transport, long start, int frames) {
+		if (this.count() == 0) {
+			transport.stop();
+			return;
+		}
+		transport.clear();
+		int index = 0;
+		while (index + 1 < this.count() && this.start(index + 1) <= start) {
+			index++;
+		}
+		this.tell(transport, index, start, start);
+		for (index++; index < this.count() && this.start(index) < start + frames; index++) {
+			this.tell(transport, index, start, this.start(index));
+		}
+	}
+
+	// the span of the played measure from the sample
+	private void tell(MidiTransport transport, int index, long block, long sample) {
+		TGPlayedMeasure measure = this.get(index);
+		TGMeasureHeader header = measure.getHeader();
+		long into = sample - this.start(index);
+		double ticks = header.getStart() - TGDuration.QUARTER_TIME + measure.getFrom() + into * measure.getTempo() * TGDuration.QUARTER_TIME / (60.0 * this.sampleRate);
+		long samples = clockAt(header.getSong(), measure, this.sampleRate) + into;
+		transport.add((int) (sample - block), true, measure.getTempo(), header.getTimeSignature().getNumerator(), header.getTimeSignature().getDenominator().getValue(),
+			ticks / TGDuration.QUARTER_TIME, samples);
 	}
 
 	// where a tick of the played measure sounds, counted from where the measure starts playing

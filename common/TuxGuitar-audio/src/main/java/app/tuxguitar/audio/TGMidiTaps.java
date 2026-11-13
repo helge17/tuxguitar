@@ -62,6 +62,7 @@ public final class TGMidiTaps {
 		}
 		for (long block = 0; block < timeline.length() + model.getLatency(); block += FRAMES) {
 			send(model, events.headMap(block + FRAMES), block);
+			timeline.tell(model.getTransport(), block, FRAMES);
 			fill(model, taps, block);
 		}
 		Map<Integer, TGTap> rendered = new HashMap<Integer, TGTap>();
