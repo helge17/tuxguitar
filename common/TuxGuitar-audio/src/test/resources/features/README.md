@@ -31,7 +31,13 @@ scenarios play through the player on a live synthesizer of the scenario, which p
 `LiveOutput`). Live, an audio track's takes play as its channel's source on the TuxGuitar Synthesizer (`TGLiveTakes`,
 installed like `TGNoteEntry`), rendered a block at a time as offline, and so does its monitored input, undelayed by
 plugin delay compensation; while the live device runs, the armed tracks are metered and kept monitored while stopped
-(`TGLiveInput.install`); recording does not run live yet.
+(`TGLiveInput.install`). On the live device the record action records live (`TGLiveRecording`): it keeps all the
+input from its start, follows what the transport plays a block at a time, and once the player has stopped and one
+round trip more has been delivered, makes the takes as offline (`TGRecording`: round trip, punch range, one take per
+pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.
+Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). A jump live
+playing did not foresee exactly (a loop restarts on the block after its pass ends; a move) starts the takes again
+there with a hard cut instead of a crossfade, for now.
 No scenario is `@planned` any more.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in

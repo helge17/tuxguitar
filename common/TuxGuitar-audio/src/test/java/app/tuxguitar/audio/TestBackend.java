@@ -29,6 +29,35 @@ public final class TestBackend implements TGAudioBackend {
 		this.outputLatency = outputLatency;
 	}
 
+	// its output wired back to its input, as a loopback cable would: input channel 1 delivers the left side the callback
+	// played, 2 the right, the output latency and the input latency later (silence before)
+	public static TestBackend loopback(int sampleRate, int inputLatency, int outputLatency) {
+		Loopback loopback = new Loopback(sampleRate, inputLatency + outputLatency);
+		loopback.backend = new TestBackend(loopback, inputLatency, outputLatency);
+		return loopback.backend;
+	}
+
+	private static final class Loopback implements TGAudioDevice {
+		private final int sampleRate;
+		private final int late;
+		private TestBackend backend;
+
+		Loopback(int sampleRate, int late) {
+			this.sampleRate = sampleRate;
+			this.late = late;
+		}
+
+		public int getSampleRate() {
+			return this.sampleRate;
+		}
+
+		public float[] capture(int inputChannel, long from, int count) {
+			float[] samples = new float[count];
+			IntStream.range(0, count).forEach(i -> samples[i] = this.backend.stream.playedAt(inputChannel - 1, from + i - this.late));
+			return samples;
+		}
+	}
+
 	public List<String> getHostApis() {
 		return Collections.singletonList("Test");
 	}
@@ -109,6 +138,12 @@ public final class TestBackend implements TGAudioBackend {
 			this.callback.process(this.inputs, this.outputs, frames);
 			this.played.add(Arrays.stream(this.outputs).map(float[]::clone).toArray(float[][]::new));
 			this.clock += frames;
+		}
+
+		// what the callback played on the output channel at the frame of the clock; silence where it played nothing
+		private float playedAt(int channel, long frame) {
+			int block = (int) Math.floorDiv(frame, (long) this.getBlock());
+			return (block >= 0 && block < this.played.size() ? this.played.get(block)[channel][(int) (frame % this.getBlock())] : 0f);
 		}
 
 		// what the callback played, each output channel from the first block run

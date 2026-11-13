@@ -88,14 +88,59 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1
     Then the output holds 16 Metronome clicks, each within 1 sample of the left click on its beat
 
-  # Live, the audio track's takes are not heard yet (the desktop plays them): the right side holds the Metronome alone.
-  # A click is where it first reaches half its peak: the Side Stick's, 7 samples into its note
+  # Live, the right side holds the audio track's take and the Metronome, on the same beats. A click is where it first
+  # reaches half its peak: the Side Stick's, 7 samples into its note
   Scenario: while the song plays live, the Metronome sounds with the tracks whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1
     And I have set "Latency" of VST3 effect 1 of track 1 to 2048
     And I have turned the Metronome on
     When I play the song live from measure 1 beat 1
     Then the output's right side holds 16 clicks, each within 10 samples of a click on its left side
+
+  # Live recording: the audio interface's output is wired back to its input (a loopback cable), so input channel 1
+  # delivers the left side of what the output sounded, its output latency and input latency later. While recording,
+  # track 2's take is silent where it records (monitoring Off): the new take holds track 1's clicks as I heard them.
+  # Like any device, it delivers a block's input before it plays the block: wired, it is at least a block late
+  Scenario Outline: live, a recording of what I heard lands on the beat, whatever the latencies
+    Given the audio device's output is wired to its input, with <input> samples of input latency and <output> of output latency
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to <plugin>
+    And I have armed track 2
+    When I record live from measure 1 beat 1 until the song ends
+    Then track 2's takes read "take 2: m1b1 to m5b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 16 clicks, each within 1 sample of a beat
+
+    Examples:
+      | input | output | plugin |
+      | 0     | 512    | 0      |
+      | 300   | 1024   | 0      |
+      | 300   | 1024   | 2048   |
+
+  Scenario: live, a recording keeps only what falls inside the punch range
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have armed track 2
+    And I have set the punch range to measures 2 to 3
+    When I record live from measure 1 beat 1 until the song ends
+    Then track 2's takes read "take 2: m2b1 to m4b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 8 clicks, each within 1 sample of a beat
+
+  Scenario: live, with Play looped on, each pass over the Loop Range records a take, all one undo step
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have turned Play looped on over measures 2 to 3
+    And I have armed track 2
+    When I record live from measure 2 beat 1 for 2 passes
+    Then track 2's takes read "take 3: m2b1 to m4b1, take 2: m2b1 to m4b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 8 clicks, each within 1 sample of a beat
+    And take 3 of track 2 holds 8 clicks, each within 1 sample of a beat
+    When I undo
+    Then track 2's takes read "take 1: m1b1 to m5b1"
+
+  Scenario: live, the song cannot change during a recording
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have armed track 2
+    When I record live from measure 1 beat 1 until the song ends, inserting a measure before measure 3 while it records
+    Then the action is refused
+    And the song has 4 measures
 
   Scenario: Count In sounds one beat before the first beat, whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1

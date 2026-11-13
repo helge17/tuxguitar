@@ -9,6 +9,7 @@ import app.tuxguitar.audio.device.TGAudioDeviceException;
 import app.tuxguitar.audio.device.TGAudioStream;
 import app.tuxguitar.midi.synth.TGAudioBufferProcessor;
 import app.tuxguitar.midi.synth.TGSynthModel;
+import app.tuxguitar.player.base.MidiTransport;
 
 /**
  * The audio device live: a stream of the audio backend on the chosen devices, at the output device's sample rate, in
@@ -22,6 +23,8 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 
 	static final int KEPT_SECONDS = 30;
 
+	private static final MidiTransport STOPPED = new MidiTransport();
+
 	private final TGAudioStream stream;
 	// per input channel, a ring of the frames delivered: frame f of the clock at f % its length
 	private final float[][] kept;
@@ -31,6 +34,7 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	private volatile long clock;
 	private volatile long delivered;
 	private volatile TGAudioBufferProcessor synthesizer;
+	private volatile TGSynthModel model;
 
 	private TGLiveDevice(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice) throws TGAudioDeviceException {
 		this.stream = backend.open(inputDevice, inputChannels, outputDevice, 2, 0, TGBlocks.FRAMES, this);
@@ -64,7 +68,24 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 			throw new IllegalArgumentException("the synthesizer renders at " + synthesizer.getSampleRate() + " Hz, the device runs at " + this.getSampleRate() + " Hz");
 		}
 		synthesizer.setOutputLatency(this.getOutputLatency());
+		this.model = synthesizer;
 		this.synthesizer = new TGAudioBufferProcessor(synthesizer);
+	}
+
+	// the synthesizer playing through the device, or null
+	TGSynthModel getSynthesizer() {
+		return this.model;
+	}
+
+	// what the song does over the block being played: what the synthesizer playing through it was told; stopped while
+	// none plays
+	MidiTransport getTransport() {
+		TGSynthModel model = this.model;
+		return (model != null ? model.getTransport() : STOPPED);
+	}
+
+	int getInputChannels() {
+		return this.kept.length;
 	}
 
 	// on the device's thread

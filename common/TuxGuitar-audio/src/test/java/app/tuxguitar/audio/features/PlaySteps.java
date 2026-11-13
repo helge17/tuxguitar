@@ -6,7 +6,6 @@ import app.tuxguitar.audio.LivePlay;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.action.TGPlayAction;
 import app.tuxguitar.audio.device.TGAudioDeviceException;
-import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
@@ -62,20 +61,15 @@ public class PlaySteps {
 		player.setTickPosition(from.tick(world.song()));
 		player.play();
 		world.threads().runStartHere();
-		world.setLive(LivePlay.play(world.fixture().context, player, synthesizer(player), world.device()));
+		world.setLive(LivePlay.play(world.fixture().context, player, world.synthesizer(), world.backend()));
 		player.closeChannels();
 	}
 
 	// live, TuxGuitar stopped while the audio device runs (see LivePlay); then the synthesizer's channels close
 	@When("the input has delivered {int} second(s) live")
 	public void theInputHasDeliveredLive(int seconds) throws MidiPlayerException, TGAudioDeviceException {
-		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
-		world.setLive(LivePlay.listen(world.fixture().context, synthesizer(player), world.device(), seconds * world.device().getSampleRate()));
-		player.closeChannels();
-	}
-
-	private static TGSynthModel synthesizer(MidiPlayer player) {
-		return (TGSynthModel) player.getSynthesizerProxy().getMidiSynthesizer();
+		world.setLive(LivePlay.listen(world.fixture().context, world.synthesizer(), world.backend(), seconds * world.device().getSampleRate()));
+		MidiPlayer.getInstance(world.fixture().context).closeChannels();
 	}
 
 	private void play(SongPosition from, long stop, int passes) {

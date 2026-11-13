@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import app.tuxguitar.audio.LivePlay;
 import app.tuxguitar.audio.TGPunchRange;
+import app.tuxguitar.audio.device.TGAudioDeviceException;
 import app.tuxguitar.audio.action.TGArmTrackAction;
 import app.tuxguitar.audio.action.TGDisarmTrackAction;
 import app.tuxguitar.audio.action.TGRecordAction;
@@ -17,7 +19,9 @@ import app.tuxguitar.audio.action.TGSetPunchRangeAction;
 import app.tuxguitar.audio.undo.TGUndoableRecordingController;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
+import app.tuxguitar.player.impl.sequencer.MidiSequencerImpl;
 import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
@@ -26,16 +30,69 @@ import io.cucumber.java.en.When;
 
 /**
  * Steps that arm tracks, set the punch range and record. A recording runs offline on the Test Interface's clock, from
- * a position until it reaches another, the song ends, or the passes of Play looped are done.
+ * a position until it reaches another, the song ends, or the passes of Play looped are done; or live.
  */
 public class RecordingSteps {
 
+	// the block of the live device half a second in (blocks of 512 frames)
+	private static final int HALF_A_SECOND = TestInterface.SAMPLE_RATE / 2 / 512;
+
 	private final AudioWorld world;
+	private final SongSteps songSteps;
 	private List<Object> historyBeforeRecording;
 	private Thread recording;
 
-	public RecordingSteps(AudioWorld world) {
+	public RecordingSteps(AudioWorld world, SongSteps songSteps) {
 		this.world = world;
+		this.songSteps = songSteps;
+	}
+
+	// live: the recording runs on a thread of its own, as the app runs it, while the live device runs a block at a time
+	// and the player's play loop takes a turn after each (see LivePlay); it ends by itself at the end of the song, or
+	// after the passes of Play looped (the player stopped where the last one loops). The change given is made half a
+	// second in, while it records; then the synthesizer's channels close
+	private void recordLive(SongPosition from, RecordingStop stop, Runnable change) throws TGAudioDeviceException, MidiPlayerException {
+		historyBeforeRecording = world.undoHistory();
+		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
+		player.loadSequencer(new MidiSequencerImpl(world.fixture().context));
+		Map<String, Object> attributes = Map.<String, Object>of(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()));
+		int[] pass = {1};
+		world.setLive(LivePlay.run(world.fixture().context, world.synthesizer(), world.backend(), () -> {
+			recording = world.executeInBackground(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController(), attributes);
+			world.threads().runStartHere(recording);
+		}, block -> {
+			if (block == HALF_A_SECOND) {
+				change.run();
+			}
+			if (player.isRunning() && !player.runPlayLoopProcess() && player.isRunning()) {
+				pass[0] = nextPass(player, pass[0], stop.passes());
+			}
+			return recording.isAlive();
+		}));
+		player.closeChannels();
+		for (int number = 1; number <= world.song().countTracks(); number++) {
+			world.rememberTakes(number);
+		}
+	}
+
+	// the play loop ended where a pass loops, the next pass kept to start: it starts, unless the passes are done
+	private int nextPass(MidiPlayer player, int pass, int passes) {
+		if (pass < passes) {
+			world.threads().runStartHere();
+		} else {
+			player.stop();
+		}
+		return pass + 1;
+	}
+
+	@When("I record live from {position} {stop}")
+	public void recordLive(SongPosition from, RecordingStop stop) throws TGAudioDeviceException, MidiPlayerException {
+		recordLive(from, stop, () -> { });
+	}
+
+	@When("I record live from {position} {stop}, inserting a measure before measure {int} while it records")
+	public void recordLiveInserting(SongPosition from, RecordingStop stop, int number) throws TGAudioDeviceException, MidiPlayerException {
+		recordLive(from, stop, () -> songSteps.insertAMeasure(number));
 	}
 
 	@ParameterType(SongPosition.PATTERN)
@@ -45,9 +102,14 @@ public class RecordingSteps {
 
 	@Given("I have armed track {int}")
 	public void arm(int number) {
+		runArm(number);
+		trackIsArmed(number);
+	}
+
+	// the arm action on the track, which may be refused
+	void runArm(int number) {
 		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
 		world.execute(new TGArmTrackAction(world.fixture().context));
-		trackIsArmed(number);
 	}
 
 	@Then("track {int} is armed")

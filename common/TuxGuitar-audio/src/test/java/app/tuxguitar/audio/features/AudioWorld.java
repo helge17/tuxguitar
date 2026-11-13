@@ -11,6 +11,8 @@ import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionException;
 import app.tuxguitar.action.TGActionManager;
 import app.tuxguitar.audio.MapProperties;
+import app.tuxguitar.audio.TestBackend;
+import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.audio.action.TGRecordingVeto;
 import app.tuxguitar.audio.action.TGSetPluginStateAction;
 import app.tuxguitar.audio.undo.TGUndoableOnSuccess;
@@ -102,6 +104,7 @@ public class AudioWorld {
 	private final ReportingEffects reporting = new ReportingEffects();
 	private final KeptThreads threads = new KeptThreads();
 	private float[][] live;
+	private boolean wired;
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
 	private SongPosition playedClick;
 	// the file exported last, as read back, on the timeline it follows
@@ -167,6 +170,24 @@ public class AudioWorld {
 
 	void setLive(float[][] live) {
 		this.live = live;
+	}
+
+	// from now on the Test Interface's output is wired back to its input (see TestBackend.loopback)
+	void wire() {
+		this.wired = true;
+	}
+
+	// the native backend live: the Test Interface's, with its latencies (as reported), its input the player's signal
+	// or, wired, its own output
+	TestBackend backend() {
+		int input = this.device.getInputLatency();
+		int output = this.device.getOutputLatency();
+		return (this.wired ? TestBackend.loopback(this.device.getSampleRate(), input, output) : new TestBackend(this.device, input, output));
+	}
+
+	// the TuxGuitar Synthesizer the player plays live on (the MIDI Port's)
+	TGSynthModel synthesizer() {
+		return (TGSynthModel) MidiPlayer.getInstance(this.fixture.context).getSynthesizerProxy().getMidiSynthesizer();
 	}
 
 	// the document's song: the one opened last

@@ -15,7 +15,6 @@ import app.tuxguitar.audio.TGPlayedMeasure;
 import app.tuxguitar.audio.TGTakeSpan;
 import app.tuxguitar.audio.TGTakes;
 import app.tuxguitar.audio.TGTimeline;
-import app.tuxguitar.audio.action.TGArmTrackAction;
 import app.tuxguitar.audio.action.TGDisarmTrackAction;
 import app.tuxguitar.audio.action.TGSetMonitoringAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
@@ -40,9 +39,11 @@ public class LineInSteps {
 	private static final double SILENT = 0.001;
 
 	private final AudioWorld world;
+	private final RecordingSteps recording;
 
-	public LineInSteps(AudioWorld world) {
+	public LineInSteps(AudioWorld world, RecordingSteps recording) {
 		this.world = world;
+		this.recording = recording;
 	}
 
 	@Given("I have set the audio device to {string} at {int} Hz")
@@ -92,8 +93,7 @@ public class LineInSteps {
 
 	@When("I arm track {int}")
 	public void arm(int number) {
-		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, world.track(number));
-		world.execute(new TGArmTrackAction(world.fixture().context));
+		recording.runArm(number);
 	}
 
 	@Given("I have disarmed track {int}")
@@ -105,7 +105,7 @@ public class LineInSteps {
 
 	@Given("I have armed track {int} and set its monitoring to {word}")
 	public void haveArmedAndSetMonitoring(int number, String monitoring) {
-		new RecordingSteps(world).arm(number);
+		recording.arm(number);
 		setMonitoring(number, monitoring);
 	}
 

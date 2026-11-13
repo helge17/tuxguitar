@@ -4,11 +4,14 @@ import java.util.List;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.audio.TGAudioSession;
+import app.tuxguitar.audio.TGLiveDevice;
+import app.tuxguitar.audio.TGLiveRecording;
 import app.tuxguitar.audio.TGRecording;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.TGActionBase;
 import app.tuxguitar.player.base.MidiPlayer;
+import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
@@ -19,6 +22,10 @@ import app.tuxguitar.util.TGContext;
  * whether or not it made a take (ATTRIBUTE_TAKES says how many). What was
  * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER. While it runs, the session says a
  * recording is under way.
+ *
+ * On the live audio device (TGLiveDevice the session's device) it records live instead: it plays the song from the
+ * start position until the player stops (I stop it, the song or the last pass of Play looped ends), the recording
+ * running on for one round trip, and returns then; the app runs it on a thread of its own.
  */
 public class TGRecordAction extends TGActionBase {
 
@@ -47,17 +54,32 @@ public class TGRecordAction extends TGActionBase {
 		TGRecordingVeto.getInstance(getContext());
 		session.setRecording(true);
 		try {
-			this.record(context, song, session, tracks);
+			int takes = (session.getDevice() instanceof TGLiveDevice ? this.recordLive(context, song, (TGLiveDevice) session.getDevice(), player, tracks) : this.record(context, song, session, tracks));
+			context.setAttribute(ATTRIBUTE_TAKES, takes);
+			context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 		} finally {
 			session.setRecording(false);
 		}
 	}
 
-	private void record(TGActionContext context, TGSong song, TGAudioSession session, List<TGTrack> tracks) {
+	private int record(TGActionContext context, TGSong song, TGAudioSession session, List<TGTrack> tracks) {
 		TGRender render = TGPlayAction.play(getContext(), context, getSongManager(context), true);
 		context.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, render);
 		TGRecording recording = new TGRecording(getSongManager(context), song, session, render.getLatency());
-		context.setAttribute(ATTRIBUTE_TAKES, recording.record(tracks, render.getTimeline()));
-		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
+		return recording.record(tracks, render.getTimeline());
+	}
+
+	// live: the player plays from the start position (from where it is without one) until it stops, the recording
+	// running on for one round trip (see TGLiveRecording); this thread waits for it
+	private int recordLive(TGActionContext context, TGSong song, TGLiveDevice device, MidiPlayer player, List<TGTrack> tracks) {
+		TGLiveRecording recording = TGLiveRecording.start(getContext(), device);
+		Long start = context.getAttribute(ATTRIBUTE_START);
+		player.setTickPosition(start != null ? start : player.getTickPosition());
+		try {
+			player.play();
+		} catch (MidiPlayerException e) {
+			throw new IllegalStateException(e);
+		}
+		return recording.end(getSongManager(context), song, tracks);
 	}
 }

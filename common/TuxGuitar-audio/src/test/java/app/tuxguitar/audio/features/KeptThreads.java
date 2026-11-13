@@ -56,4 +56,17 @@ final class KeptThreads implements TGThreadHandler {
 		assertEquals(TGThreadLoop.BREAK, last, "the synthesizer was not ready to play within " + READY_SECONDS + " seconds");
 		this.loops.clear();
 	}
+
+	// the same, once the thread has started the player (it keeps what the player started), for READY_SECONDS at most
+	void runStartHere(Thread starting) {
+		long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(READY_SECONDS);
+		while (this.isEmpty() && starting.isAlive() && System.nanoTime() < deadline) {
+			Thread.onSpinWait();
+		}
+		this.runStartHere();
+	}
+
+	private synchronized boolean isEmpty() {
+		return this.started.isEmpty();
+	}
 }

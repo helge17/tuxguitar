@@ -88,6 +88,13 @@ public class SessionSteps {
 		return ("Test Interface".equals(name) ? world.device() : this.devices.computeIfAbsent(name, key -> new TestInterface()));
 	}
 
+	// live, the Test Interface's input channels deliver what its output sounded (see TestBackend.loopback)
+	@Given("the audio device's output is wired to its input, with {int} samples of input latency and {int} of output latency")
+	public void wired(int input, int output) {
+		setTheAudioDeviceWithLatency("Test Interface", input, output);
+		world.wire();
+	}
+
 	@Given("I have set the audio device to {string} with {int} samples of input latency and {int} of output latency")
 	public void setTheAudioDeviceWithLatency(String name, int input, int output) {
 		world.device().setLatency(input, output);
