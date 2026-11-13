@@ -152,6 +152,30 @@ public class TestGervillProcessor {
 		assertThrows(IllegalArgumentException.class, () -> processor.sendNoteOn(128, 95, 0, false, 0));
 	}
 
+	// the source of a float chain runs on the audio thread: rendering a float block allocates no more than rendering
+	// into a 16-bit buffer
+	@Test
+	public void aFloatBlockIsRenderedWithoutAllocatingABufferPerBlock() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendNoteOn(69, 100, 0, false);
+		TGAudioBuffer buffer = new TGAudioBuffer();
+		float[][] block = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		long buffers = allocatedBy(() -> processor.fillBuffer(buffer));
+		long blocks = allocatedBy(() -> processor.process(block));
+		assertTrue(blocks < buffers + 64 * 1024, blocks + " bytes for 1000 float blocks, " + buffers + " for 16-bit buffers");
+		assertTrue(peak(block[0]) > 0.01, "the note sounds in the block");
+	}
+
+	private static long allocatedBy(Runnable block) {
+		com.sun.management.ThreadMXBean threads = (com.sun.management.ThreadMXBean) java.lang.management.ManagementFactory.getThreadMXBean();
+		block.run();
+		long before = threads.getThreadAllocatedBytes(Thread.currentThread().getId());
+		for (int b = 0; b < 1000; b++) {
+			block.run();
+		}
+		return threads.getThreadAllocatedBytes(Thread.currentThread().getId()) - before;
+	}
+
 	@Test
 	public void aLoadedProgramIsSilentUntilANote() throws InterruptedException {
 		GervillProcessor processor = loaded("0:0", null);
@@ -496,32 +520,17 @@ public class TestGervillProcessor {
 		while (model.isBusy()) {
 			Thread.sleep(5);
 		}
-		TGAudioBuffer silence = new TGAudioBuffer();
-		channel.fillChain(silence);
-		assertEquals(0f, FakeSilence.peak(silence), 0f, "signed 16-bit: silence is 0");
+		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
+		channel.fillChain(samples);
+		assertEquals(0d, peak(samples[0]), 0d, "signed 16-bit: silence is 0");
 		channel.sendNoteOn(69, 127, 0, false);
 		float[] left = new float[12 * FRAMES];
-		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
 		for (int b = 0; b < 12; b++) {
-			TGAudioBuffer buffer = new TGAudioBuffer();
-			channel.fillChain(buffer);
-			buffer.read(samples);
+			channel.fillChain(samples);
 			System.arraycopy(samples[0], 0, left, b * FRAMES, FRAMES);
 		}
 		float[] sounding = java.util.Arrays.copyOfRange(left, 4 * FRAMES, left.length);
 		assertEquals(440, strongestFrequency(sounding, 48000), 9);
 		assertEquals(48000f, model.getSampleRate(), 0f);
-	}
-
-	private static final class FakeSilence {
-		static float peak(TGAudioBuffer buffer) {
-			float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
-			buffer.read(samples);
-			float peak = 0;
-			for (float sample : samples[0]) {
-				peak = Math.max(peak, Math.abs(sample));
-			}
-			return peak;
-		}
 	}
 }

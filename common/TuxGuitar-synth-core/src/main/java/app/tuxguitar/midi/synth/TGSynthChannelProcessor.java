@@ -11,6 +11,8 @@ import app.tuxguitar.util.TGContext;
 public class TGSynthChannelProcessor {
 
 	private TGAudioBuffer buffer;
+	// the chain's block: 32-bit float from the source to the channel's 16-bit write, so it has room above full scale
+	private float[][] block;
 	private TGDelayLine delayLine;
 	private TGMidiProcessor processor;
 	private List<TGAudioProcessor> outputs;
@@ -23,6 +25,7 @@ public class TGSynthChannelProcessor {
 		this.sampleRate = sampleRate;
 		this.lock = new Object();
 		this.buffer = new TGAudioBuffer();
+		this.block = new float[TGAudioBuffer.CHANNELS][TGAudioBuffer.BUFFER_SIZE / 2];
 		this.delayLine = new TGDelayLine();
 		this.outputs = new ArrayList<TGAudioProcessor>();
 		this.processorMap = new HashMap<TGProgramElement, TGAudioProcessor>();
@@ -194,25 +197,37 @@ public class TGSynthChannelProcessor {
 		}
 	}
 
-	// the chain delayed by the frames, at the volume and balance, mixed into the buffer
+	// the chain delayed by the frames, at the volume and balance, written in 16 bits (clipped there) and mixed into the
+	// buffer
 	public void fillBuffer(TGAudioBuffer buffer, int volume, int balance, int delay) {
 		synchronized (this.lock) {
 			if( this.isOpen() ){
-				this.buffer.clear();
-				this.fillProcessors(this.buffer);
-				this.delayLine.delay(this.buffer, delay);
-				this.balance(this.buffer, volume, balance);
-
+				this.fillChain(this.block);
+				this.delayLine.delay(this.block, delay);
+				float[] gains = gains(volume, balance);
+				for( int side = 0 ; side < this.block.length ; side ++ ) {
+					for( int i = 0 ; i < this.block[side].length ; i ++ ) {
+						this.block[side][i] *= gains[side];
+					}
+				}
+				this.buffer.write(this.block);
 				buffer.mix(this.buffer);
 			}
 		}
 	}
 
-	// the receiver, then each output in processing order, into the buffer; nothing when the receiver is not open
-	public void fillChain(TGAudioBuffer buffer) {
+	// the receiver, then each output in processing order, from silence, in 32-bit float; silence when the receiver is
+	// not open
+	public void fillChain(float[][] block) {
 		synchronized (this.lock) {
+			for( float[] side : block ) {
+				java.util.Arrays.fill(side, 0f);
+			}
 			if( this.isOpen() ){
-				this.fillProcessors(buffer);
+				this.process(block, this.processor);
+				for( TGAudioProcessor output : this.outputs ){
+					this.process(block, output);
+				}
 			}
 		}
 	}
@@ -239,36 +254,19 @@ public class TGSynthChannelProcessor {
 		return (this.processor != null && this.processor.isOpen());
 	}
 
-	private void fillProcessors(TGAudioBuffer buffer) {
-		this.fillBuffer(buffer, this.processor);
-		for( int i = 0 ; i < this.countOutputs() ;i ++){
-			this.fillBuffer(buffer, this.getOutput(i));
+	private void process(float[][] block, TGAudioProcessor processor) {
+		if( this.isEnabled(processor) ) {
+			processor.process(block);
 		}
 	}
 
-	public void fillBuffer(TGAudioBuffer buffer, TGAudioProcessor processor) {
-		synchronized (this.lock) {
-			if( this.isEnabled(processor) ) {
-				processor.fillBuffer(buffer);
-			}
-		}
-	}
-
-	public void balance(TGAudioBuffer buffer, int volume, int balance) {
-		synchronized (this.lock) {
-			// Constant-power panning law: use sine/cosine so that the total
-			// power (left² + right²) remains constant across all pan positions.
-			// At center (balance=63.5) both channels get cos(π/4) ≈ 0.707,
-			// whereas a linear law would give 0.5 — a 3 dB centre-hole.
-			float pan = (balance / 127f) * ((float) Math.PI / 2f);
-			float gain = volume / 127f;
-			buffer.balance(new float[] {
-				// left channel
-				gain * (float) Math.cos(pan),
-				// right channel
-				gain * (float) Math.sin(pan)
-			});
-		}
+	// the left and right gains of a Volume and Balance (0 to 127). Constant-power panning law: use sine/cosine so that
+	// the total power (left² + right²) remains constant across all pan positions. At center (balance=63.5) both
+	// channels get cos(π/4) ≈ 0.707, whereas a linear law would give 0.5 — a 3 dB centre-hole.
+	public static float[] gains(int volume, int balance) {
+		float pan = (balance / 127f) * ((float) Math.PI / 2f);
+		float gain = volume / 127f;
+		return new float[] {gain * (float) Math.cos(pan), gain * (float) Math.sin(pan)};
 	}
 
 	public boolean isBusy() {

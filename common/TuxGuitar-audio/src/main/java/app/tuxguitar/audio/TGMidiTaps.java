@@ -141,9 +141,7 @@ public final class TGMidiTaps {
 		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
 		for (Map.Entry<Integer, float[][]> tap : taps.entrySet()) {
 			TGSynthChannel channel = model.getChannelById(tap.getKey());
-			TGAudioBuffer buffer = new TGAudioBuffer();
-			channel.fillChain(buffer);
-			buffer.read(samples);
+			channel.fillChain(samples);
 			TGBlocks.place(samples, tap.getValue(), block - channel.getLatency());
 		}
 	}

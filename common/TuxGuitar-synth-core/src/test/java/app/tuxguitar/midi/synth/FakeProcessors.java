@@ -46,12 +46,16 @@ final class FakeProcessors {
 
 		public void fillBuffer(TGAudioBuffer buffer) {
 			float[][] samples = read(buffer);
+			this.change(samples);
+			buffer.write(samples);
+		}
+
+		void change(float[][] samples) {
 			for (float[] side : samples) {
 				for (int i = 0; i < side.length; i++) {
 					side[i] = (float) this.change.applyAsDouble(side[i]);
 				}
 			}
-			buffer.write(samples);
 		}
 
 		public void storeParameters(Map<String, String> parameters) {
@@ -64,6 +68,18 @@ final class FakeProcessors {
 
 		public int getLatency() {
 			return this.latency;
+		}
+	}
+
+	// an effect that works on 32-bit float blocks, as a plugin does: what goes above full scale stays in the block
+	static class FloatEffect extends Effect {
+
+		FloatEffect(DoubleUnaryOperator change) {
+			super(change);
+		}
+
+		public void process(float[][] block) {
+			this.change(block);
 		}
 	}
 
@@ -166,11 +182,18 @@ final class FakeProcessors {
 	static class EffectFactory implements TGAudioProcessorFactory {
 		private final String type;
 		private final DoubleUnaryOperator change;
+		private final boolean floating;
 		final List<Effect> created = new ArrayList<Effect>();
 
 		EffectFactory(String type, DoubleUnaryOperator change) {
+			this(type, change, false);
+		}
+
+		// floating: its effects work on float blocks (FloatEffect)
+		EffectFactory(String type, DoubleUnaryOperator change, boolean floating) {
 			this.type = type;
 			this.change = change;
+			this.floating = floating;
 		}
 
 		public String getType() {
@@ -178,7 +201,7 @@ final class FakeProcessors {
 		}
 
 		public Effect createProcessor() {
-			Effect effect = new Effect(this.change);
+			Effect effect = (this.floating ? new FloatEffect(this.change) : new Effect(this.change));
 			this.created.add(effect);
 			return effect;
 		}

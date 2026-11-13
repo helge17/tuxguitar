@@ -70,6 +70,16 @@ Feature: Hosting VST3 plugins
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.4 within 0.01 in measure 1
 
+  Scenario: a VST3 instrument's sound chain has room above full scale between effects
+    Given I have entered fret 5 on string 1 at dynamic fff
+    And I have chosen the VST3 instrument "Test Sine" for track 1
+    And I have added the VST3 effect "Test Gain" to track 1
+    And I have set "Gain" of VST3 effect 1 of track 1 to 4.0
+    And I have added the VST3 effect "Test Gain" to track 1
+    And I have set "Gain" of VST3 effect 2 of track 1 to 0.25
+    When I play the song from measure 1 beat 1
+    Then track 1 sounds a 440 Hz tone peaking at 0.5 within 0.01 in measure 1
+
   Scenario: Volume applies after the sound chain
     Given I have added an audio track recording input channel 1
     And track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to measure 2 beat 1

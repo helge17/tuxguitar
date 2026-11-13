@@ -49,8 +49,13 @@ final class DelayingEffect implements TGAudioProcessor {
 		return false;
 	}
 
+	// the chain is float: it never fills a 16-bit buffer
 	public void fillBuffer(TGAudioBuffer buffer) {
-		this.line.delay(buffer, this.latency);
+		throw new UnsupportedOperationException();
+	}
+
+	public void process(float[][] block) {
+		this.line.delay(block, this.latency);
 	}
 
 	public void storeParameters(Map<String, String> parameters) {

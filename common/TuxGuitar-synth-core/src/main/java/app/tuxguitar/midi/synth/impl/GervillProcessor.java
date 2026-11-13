@@ -36,6 +36,8 @@ public class GervillProcessor implements TGMidiProcessor {
 	private TGContext context;
 	private AudioSynthesizer synth;
 	private AudioInputStream stream;
+	// what it renders for a float block
+	private final TGAudioBuffer rendered = new TGAudioBuffer();
 	private Receiver receiver;
 	// what it plays: replaced, never changed in place, so an instrument that loaded for an older one is dropped
 	private volatile GervillProgram program;
@@ -96,6 +98,13 @@ public class GervillProcessor implements TGMidiProcessor {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	// a float block of what it renders, through a buffer of its own: the audio thread allocates nothing per block
+	public void process(float[][] block) {
+		this.rendered.clear();
+		this.fillBuffer(this.rendered);
+		this.rendered.read(block);
 	}
 
 	public void setSampleRate(float sampleRate) {

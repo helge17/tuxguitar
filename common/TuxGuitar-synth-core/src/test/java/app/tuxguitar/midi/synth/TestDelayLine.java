@@ -8,8 +8,8 @@ import java.lang.management.ManagementFactory;
 import org.junit.jupiter.api.Test;
 
 /**
- * A delay line over blocks of 512 frames. The stream is a ramp, a different level on each frame of each side, so a
- * shift by any number of frames shows; the left side climbs, the right side falls.
+ * A delay line over float blocks of 512 frames. The stream is a ramp, a different level on each frame of each side, so
+ * a shift by any number of frames shows; the left side climbs, the right side falls.
  */
 public class TestDelayLine {
 
@@ -32,26 +32,20 @@ public class TestDelayLine {
 	}
 
 	private static float[][] block(TGDelayLine line, int block, int delay) {
-		TGAudioBuffer buffer = shifted(block, 0);
-		line.delay(buffer, delay);
-		return FakeProcessors.read(buffer);
+		float[][] samples = expected(block, 0);
+		line.delay(samples, delay);
+		return samples;
 	}
 
-	// what the block holds when the stream is shifted by the frames, as the 16-bit buffer rounds it
+	// what the block holds when the stream is shifted by the frames
 	private static float[][] expected(int block, int shift) {
-		return FakeProcessors.read(shifted(block, shift));
-	}
-
-	private static TGAudioBuffer shifted(int block, int shift) {
 		float[][] samples = new float[TGAudioBuffer.CHANNELS][FRAMES];
 		for (int side = 0; side < samples.length; side++) {
 			for (int i = 0; i < FRAMES; i++) {
 				samples[side][i] = stream(side, (long) block * FRAMES + i - shift);
 			}
 		}
-		TGAudioBuffer buffer = new TGAudioBuffer();
-		buffer.write(samples);
-		return buffer;
+		return samples;
 	}
 
 	private static void assertBlock(float[][] expected, float[][] block) {
@@ -104,11 +98,11 @@ public class TestDelayLine {
 	@Test
 	public void delayingAllocatesNothingPerBlockOnceTheDelayIsSet() {
 		com.sun.management.ThreadMXBean threads = (com.sun.management.ThreadMXBean) ManagementFactory.getThreadMXBean();
-		TGAudioBuffer buffer = shifted(0, 0);
-		this.line.delay(buffer, 700);
+		float[][] samples = expected(0, 0);
+		this.line.delay(samples, 700);
 		long before = threads.getThreadAllocatedBytes(Thread.currentThread().getId());
 		for (int b = 0; b < 1000; b++) {
-			this.line.delay(buffer, 700);
+			this.line.delay(samples, 700);
 		}
 		long allocated = threads.getThreadAllocatedBytes(Thread.currentThread().getId()) - before;
 		assertTrue(allocated < 64 * 1024, allocated + " bytes allocated by 1000 blocks");

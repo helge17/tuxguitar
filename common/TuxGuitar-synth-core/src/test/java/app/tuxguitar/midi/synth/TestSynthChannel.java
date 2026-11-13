@@ -33,6 +33,8 @@ public class TestSynthChannel {
 	private final FakeProcessors.SourceFactory otherSource = new FakeProcessors.SourceFactory("other", OTHER_SOURCE);
 	private final FakeProcessors.EffectFactory twice = new FakeProcessors.EffectFactory("twice", sample -> sample * 2);
 	private final FakeProcessors.EffectFactory lift = new FakeProcessors.EffectFactory("lift", sample -> sample + 0.1);
+	private final FakeProcessors.EffectFactory eightfold = new FakeProcessors.EffectFactory("eightfold", sample -> sample * 8, true);
+	private final FakeProcessors.EffectFactory eighth = new FakeProcessors.EffectFactory("eighth", sample -> sample / 8, true);
 	private TGSynthChannel channel;
 
 	@BeforeEach
@@ -42,6 +44,8 @@ public class TestSynthChannel {
 		manager.addExtension(TGMidiProcessorFactory.class, this.otherSource);
 		manager.addExtension(TGAudioProcessorFactory.class, this.twice);
 		manager.addExtension(TGAudioProcessorFactory.class, this.lift);
+		manager.addExtension(TGAudioProcessorFactory.class, this.eightfold);
+		manager.addExtension(TGAudioProcessorFactory.class, this.eighth);
 		this.channel = (TGSynthChannel) this.model.openChannel(3);
 		this.channel.sendControlChange(MidiControllers.BALANCE, 0);
 	}
@@ -55,6 +59,13 @@ public class TestSynthChannel {
 
 	private float left() {
 		return render()[0];
+	}
+
+	// what the chain sounds into a block that held a level before
+	private float[][] chain() {
+		float[][] block = FakeProcessors.read(FakeProcessors.level(0.5f, 0.5f));
+		this.channel.fillChain(block);
+		return block;
 	}
 
 	@Test
@@ -109,12 +120,32 @@ public class TestSynthChannel {
 		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
 		this.channel.sendProgramChange(5);
 		this.channel.sendControlChange(MidiControllers.VOLUME, 10);
-		TGAudioBuffer buffer = new TGAudioBuffer();
-		this.channel.fillChain(buffer);
-		float[][] samples = FakeProcessors.read(buffer);
+		float[][] samples = chain();
 		assertEquals(SOURCE + 0.1f, samples[0][0], QUANTUM);
 		assertEquals(SOURCE + 0.1f, samples[1][0], QUANTUM);
 		assertEquals(44100f, this.model.getSampleRate(), 0f);
+	}
+
+	// 32-bit float between processors: the source at 0.25 eight times louder is 2.0, and an eighth of it 0.25 again
+	@Test
+	public void theChainHasRoomAboveFullScaleBetweenProcessors() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "eightfold", "eighth"));
+		this.channel.sendProgramChange(5);
+		float[][] block = chain();
+		assertEquals(SOURCE, block[0][0], QUANTUM);
+		assertEquals(SOURCE, block[1][FakeProcessors.FRAMES - 1], QUANTUM);
+	}
+
+	// Volume and Balance apply to the chain's float output, and only then is it written in 16 bits: 2.0 at a quarter
+	// volume is 0.5, where clipping first would give a quarter of full scale
+	@Test
+	public void volumeAppliesToTheChainBeforeItIsClippedTo16Bits() throws MidiPlayerException {
+		this.model.getProgram(0, 5).copyFrom(program("source", "eightfold"));
+		this.channel.sendProgramChange(5);
+		this.channel.sendControlChange(MidiControllers.VOLUME, 32);
+		assertEquals(2f * 32 / 127, left(), QUANTUM);
+		this.channel.sendControlChange(MidiControllers.VOLUME, 127);
+		assertEquals(1f, left(), 0f);
 	}
 
 	@Test
@@ -122,16 +153,12 @@ public class TestSynthChannel {
 		this.model.getProgram(0, 5).copyFrom(program("source", "lift"));
 		this.channel.sendProgramChange(5);
 		this.source.last().close();
-		TGAudioBuffer buffer = new TGAudioBuffer();
-		this.channel.fillChain(buffer);
-		assertEquals(0f, FakeProcessors.read(buffer)[0][0], 0f);
+		assertEquals(0f, chain()[0][0], 0f);
 	}
 
 	@Test
 	public void aChannelWithoutAProgramHasASilentChain() throws MidiPlayerException {
-		TGAudioBuffer buffer = FakeProcessors.level(0.5f, 0.5f);
-		this.channel.fillChain(buffer);
-		assertEquals(0f, FakeProcessors.read(buffer)[0][0], 0f);
+		assertEquals(0f, chain()[1][FakeProcessors.FRAMES - 1], 0f);
 	}
 
 	@Test

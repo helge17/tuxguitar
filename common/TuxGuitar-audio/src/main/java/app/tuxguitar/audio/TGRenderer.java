@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import app.tuxguitar.midi.synth.TGSynthChannelProcessor;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiPlayerMode;
@@ -168,9 +169,7 @@ public final class TGRenderer {
 
 	// Volume and Balance as the TuxGuitar Synthesizer applies them today: constant power, 0 full left, 127 full right
 	static float[] gains(TGChannel channel) {
-		float pan = (channel.getBalance() / 127f) * ((float) Math.PI / 2f);
-		float gain = channel.getVolume() / 127f;
-		return new float[] {gain * (float) Math.cos(pan), gain * (float) Math.sin(pan)};
+		return TGSynthChannelProcessor.gains(channel.getVolume(), channel.getBalance());
 	}
 
 	private TGChannel channel(TGTrack track) {

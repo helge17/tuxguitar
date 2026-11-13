@@ -77,11 +77,15 @@ public class TGSynthChannel implements MidiChannel {
 		}
 	}
 
-	// what the channel's chain sounds, before Volume and Balance; silence without a program
-	public void fillChain(TGAudioBuffer buffer){
-		buffer.clear();
-		if( this.processor != null){
-			this.processor.fillChain(buffer);
+	// what the channel's chain sounds, before Volume and Balance, in 32-bit float; silence without a program
+	public void fillChain(float[][] block){
+		TGSynthChannelProcessor processor = this.processor;
+		if( processor != null){
+			processor.fillChain(block);
+		} else {
+			for( float[] side : block ) {
+				java.util.Arrays.fill(side, 0f);
+			}
 		}
 	}
 
