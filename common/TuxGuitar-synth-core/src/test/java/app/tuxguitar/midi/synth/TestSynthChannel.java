@@ -335,6 +335,22 @@ public class TestSynthChannel {
 		assertEquals("[] [program 0:0]", this.otherSource.created.get(0).received + " " + this.otherSource.last().received);
 	}
 
+	private void sendProgram(String prefix, String type) throws MidiPlayerException {
+		this.channel.sendParameter(prefix + ".id", type);
+		this.channel.sendParameter(prefix + ".type", type);
+	}
+
+	// a song of this version saves its sound chain apart from the custom program older versions read
+	@Test
+	public void aSoundChainPlaysInsteadOfTheCustomProgram() throws MidiPlayerException {
+		this.channel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.TRUE.toString());
+		sendProgram(TGSynthChannel.CUSTOM_PROGRAM_PREFIX, "source");
+		sendProgram(TGSynthChannel.SOUND_CHAIN_PREFIX, "other");
+		this.channel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
+		assertEquals(OTHER_SOURCE, left(), QUANTUM);
+		assertEquals(0, this.source.created.size());
+	}
+
 	@Test
 	public void updatingTheProgramReopensItsProcessors() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source"));

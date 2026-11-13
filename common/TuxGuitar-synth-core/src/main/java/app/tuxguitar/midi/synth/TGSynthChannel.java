@@ -11,6 +11,8 @@ import app.tuxguitar.song.models.TGChannel;
 public class TGSynthChannel implements MidiChannel {
 
 	public static final String CUSTOM_PROGRAM_PREFIX = "synth.program";
+	// the sound chain as this version saves it, outside the custom program's keys
+	public static final String SOUND_CHAIN_PREFIX = "sound.chain";
 
 	private int id;
 	private int midiBank;
@@ -207,7 +209,7 @@ public class TGSynthChannel implements MidiChannel {
 			if( Boolean.valueOf(value)) {
 				this.parameters.clear();
 			} else {
-				TGProgram program = TGProgramPropertiesUtil.getProgram(this.parameters, CUSTOM_PROGRAM_PREFIX);
+				TGProgram program = this.customProgram();
 
 				this.customProgram = (program != null);
 				if( this.customProgram ) {
@@ -222,6 +224,12 @@ public class TGSynthChannel implements MidiChannel {
 		} else {
 			this.parameters.setValue(key, value);
 		}
+	}
+
+	// the sound chain, else the custom program older versions save; null without either
+	private TGProgram customProgram() {
+		TGProgram chain = TGProgramPropertiesUtil.getProgram(this.parameters, SOUND_CHAIN_PREFIX);
+		return (chain != null ? chain : TGProgramPropertiesUtil.getProgram(this.parameters, CUSTOM_PROGRAM_PREFIX));
 	}
 
 	public boolean isBusy() {
