@@ -267,7 +267,6 @@ Feature: Hosting VST3 plugins
       | mf      | 0.311 |
       | ppp     | 0.059 |
 
-  @planned
   Scenario: a bend on one note of a chord reaches the VST3 instrument for that note only, in exact semitones
     Given I have entered fret 5 on string 1 with a full bend
     And I have entered fret 5 on string 2

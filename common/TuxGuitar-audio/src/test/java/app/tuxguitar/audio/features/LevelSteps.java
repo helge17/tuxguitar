@@ -108,6 +108,40 @@ public class LevelSteps {
 		assertEquals(frequency, frequency(tap(number, 0), measure), 1.0);
 	}
 
+	// a tone among others in the tap is told by the frequency of its highest level near where it is looked for, over a
+	// window: a short one where it starts (shorter than the first step of a bend, 22 ms at 120 bpm), long ones elsewhere
+	private static final int SHORT = 960;
+	private static final int LONG = 4096;
+	private static final double NEAR = 25;
+
+	// where the track's tap sounds in the measure: from its first sample above -60 dBFS to its last
+	private int[] sounding(float[] tap, int measure) {
+		int[] bounds = heard().measure(measure);
+		int[] above = java.util.stream.IntStream.range(bounds[0], bounds[1]).filter(i -> Math.abs(tap[i]) >= SILENT).toArray();
+		return new int[] {above[0], above[above.length - 1] + 1};
+	}
+
+	// starts on one frequency and ends, held, on the other
+	@Then("track {int} sounds a {double} Hz tone rising to {double} Hz within 1 Hz in measure {int}")
+	public void soundsAToneRisingTo(int number, double from, double to, int measure) {
+		float[] tap = tap(number, 0);
+		int[] sounding = sounding(tap, measure);
+		double start = Meters.peakFrequency(tap, sounding[0], sounding[0] + SHORT, from - NEAR, to + NEAR, TestInterface.SAMPLE_RATE);
+		double end = Meters.peakFrequency(tap, sounding[1] - LONG, sounding[1], from - NEAR, to + NEAR, TestInterface.SAMPLE_RATE);
+		assertEquals(from, start, 1.0, "where it starts");
+		assertEquals(to, end, 1.0, "where it ends");
+	}
+
+	// in every long window from where it sounds to where it stops
+	@Then("track {int} sounds a {double} Hz tone that stays within 1 Hz in measure {int}")
+	public void soundsAToneThatStays(int number, double frequency, int measure) {
+		float[] tap = tap(number, 0);
+		int[] sounding = sounding(tap, measure);
+		assertTrue(sounding[1] - sounding[0] >= LONG, "sounds " + (sounding[1] - sounding[0]) + " samples");
+		java.util.stream.IntStream.iterate(sounding[0], from -> from + LONG <= sounding[1], from -> from + LONG).forEach(from ->
+			assertEquals(frequency, Meters.peakFrequency(tap, from, from + LONG, frequency - NEAR, frequency + NEAR, TestInterface.SAMPLE_RATE), 1.0, "from " + from));
+	}
+
 	@Then("the output peaks below {float} in measure {int}")
 	public void theOutputPeaksBelow(float level, int measure) {
 		float peak = Math.max(peak(heard().left(), measure), peak(heard().right(), measure));

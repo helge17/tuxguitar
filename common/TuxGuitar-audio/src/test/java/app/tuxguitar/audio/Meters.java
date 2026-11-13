@@ -60,6 +60,18 @@ public final class Meters {
 		return 2 * Math.sqrt(re * re + im * im) / weights;
 	}
 
+	// of a tone among others (a chord's), the frequency between low and high, to a hundredth of a hertz, at which the
+	// samples have their highest level: a tenth of a hertz apart first, then around the highest
+	public static double peakFrequency(float[] samples, int from, int to, double low, double high, int sampleRate) {
+		double coarse = highest(samples, from, to, low, high, 0.1, sampleRate);
+		return highest(samples, from, to, coarse - 0.1, coarse + 0.1, 0.01, sampleRate);
+	}
+
+	private static double highest(float[] samples, int from, int to, double low, double high, double step, int sampleRate) {
+		return java.util.stream.DoubleStream.iterate(low, frequency -> frequency <= high, frequency -> frequency + step).boxed()
+			.max(java.util.Comparator.comparingDouble(frequency -> level(samples, from, to, frequency, sampleRate))).get();
+	}
+
 	// the clicks next to a tone: jumps of more than 0.1 between two samples, a click ending where none is for CLICK_GAP
 	// samples; each at the sample after its first jump
 	public static List<Integer> jumps(float[] samples, int from, int to) {

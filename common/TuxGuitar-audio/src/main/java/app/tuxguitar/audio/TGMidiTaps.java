@@ -222,7 +222,12 @@ public final class TGMidiTaps {
 		}
 
 		public void addPitchBend(long tick, int track, int channel, int value, int voice, boolean bendMode) {
-			this.events.add(new Event(tick, channel, synth -> synth.sendPitchBend(channel, value, voice, bendMode)));
+			this.addPitchBend(tick, track, channel, value, MidiSequenceHandler.semitones(value), voice, bendMode);
+		}
+
+		// a bend reaches a source that takes semitones (a VST3 instrument) with them, others as its 7-bit value
+		public void addPitchBend(long tick, int track, int channel, int value, double semitones, int voice, boolean bendMode) {
+			this.events.add(new Event(tick, channel, synth -> synth.sendPitchBend(channel, value, semitones, voice, bendMode)));
 		}
 
 		public void addControlChange(long tick, int track, int channel, int controller, int value) {

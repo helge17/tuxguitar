@@ -6,12 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Iterator;
 
 import app.tuxguitar.document.TGDocumentContextAttributes;
+import app.tuxguitar.editor.action.effect.TGChangeBendNoteAction;
 import app.tuxguitar.editor.action.note.TGChangeNoteAction;
 import app.tuxguitar.editor.undo.impl.measure.TGUndoableMeasureGenericController;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGMeasure;
+import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.song.models.TGVelocities;
+import app.tuxguitar.song.models.effects.TGEffectBend;
+import app.tuxguitar.util.TGNoteRange;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -54,6 +58,22 @@ public class NoteSteps {
 		}
 		enterFret(fret, string, DYNAMICS.get(dynamic));
 		assertTrue(world.succeeded());
+	}
+
+	// the bend editor's "Bend" preset: up a full bend (4 quarter tones, a whole tone) from the note's start to its middle,
+	// then held; set as the editor sets it, on the note entered there
+	@Given("I have entered fret {int} on string {int} with a full bend")
+	public void haveEnteredFretWithAFullBend(int fret, int string) {
+		haveEnteredFret(fret, string);
+		TGEffectBend bend = world.fixture().songManager.getFactory().newEffectBend();
+		bend.addPoint(0, 0);
+		bend.addPoint(6, TGEffectBend.SEMITONE_LENGTH * 4);
+		bend.addPoint(12, TGEffectBend.SEMITONE_LENGTH * 4);
+		TGNote note = caretTrack.getMeasure(0).getBeat(0).getVoice(0).getNotes().stream().filter(entered -> entered.getString() == string).findFirst().get();
+		world.fixture().actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_NOTE_RANGE, TGNoteRange.single(note));
+		world.fixture().actionContext.setAttribute(TGChangeBendNoteAction.ATTRIBUTE_EFFECT, bend);
+		world.execute(new TGChangeBendNoteAction(world.fixture().context));
+		assertTrue(note.getEffect().isBend());
 	}
 
 	private static final java.util.Map<String, Integer> DYNAMICS = java.util.Map.of("ppp", TGVelocities.PIANO_PIANISSIMO, "pp", TGVelocities.PIANISSIMO,
