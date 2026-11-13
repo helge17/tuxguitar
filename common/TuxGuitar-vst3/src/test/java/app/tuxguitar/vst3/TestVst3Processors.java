@@ -206,6 +206,38 @@ public class TestVst3Processors {
 		assertEquals(0f, block[1][301]);
 	}
 
+	// a Test Sine block's periods: how often its left side crosses zero going up
+	private static long periods(TGMidiProcessor sine) {
+		float[][] block = new float[2][FRAMES];
+		sine.process(block);
+		return java.util.stream.IntStream.range(1, FRAMES).filter(i -> block[0][i - 1] <= 0 && block[0][i] > 0).count();
+	}
+
+	// the note on voice 0 (MIDI's first), key 69, is 440 Hz: 6 periods begin in a block of 512 at 44100 Hz; 12
+	// semitones up (880 Hz), 11
+	@Test
+	public void aBendTunesTheNoteItsVoicePlaysByItsExactSemitones() {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(69, 127, 0, true, 0);
+		sine.sendPitchBend(127, 12.0, 0, true, 0);
+
+		assertEquals(11, periods(sine));
+	}
+
+	// a bend of another voice, of none (the channel's, as the 7-bit reset at the start) or of one past MIDI's 128, or one
+	// without semitones, leaves the note alone
+	@Test
+	public void aBendOfAnotherVoiceOrOfNoneLeavesTheNoteAlone() {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(69, 127, 1, true, 0);
+		sine.sendPitchBend(127, 12.0, 2, true, 0);
+		sine.sendPitchBend(127, 12.0, -1, false, 0);
+		sine.sendPitchBend(127, 12.0, 128, true, 0);
+		sine.sendPitchBend(127, 1, true, 0);
+
+		assertEquals(6, periods(sine));
+	}
+
 	@Test
 	public void anInstrumentHearsTheVelocityAndTheNoteOff() {
 		TGMidiProcessor sine = instrument("Test Sine");
