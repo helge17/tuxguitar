@@ -29,11 +29,10 @@ public final class GervillDrums {
 		}
 	}
 
-	// the click's note reaches the drums on the frame and is released length frames later; sent at least a block
-	// before the drums fill that frame
+	// the click's note reaches the drums on the frame, counted from the next fill, and is released length frames later
 	public void click(MidiClick click, long frame, long length) {
-		this.drums.sendNoteOnAt(click.getNote(), click.getVelocity(), frame);
-		this.drums.sendNoteOffAt(click.getNote(), click.getVelocity(), frame + length);
+		this.drums.sendNoteOn(click.getNote(), click.getVelocity(), 0, false, frame);
+		this.drums.sendNoteOff(click.getNote(), click.getVelocity(), 0, false, frame + length);
 	}
 
 	// the next block, left and right

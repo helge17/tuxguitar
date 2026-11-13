@@ -213,6 +213,7 @@ public class TestSynthChannel {
 		assertEquals(Arrays.asList("on 60 100 2 true", "bend 70 2 true", "cc 91 40", "off 60 0 2 true", "cc 123 0"), this.source.last().received);
 	}
 
+	// timed ones too, then at once
 	@Test
 	public void bendsAndControlsSentBeforeTheProgramReachItWhenItLoads() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source"));
@@ -221,8 +222,34 @@ public class TestSynthChannel {
 		this.channel.sendAllNotesOff();
 		this.channel.sendControlChange(MidiControllers.REVERB, 40);
 		this.channel.sendPitchBend(70, 1, false);
+		this.channel.sendNoteOn(61, 100, 0, false, 30);
+		this.channel.sendNoteOff(61, 0, 0, false, 31);
+		this.channel.sendControlChange(MidiControllers.REVERB, 41, 32);
+		this.channel.sendPitchBend(71, 1, false, 33);
 		this.channel.sendProgramChange(5);
-		assertEquals(Arrays.asList("cc 91 40", "bend 70 1 false"), this.source.last().received);
+		assertEquals(Arrays.asList("cc 91 40", "bend 70 1 false", "cc 91 41", "bend 71 1 false"), this.source.last().received);
+	}
+
+	// the frames of the block about to be rendered; a source that cannot time events gets them at once. Volume, Balance
+	// and Bank select are the channel's, at the block's start
+	@Test
+	public void timedNotesBendsAndControlsReachASourceOnTheirFrames() throws MidiPlayerException {
+		FakeProcessors.SourceFactory untimed = new FakeProcessors.SourceFactory("untimed", SOURCE, false);
+		TGSynthManager.getInstance(this.context).addExtension(TGMidiProcessorFactory.class, untimed);
+		this.model.getProgram(0, 5).copyFrom(program("source"));
+		this.model.getProgram(0, 6).copyFrom(program("untimed"));
+		for (int program : new int[] {5, 6}) {
+			this.channel.sendProgramChange(program);
+			this.channel.sendNoteOn(60, 100, 2, true, 30);
+			this.channel.sendPitchBend(70, 2, true, 31);
+			this.channel.sendControlChange(MidiControllers.REVERB, 40, 32);
+			this.channel.sendControlChange(MidiControllers.VOLUME, 100, 33);
+			this.channel.sendNoteOff(60, 0, 2, true, 34);
+		}
+
+		assertEquals("[on 60 100 2 true @30, bend 70 2 true @31, cc 91 40 @32, off 60 0 2 true @34]"
+				+ " [on 60 100 2 true, bend 70 2 true, cc 91 40, off 60 0 2 true]", this.source.last().received + " " + untimed.last().received);
+		assertEquals(SOURCE * 100 / 127f, left(), QUANTUM);
 	}
 
 	@Test
@@ -235,15 +262,25 @@ public class TestSynthChannel {
 		assertTrue(this.source.last().received.isEmpty());
 	}
 
+	// a bank select silences the channel until the next program change plays the program of that bank. Today a custom
+	// program freezes the channel's sound: it ignores both (the README's deliberate changes make the source follow the
+	// channel's Bank and Program instead)
 	@Test
-	public void aBankSelectSilencesTheChannelUntilTheNextProgramChange() throws MidiPlayerException {
+	public void aBankSelectSilencesTheChannelUntilTheNextProgramChangeUnlessACustomProgramPlays() throws MidiPlayerException {
 		this.model.getProgram(0, 5).copyFrom(program("source"));
 		this.model.getProgram(1, 5).copyFrom(program("other"));
 		this.channel.sendProgramChange(5);
 		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 1);
-		assertEquals(0f, left(), 0f);
+		float selected = left();
 		this.channel.sendProgramChange(5);
-		assertEquals(OTHER_SOURCE, left(), QUANTUM);
+		float changed = left();
+		sendCustomProgram("source");
+		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 0);
+		this.channel.sendProgramChange(5);
+
+		assertEquals(0f, selected, 0f);
+		assertEquals(OTHER_SOURCE, changed, QUANTUM);
+		assertEquals(SOURCE, left(), QUANTUM);
 	}
 
 	private void sendCustomProgram(String type) throws MidiPlayerException {
@@ -255,41 +292,22 @@ public class TestSynthChannel {
 		this.channel.sendParameter(MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
 	}
 
-	// today a custom program freezes the channel's sound: Program changes and bank selects are ignored (the README's
-	// deliberate changes make the source follow the channel's Bank and Program instead)
+	// without a custom program the parameters silence a channel that had no program change, and bring back the bank and
+	// program of one that had (program 0 too)
 	@Test
-	public void aCustomProgramIgnoresProgramChangesAndBankSelects() throws MidiPlayerException {
-		this.model.getProgram(0, 5).copyFrom(program("source"));
-		sendCustomProgram("other");
-		assertEquals(OTHER_SOURCE, left(), QUANTUM);
-		this.channel.sendProgramChange(5);
-		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 1);
-		assertEquals(OTHER_SOURCE, left(), QUANTUM);
-	}
-
-	@Test
-	public void withoutACustomProgramTheParametersBringBackTheBankAndProgram() throws MidiPlayerException {
-		this.model.getProgram(0, 5).copyFrom(program("source"));
-		sendCustomProgram("other");
-		this.channel.sendProgramChange(5);
-		sendCustomProgram(null);
-		assertEquals(SOURCE, left(), QUANTUM);
-	}
-
-	@Test
-	public void withoutACustomProgramTheParametersBringBackProgramZero() throws MidiPlayerException {
+	public void withoutACustomProgramTheParametersBringBackTheBankAndProgramOrSilenceTheChannel() throws MidiPlayerException {
 		this.model.getProgram(0, 0).copyFrom(program("source"));
-		this.channel.sendProgramChange(0);
-		sendCustomProgram(null);
-		assertEquals(SOURCE, left(), QUANTUM);
-	}
-
-	@Test
-	public void withoutACustomProgramOrAProgramChangeTheParametersSilenceTheChannel() throws MidiPlayerException {
 		sendCustomProgram("other");
 		sendCustomProgram(null);
-		assertEquals(0f, left(), 0f);
-		assertNull(this.channel.getProcessor());
+		String silenced = left() + " " + this.channel.getProcessor();
+		this.channel.sendProgramChange(0);
+		sendCustomProgram("other");
+		float custom = left();
+		sendCustomProgram(null);
+
+		assertEquals("0.0 null", silenced);
+		assertEquals(OTHER_SOURCE, custom, QUANTUM);
+		assertEquals(SOURCE, left(), QUANTUM);
 	}
 
 	@Test

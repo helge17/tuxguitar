@@ -61,38 +61,81 @@ final class FakeProcessors {
 		}
 	}
 
+	// a source that cannot time events: a timed one reaches it at once, as TGMidiProcessor does by default
 	static class Source extends Effect implements TGMidiProcessor {
 		final List<String> received = new ArrayList<String>();
+		// written after the event being sent
+		String timing = "";
 
 		Source(float level) {
 			super(sample -> level);
 		}
 
+		private void record(String event) {
+			this.received.add(event + this.timing);
+		}
+
 		public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) {
-			this.received.add("on " + key + " " + velocity + " " + voice + " " + bendMode);
+			this.record("on " + key + " " + velocity + " " + voice + " " + bendMode);
 		}
 
 		public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) {
-			this.received.add("off " + key + " " + velocity + " " + voice + " " + bendMode);
+			this.record("off " + key + " " + velocity + " " + voice + " " + bendMode);
 		}
 
 		public void sendPitchBend(int value, int voice, boolean bendMode) {
-			this.received.add("bend " + value + " " + voice + " " + bendMode);
+			this.record("bend " + value + " " + voice + " " + bendMode);
 		}
 
 		public void sendControlChange(int controller, int value) {
-			this.received.add("cc " + controller + " " + value);
+			this.record("cc " + controller + " " + value);
+		}
+	}
+
+	// a source that times events: it writes " @frame" after a timed one
+	static class TimedSource extends Source {
+
+		TimedSource(float level) {
+			super(level);
+		}
+
+		private void at(long frame, Runnable send) {
+			this.timing = " @" + frame;
+			send.run();
+			this.timing = "";
+		}
+
+		public void sendNoteOn(int key, int velocity, int voice, boolean bendMode, long frame) {
+			this.at(frame, () -> this.sendNoteOn(key, velocity, voice, bendMode));
+		}
+
+		public void sendNoteOff(int key, int velocity, int voice, boolean bendMode, long frame) {
+			this.at(frame, () -> this.sendNoteOff(key, velocity, voice, bendMode));
+		}
+
+		public void sendPitchBend(int value, int voice, boolean bendMode, long frame) {
+			this.at(frame, () -> this.sendPitchBend(value, voice, bendMode));
+		}
+
+		public void sendControlChange(int controller, int value, long frame) {
+			this.at(frame, () -> this.sendControlChange(controller, value));
 		}
 	}
 
 	static class SourceFactory implements TGMidiProcessorFactory {
 		private final String type;
 		private final float level;
+		private final boolean timed;
 		final List<Source> created = new ArrayList<Source>();
 
 		SourceFactory(String type, float level) {
+			this(type, level, true);
+		}
+
+		SourceFactory(String type, float level, boolean timed) {
 			this.type = type;
 			this.level = level;
+			this.timed = timed;
 		}
 
 		public String getType() {
@@ -100,7 +143,7 @@ final class FakeProcessors {
 		}
 
 		public Source createProcessor() {
-			Source source = new Source(this.level);
+			Source source = (this.timed ? new TimedSource(this.level) : new Source(this.level));
 			this.created.add(source);
 			return source;
 		}

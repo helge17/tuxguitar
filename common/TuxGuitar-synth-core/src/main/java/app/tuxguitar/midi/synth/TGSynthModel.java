@@ -1,14 +1,22 @@
 package app.tuxguitar.midi.synth;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import app.tuxguitar.player.base.MidiChannel;
 import app.tuxguitar.player.base.MidiPlayerException;
+import app.tuxguitar.player.base.MidiReceiver;
+import app.tuxguitar.player.base.MidiSampleClock;
 import app.tuxguitar.player.base.MidiSynthesizer;
 import app.tuxguitar.util.TGContext;
 
-public class TGSynthModel implements MidiSynthesizer{
+/**
+ * The TuxGuitar Synthesizer's channels and programs. It is a sample clock: whoever renders it a block at a time runs
+ * beforeBlock first, so the sequencer playing on it sends the block's events on their frames. Its channels are opened
+ * and closed by the player while the audio thread renders them, so each reader sees a copy of the list.
+ */
+public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 
 	public static final int BANKS_LENGTH = 129;
 	public static final int PROGRAMS_LENGTH = 128;
@@ -17,6 +25,7 @@ public class TGSynthModel implements MidiSynthesizer{
 	private float sampleRate;
 	private TGProgram[][] programs;
 	private List<TGSynthChannel> channels;
+	private volatile Listener listener;
 
 	public TGSynthModel(TGContext context){
 		this(context, TGAudioBuffer.SAMPLE_RATE);
@@ -26,7 +35,7 @@ public class TGSynthModel implements MidiSynthesizer{
 	public TGSynthModel(TGContext context, float sampleRate){
 		this.context = context;
 		this.sampleRate = sampleRate;
-		this.channels = new ArrayList<TGSynthChannel>();
+		this.channels = new CopyOnWriteArrayList<TGSynthChannel>();
 		this.programs = new TGProgram[BANKS_LENGTH][PROGRAMS_LENGTH];
 		for( int b = 0; b < BANKS_LENGTH ; b ++ ){
 			for( int p = 0; p < PROGRAMS_LENGTH ; p ++ ) {
@@ -85,6 +94,11 @@ public class TGSynthModel implements MidiSynthesizer{
 		return null;
 	}
 
+	// the open channels, as they are when read
+	Iterable<TGSynthChannel> channels(){
+		return Collections.unmodifiableList(this.channels);
+	}
+
 	public int countChannels(){
 		return this.channels.size();
 	}
@@ -100,6 +114,26 @@ public class TGSynthModel implements MidiSynthesizer{
 
 	public float getSampleRate() {
 		return this.sampleRate;
+	}
+
+	public void setListener(Listener listener) {
+		this.listener = listener;
+	}
+
+	public MidiReceiver at(int frame) {
+		return new TGSynthFrameReceiver(this, frame);
+	}
+
+	// the listener sends the events of the next frames; one that fails does not stop the synthesizer from rendering
+	public void beforeBlock(int frames) {
+		Listener listener = this.listener;
+		if( listener != null ) {
+			try {
+				listener.beforeBlock(this, frames);
+			} catch (MidiPlayerException | RuntimeException exception) {
+				exception.printStackTrace();
+			}
+		}
 	}
 
 	public TGContext getContext() {

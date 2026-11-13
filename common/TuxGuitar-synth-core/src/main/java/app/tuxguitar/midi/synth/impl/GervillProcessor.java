@@ -28,6 +28,10 @@ public class GervillProcessor implements TGMidiProcessor {
 
 	private static final String SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM = "load default soundbank";
 	private static final String SYNTH_MIDI_CHANNELS_PARAM = "midi channels";
+	private static final String SYNTH_CONTROL_RATE_PARAM = "control rate";
+
+	// Gervill renders a control period at a time, this many per second (its default)
+	private static final float CONTROL_RATE = 147f;
 
 	private TGContext context;
 	private AudioSynthesizer synth;
@@ -38,6 +42,8 @@ public class GervillProcessor implements TGMidiProcessor {
 	private byte[] buffer;
 	private float[][] outputs;
 	private AudioFormat format;
+	// the frames read from the stream since it opened
+	private long frames;
 
 	public GervillProcessor(TGContext context) {
 		this.context = context;
@@ -81,7 +87,7 @@ public class GervillProcessor implements TGMidiProcessor {
 	public void fillBuffer(TGAudioBuffer buffer) {
 		try {
 			if( this.stream != null ) {
-				this.stream.read(buffer.getBuffer());
+				this.frames += this.stream.read(buffer.getBuffer()) / this.format.getFrameSize();
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -105,6 +111,7 @@ public class GervillProcessor implements TGMidiProcessor {
 				this.synth.close();
 			}
 			this.stream = this.synth.openStream(this.format, this.createSynthInfo());
+			this.frames = 0;
 			this.receiver = this.synth.getReceiver();
 
 			this.soundbankFactory.create(this.context, this.program, new GervillSoundbankCallback() {
@@ -129,6 +136,7 @@ public class GervillProcessor implements TGMidiProcessor {
 	public Map<String, Object> createSynthInfo(){
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(SYNTH_LOAD_DEFAULT_SOUNDBANK_PARAM, false);
+		map.put(SYNTH_CONTROL_RATE_PARAM, CONTROL_RATE);
 		if( this.program.getChannelMode() == GervillProgram.CHANNEL_MODE_SINGLE ) {
 			map.put(SYNTH_MIDI_CHANNELS_PARAM, 1);
 		}
@@ -181,25 +189,43 @@ public class GervillProcessor implements TGMidiProcessor {
 		this.synth.getChannels()[resolveChannel(voice, bendMode)].noteOff(key, velocity);
 	}
 
-	// the note reaches the instrument on a frame of the stream (counted from where its instrument loaded), when sent
-	// before Gervill renders that frame: Gervill renders a control period (under 512 frames) ahead of what was read,
-	// so a note sent a block ahead is on time
-	public void sendNoteOnAt(int key, int velocity, long frame) {
-		this.sendAt(ShortMessage.NOTE_ON, key, velocity, frame);
+	// a timed event reaches the instrument on a frame of the next fill (counted from its first frame), as Gervill renders
+	// it: it is heard latency(rate) frames later in the stream. Gervill has rendered less than was read (its stream lags
+	// it), so an event sent before a fill is never late. A note starts on its frame; other events start the control
+	// period that holds it.
+
+	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode, long frame) {
+		this.sendAt(ShortMessage.NOTE_ON, this.resolveChannel(voice, bendMode), key, velocity, frame);
 	}
 
-	// the note is released at the start of the control period that holds the frame
-	public void sendNoteOffAt(int key, int velocity, long frame) {
-		this.sendAt(ShortMessage.NOTE_OFF, key, velocity, frame);
+	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode, long frame) {
+		this.sendAt(ShortMessage.NOTE_OFF, this.resolveChannel(voice, bendMode), key, velocity, frame);
 	}
 
-	// Gervill times a message in microseconds of its stream, and starts a note on the frame nearest to it
-	private void sendAt(int command, int key, int velocity, long frame) {
+	// the bend's 7 bits are the high ones of MIDI's 14
+	public void sendPitchBend(int value, int voice, boolean bendMode, long frame) {
+		this.sendAt(ShortMessage.PITCH_BEND, this.resolveChannel(voice, bendMode), 0, value, frame);
+	}
+
+	public void sendControlChange(int controller, int value, long frame) {
+		for(int channel = 0; channel < this.synth.getChannels().length; channel++) {
+			this.sendAt(ShortMessage.CONTROL_CHANGE, channel, controller, value, frame);
+		}
+	}
+
+	// Gervill times a message in microseconds of what it rendered, and starts a note on the frame nearest to it
+	private void sendAt(int command, int channel, int data1, int data2, long frame) {
 		try {
-			this.receiver.send(new ShortMessage(command, 0, key, velocity), Math.round(frame * 1000000.0 / this.format.getSampleRate()));
+			this.receiver.send(new ShortMessage(command, channel, data1, data2), Math.round((this.frames + frame) * 1000000.0 / this.format.getSampleRate()));
 		} catch (InvalidMidiDataException e) {
 			throw new IllegalArgumentException(e);
 		}
+	}
+
+	// the frames from where Gervill renders an event to where its stream sounds it: two control periods, one of silence
+	// the stream opens with and one its limiter holds back to look ahead
+	public static int latency(float sampleRate) {
+		return 2 * (int) (sampleRate / CONTROL_RATE);
 	}
 
 	public void sendPitchBend(int value, int voice, boolean bendMode) {

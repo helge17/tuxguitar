@@ -1,5 +1,6 @@
 package app.tuxguitar.midi.synth.impl;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -137,7 +138,7 @@ public class TestGervillProcessor {
 	@Test
 	public void refusesATimedNoteOutsideMidi() throws InterruptedException {
 		GervillProcessor processor = loaded("0:0", null);
-		assertThrows(IllegalArgumentException.class, () -> processor.sendNoteOnAt(128, 95, 0));
+		assertThrows(IllegalArgumentException.class, () -> processor.sendNoteOn(128, 95, 0, false, 0));
 	}
 
 	@Test
@@ -157,23 +158,39 @@ public class TestGervillProcessor {
 		assertEquals(440, strongestFrequency(sounding), 9);
 	}
 
+	// untimed, or timed on a frame of the next buffer
 	@Test
 	public void aNoteOffEndsTheNote() throws InterruptedException {
-		GervillProcessor processor = loaded("0:80", null);
-		processor.sendNoteOn(69, 127, 0, false);
-		double sounding = peak(render(processor, 8));
-		processor.sendNoteOff(69, 0, 0, false);
-		render(processor, 130);
-		double released = peak(render(processor, 4));
-		assertTrue(released < sounding / 10, "released " + released + ", sounding " + sounding);
+		for (boolean timed : new boolean[] {false, true}) {
+			GervillProcessor processor = loaded("0:80", null);
+			processor.sendNoteOn(69, 127, 0, false);
+			double sounding = peak(render(processor, 8));
+			if (timed) {
+				processor.sendNoteOff(69, 0, 0, false, 100);
+			} else {
+				processor.sendNoteOff(69, 0, 0, false);
+			}
+			render(processor, 130);
+			double released = peak(render(processor, 4));
+			assertTrue(released < sounding / 10, timed + ": released " + released + ", sounding " + sounding);
+		}
 	}
 
+	// untimed, or timed on a frame of the next buffer: Volume 0 on every channel Gervill has (16 in voice mode) silences
+	// notes of voice 0 and 9 (on channels 0 and 10)
 	@Test
 	public void aControlChangeReachesTheSynthesizer() throws InterruptedException {
-		GervillProcessor processor = loaded("0:80", null);
-		processor.sendControlChange(7, 0);
-		processor.sendNoteOn(69, 127, 0, false);
-		assertEquals(0, peak(render(processor, 8)), 0.0001);
+		for (boolean timed : new boolean[] {false, true}) {
+			GervillProcessor processor = loaded("0:80", "3");
+			if (timed) {
+				processor.sendControlChange(7, 0, 100);
+			} else {
+				processor.sendControlChange(7, 0);
+			}
+			processor.sendNoteOn(69, 127, 0, false);
+			processor.sendNoteOn(69, 127, 9, false);
+			assertEquals(0, peak(render(processor, 8)), 0.0001, "timed " + timed);
+		}
 	}
 
 	@Test
@@ -185,14 +202,41 @@ public class TestGervillProcessor {
 		assertEquals(494, strongestFrequency(render(processor, 8)), 10);
 	}
 
-	// on the MIDI channel untimed notes of no voice play on: bent as they are
+	// a timed note, or a timed bend, goes to the Gervill channel of its voice: in bend mode a bent note's is channel 1,
+	// where the other one, untimed, goes
 	@Test
-	public void aTimedNoteIsBentAsAnUntimedOne() throws InterruptedException {
-		GervillProcessor processor = loaded("0:80", null);
-		processor.sendPitchBend(127, -1, false);
-		processor.sendNoteOnAt(69, 127, 0);
-		render(processor, 4);
-		assertEquals(494, strongestFrequency(render(processor, 8)), 10);
+	public void timedNotesAndBendsGoToTheChannelOfTheirVoice() throws InterruptedException {
+		for (boolean timedNote : new boolean[] {false, true}) {
+			GervillProcessor processor = loaded("0:80", "2");
+			if (timedNote) {
+				processor.sendPitchBend(127, 0, true);
+				processor.sendNoteOn(69, 127, 0, true, 0);
+			} else {
+				processor.sendPitchBend(127, 0, true, 0);
+				processor.sendNoteOn(69, 127, 0, true);
+			}
+			render(processor, 4);
+			assertEquals(494, strongestFrequency(render(processor, 8)), 10, "timed note " + timedNote);
+		}
+	}
+
+	// a bend timed on the first frame sounds exactly as the same bend sent untimed before it: its 7 bits are the high
+	// ones of MIDI's 14
+	@Test
+	public void aTimedBendIsTheUntimedBend() throws InterruptedException {
+		float[][] bent = new float[2][];
+		for (int timed = 0; timed < 2; timed++) {
+			GervillProcessor processor = loaded("0:80", null);
+			if (timed == 1) {
+				processor.sendPitchBend(100, 0, false, 0);
+			} else {
+				processor.sendPitchBend(100, 0, false);
+			}
+			processor.sendNoteOn(69, 127, 0, false);
+			bent[timed] = render(processor, 8);
+		}
+		assertTrue(peak(bent[0]) > 0.05);
+		assertArrayEquals(bent[0], bent[1]);
 	}
 
 	@Test

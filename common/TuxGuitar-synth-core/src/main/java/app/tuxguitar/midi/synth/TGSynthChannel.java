@@ -1,5 +1,7 @@
 package app.tuxguitar.midi.synth;
 
+import java.util.function.Consumer;
+
 import app.tuxguitar.player.base.MidiChannel;
 import app.tuxguitar.player.base.MidiControllers;
 import app.tuxguitar.player.base.MidiParameters;
@@ -88,26 +90,47 @@ public class TGSynthChannel implements MidiChannel {
 	}
 
 	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
-		if( this.processor != null && this.processor.getProcessor() != null ) {
-			this.processor.getProcessor().sendNoteOn(key, velocity, voice, bendMode);
-		}
+		this.toSource(source -> source.sendNoteOn(key, velocity, voice, bendMode));
+	}
+
+	// the timed events reach the source on a frame of the block about to be rendered
+	public void sendNoteOn(int key, int velocity, int voice, boolean bendMode, int frame) throws MidiPlayerException {
+		this.toSource(source -> source.sendNoteOn(key, velocity, voice, bendMode, frame));
 	}
 
 	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) throws MidiPlayerException {
-		if( this.processor != null && this.processor.getProcessor() != null ) {
-			this.processor.getProcessor().sendNoteOff(key, velocity, voice, bendMode);
-		}
+		this.toSource(source -> source.sendNoteOff(key, velocity, voice, bendMode));
+	}
+
+	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode, int frame) throws MidiPlayerException {
+		this.toSource(source -> source.sendNoteOff(key, velocity, voice, bendMode, frame));
 	}
 
 	public void sendPitchBend(int value, int voice, boolean bendMode) throws MidiPlayerException {
-		if( this.processor != null && this.processor.getProcessor() != null ) {
-			this.processor.getProcessor().sendPitchBend(value, voice, bendMode);
-		} else {
+		this.sendPitchBend(value, voice, bendMode, source -> source.sendPitchBend(value, voice, bendMode));
+	}
+
+	public void sendPitchBend(int value, int voice, boolean bendMode, int frame) throws MidiPlayerException {
+		this.sendPitchBend(value, voice, bendMode, source -> source.sendPitchBend(value, voice, bendMode, frame));
+	}
+
+	// without a source yet, the bend waits for one, untimed
+	private void sendPitchBend(int value, int voice, boolean bendMode, Consumer<TGMidiProcessor> send) throws MidiPlayerException {
+		if(!this.toSource(send)) {
 			this.pendingEvents.addPitchBend(value, voice, bendMode);
 		}
 	}
 
 	public void sendControlChange(int controller, int value) throws MidiPlayerException {
+		this.sendControlChange(controller, value, source -> source.sendControlChange(controller, value));
+	}
+
+	public void sendControlChange(int controller, int value, int frame) throws MidiPlayerException {
+		this.sendControlChange(controller, value, source -> source.sendControlChange(controller, value, frame));
+	}
+
+	// Bank select, Volume and Balance are the channel's; other controls go to the source, or wait for one, untimed
+	private void sendControlChange(int controller, int value, Consumer<TGMidiProcessor> send) throws MidiPlayerException {
 		try{
 			if( controller == MidiControllers.BANK_SELECT ){
 				if( this.midiBank != value ){
@@ -120,14 +143,22 @@ public class TGSynthChannel implements MidiChannel {
 				this.volume = value;
 			} else if( controller == MidiControllers.BALANCE ){
 				this.balance = value;
-			} else if( this.processor != null && this.processor.getProcessor() != null ) {
-				this.processor.getProcessor().sendControlChange(controller, value);
-			} else {
+			} else if(!this.toSource(send)) {
 				this.pendingEvents.addControlChange(controller, value);
 			}
 		}catch(Throwable throwable){
 			throw new MidiPlayerException(throwable.getMessage(), throwable);
 		}
+	}
+
+	// whether the channel has a source to send to
+	private boolean toSource(Consumer<TGMidiProcessor> send) {
+		TGSynthChannelProcessor processor = this.processor;
+		TGMidiProcessor source = (processor != null ? processor.getProcessor() : null);
+		if( source != null ) {
+			send.accept(source);
+		}
+		return (source != null);
 	}
 
 	public void sendProgramChange(int value) throws MidiPlayerException {
@@ -144,9 +175,7 @@ public class TGSynthChannel implements MidiChannel {
 	}
 
 	public void sendAllNotesOff() throws MidiPlayerException {
-		if( this.processor != null && this.processor.getProcessor() != null ) {
-			this.processor.getProcessor().sendControlChange(MidiControllers.ALL_NOTES_OFF, 0);
-		}
+		this.toSource(source -> source.sendControlChange(MidiControllers.ALL_NOTES_OFF, 0));
 	}
 
 	public void sendParameter(String key, String value) throws MidiPlayerException {

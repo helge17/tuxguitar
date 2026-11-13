@@ -84,16 +84,32 @@ public class TestGervillTiming {
 		return before.length + firstSounding(after);
 	}
 
-	// Gervill's stream lags what it renders by two control periods (300 frames each at 44100 Hz): it opens with one of
-	// silence it never rendered, and its limiter holds each period back one more to look ahead. A note sent before the
-	// first block is rendered from Gervill's first frame and heard from frame 600 of the stream.
+	// Gervill's stream lags what it renders by two control periods (300 frames each at 44100 Hz, 326 at 48000), its
+	// latency: it opens with one of silence it never rendered, and its limiter holds each period back one more to look
+	// ahead. A note sent before the first block is rendered from Gervill's first frame and heard from frame 600.
 	@Test
-	public void theStreamSoundsTwoControlPeriodsAfterGervillRenders() throws MidiPlayerException {
+	public void theStreamSoundsTheLatencyAfterGervillRenders() throws MidiPlayerException {
 		channel().sendNoteOn(69, 127, 0, false);
 		float[] left = render(BLOCKS);
 
+		assertEquals("600 652", GervillProcessor.latency(44100) + " " + GervillProcessor.latency(48000));
 		assertEquals(0, TestGervillProcessor.peak(Arrays.copyOfRange(left, 0, 600)), 0);
 		assertTrue(TestGervillProcessor.peak(Arrays.copyOfRange(left, 600, 700)) > 0);
+	}
+
+	// an event the sample clock's listener sends for frame 30 of the second block is rendered from Gervill's frame 542:
+	// 542 frames after the note sent before the first block, a whole control period later than it would untimed
+	@Test
+	public void anEventSentForAFrameOfTheNextBlockStartsOnThatFrame() throws MidiPlayerException {
+		int early = untimedAfter(0);
+		TestGervillTiming late = new TestGervillTiming();
+		late.render(1);
+		late.model.setListener((clock, frames) -> {
+			clock.at(30).sendNoteOn(CHANNEL, 69, 127, 0, false);
+			late.model.setListener(null);
+		});
+
+		assertEquals(542, FRAMES + firstSounding(late.render(BLOCKS)) - early);
 	}
 
 	// as the player sends a note today: Gervill renders whole control periods as the stream is read, so after the first
