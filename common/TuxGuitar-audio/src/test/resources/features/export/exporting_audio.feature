@@ -25,13 +25,13 @@ Feature: Exporting audio
     Examples:
       | type | rate  | bits         | second measure |
       | WAVE | 44100 | 16 bits      | 88200          |
+      | WAVE | 44100 | 32-bit float | 88200          |
+      | AIFF | 44100 | 16 bits      | 88200          |
 
     @planned
     Examples:
       | type | rate  | bits         | second measure |
       | WAVE | 48000 | 24 bits      | 96000          |
-      | WAVE | 44100 | 32-bit float | 88200          |
-      | AIFF | 44100 | 16 bits      | 88200          |
 
   Scenario: plugin latency does not shift the exported file
     Given I have added the VST3 effect "Test Latency" to track 2
@@ -42,7 +42,6 @@ Feature: Exporting audio
     And on every beat the file's left and right clicks are within 1 sample of each other
     And the file lasts 352800 samples, within 1 sample
 
-  @planned
   Scenario: VST3 effects are in the exported file
     Given I have added the VST3 effect "Test Gain" to track 2
     When I export the song as a WAVE file at 44100 Hz in 32-bit float

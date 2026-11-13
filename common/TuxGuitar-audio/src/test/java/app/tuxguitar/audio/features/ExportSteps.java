@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import app.tuxguitar.audio.AudioFiles;
+import app.tuxguitar.audio.Meters;
 import app.tuxguitar.audio.TGAudioExporter;
 import app.tuxguitar.audio.TGExportFormat;
 import app.tuxguitar.audio.TGRender;
@@ -65,6 +66,12 @@ public class ExportSteps {
 			int nearest = clicks.stream().min((a, b) -> Integer.compare(Math.abs(a - at), Math.abs(b - at))).orElse(-1);
 			assertEquals(sample, nearest, 1, "side " + side + " clicks at " + clicks);
 		}
+	}
+
+	@Then("the file's right clicks peak at {float} within 1%")
+	public void theRightClicksPeakAt(float peak) {
+		float[] right = world.exported().right();
+		assertEquals(peak, Meters.peak(right, 0, right.length), peak / 100);
 	}
 
 	@Then("the file lasts {int} samples, within 1 sample")
