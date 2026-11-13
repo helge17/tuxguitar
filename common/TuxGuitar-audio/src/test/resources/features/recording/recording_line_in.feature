@@ -200,14 +200,12 @@ Feature: Recording line-in audio
       | 4/4       | 120 | 80      | 4      | 27562.5 |
       | 4/4       | 117 | 80      | 4      | 28269.2 |
 
-  @planned
   Scenario: Count In ticks set the number of clicks
     Given I have turned Count In on with 2 Count In ticks
     And I have armed track 2
     When I record from measure 2 beat 1 to measure 3 beat 1
     Then the output holds 2 Count In clicks, 22050 samples apart within 1 sample
 
-  @planned
   Scenario: Count In before a start in the middle of a measure keeps to the beat
     Given I have turned Count In on
     And I have armed track 2
