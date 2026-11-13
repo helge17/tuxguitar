@@ -20,12 +20,33 @@ public final class TGTake {
 
 	// the samples are copied once, here, so no one keeps a way to change them
 	public TGTake(int number, float[][] samples, int sampleRate) {
+		this(sampleRate, number, copy(samples));
+	}
+
+	// the samples become the take's
+	private TGTake(int sampleRate, int number, float[][] samples) {
 		this.number = number;
-		this.samples = new float[samples.length][];
-		for (int channel = 0; channel < samples.length; channel++) {
-			this.samples[channel] = samples[channel].clone();
-		}
+		this.samples = samples;
 		this.sampleRate = sampleRate;
+	}
+
+	private static float[][] copy(float[][] samples) {
+		float[][] copy = new float[samples.length][];
+		for (int channel = 0; channel < samples.length; channel++) {
+			copy[channel] = samples[channel].clone();
+		}
+		return copy;
+	}
+
+	// a take of the samples as they are, not copied: for one who made them and keeps no other way to change them (a
+	// file reader), so a long take is not held twice
+	public static TGTake adopt(int number, float[][] samples, int sampleRate) {
+		return new TGTake(sampleRate, number, samples);
+	}
+
+	// the same samples under another number: shared, as they never change
+	public TGTake renumbered(int number) {
+		return new TGTake(this.sampleRate, number, this.samples);
 	}
 
 	// the audio device's sample rate it was recorded at
