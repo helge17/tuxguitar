@@ -26,8 +26,11 @@ plugin delay compensation like the tracks); with another MIDI Port it is still t
 percussion channel, and Count In clicks on the percussion channel as before. A bend carries its exact semitones next to
 its 7-bit value, and a VST3 instrument tunes the note of the bent string alone. Entering a note sounds it
 (`TGNoteEntry.install`, a headless twin of the desktop's note controller: an app installs one of the two). "Live"
-scenarios play through the player on a live synthesizer of the scenario (`LivePlay`, `LiveOutput`); the audio tracks'
-takes do not play live yet. No scenario is `@planned` any more.
+scenarios play through the player on a live synthesizer of the scenario, which plays through the live audio device
+(`TGLiveDevice`) on a double of the native backend (`TestBackend`) driven a block at a time (`LivePlay`,
+`LiveOutput`). Live, an audio track's takes play as its channel's source on the TuxGuitar Synthesizer (`TGLiveTakes`,
+installed like `TGNoteEntry`), rendered a block at a time as offline; monitoring and recording do not run live yet.
+No scenario is `@planned` any more.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions

@@ -26,6 +26,7 @@ import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import app.tuxguitar.editor.action.track.TGSetTrackChannelAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.audio.TGAudioSaving;
+import app.tuxguitar.audio.TGLiveTakes;
 import app.tuxguitar.audio.TGNoteEntry;
 import app.tuxguitar.thread.TGThreadManager;
 import app.tuxguitar.audio.TGAudioSession;
@@ -120,6 +121,8 @@ public class AudioWorld {
 		TGAudioSaving.install(this.fixture.context);
 		// as the app sounds a note entered (the threads the player starts for it are kept until a step runs them)
 		TGNoteEntry.install(this.fixture.context);
+		// as the app plays audio tracks' takes live on the TuxGuitar Synthesizer
+		TGLiveTakes.install(this.fixture.context);
 		TGThreadManager.getInstance(this.fixture.context).setThreadHandler(this.threads);
 		// a gesture in a plugin's editor changes the song by an action the module runs: the app maps it, undoable
 		this.fixture.map(new TGSetPluginStateAction(this.fixture.context));

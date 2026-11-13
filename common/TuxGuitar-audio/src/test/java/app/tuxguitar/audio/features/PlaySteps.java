@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import app.tuxguitar.audio.LivePlay;
 import app.tuxguitar.audio.TGRender;
 import app.tuxguitar.audio.action.TGPlayAction;
+import app.tuxguitar.audio.device.TGAudioDeviceException;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
@@ -55,13 +56,13 @@ public class PlaySteps {
 	// live, as the player plays the song on the TuxGuitar Synthesizer's sample clock (see LivePlay), not offline: what the
 	// output sounded is kept (see LiveSteps); then the synthesizer's channels close
 	@When("I play the song live from {position}")
-	public void playLive(SongPosition from) throws MidiPlayerException {
+	public void playLive(SongPosition from) throws MidiPlayerException, TGAudioDeviceException {
 		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
 		player.loadSequencer(new MidiSequencerImpl(world.fixture().context));
 		player.setTickPosition(from.tick(world.song()));
 		player.play();
 		world.threads().runStartHere();
-		world.setLive(LivePlay.play(player, (TGSynthModel) player.getSynthesizerProxy().getMidiSynthesizer()));
+		world.setLive(LivePlay.play(player, (TGSynthModel) player.getSynthesizerProxy().getMidiSynthesizer(), world.device()));
 		player.closeChannels();
 	}
 

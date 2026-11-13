@@ -1,6 +1,7 @@
 package app.tuxguitar.audio;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import app.tuxguitar.song.models.TGTake;
 
@@ -32,7 +33,9 @@ final class TGTakePiece {
 	final int takeEnd;
 	// the takes covering the stretch, with the samples of each that would play there: {start, end}
 	final Map<TGTake, int[]> under;
-	private final float[][] audio;
+	// the stretched audio, made when first sounded (null when it plays the samples as they are)
+	private Supplier<float[][]> stretch;
+	private float[][] audio;
 	private final float[][] source;
 
 	boolean fadeIn;
@@ -41,8 +44,8 @@ final class TGTakePiece {
 	boolean tail;
 
 	// a take (chosen for its measure or not) from takeStart to takeEnd of its samples (source), the audio over the
-	// stretch given (null when it plays the samples as they are)
-	TGTakePiece(long start, long end, boolean jump, TGTake take, boolean chosen, int takeStart, int takeEnd, float[][] source, float[][] audio, Map<TGTake, int[]> under) {
+	// stretch made by the supplier when it first sounds (null when it plays the samples as they are)
+	TGTakePiece(long start, long end, boolean jump, TGTake take, boolean chosen, int takeStart, int takeEnd, float[][] source, Supplier<float[][]> audio, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
 		this.jump = jump;
@@ -53,7 +56,7 @@ final class TGTakePiece {
 		this.takeStart = takeStart;
 		this.takeEnd = takeEnd;
 		this.source = source;
-		this.audio = audio;
+		this.stretch = audio;
 		this.under = under;
 	}
 
@@ -69,7 +72,6 @@ final class TGTakePiece {
 		this.takeStart = 0;
 		this.takeEnd = 0;
 		this.source = input;
-		this.audio = null;
 		this.under = under;
 	}
 
@@ -107,14 +109,15 @@ final class TGTakePiece {
 		return this.input || (this.take != null && this.takeEnd < this.source[0].length - 1);
 	}
 
-	// adds it to each side of the tap: a mono piece's one side to both
-	void addTo(float[][] tap) {
-		long from = Math.max(0, this.start - (this.head ? FADE : 0));
-		for (int side = 0; side < tap.length; side++) {
-			long to = Math.min(tap[side].length, this.end + (this.tail ? FADE : 0));
+	// adds what it sounds over the block's frames, from the sample of the tap the block starts on (before the tap's
+	// first sample nothing sounds), to each side of the block: a mono piece's one side to both
+	void addTo(float[][] block, long from) {
+		long first = Math.max(Math.max(0, from), this.start - (this.head ? FADE : 0));
+		long last = Math.min(from + block[0].length, this.end + (this.tail ? FADE : 0));
+		for (int side = 0; side < block.length; side++) {
 			int own = Math.min(side, this.source.length - 1);
-			for (long o = from; o < to; o++) {
-				tap[side][(int) o] += (float) (this.gain(o) * this.sample(own, o));
+			for (long o = first; o < last; o++) {
+				block[side][(int) (o - from)] += (float) (this.gain(o) * this.sample(own, o));
 			}
 		}
 	}
@@ -141,10 +144,19 @@ final class TGTakePiece {
 		if (this.input) {
 			return this.source[side][(int) o];
 		}
-		if (this.audio != null && o >= this.start && o < this.end) {
-			return this.audio[side][(int) (o - this.start)];
+		float[][] audio = this.audio();
+		if (audio != null && o >= this.start && o < this.end) {
+			return audio[side][(int) (o - this.start)];
 		}
 		return this.takeSample(this.source[side], o);
+	}
+
+	private float[][] audio() {
+		if (this.stretch != null) {
+			this.audio = this.stretch.get();
+			this.stretch = null;
+		}
+		return this.audio;
 	}
 
 	// the take's own sample there, counted from where it starts or stops; silence outside the take

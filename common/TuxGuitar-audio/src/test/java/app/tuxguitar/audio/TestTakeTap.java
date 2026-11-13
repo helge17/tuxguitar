@@ -461,6 +461,46 @@ public class TestTakeTap {
 		assertSamples(new double[] {0.5, 0.5}, tap[1], 0, 4 * M - 1);
 	}
 
+	private TGTakeTap takesOf(TGTimeline timeline) {
+		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
+		Arrays.fill(sources, TGTrackSource.TAKES);
+		return TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, null);
+	}
+
+	// live, the tap is rendered a block at a time, from the sample of the timeline a block starts on (silence before
+	// the timeline): the same samples as rendered whole, crossfades included
+	@Test
+	public void renderedABlockAtATimeTheTapIsTheSameAsRenderedWhole() {
+		clips(take(1, 4 * M, 1, 0.5f), 1, 4);
+		clip(take(2, M, 0.25f), 2, 0, BAR / 2, 0);
+		TGTimeline timeline = wholeSong(100);
+		float[][] whole = sides(timeline);
+		TGTakeTap tap = takesOf(timeline);
+		float[][] blocks = new float[2][whole[0].length];
+		float[][] first = new float[2][TGBlocks.FRAMES];
+		tap.render(first, -300);
+		for (long from = -300; from < whole[0].length; from += TGBlocks.FRAMES) {
+			float[][] block = new float[2][TGBlocks.FRAMES];
+			tap.render(block, from);
+			TGBlocks.place(block, blocks, from);
+		}
+		assertArrayEquals(new float[300], Arrays.copyOf(first[0], 300));
+		assertEquals(1f, first[0][300], 0f);
+		assertArrayEquals(whole[0], blocks[0]);
+		assertArrayEquals(whole[1], blocks[1]);
+	}
+
+	// a stretch is made when a block first reaches it, not before
+	@Test
+	public void aStretchIsMadeWhenABlockFirstReachesIt() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(wholeSong(50));
+		String before = stretches.toString();
+		tap.render(new float[2][TGBlocks.FRAMES], 0);
+		tap.render(new float[2][TGBlocks.FRAMES], TGBlocks.FRAMES);
+		assertEquals("[] [0-88200:176400]", before + " " + stretches);
+	}
+
 	// playing stops at measure 1 beat 3, where take 2 ends over take 1: the tap ends at full level
 	@Test
 	public void whereThePlayingStopsNothingFades() {

@@ -37,6 +37,23 @@ Feature: Keeping audio in sync
       | 512      | 0            | 2048     |
       | 0        | 0            | 30000    |
 
+  # live: on the audio device's clock, through the native backend; a time-stretched click is no longer one sample
+  Scenario Outline: live, a take reaches the output with the other tracks, whatever their latencies
+    Given I have set the Percentage of Tempo to <percent>
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to <effect 1>
+    And I have added the VST3 effect "Test Latency" to track 2
+    And I have set "Latency" of VST3 effect 1 of track 2 to <effect 2>
+    When I play the song live from <from>
+    Then the output's right side holds <clicks> clicks, each within <within> samples of a click on its left side
+
+    Examples:
+      | percent | effect 1 | effect 2 | from             | clicks | within |
+      | 100     | 0        | 0        | measure 1 beat 1 | 16     | 1      |
+      | 100     | 0        | 1024     | measure 1 beat 1 | 16     | 1      |
+      | 100     | 2048     | 512      | measure 3 beat 2 | 7      | 1      |
+      | 80      | 0        | 1024     | measure 1 beat 1 | 16     | 220    |
+
   Scenario: disabling a delaying VST3 effect keeps the tracks together
     Given I have added the VST3 effect "Test Latency" to track 2
     And I have set "Latency" of VST3 effect 1 of track 2 to 2048
