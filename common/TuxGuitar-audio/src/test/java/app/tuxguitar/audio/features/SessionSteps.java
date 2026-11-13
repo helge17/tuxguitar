@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import app.tuxguitar.audio.LiveOutput;
 import app.tuxguitar.audio.TGAudioDevice;
 import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.player.base.MidiOutputPort;
@@ -23,21 +24,25 @@ import io.cucumber.java.en.Then;
 public class SessionSteps {
 
 	private final AudioWorld world;
-	private boolean portsListed;
+	// the scenario's MIDI Ports, once listed to the player
+	private List<MidiOutputPort> ports;
 	private final Map<String, TGAudioDevice> devices = new HashMap<String, TGAudioDevice>();
 
 	public SessionSteps(AudioWorld world) {
 		this.world = world;
 	}
 
-	// a MIDI Port that plays nothing: only which one is open matters to the audio features
+	// a MIDI Port: the TuxGuitar Synthesizer's plays live on a synthesizer of the scenario's (see LiveOutput), what the
+	// player plays outside the song (a note entered); the other plays nothing. Which one is open matters to the rest
 	private static class TestPort implements MidiOutputPort {
 		private final String key;
 		private final String name;
+		private final MidiSynthesizer synthesizer;
 
-		TestPort(String key, String name) {
+		TestPort(String key, String name, MidiSynthesizer synthesizer) {
 			this.key = key;
 			this.name = name;
+			this.synthesizer = synthesizer;
 		}
 
 		public String getKey() { return this.key; }
@@ -45,24 +50,26 @@ public class SessionSteps {
 		public void open() { }
 		public void close() { }
 		public void check() { }
-		public MidiSynthesizer getSynthesizer() { return null; }
+		public MidiSynthesizer getSynthesizer() { return this.synthesizer; }
 	}
 
-	private static final List<MidiOutputPort> PORTS = Arrays.<MidiOutputPort>asList(
-		new TestPort(TGAudioSession.SYNTHESIZER_PORT_KEY, "TuxGuitar Synthesizer"),
-		new TestPort("test-midi-out", "Test MIDI Out"));
+	private List<MidiOutputPort> ports() {
+		return Arrays.<MidiOutputPort>asList(
+			new TestPort(TGAudioSession.SYNTHESIZER_PORT_KEY, "TuxGuitar Synthesizer", LiveOutput.synthesizer(world.fixture().context, TestInterface.SAMPLE_RATE)),
+			new TestPort("test-midi-out", "Test MIDI Out", null));
+	}
 
 	@Given("I have set the MIDI Port to {string}")
 	public void setTheMidiPort(String name) throws MidiPlayerException {
 		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
-		if (!portsListed) {
+		if (this.ports == null) {
+			List<MidiOutputPort> listed = this.ports = ports();
 			player.addOutputPortProvider(new MidiOutputPortProvider() {
-				public List<MidiOutputPort> listPorts() { return PORTS; }
+				public List<MidiOutputPort> listPorts() { return listed; }
 				public void closeAll() { }
 			});
-			portsListed = true;
 		}
-		player.openOutputPort(PORTS.stream().filter(port -> port.getName().equals(name)).findFirst().get().getKey());
+		player.openOutputPort(this.ports.stream().filter(port -> port.getName().equals(name)).findFirst().get().getKey());
 	}
 
 	@Given("I have set the audio device to {string}")

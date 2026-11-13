@@ -26,6 +26,8 @@ import app.tuxguitar.editor.action.track.TGAddNewTrackAction;
 import app.tuxguitar.editor.action.track.TGSetTrackChannelAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.audio.TGAudioSaving;
+import app.tuxguitar.audio.TGNoteEntry;
+import app.tuxguitar.thread.TGThreadManager;
 import app.tuxguitar.audio.TGAudioSession;
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.editor.action.file.TGLoadSongAction;
@@ -97,6 +99,7 @@ public class AudioWorld {
 	private final TGUndoableBuffer undoHistory = new TGUndoableBuffer();
 	private final TestInterface device = new TestInterface();
 	private final ReportingEffects reporting = new ReportingEffects();
+	private final KeptThreads threads = new KeptThreads();
 	private final Map<String, float[]> takeSamples = new HashMap<String, float[]>();
 	private SongPosition playedClick;
 	// the file exported last, as read back, on the timeline it follows
@@ -114,6 +117,9 @@ public class AudioWorld {
 			new TGUpdateChannelAction(this.fixture.context), new TGWriteSongAction(this.fixture.context),
 			new TGReadSongAction(this.fixture.context), new TGLoadSongAction(this.fixture.context));
 		TGAudioSaving.install(this.fixture.context);
+		// as the app sounds a note entered (the threads the player starts for it are kept until a step runs them)
+		TGNoteEntry.install(this.fixture.context);
+		TGThreadManager.getInstance(this.fixture.context).setThreadHandler(this.threads);
 		// a gesture in a plugin's editor changes the song by an action the module runs: the app maps it, undoable
 		this.fixture.map(new TGSetPluginStateAction(this.fixture.context));
 		UndoableActions.install(this.fixture.context, TGSetPluginStateAction.NAME, new TGUndoableOnSuccess(new TGUndoableModifyChannelController()));
@@ -143,6 +149,11 @@ public class AudioWorld {
 
 	public SongActionFixture fixture() {
 		return this.fixture;
+	}
+
+	// the threads TuxGuitar started, not run yet
+	KeptThreads threads() {
+		return this.threads;
 	}
 
 	// the document's song: the one opened last

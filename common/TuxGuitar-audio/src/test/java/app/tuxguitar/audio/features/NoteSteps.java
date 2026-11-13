@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.effect.TGChangeBendNoteAction;
@@ -41,6 +42,7 @@ public class NoteSteps {
 	// no strings and no beats), then the fret typed there
 	@When("I enter fret {int} on string {int}")
 	public void enterFret(int fret, int string) {
+		caretOnABeat();
 		enterFret(fret, string, TGVelocities.DEFAULT);
 	}
 
@@ -52,12 +54,17 @@ public class NoteSteps {
 
 	@Given("I have entered fret {int} on string {int} at dynamic {word}")
 	public void haveEnteredFret(int fret, int string, String dynamic) {
-		caretTrack = (caretTrack != null ? caretTrack : world.track(1));
-		if (caretTrack.getMeasure(0).countBeats() == 0) {
-			world.fixture().beat(caretTrack.getMeasure(0), 0);
-		}
+		caretOnABeat();
 		enterFret(fret, string, DYNAMICS.get(dynamic));
 		assertTrue(world.succeeded());
+	}
+
+	// the caret on track 1 unless it was moved; the first measure of a track with strings has a beat to enter on, as
+	// the editor shows an empty measure with a rest
+	private void caretOnABeat() {
+		caretTrack = (caretTrack != null ? caretTrack : world.track(1));
+		Optional.of(caretTrack.getMeasure(0)).filter(measure -> measure.getTrack().stringCount() > 0)
+			.filter(measure -> measure.countBeats() == 0).ifPresent(measure -> world.fixture().beat(measure, 0));
 	}
 
 	// the bend editor's "Bend" preset: up a full bend (4 quarter tones, a whole tone) from the note's start to its middle,

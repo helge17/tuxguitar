@@ -249,7 +249,6 @@ Feature: Hosting VST3 plugins
       | choose the VST3 instrument "Test Gain" for track 1 |
       | add the VST3 effect "Test Sine" to track 1         |
 
-  @planned
   Scenario: entering a note sounds it through the VST3 instrument
     Given I have chosen the VST3 instrument "Test Sine" for track 1
     When I enter fret 5 on string 1
