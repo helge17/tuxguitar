@@ -1,0 +1,2 @@
+# the native build (CMake): the PortAudio and ASIO SDK downloads and the JNI library
+/native-build/

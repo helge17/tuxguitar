@@ -104,6 +104,9 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **A native audio backend** replaces Java Sound for the TuxGuitar Synthesizer. It opens the audio device chosen in
   TuxGuitar's settings at the device's sample rate, opens its input channels one by one, and reports the device's input
   and output latency. The audio between processors is 32-bit float, so a sound chain has room above full scale.
+  The backend is `common/TuxGuitar-audio-device`, a JNI library over PortAudio (MIT-style licence) with ASIO, WASAPI,
+  DirectSound and MME on Windows. The ASIO SDK is used under its GPLv3 option: builds with ASIO are distributed under
+  GPLv3 (that module's README; a build configured without ASIO is not).
 - **The sound chain is today's synthesizer program** (`TGProgram`: a MIDI receiver followed by audio processors,
   each enabled or disabled, moved up or down). VST3 effects and instruments are new processor types next to LV2's;
   LV2 entries appear in the readings and the numbering like VST3 ones. When the source is a General MIDI program it

@@ -1,0 +1,2 @@
+native/build.cmd text eol=crlf
+native/build.sh text eol=lf
