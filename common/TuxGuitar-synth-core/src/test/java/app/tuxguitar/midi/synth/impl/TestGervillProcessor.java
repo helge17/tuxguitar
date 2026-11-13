@@ -3,6 +3,7 @@ package app.tuxguitar.midi.synth.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -100,7 +101,7 @@ public class TestGervillProcessor {
 		return left;
 	}
 
-	private static double peak(float[] samples) {
+	static double peak(float[] samples) {
 		double peak = 0;
 		for (float sample : samples) {
 			peak = Math.max(peak, Math.abs(sample));
@@ -130,6 +131,13 @@ public class TestGervillProcessor {
 			}
 		}
 		return strongest;
+	}
+
+	// a timed note is a MIDI message: no key above 127
+	@Test
+	public void refusesATimedNoteOutsideMidi() throws InterruptedException {
+		GervillProcessor processor = loaded("0:0", null);
+		assertThrows(IllegalArgumentException.class, () -> processor.sendNoteOnAt(128, 95, 0));
 	}
 
 	@Test
@@ -173,6 +181,16 @@ public class TestGervillProcessor {
 		GervillProcessor processor = loaded("0:80", null);
 		processor.sendPitchBend(127, 0, false);
 		processor.sendNoteOn(69, 127, 0, false);
+		render(processor, 4);
+		assertEquals(494, strongestFrequency(render(processor, 8)), 10);
+	}
+
+	// on the MIDI channel untimed notes of no voice play on: bent as they are
+	@Test
+	public void aTimedNoteIsBentAsAnUntimedOne() throws InterruptedException {
+		GervillProcessor processor = loaded("0:80", null);
+		processor.sendPitchBend(127, -1, false);
+		processor.sendNoteOnAt(69, 127, 0);
 		render(processor, 4);
 		assertEquals(494, strongestFrequency(render(processor, 8)), 10);
 	}

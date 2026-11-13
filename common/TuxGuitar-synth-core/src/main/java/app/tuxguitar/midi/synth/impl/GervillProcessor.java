@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sound.midi.Instrument;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.Patch;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
@@ -177,6 +179,27 @@ public class GervillProcessor implements TGMidiProcessor {
 
 	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) {
 		this.synth.getChannels()[resolveChannel(voice, bendMode)].noteOff(key, velocity);
+	}
+
+	// the note reaches the instrument on a frame of the stream (counted from where its instrument loaded), when sent
+	// before Gervill renders that frame: Gervill renders a control period (under 512 frames) ahead of what was read,
+	// so a note sent a block ahead is on time
+	public void sendNoteOnAt(int key, int velocity, long frame) {
+		this.sendAt(ShortMessage.NOTE_ON, key, velocity, frame);
+	}
+
+	// the note is released at the start of the control period that holds the frame
+	public void sendNoteOffAt(int key, int velocity, long frame) {
+		this.sendAt(ShortMessage.NOTE_OFF, key, velocity, frame);
+	}
+
+	// Gervill times a message in microseconds of its stream, and starts a note on the frame nearest to it
+	private void sendAt(int command, int key, int velocity, long frame) {
+		try {
+			this.receiver.send(new ShortMessage(command, 0, key, velocity), Math.round(frame * 1000000.0 / this.format.getSampleRate()));
+		} catch (InvalidMidiDataException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	public void sendPitchBend(int value, int voice, boolean bendMode) {
