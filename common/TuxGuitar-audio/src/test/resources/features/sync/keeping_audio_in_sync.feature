@@ -178,10 +178,9 @@ Feature: Keeping audio in sync
     When I play the song from measure 2 beat 1 for 2 passes
     Then the echo of the click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample
 
-  @planned
   Scenario: a tail carries across a repeat
-    Given I have repeated measures 2 to 3 once
-    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
+    Given track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
+    And I have repeated measures 2 to 3 once
     And I have added the VST3 effect "Test Echo" to track 2
     When I play the song from measure 1 beat 1
     Then the echo of the first pass's click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample
