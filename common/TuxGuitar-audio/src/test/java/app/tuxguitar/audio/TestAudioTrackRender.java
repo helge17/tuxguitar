@@ -68,15 +68,16 @@ public class TestAudioTrackRender {
 		return new TGTimeline(song, TGSongTime.play(song, new MidiPlayerMode(), song.getMeasureHeader(0).getStart(), Long.MAX_VALUE, 1), 44100);
 	}
 
-	// an armed track monitoring Always sounds its input when playing; an export holds its takes instead
+	// an armed track monitoring Always sounds its input when playing; an export holds its takes instead (and, without
+	// effects, no tail)
 	@Test
 	public void anExportLeavesOutTheInputOfAnArmedTrack() throws MidiPlayerException {
 		TGAudioSession.getInstance(this.context).arm(track);
 		TGAudioSession.getInstance(this.context).setMonitoring(track, TGMonitoring.ALWAYS);
 		float played = render().getTap(track)[1000];
-		float exported = this.renderer().export(this.timeline()).getTap(track)[1000];
+		TGRender exported = this.renderer().export(this.timeline());
 
-		assertEquals("0.75 1.0", played + " " + exported);
+		assertEquals("0.75 1.0 0", played + " " + exported.getTap(track)[1000] + " " + exported.getTail());
 	}
 
 	@Test
@@ -97,9 +98,10 @@ public class TestAudioTrackRender {
 	// with another MIDI Port nothing sounds here: a tap that sounded nothing is silence as long as the render
 	@Test
 	public void aChannelThatSoundedNothingHasASilentTapAsLongAsTheRender() throws MidiPlayerException {
-		float[] tap = render(false).getTap(track, 1);
+		TGRender render = render(false);
+		float[] tap = render.getTap(track, 1);
 
-		assertEquals(88200, tap.length);
+		assertEquals("88200 0", tap.length + " " + render.getTail());
 		assertEquals(0, Meters.peak(tap, 0, tap.length));
 	}
 }

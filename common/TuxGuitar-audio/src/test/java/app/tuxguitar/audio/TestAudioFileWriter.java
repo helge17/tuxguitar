@@ -21,21 +21,25 @@ public class TestAudioFileWriter {
 	private static final float[][] CLIPPED = {{0.5f, -0.25f, 1f, 0f}, {-0.5f, 0.125f, -1f, 1f}};
 
 	// the file read back is of the format, and holds the samples within the step of its integers
-	private static void assertWritten(String format, Type type, int sampleRate, Samples samples, float[][] expected, float within) throws Exception {
+	private static long assertWritten(String format, Type type, int sampleRate, Samples samples, float[][] expected, float within) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		TGAudioFileWriter.write(SAMPLES, new TGExportFormat(type, sampleRate, samples), out);
 		AudioFiles file = AudioFiles.read(out.toByteArray());
 		assertEquals(format, file.describe());
 		assertArrayEquals(expected[0], file.getSamples()[0], within, format);
 		assertArrayEquals(expected[1], file.getSamples()[1], within, format);
+		return file.getFrameLength();
 	}
 
 	@Test
 	public void integerSamplesAreClippedToFullScaleInEachFileType() throws Exception {
-		assertWritten("WAVE 44100 Hz 16 bits PCM_SIGNED", Type.WAVE, 44100, Samples.PCM_16, CLIPPED, 1 / 32767f);
-		assertWritten("WAVE 48000 Hz 24 bits PCM_SIGNED", Type.WAVE, 48000, Samples.PCM_24, CLIPPED, 1 / 8388607f);
-		assertWritten("AIFF 44100 Hz 16 bits PCM_SIGNED", Type.AIFF, 44100, Samples.PCM_16, CLIPPED, 1 / 32767f);
-		assertWritten("AIFF 22050 Hz 24 bits PCM_SIGNED", Type.AIFF, 22050, Samples.PCM_24, CLIPPED, 1 / 8388607f);
+		long[] frames = {
+			assertWritten("WAVE 44100 Hz 16 bits PCM_SIGNED", Type.WAVE, 44100, Samples.PCM_16, CLIPPED, 1 / 32767f),
+			assertWritten("WAVE 48000 Hz 24 bits PCM_SIGNED", Type.WAVE, 48000, Samples.PCM_24, CLIPPED, 1 / 8388607f),
+			assertWritten("AIFF 44100 Hz 16 bits PCM_SIGNED", Type.AIFF, 44100, Samples.PCM_16, CLIPPED, 1 / 32767f),
+			assertWritten("AIFF 22050 Hz 24 bits PCM_SIGNED", Type.AIFF, 22050, Samples.PCM_24, CLIPPED, 1 / 8388607f)};
+		// each header says how many frames the file holds
+		assertArrayEquals(new long[] {4, 4, 4, 4}, frames);
 	}
 
 	@Test

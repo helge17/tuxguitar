@@ -8,7 +8,8 @@ Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks
 `recording/recording_line_in`, `plugins/hosting_vst3_plugins` and `sync/keeping_audio_in_sync`, but for the scenarios
 still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
 round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
-helper processes, and plugin delay compensation. Saving (file format 3.0) and export are not implemented yet.
+helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module; the
+desktop export dialog does not call it yet). Saving (file format 3.0) is not implemented yet.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
@@ -129,7 +130,8 @@ These features change how TuxGuitar works today. They are requirements, not side
   (as today: WAVE, AIFF, AU) and File Encoding; 32-bit float is the PCM_FLOAT encoding it offers today. Takes recorded at
   another sample rate are resampled. Exporting always renders through the TuxGuitar Synthesizer, whatever the MIDI
   Port. The file runs on for the longest tail of an effect or a VST3 instrument that is heard; tails of muted or
-  left-out tracks and of disabled effects do not count.
+  left-out tracks and of disabled effects do not count. Along one sound chain the tails add up (an echo of an echo rings
+  for both); an endless tail counts as 10 seconds.
 
 ## Rules every feature relies on
 

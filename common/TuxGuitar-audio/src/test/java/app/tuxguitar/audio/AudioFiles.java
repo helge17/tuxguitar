@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,15 +20,19 @@ public final class AudioFiles {
 	private final String type;
 	private final AudioFormat format;
 	private final float[][] samples;
+	private final long frames;
 
-	private AudioFiles(String type, AudioFormat format, float[][] samples) {
+	private AudioFiles(String type, AudioFormat format, float[][] samples, long frames) {
 		this.type = type;
 		this.format = format;
 		this.samples = samples;
+		this.frames = frames;
 	}
 
 	public static AudioFiles read(byte[] file) throws IOException, UnsupportedAudioFileException {
-		String type = AudioSystem.getAudioFileFormat(new ByteArrayInputStream(file)).getType().toString();
+		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(new ByteArrayInputStream(file));
+		String type = fileFormat.getType().toString();
+		long declared = fileFormat.getFrameLength();
 		AudioInputStream stream = AudioSystem.getAudioInputStream(new ByteArrayInputStream(file));
 		AudioFormat format = stream.getFormat();
 		ByteBuffer data = ByteBuffer.wrap(stream.readAllBytes()).order(format.isBigEndian() ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
@@ -38,7 +43,7 @@ public final class AudioFiles {
 				samples[side][frame] = sample(data, format);
 			}
 		}
-		return new AudioFiles(type, format, samples);
+		return new AudioFiles(type, format, samples, declared);
 	}
 
 	private static float sample(ByteBuffer data, AudioFormat format) {
@@ -63,6 +68,11 @@ public final class AudioFiles {
 
 	public int getSampleRate() {
 		return (int) this.format.getSampleRate();
+	}
+
+	// as many frames as its header says (-1 when the reader does not say: Gervill's reader of float WAVE files)
+	public long getFrameLength() {
+		return this.frames;
 	}
 
 	public float[][] getSamples() {

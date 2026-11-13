@@ -40,7 +40,7 @@ public class TestResampler {
 		for (int[] rates : new int[][] {{44100, 48000}, {48000, 44100}}) {
 			float[] resampled = TGResampler.resample(sine(1000, rates[0], rates[0]), rates[0], rates[1])[0];
 			assertEquals(rates[1], resampled.length);
-			assertEquals(0, error(sine(1000, rates[1], rates[1])[0], resampled), 1e-3, rates[0] + " to " + rates[1]);
+			assertEquals(0, error(sine(1000, rates[1], rates[1])[0], resampled), 5e-5, rates[0] + " to " + rates[1]);
 		}
 	}
 
@@ -57,6 +57,14 @@ public class TestResampler {
 		assertEquals("0.0", Float.toString(Meters.peak(resampled[0], 0, 48000)));
 		double ringing = Meters.peak(resampled[1], 0, 48000);
 		assertEquals(true, ringing > 0.01 && ringing < 0.125, "ringing " + ringing);
+	}
+
+	// going down to 22050 Hz, a 15 kHz tone (above the new Nyquist frequency, 11025 Hz) is filtered out rather than
+	// folded back to 7050 Hz
+	@Test
+	public void aToneAboveTheNewNyquistFrequencyDoesNotAlias() {
+		float[] resampled = TGResampler.resample(sine(15000, 48000, 48000), 48000, 22050)[0];
+		assertEquals(0, Meters.peak(resampled, 200, resampled.length - 200), 0.005);
 	}
 
 	// a constant level passes unchanged, up to the edges
