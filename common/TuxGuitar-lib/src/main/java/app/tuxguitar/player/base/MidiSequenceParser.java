@@ -49,6 +49,7 @@ public class MidiSequenceParser {
 	// a bend point's value counts quarter tones
 	private static final double BEND_PER_SEMITONE = 2.0 * TGEffectBend.SEMITONE_LENGTH;
 	private static final double VIBRATO_SEMITONES = 0.25;
+	private static final int NO_METRONOME_CHANNEL = -1;
 
 	private TGSong song;
 	private TGSongManager songManager;
@@ -358,9 +359,10 @@ public class MidiSequenceParser {
 		sh.getSequence().addTrackName(tick,trackNum,track.getName());
 	}
 
+	// on the Metronome's channel, unless that is -1 (none): a song channel, or a synthesizer's drums (MidiSampleClock.DRUMS)
 	public void addMetronome(MidiSequenceHelper sh,TGMeasureHeader header, long startMove){
 		if( (this.flags & ADD_METRONOME) != 0) {
-			if( this.metronomeChannelId >= 0 ){
+			if( this.metronomeChannelId != NO_METRONOME_CHANNEL ){
 				long start = (startMove + header.getStart());
 				long length = header.getTimeSignature().getDenominator().getTime();
 				for(int i = 1; i <= header.getTimeSignature().getNumerator();i ++){

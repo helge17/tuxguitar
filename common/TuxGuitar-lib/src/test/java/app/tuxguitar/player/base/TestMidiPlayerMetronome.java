@@ -41,10 +41,19 @@ public class TestMidiPlayerMetronome {
 		return clicks.size() + (clicks.isEmpty() ? "" : " | " + clicks.get(0) + " | " + clicks.get(clicks.size() - 1));
 	}
 
-	// plays on a synthesizer with a sample clock (the TuxGuitar Synthesizer's): the clicks, as clicks() writes them
-	private String clicksOnASampleClock() throws MidiPlayerException {
-		player.getSynthesizerProxy().setMidiSynthesizer(new ClockedSynthesizer(new ArrayList<String>()));
+	// what the synthesizer's channels were sent
+	private final List<String> received = new ArrayList<String>();
+
+	// plays on a synthesizer with a sample clock, with General MIDI drums of its own (the TuxGuitar Synthesizer) or
+	// without: the clicks, as clicks() writes them
+	private String clicksOnASampleClock(boolean drums) throws MidiPlayerException {
+		player.getSynthesizerProxy().setMidiSynthesizer(new ClockedSynthesizer(received, drums));
 		return clicks();
+	}
+
+	// what the clock's drums channel was sent
+	private List<String> drums() {
+		return received.stream().filter(line -> line.startsWith(MidiSampleClock.DRUMS + " ")).collect(Collectors.toList());
 	}
 
 	// a MIDI Port without a sample clock (one that sends MIDI out): on the song's percussion channel
@@ -60,18 +69,49 @@ public class TestMidiPlayerMetronome {
 		assertEquals("0", clicks());
 	}
 
-	// today's: on the TuxGuitar Synthesizer's sample clock, on the song's percussion channel (its sound chain)
+	// on a sample clock without drums of its own, as on a port without one (the TuxGuitar Synthesizer's before it had
+	// drums): on the song's percussion channel (its sound chain); on the TuxGuitar Synthesizer's clock, on its own drums,
+	// outside every sound chain
 	@Test
-	public void onASampleClockTheMetronomeClicksOnThePercussionChannel() throws MidiPlayerException {
+	public void onASampleClockTheMetronomeClicksOnItsDrumsWhenItHasThem() throws MidiPlayerException {
 		withPercussion();
 
-		assertEquals("16 | on 960 c0 k37 v95 | on 15360 c0 k37 v95", clicksOnASampleClock());
+		assertEquals("16 | on 960 c0 k37 v95 | on 15360 c0 k37 v95 / 16 | on 960 c-2 k37 v95 | on 15360 c-2 k37 v95",
+				clicksOnASampleClock(false) + " / " + clicksOnASampleClock(true));
 	}
 
-	// today's: on the TuxGuitar Synthesizer's sample clock, no click without a percussion channel
 	@Test
-	public void onASampleClockTheMetronomeDoesNotClickWithoutAPercussionChannel() throws MidiPlayerException {
-		assertEquals("0", clicksOnASampleClock());
+	public void onASampleClockWithoutDrumsTheMetronomeDoesNotClickWithoutAPercussionChannel() throws MidiPlayerException {
+		assertEquals("0 | []", clicksOnASampleClock(false) + " | " + drums());
+	}
+
+	// with drums, percussion channel or not
+	@Test
+	public void onASampleClockWithDrumsTheMetronomeClicksWithoutAPercussionChannel() throws MidiPlayerException {
+		assertEquals("16 | on 960 c-2 k37 v95 | on 15360 c-2 k37 v95", clicksOnASampleClock(true));
+	}
+
+	// the drums open when playing starts, at the percussion channel's Volume and Balance (scaled by the player's volume,
+	// as every channel's), and close with the channels
+	@Test
+	public void theDrumsPlayAtThePercussionChannelsVolumeAndBalance() throws MidiPlayerException {
+		withPercussion();
+		fixture.song.getChannel(fixture.song.countChannels() - 1).setVolume((short) 100);
+		fixture.song.getChannel(fixture.song.countChannels() - 1).setBalance((short) 20);
+		player.setVolume(5);
+		clicksOnASampleClock(true);
+		player.closeChannels();
+
+		assertEquals("[-2 opened, -2 cc 7 50, -2 cc 10 20, -2 closed]", drums().toString());
+	}
+
+	// a new channel's, 127 and 64, without a percussion channel; playing again keeps the drums open
+	@Test
+	public void withoutAPercussionChannelTheDrumsPlayAtFullVolumeInTheCentre() throws MidiPlayerException {
+		clicksOnASampleClock(true);
+		player.play();
+
+		assertEquals("[-2 opened, -2 cc 7 127, -2 cc 10 64, -2 cc 7 127, -2 cc 10 64]", drums().toString());
 	}
 
 	@Test

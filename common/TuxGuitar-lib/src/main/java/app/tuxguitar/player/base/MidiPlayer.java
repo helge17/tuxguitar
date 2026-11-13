@@ -52,6 +52,8 @@ public class MidiPlayer{
 	private boolean metronomeEnabled;
 	private MidiClick click = MidiClick.DEFAULT;
 	private int metronomeTrack;
+	// the synthesizer's drums while open (see updateDrums)
+	private MidiChannel drums;
 	private int infoTrack;
 	private int loopSHeader;
 	private int loopEHeader;
@@ -561,7 +563,7 @@ public class MidiPlayer{
 				midiSequenceParser.setSHeader( getLoopSHeader() );
 				midiSequenceParser.setEHeader( getLoopEHeader() );
 			}
-			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
+			midiSequenceParser.setMetronomeChannelId(this.getMetronomeChannelId());
 			midiSequenceParser.setMetronomeClick(getClick());
 			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
 			this.tempoMap = midiSequenceParser.getTempoMap();
@@ -600,8 +602,35 @@ public class MidiPlayer{
 				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
 				this.getChannelRouter().removeMidiChannel(channelId);
 			}
+			if( this.drums != null ){
+				this.getSynthesizerProxy().closeChannel(this.drums);
+				this.drums = null;
+			}
 		} finally {
 			this.unlock();
+		}
+	}
+
+	// where the Metronome clicks: on the drums of a synthesizer's sample clock that has them (the TuxGuitar
+	// Synthesizer's, outside every sound chain), else on the song's percussion channel (-1, none, without one)
+	private int getMetronomeChannelId() {
+		return (this.hasDrums() ? MidiSampleClock.DRUMS : this.getPercussionChannelId());
+	}
+
+	private boolean hasDrums() {
+		MidiSampleClock clock = this.getSampleClock();
+		return (clock != null && clock.hasDrums());
+	}
+
+	// a synthesizer's drums, opened once, play at the percussion channel's Volume and Balance as the channel would (a
+	// new channel's without one)
+	private void updateDrums() throws MidiPlayerException {
+		if( this.hasDrums() ){
+			this.drums = (this.drums != null ? this.drums : this.getSynthesizerProxy().openChannel(MidiSampleClock.DRUMS));
+			TGChannel percussion = this.getSongManager().getPercussionChannel(this.getSong());
+			TGChannel levels = (percussion != null ? percussion : this.getSongManager().getFactory().newChannel());
+			this.drums.sendControlChange(MidiControllers.VOLUME, (int)((this.getVolume() / 10.00) * levels.getVolume()));
+			this.drums.sendControlChange(MidiControllers.BALANCE, levels.getBalance());
 		}
 	}
 
@@ -611,6 +640,7 @@ public class MidiPlayer{
 
 			this.removeUnusedChannels();
 			this.openMissingChannels();
+			this.updateDrums();
 
 			// Update channels
 			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
