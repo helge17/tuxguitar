@@ -57,6 +57,33 @@ public final class TGRenderer {
 		return this.render(timeline, new MidiPlayerMode(), false, true, false);
 	}
 
+	// what TuxGuitar sounds while stopped as the audio device delivers count more samples (their input meters follow
+	// it, see TGAudioSession.listen): each armed audio track monitored Auto or Always sounds its input through the
+	// effects of its sound chain; nothing else sounds
+	public TGRender listen(int count) {
+		long clock = this.session.listen(this.songManager, this.song, count);
+		TGTimeline stopped = TGTimeline.stopped(this.session.getDevice().getSampleRate(), clock, count);
+		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
+		Map<Integer, Integer> tails = new HashMap<Integer, Integer>();
+		for (TGTrack track : this.audioTracks()) {
+			if (this.session.isArmed(track) && this.session.getMonitoring(track) != TGMonitoring.OFF) {
+				TGEffects effects = TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), stopped.getSampleRate());
+				TGTap tap = effects.process(sides(this.input(track, stopped, 0)), stopped);
+				effects.close();
+				taps.put(track.getChannelId(), tap.getSamples());
+				tails.put(track.getChannelId(), tap.getTail());
+			}
+		}
+		float[][] drums = new float[2][count];
+		float[][] output = new float[2][count];
+		return new TGRender(stopped, taps, drums, output, 0, this.mix(taps, tails, drums, output));
+	}
+
+	// a tap's left and right sides: a mono input sounds on both
+	private static float[][] sides(float[][] input) {
+		return (input.length == 1 ? new float[][] {input[0], input[0]} : input);
+	}
+
 	private TGRender render(TGTimeline timeline, MidiPlayerMode mode, boolean recording, boolean synthesizer, boolean live) throws MidiPlayerException {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
 		Map<Integer, Integer> tails = new HashMap<Integer, Integer>();

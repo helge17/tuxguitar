@@ -296,7 +296,6 @@ Feature: Recording line-in audio
     Then the output holds no 440 Hz tone above -60 dBFS
     And take 1 of track 2 holds a 440 Hz tone peaking at 0.4 within 0.01
 
-  @planned
   Scenario: with monitoring on Auto I hear the input through the sound chain while stopped
     Given I have added the VST3 effect "Test Gain" to track 2
     And I have armed track 2

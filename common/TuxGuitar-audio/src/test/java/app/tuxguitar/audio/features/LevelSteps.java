@@ -47,8 +47,20 @@ public class LevelSteps {
 	}
 
 	private void assertTone(float[] samples, int frequency, float level, float within, int measure) {
-		assertEquals(frequency, frequency(samples, measure), frequency / 100.0);
-		assertEquals(level, peak(samples, measure), within);
+		int[] bounds = heard().measure(measure);
+		assertTone(samples, frequency, level, within, bounds[0], bounds[1]);
+	}
+
+	private static void assertTone(float[] samples, int frequency, float level, float within, int from, int to) {
+		assertEquals(frequency, Meters.frequency(samples, from, to, TestInterface.SAMPLE_RATE), frequency / 100.0);
+		assertEquals(level, Meters.peak(samples, from, to), within);
+	}
+
+	// over all that was heard (while stopped: all the input delivered)
+	@Then("track {int} sounds a {int} Hz tone peaking at {float} within {float}")
+	public void soundsATonePeakingAtThroughout(int number, int frequency, float level, float within) {
+		float[] tap = tap(number, 0);
+		assertTone(tap, frequency, level, within, 0, tap.length);
 	}
 
 	@Then("track {int} sounds a {int} Hz tone peaking at {float} within {float} in measure {int}")
@@ -67,8 +79,7 @@ public class LevelSteps {
 		float[] tap = tap(number, 0);
 		int from = heard().measure(first)[0];
 		int to = heard().measure(last)[1];
-		assertEquals(frequency, Meters.frequency(tap, from, to, TestInterface.SAMPLE_RATE), frequency / 100.0);
-		assertEquals(level, Meters.peak(tap, from, to), within);
+		assertTone(tap, frequency, level, within, from, to);
 		assertTrue(Meters.level(tap, from, to, silent, TestInterface.SAMPLE_RATE) < SILENT);
 	}
 

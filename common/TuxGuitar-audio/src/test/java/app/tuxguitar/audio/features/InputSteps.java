@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 
 import app.tuxguitar.audio.TGInputMeter;
+import app.tuxguitar.audio.TGRenderer;
+import app.tuxguitar.audio.action.TGPlayAction;
 import app.tuxguitar.audio.action.TGAddAudioTrackAction;
 import app.tuxguitar.audio.action.TGResetClipIndicatorAction;
 import app.tuxguitar.audio.action.TGSetInputChannelsAction;
@@ -65,10 +67,12 @@ public class InputSteps {
 		assertEquals(left + " and " + right, input.getChannel(0) + " and " + input.getChannel(1));
 	}
 
-	// the device's clock runs while TuxGuitar is stopped: the input delivers that many seconds of its signal
+	// the device's clock runs while TuxGuitar is stopped: the input delivers that many seconds of its signal, and what
+	// TuxGuitar sounds meanwhile is kept for the listening steps
 	@When("the input has delivered {int} second(s)")
 	public void theInputHasDelivered(int seconds) {
-		world.session().listen(world.fixture().songManager, world.song(), seconds * world.device().getSampleRate());
+		TGRenderer renderer = new TGRenderer(world.fixture().context, world.fixture().songManager, world.song(), world.session());
+		world.fixture().actionContext.setAttribute(TGPlayAction.ATTRIBUTE_RENDER, renderer.listen(seconds * world.device().getSampleRate()));
 	}
 
 	private TGInputMeter meter(int number) {

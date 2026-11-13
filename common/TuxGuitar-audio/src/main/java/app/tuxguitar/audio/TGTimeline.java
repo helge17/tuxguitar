@@ -46,6 +46,11 @@ public final class TGTimeline {
 		}
 	}
 
+	// TuxGuitar stopped while the audio device's clock runs the samples from the clock: no measure plays
+	public static TGTimeline stopped(int sampleRate, long clock, long samples) {
+		return new TGTimeline(new ArrayList<TGPlayedMeasure>(), sampleRate, TGCountIn.NONE, clock, samples);
+	}
+
 	// the device's clock where the first measure played starts: the measures before it, whole, and its beats before
 	// where playing starts, at its tempo
 	private static long clockAt(TGSong song, TGPlayedMeasure first, int sampleRate) {
