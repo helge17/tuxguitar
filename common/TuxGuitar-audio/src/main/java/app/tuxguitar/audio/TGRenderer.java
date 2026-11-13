@@ -88,6 +88,7 @@ public final class TGRenderer {
 		Map<Integer, float[][]> taps = new HashMap<Integer, float[][]>();
 		Map<Integer, Integer> tails = new HashMap<Integer, Integer>();
 		float[][] drums = new float[2][(int) timeline.length()];
+		TGMetronome metronome = TGMetronome.NONE;
 		float[][] output = new float[2][(int) timeline.length()];
 		int latency = 0;
 		int tail = 0;
@@ -100,7 +101,8 @@ public final class TGRenderer {
 				taps.put(channel, tap.getSamples());
 				tails.put(channel, tap.getTail());
 			});
-			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick());
+			metronome = this.metronome(timeline, live);
+			drums = TGDrumTap.render(this.context, timeline, MidiPlayer.getInstance(this.context).getClick(), metronome);
 			Map<TGTrack, TGEffects> effects = new HashMap<TGTrack, TGEffects>();
 			audioTracks.forEach(track -> effects.put(track, TGEffects.open(this.context, TGSoundChain.get(this.channel(track)), timeline.getSampleRate())));
 			latency = latency(midi.values(), effects.values(), timeline);
@@ -111,7 +113,12 @@ public final class TGRenderer {
 			}
 			tail = this.mix(taps, tails, drums, output);
 		}
-		return new TGRender(timeline, taps, drums, output, latency, tail);
+		return new TGRender(timeline, taps, drums, output, latency, tail, metronome);
+	}
+
+	// the Metronome clicks while playing or recording with it on; an export leaves it out
+	private TGMetronome metronome(TGTimeline timeline, boolean live) {
+		return (live && MidiPlayer.getInstance(this.context).isMetronomeEnabled() ? TGMetronome.of(timeline) : TGMetronome.NONE);
 	}
 
 	private List<TGTrack> audioTracks() {

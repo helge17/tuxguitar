@@ -276,7 +276,6 @@ Feature: Hosting VST3 plugins
     Then track 1 sounds a 440 Hz tone rising to 493.9 Hz within 1 Hz in measure 1
     And track 1 sounds a 329.6 Hz tone that stays within 1 Hz in measure 1
 
-  @planned
   Scenario: the Metronome does not go through a percussion track's VST3 instrument
     Given I have added a percussion track
     And I have chosen the VST3 instrument "Test Sine" for track 2

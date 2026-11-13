@@ -63,6 +63,14 @@ public class LevelSteps {
 		assertTone(tap, frequency, level, within, 0, tap.length);
 	}
 
+	// nothing above -60 dBFS on either side of its tap
+	@Then("track {int} sounds no tone above -60 dBFS")
+	public void soundsNoTone(int number) {
+		float[] left = tap(number, 0);
+		float[] right = tap(number, 1);
+		assertTrue(Math.max(Meters.peak(left, 0, left.length), Meters.peak(right, 0, right.length)) < SILENT);
+	}
+
 	@Then("track {int} sounds a {int} Hz tone peaking at {float} within {float} in measure {int}")
 	public void soundsATonePeakingAt(int number, int frequency, float level, float within, int measure) {
 		assertTone(tap(number, 0), frequency, level, within, measure);

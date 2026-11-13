@@ -38,6 +38,11 @@ final class Heard {
 		return (side == 0 ? this.left() : this.right());
 	}
 
+	// where the Metronome's clicks reach the drums
+	long[] metronome() {
+		return this.render.getMetronome().positions();
+	}
+
 	// a side of the drum tap (0 left, 1 right)
 	float[] drums(int side) {
 		return this.render.getDrums(side);

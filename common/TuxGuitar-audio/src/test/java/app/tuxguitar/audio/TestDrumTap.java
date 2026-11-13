@@ -97,6 +97,19 @@ public class TestDrumTap {
 		assertTrue(Meters.peak(left, 900, 1000) > 0.001);
 	}
 
+	// as many Count In clicks as Metronome clicks (4 each): the drums click both, the Metronome on measure 2's beats
+	@Test
+	public void clicksTheCountInThenTheMetronome() {
+		countDown.setEnabled(true);
+		countDown.setTickCount(4);
+		TGTimeline timeline = fromMeasure2();
+		long[] beats = TGMetronome.of(timeline).positions();
+		float[] left = TGDrumTap.render(context, timeline, MidiClick.DEFAULT, TGMetronome.of(timeline))[0];
+
+		assertEquals(4, beats.length);
+		assertTrue(Meters.peak(left, (int) beats[3], (int) beats[3] + 1000) > 0.001);
+	}
+
 	@Test
 	public void isSilentWithoutACountIn() {
 		float[][] tap = TGDrumTap.render(context, fromMeasure2(), MidiClick.DEFAULT);

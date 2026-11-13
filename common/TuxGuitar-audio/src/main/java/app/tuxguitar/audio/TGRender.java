@@ -21,9 +21,16 @@ public final class TGRender {
 	private final float[][] output;
 	private final int latency;
 	private final int tail;
+	private final TGMetronome metronome;
 
 	// tail: the longest tail of the chains heard
 	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output, int latency, int tail) {
+		this(timeline, taps, drums, output, latency, tail, TGMetronome.NONE);
+	}
+
+	// metronome: the Metronome's clicks on the drum tap
+	public TGRender(TGTimeline timeline, Map<Integer, float[][]> taps, float[][] drums, float[][] output, int latency, int tail, TGMetronome metronome) {
+		this.metronome = metronome;
 		this.timeline = timeline;
 		this.taps = taps;
 		this.drums = drums;
@@ -50,6 +57,11 @@ public final class TGRender {
 	// a side of the drum tap (0 left, 1 right)
 	public float[] getDrums(int side) {
 		return this.drums[side];
+	}
+
+	// the Metronome's clicks it sounded (none with the Metronome off)
+	public TGMetronome getMetronome() {
+		return this.metronome;
 	}
 
 	public int getLatency() {

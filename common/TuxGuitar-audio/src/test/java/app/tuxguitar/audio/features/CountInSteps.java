@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
 import app.tuxguitar.audio.Meters;
 import app.tuxguitar.audio.TGDrumTap;
@@ -92,6 +93,26 @@ public class CountInSteps {
 	}
 
 	// a beat: as far apart as the first two clicks
+	@Then("the output holds {int} Metronome clicks")
+	public void holdsMetronomeClicks(int count) {
+		long[] clicks = heard().metronome();
+		assertEquals(count, clicks.length, Arrays.toString(clicks));
+		assertEachSounds(clicks, clicks[1] - clicks[0]);
+	}
+
+	// track 1's clicks, in its tap (where it joins the mix, as the output has it)
+	@Then("the output holds {int} Metronome clicks, each within 1 sample of the left click on its beat")
+	public void holdsMetronomeClicksWithTheLeftOnes(int count) {
+		holdsMetronomeClicks(count);
+		float[] tap = heard().tap(world.track(1));
+		List<Integer> left = Meters.clicks(tap, 0, tap.length);
+		long[] clicks = heard().metronome();
+		assertEquals(clicks.length, left.size(), "left clicks at " + left);
+		for (int i = 0; i < clicks.length; i++) {
+			assertEquals(clicks[i], left.get(i), 1.0, Arrays.toString(clicks) + " left " + left);
+		}
+	}
+
 	@Then("the output holds {int} Count In clicks")
 	public void holdsClicks(int count) {
 		long[] clicks = clicks();

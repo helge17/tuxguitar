@@ -64,7 +64,6 @@ Feature: Keeping audio in sync
     When I play the song from measure 1 beat 1 until the song ends
     Then the output's left side holds 16 clicks and its right side 16 clicks
 
-  @planned
   Scenario: the Metronome sounds with the tracks whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1
     And I have set "Latency" of VST3 effect 1 of track 1 to 2048
