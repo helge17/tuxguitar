@@ -107,7 +107,9 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Count In and Metronome** sound through the TuxGuitar Synthesizer's General MIDI drums, outside every sound chain,
   whether or not the song has a percussion channel, on the sample clock, at the exact Percentage of Tempo (today's
   Count In rounds the tempo down to a whole bpm), and delayed like the tracks by plugin delay compensation. A Count In
-  or Metronome click's position is the sample on which its note reaches the drums.
+  or Metronome click's position is the sample on which its note reaches the drums. The drums join the output at the
+  Volume and Balance of the song's percussion channel, the channel they click on today, with the tracks' law; a song
+  without one (today it has no Count In and no Metronome) clicks as a new channel sounds: Volume 127, Balance 64.
 - **File format 3.0** for a song with an audio track. A reader of format 2.0 opening it as a `.tg` file refuses it with
   its "please upgrade" message (the step compares the message of the innermost cause). This version still opens format 2.0 files, and saves
   a song without audio tracks as format 2.0. A VST3 sound chain is saved under channel parameter keys outside the

@@ -19,8 +19,8 @@ import app.tuxguitar.util.TGContext;
  * Renders a timeline of the song offline, on the audio device's sample clock: each channel's tap (an audio track's
  * takes, or the General MIDI program a track with notes plays, see TGMidiTaps) and the drum tap (the Count In, see
  * TGDrumTap), then the output mix, where each channel heard is scaled by its Volume and Balance (today's
- * constant-power law) and the drum tap joins as it is. Muted tracks, and tracks other than the soloed ones, are not
- * heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard here: audio tracks and the drums need
+ * constant-power law), and the drum tap by those of the song's percussion channel (a new channel's without one).
+ * Muted tracks, and tracks other than the soloed ones, are not heard. With a MIDI Port other than the TuxGuitar Synthesizer nothing is heard here: audio tracks and the drums need
  * it, and the other tracks and today's Count In play on that port. Plugin delay compensation, when it comes, delays
  * each tap, the drum tap included, where it joins the mix.
  */
@@ -100,7 +100,13 @@ public final class TGRenderer {
 				add(tap, gains(this.channel(track)), output);
 			}
 		}
-		add(drums, new float[] {1f, 1f}, output);
+		add(drums, gains(this.drumChannel()), output);
+	}
+
+	// the channel the drums click on today, the song's percussion channel; without one, they sound as a new channel
+	private TGChannel drumChannel() {
+		TGChannel percussion = this.songManager.getPercussionChannel(this.song);
+		return (percussion != null ? percussion : this.songManager.getFactory().newChannel());
 	}
 
 	private static void add(float[][] tap, float[] gains, float[][] output) {
