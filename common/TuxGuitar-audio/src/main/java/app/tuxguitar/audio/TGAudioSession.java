@@ -1,12 +1,11 @@
 package app.tuxguitar.audio;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGAudioInput;
@@ -28,12 +27,14 @@ public final class TGAudioSession {
 	// the audio device delivers its input in blocks of this many samples
 	private static final int BLOCK = 512;
 
+	// read on the audio thread (meters, monitoring), an action's and the UI's (an app polls the meters) at once: arming,
+	// monitoring and the meters are concurrent collections, the device volatile
 	// tracks are armed as objects: a track brought back by undo is a new one, so it comes back not armed
-	private final Set<TGTrack> armedTracks = new HashSet<TGTrack>();
+	private final Set<TGTrack> armedTracks = ConcurrentHashMap.newKeySet();
 	// kept while a track is disarmed and armed again
-	private final Map<TGTrack, TGMonitoring> monitoring = new HashMap<TGTrack, TGMonitoring>();
-	private final Map<TGTrack, TGInputMeter> meters = new HashMap<TGTrack, TGInputMeter>();
-	private TGAudioDevice device;
+	private final Map<TGTrack, TGMonitoring> monitoring = new ConcurrentHashMap<TGTrack, TGMonitoring>();
+	private final Map<TGTrack, TGInputMeter> meters = new ConcurrentHashMap<TGTrack, TGInputMeter>();
+	private volatile TGAudioDevice device;
 	private TGPunchRange punchRange;
 	// the song the punch range was set on: a song opened later has none
 	private TGSong punchSong;

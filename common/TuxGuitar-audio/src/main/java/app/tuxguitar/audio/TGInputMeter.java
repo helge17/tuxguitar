@@ -13,7 +13,8 @@ public final class TGInputMeter {
 	// the peak of each of the last second's samples, the oldest overwritten first
 	private final float[] lastSecond;
 	private int next;
-	private boolean clipped;
+	// delivered on the audio thread, read and reset on others
+	private volatile boolean clipped;
 
 	public TGInputMeter(int sampleRate) {
 		this.lastSecond = new float[sampleRate];
