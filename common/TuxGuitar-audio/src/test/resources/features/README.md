@@ -35,6 +35,8 @@ plugin delay compensation; while the live device runs, the armed tracks are mete
 input from its start, follows what the transport plays a block at a time, and once the player has stopped and one
 round trip more has been delivered, makes the takes as offline (`TGRecording`: round trip, punch range, one take per
 pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.
+Should the device deliver nothing for a second meanwhile (its stream ended), the recording ends by itself, stops the
+player and keeps the takes of what was delivered, still one undo step.
 Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). A jump live
 playing did not foresee exactly (a loop restarts on the block after its pass ends; a move) starts the takes again
 there with a hard cut instead of a crossfade, for now. The whole chain on this machine's real devices is an opt-in

@@ -27,6 +27,8 @@ public final class TGLiveRecording implements TGLiveDevice.Listener {
 
 	// how often the end of the recording is looked for
 	private static final long LOOK = TimeUnit.MILLISECONDS.toNanos(5);
+	// how long the device may deliver nothing before its stream is taken as ended: a block lasts some milliseconds
+	private static final long STALL = TimeUnit.SECONDS.toNanos(1);
 
 	private final TGContext context;
 	private final TGLiveDevice device;
@@ -87,11 +89,12 @@ public final class TGLiveRecording implements TGLiveDevice.Listener {
 	}
 
 	// waits until the player has stopped and the device has delivered one round trip past what played (or the thread
-	// is interrupted), then records the parts on the tracks; how many takes they made
+	// is interrupted), then records the parts on the tracks; how many takes they made. Should the device deliver nothing
+	// for STALL meanwhile (its stream ended), the recording ends there and stops the player.
 	public int end(TGSongManager songManager, TGSong song, List<TGTrack> tracks) {
 		MidiPlayer player = MidiPlayer.getInstance(this.context);
-		while (!this.isOver(player) && !Thread.currentThread().isInterrupted()) {
-			LockSupport.parkNanos(LOOK);
+		if (this.stalls(player)) {
+			player.stop();
 		}
 		this.device.removeListener(this);
 		TGAudioSession session = TGAudioSession.getInstance(this.context);
@@ -101,6 +104,23 @@ public final class TGLiveRecording implements TGLiveDevice.Listener {
 			takes += new TGRecording(songManager, song, session, new Kept(part.start - timeline.getClock()), part.compensation).takes(tracks, timeline);
 		}
 		return takes;
+	}
+
+	// waits until the recording is over or the thread is interrupted: false; or until the device has delivered nothing
+	// for STALL: true
+	private boolean stalls(MidiPlayer player) {
+		long seen = this.delivered;
+		long since = System.nanoTime();
+		while (!this.isOver(player) && !Thread.currentThread().isInterrupted()) {
+			if (this.delivered != seen) {
+				seen = this.delivered;
+				since = System.nanoTime();
+			} else if (System.nanoTime() - since >= STALL) {
+				return true;
+			}
+			LockSupport.parkNanos(LOOK);
+		}
+		return false;
 	}
 
 	private boolean isOver(MidiPlayer player) {

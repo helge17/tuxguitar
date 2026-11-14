@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
+import app.tuxguitar.player.base.MidiPlayer;
+
 /**
  * A recording live on the live device (TestBackend), of LiveSong: unless a test says otherwise its sequencer starts
  * playing 2 blocks (1024 frames) into the recording, which starts at the device's first block. Input channel 1
@@ -109,13 +111,38 @@ class TestLiveRecording {
 		return thread.isAlive();
 	}
 
-	// stopped waiting for the run-on, a take holds what was kept and silence after
+	// stopped waiting for the run-on, a take holds what was kept and silence after; the player is left as it is
 	@Test
 	void aRecordingInterruptedBeforeItsRunOnKeepsWhatWasDelivered() throws Exception {
+		MidiPlayer player = MidiPlayer.getInstance(this.song.context);
 		try (TGLiveDevice device = open()) {
-			assertEquals(1, this.song.endInterrupted(this.song.play(device, 1, this::block)));
+			TGLiveRecording recording = this.song.play(device, 1, this::block);
+			player.setRunning(true);
+			assertEquals("1 true", this.song.endInterrupted(recording) + " " + player.isRunning());
 		}
+		assertKeptWhatWasDelivered();
+	}
+
+	private void assertKeptWhatWasDelivered() {
 		assertEquals(delivered(1024 + 500, 1) + " " + Arrays.toString(new float[500]), take(1, 0, 1) + " " + take(1, LENGTH - 500, LENGTH));
+	}
+
+	// the device's callbacks stop before the run-on (its stream ended), the player still running: the recording ends
+	// by itself, stops the player and keeps what was delivered
+	@Test
+	void aRecordingWhoseDeviceStopsEndsByItselfKeepingWhatWasDelivered() throws Exception {
+		MidiPlayer player = MidiPlayer.getInstance(this.song.context);
+		AtomicInteger takes = new AtomicInteger();
+		try (TGLiveDevice device = open()) {
+			TGLiveRecording recording = this.song.play(device, 1, this::block);
+			player.setRunning(true);
+			Thread ending = new Thread(() -> takes.set(this.song.endHere(recording)));
+			ending.setDaemon(true);
+			ending.start();
+			assertFalse(isAliveAfter(ending, 5000), "the recording did not end once the device stopped");
+		}
+		assertEquals("1 false", takes.get() + " " + player.isRunning());
+		assertKeptWhatWasDelivered();
 	}
 
 	// a recording offset can make the round trip shorter than nothing: before the recording started is silence
