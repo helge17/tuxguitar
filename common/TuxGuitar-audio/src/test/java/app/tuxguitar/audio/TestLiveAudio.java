@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
+import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.audio.action.TGRecordingVeto;
 import app.tuxguitar.audio.device.TGAudioDeviceInfo;
 import app.tuxguitar.editor.action.SongActionFixture;
@@ -25,6 +26,8 @@ import app.tuxguitar.player.base.MidiOutputPortProvider;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiSynthesizer;
+import app.tuxguitar.song.models.TGAudioInput;
+import app.tuxguitar.song.models.TGTrack;
 
 /**
  * The app's live audio, installed as an app does at startup, on a double of the native backend listing two devices.
@@ -134,6 +137,21 @@ class TestLiveAudio {
 		openPort();
 		assertEquals("[played] no output device 5", this.own + " " + this.audio.getProblem());
 		assertNull(this.session.getDevice());
+	}
+
+	// no native library, so no device: Record is refused with an armed track and the synthesizer's port open, and
+	// nothing changes (no take, nothing plays, no recording under way)
+	@Test
+	void withoutADeviceRecordingIsRefused() {
+		this.audio.load(new File("target/no-native-library"));
+		this.audio.open(settings("", "", 2, 0));
+		openPort();
+		TGTrack track = this.fixture.songManager.addAudioTrack(this.fixture.song, TGAudioInput.mono(1));
+		this.session.arm(track);
+		this.fixture.actionContext.setAttribute(TGRecordAction.ATTRIBUTE_START, 960L);
+		this.fixture.execute(new TGRecordAction(this.fixture.context));
+		Object takes = this.fixture.actionContext.getAttribute(TGRecordAction.ATTRIBUTE_TAKES);
+		assertEquals(" null false false", this.fixture.outcome() + " " + takes + " " + this.player.isRunning() + " " + this.session.isRecording());
 	}
 
 	@Test

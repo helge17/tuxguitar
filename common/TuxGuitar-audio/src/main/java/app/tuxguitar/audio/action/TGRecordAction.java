@@ -18,7 +18,8 @@ import app.tuxguitar.util.TGContext;
 
 /**
  * Records the armed tracks while the song plays from a position until another one is reached in the last pass, or
- * until that pass ends. It needs an armed track and the TuxGuitar Synthesizer as the MIDI Port, and then succeeds,
+ * until that pass ends. It needs an armed track, the TuxGuitar Synthesizer as the MIDI Port and an audio device (the
+ * session's: none when the native audio library did not load or the devices did not open), and then succeeds,
  * whether or not it made a take (ATTRIBUTE_TAKES says how many). What was
  * heard while recording is left in the context as TGPlayAction.ATTRIBUTE_RENDER. While it runs, the session says a
  * recording is under way.
@@ -48,7 +49,7 @@ public class TGRecordAction extends TGActionBase {
 		TGAudioSession session = TGAudioSession.getInstance(getContext());
 		MidiPlayer player = MidiPlayer.getInstance(getContext());
 		List<TGTrack> tracks = session.getArmedTracks(song);
-		if (tracks.isEmpty() || !player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY)) {
+		if (tracks.isEmpty() || !player.isOutputPortOpen(TGAudioSession.SYNTHESIZER_PORT_KEY) || session.getDevice() == null) {
 			return;
 		}
 		TGRecordingVeto.getInstance(getContext());
