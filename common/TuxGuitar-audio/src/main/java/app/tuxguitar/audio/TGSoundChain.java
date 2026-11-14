@@ -37,14 +37,18 @@ public final class TGSoundChain {
 		StringJoiner reading = new StringJoiner(" > ");
 		reading.add(name(chain.getReceiver(), channel));
 		for (int i = 0; i < chain.countOutputs(); i++) {
-			TGProgramElement effect = chain.getOutput(i);
-			reading.add(effect.isEnabled() ? name(effect, channel) : "[" + name(effect, channel) + "]");
+			reading.add(effect(chain.getOutput(i), channel));
 		}
 		return reading.toString();
 	}
 
+	// an effect read by its name, a disabled one in brackets
+	static String effect(TGProgramElement effect, TGChannel channel) {
+		return (effect.isEnabled() ? name(effect, channel) : "[" + name(effect, channel) + "]");
+	}
+
 	// a General MIDI source is read by the channel's program; any other element by its plugin's name, else its type
-	private static String name(TGProgramElement element, TGChannel channel) {
+	static String name(TGProgramElement element, TGChannel channel) {
 		if (TGVst3Element.isVst3(element)) {
 			return TGVst3Element.getName(element);
 		}

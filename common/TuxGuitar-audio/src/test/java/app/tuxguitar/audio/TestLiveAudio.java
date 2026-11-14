@@ -152,6 +152,21 @@ class TestLiveAudio {
 		assertEquals(new File(folder, "tuxguitar-vst3-host.exe") + " " + TGVst3Folders.standard("Windows 11", env, new File("/home/me")) + " | " + new File(folder, "tuxguitar-vst3-host") + " " + TGVst3Folders.standard("Linux", env, new File("/home/me")), windows + " | " + linux);
 	}
 
+	// a line for the log: how many plugins the scan of the VST3 folders found, or why none
+	@Test
+	void scanningTheVst3FoldersSaysWhatItFound() throws Exception {
+		TGVst3Hosting hosting = TestPluginHosting.host(this.fixture.context);
+		try {
+			String found = this.audio.scanPlugins();
+			List<File> folders = hosting.getFolders();
+			hosting.configure(new File("target/no-vst3-host.exe"), folders);
+			String refused = this.audio.scanPlugins();
+			assertEquals("TuxGuitar audio: 10 VST3 plugins in " + folders + " | TuxGuitar audio: no VST3 plugins (", found + " | " + refused.substring(0, refused.indexOf('(') + 1));
+		} finally {
+			hosting.close();
+		}
+	}
+
 	private static Properties system(String os, String home) {
 		Properties system = new Properties();
 		system.setProperty("os.name", os);

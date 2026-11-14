@@ -22,6 +22,7 @@ import app.tuxguitar.midi.synth.TGSynthOutput;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.vst3.TGVst3Exception;
 import app.tuxguitar.vst3.TGVst3Folders;
 import app.tuxguitar.vst3.TGVst3Hosting;
 
@@ -116,6 +117,16 @@ public final class TGLiveAudio implements TGSynthOutput {
 			this.use(TGPortAudio.load(folder));
 		} catch (TGAudioDeviceException | LinkageError e) {
 			this.fail("the native audio library did not load from " + folder.getAbsolutePath() + ": " + e.getMessage());
+		}
+	}
+
+	// the VST3 folders scanned for plugins (it takes a while: an app runs it off its UI thread); a line for the log
+	public String scanPlugins() {
+		TGVst3Hosting hosting = TGVst3Hosting.getInstance(this.context);
+		try {
+			return "TuxGuitar audio: " + hosting.scan().size() + " VST3 plugins in " + hosting.getFolders();
+		} catch (TGVst3Exception e) {
+			return "TuxGuitar audio: no VST3 plugins (" + e.getMessage() + ")";
 		}
 	}
 
