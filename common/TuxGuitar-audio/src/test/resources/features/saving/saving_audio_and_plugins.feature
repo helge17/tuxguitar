@@ -1,4 +1,3 @@
-@planned
 Feature: Saving audio tracks and plugins
   A song saved as a TuxGuitar file keeps its audio tracks with their takes sample for sample, and every sound chain
   with each plugin's state. A song with an audio track needs file format 3.0, which older TuxGuitar versions opening
@@ -39,14 +38,14 @@ Feature: Saving audio tracks and plugins
     Given I have added an audio track recording input channel 1
     And I have armed track 2
     And I have set the Percentage of Tempo to 80
-    And the player plays a 440 Hz tone peaking at 0.4 on input channel 1
+    And the player plays clicks of -0.25 on every beat on input channel 1
     And I have recorded from measure 1 beat 1 to measure 3 beat 1
     And I have saved the song as a TuxGuitar file
     And I have opened it again
     And I have set the Percentage of Tempo to 100
     When I play the song from measure 1 beat 1
     Then track 2 plays for 4 seconds within 5 ms
-    And track 2 sounds a 440 Hz tone within 1% in measures 1 to 2
+    And track 2 sounds 8 clicks, each within 5 ms of a beat
 
   Scenario: each audio track's input channels are saved with the song
     Given I have added an audio track recording input channel 2

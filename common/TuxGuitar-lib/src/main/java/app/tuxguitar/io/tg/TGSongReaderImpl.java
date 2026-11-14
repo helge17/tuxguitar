@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGFileFormatException;
@@ -24,6 +25,7 @@ import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGNoteEffect;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.song.models.TGString;
+import app.tuxguitar.song.models.TGTake;
 import app.tuxguitar.song.models.TGTempo;
 import app.tuxguitar.song.models.TGText;
 import app.tuxguitar.song.models.TGTimeSignature;
@@ -44,6 +46,16 @@ import org.w3c.dom.Node;
 public class TGSongReaderImpl extends TGStream implements TGSongReader {
 
 	private TGFactory factory;
+	// the codec of the takes of format 3.0; none (Android, older versions): format 3.0 is refused as a newer version
+	private volatile TGTakeCodec takeCodec;
+
+	public TGSongReaderImpl() {
+	}
+
+	// TuxGuitar's audio support gives it to the reader of the file format manager: it then reads format 3.0
+	public void setTakeCodec(TGTakeCodec takeCodec) {
+		this.takeCodec = takeCodec;
+	}
 
 	@Override
 	public TGFileFormat getFileFormat() {
@@ -53,23 +65,40 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 	@Override
 	public void read(TGSongReaderHandle handle) throws TGFileFormatException {
 		try {
-			InputStream[] versionAndContent = this.getDecompressedVersionAndContent(handle.getInputStream());
-			TGVersion version = this.getFileFormatVersion(versionAndContent[0]);
-			if (version.getMajor() < FILE_FORMAT_TGVERSION.getMajor()) {
-				throw new TGFileFormatException();
-			} else if (version.getMajor() > FILE_FORMAT_TGVERSION.getMajor()) {
-				throw new TGFileFormatException(TGMessagesManager.getProperty("error.new-major-version"));
+			TGTakeCodec codec = this.takeCodec;
+			TGFileEntries entries = TGFileEntries.read(handle.getInputStream(), codec, version -> this.readable(version, codec));
+			if (entries.getVersion() == null || entries.getContent() == null || entries.hasUnknown()) {
+				throw new TGFileFormatException(TGMessagesManager.getProperty("error.unsupported-format"));
 			}
-			if (version.getMinor() > FILE_FORMAT_TGVERSION.getMinor()) {
+			if (entries.getVersion().getMinor() > FILE_FORMAT_TGVERSION.getMinor()) {
 				handle.setNewerFileFormatDetected(true);
 			}
-			this.readContent(handle, versionAndContent[1]);
+			this.readContent(handle, entries.getContent(), (entries.hasAudio() ? entries.getTakes() : null), codec);
 		} catch (TGFileFormatException | IOException e) {
 			throw new TGFileFormatException(e);
 		}
 	}
 
+	// the file's version, refused when older than format 2.0, or newer than this reader reads: format 3.0 needs a take
+	// codec. Decided before the entries after version.txt, so a newer file is refused as such whatever it holds
+	private TGVersion readable(InputStream versionStream, TGTakeCodec codec) throws TGFileFormatException {
+		TGVersion version = this.getFileFormatVersion(versionStream);
+		if (version == null || version.getMajor() < FILE_FORMAT_TGVERSION.getMajor()) {
+			throw new TGFileFormatException();
+		}
+		TGVersion newest = (codec != null ? AUDIO_FILE_FORMAT_TGVERSION : FILE_FORMAT_TGVERSION);
+		if (version.getMajor() > newest.getMajor()) {
+			throw new TGFileFormatException(TGMessagesManager.getProperty("error.new-major-version"));
+		}
+		return version;
+	}
+
 	public void readContent(TGSongReaderHandle handle, InputStream inputStream) throws TGFileFormatException {
+		this.readContent(handle, inputStream, null, null);
+	}
+
+	// the song, then its audio (format 3.0) with the takes read
+	private void readContent(TGSongReaderHandle handle, InputStream inputStream, Map<String, TGTake> takes, TGTakeCodec codec) throws TGFileFormatException {
 		try {
 			this.factory = handle.getFactory();
 			TGSong song = this.factory.newSong();
@@ -77,6 +106,9 @@ public class TGSongReaderImpl extends TGStream implements TGSongReader {
 			Node root = getChildNode(xmlDocument, TAG_TGFile);
 			Node nodeSong = getChildNode(root, TAG_TGSONG);
 			this.readSong(song, nodeSong);
+			if (takes != null) {
+				TGAudioPart.read(nodeSong, song, takes, codec);
+			}
 			inputStream.close();
 			handle.setSong(song);
 		} catch (Throwable throwable) {

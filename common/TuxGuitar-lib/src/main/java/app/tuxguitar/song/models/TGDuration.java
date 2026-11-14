@@ -215,7 +215,14 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 		if (count % dotFactor != 0) {
 			return null;
 		}
-		return newDurations(count / dotFactor, merged * base * subDivision, (subDivision == 2), (subDivision == 4), factory);
+		long durationCount = count / dotFactor;
+		long undottedTime = merged * base * subDivision;
+		// specific case for 9-uplets: not ok if number of instances can be divided by 3
+		if ((dt.getEnters() == 9) && (durationCount % 3 == 0)) {
+			undottedTime *= 3;
+			durationCount /= 3;
+		}
+		return newDurations(durationCount, undottedTime, (subDivision == 2), (subDivision == 4), factory);
 	}
 
 	// subtract as many occurrences of base from remaining so that it does not contain any more duration with this time division

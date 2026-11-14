@@ -1,9 +1,81 @@
 # Audio features (BDD with Cucumber): audio tracks, line-in recording, VST3 hosting
 
 Specification of audio tracks, line-in recording, VST3 effects and instruments, keeping audio in sync, saving and
-exporting it. It is written ahead of the implementation: every feature here is tagged `@planned`, its steps are not
-defined yet, and the normal run leaves it out (`src/test/resources/junit-platform.properties`). Remove the tag from a
-scenario when you start implementing it.
+exporting it. It is written ahead of the implementation: a scenario not implemented yet is tagged `@planned` (on the
+scenario, on an `Examples` block, or on the whole feature), and the normal run leaves it out
+(`src/test/resources/junit-platform.properties`). Remove the tag from a scenario when you start implementing it.
+Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks`, `recording/takes`,
+`recording/recording_line_in`, `plugins/hosting_vst3_plugins` and `sync/keeping_audio_in_sync`, but for the scenarios
+still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
+round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
+helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module), in
+WAVE 16/24-bit/float, AIFF 16-bit and AU 16-bit (`TGExportFormat.offered`); an installed app's audio export writes
+through it (`TGAudioExport`, synth-core's `TGSynthAudioExporter` extension: the desktop's File > Export audio offers
+those formats when the audio plugin is installed). Saving is implemented in lib's TuxGuitar file format (format 3.0: a
+`TGAudio` node in content.xml, each take a 32-bit float wave entry `takes/<id>.wav` written by this module's
+`TGTakeWave`) and `TGAudioSaving.install`, which gives the take codec to the reader and writer and stores each VST3
+plugin's state before the write action. The player's position
+is the one the output sounds: live, lib's sequencer on the synthesizer's clock reports the tick the output sounds
+(chains' latency plus output latency behind what it schedules); offline, `TGReportedPositions` reports it block by
+block the same way. An app installs all this with `TGLiveAudio.install` and plays through `TGLiveAudio`: it loads the
+native backend from the native folder, opens the devices `TGAudioSettings` choose (host API and device names, input
+channels, recording offset) at the synthesizer's rate, makes that device the session's, meters and monitors through it
+(`TGLiveInput`), and the TuxGuitar Synthesizer plays through it (synth-core's `TGSynthOutput`), the device's output
+latency reaching `TGSynthModel.setOutputLatency`; without a device it says why and the synthesizer plays its own way.
+The desktop does so in its audio plugin (`desktop/TuxGuitar-audio-ui`: settings, Record, arming, adding an audio track,
+a Recording window showing `TGAudioStatus` (recording state, Record only when it can start, the armed tracks' input
+meters), a track's monitoring and input channels picked through `TGInputChoice`; see the plugin for what it does not
+offer yet). Without a device Record is refused, and an input channel the device did not open captures silence. The
+Count In / Metronome click is a TuxGuitar setting kept in the app's configuration (`MidiClick.read`/`write`). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
+sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
+parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
+`TGSetPluginStateAction` when an app drains it on the thread that edits the song (the audio thread only notes it).
+An installed app's synthesizer runs VST3 effects and instruments and tells `TGLivePlugins` each time a channel's chain
+changes (synth-core's `TGSynthChannelListener`), so editors open on the plugin that sounds (an editor opened before
+the synthesizer runs a plugin just added waits for it, at most 5 s) and close when it stops; TuxGuitar's parameter
+editor reads its plugin again each time the chain runs again (a change, an undo, a redo) and tells its watcher; saving
+takes an enabled running plugin's state. `TGLiveAudio.load` also configures VST3 hosting (the host process in
+the native folder, the system's VST3 folders, `TGVst3Folders.standard`). The desktop maps the sound-chain actions,
+offers Tools > Sound Chain... (`TGSoundChainRows`), scans the VST3 folders at startup and drains gestures every 50 ms;
+Tools > Record and Audio Track Settings... grey when they cannot apply (a core enabled check on custom tools). Its
+parameter window (a slider per parameter, for a plugin without its own editor) follows that editor: it shows the
+values again after an undo or redo, and closes once the plugin no longer runs. The Metronome
+clicks on the General MIDI drums outside every sound chain: offline (`TGMetronome`), and live on the TuxGuitar
+Synthesizer's own drums (the channel `MidiSampleClock.DRUMS`, at the percussion channel's Volume and Balance, delayed by
+plugin delay compensation like the tracks); with another MIDI Port it is still the sequencer's metronome track on the
+percussion channel, and Count In clicks on the percussion channel as before. A bend carries its exact semitones next to
+its 7-bit value, and a VST3 instrument tunes the note of the bent string alone. Entering a note sounds it
+(`TGNoteEntry.install`, a headless twin of the desktop's note controller: an app installs one of the two). "Live"
+scenarios play through the player on a live synthesizer of the scenario, which plays through the live audio device
+(`TGLiveDevice`) on a double of the native backend (`TestBackend`) driven a block at a time (`LivePlay`,
+`LiveOutput`). Live, an audio track's takes play as its channel's source on the TuxGuitar Synthesizer (`TGLiveTakes`,
+installed like `TGNoteEntry`), rendered a block at a time as offline, and so does its monitored input, undelayed by
+plugin delay compensation; while the live device runs, the armed tracks are metered and kept monitored while stopped
+(`TGLiveInput.install`). The takes play late by plugin delay compensation, but a monitored input the track starts
+playing with sounds from the very first sample of play, going on as it did while stopped. On the live device the record action records live (`TGLiveRecording`): it keeps all the
+input from its start, follows what the transport plays a block at a time, and once the player has stopped and one
+round trip more has been delivered, makes the takes as offline (`TGRecording`: round trip, punch range, one take per
+pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.
+Should the device deliver nothing for a second meanwhile (its stream ended), the recording ends by itself, stops the
+player and keeps the takes of what was delivered, still one undo step.
+Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). Live, each pass
+of a loop (a Training Mode pass too, at its own percentage) starts on the very sample the last one ends on: the
+sequencer starts it inside the block (`MidiSequencer.loop`), with nothing silenced between the passes, and tells the
+transport a span from that frame; the takes' live timeline starts each pass there, holding the pass that ended before
+it (the takes and a monitored input sound late by plugin delay compensation, so that pass's end still sounds after
+the jump) and always the next one, so the jump back crossfades as offline with nothing dropping out (a monitored
+input going on across it does not even fade), and a live
+recording's take of each pass starts on its first sample. Live, a take played at another tempo than it was recorded
+at is time-stretched ahead of the blocks by a worker of the takes, and a stretch once made is kept (`TGStretches`:
+the last tap's, no more): a loop's passes at one speed are stretched once, a Training Mode pass at its new speed while
+the pass before it plays, and nothing is stretched again at a jump back or when the same passage plays again at the
+same speed; only the first stretch of a passage played at a new speed is made while its first blocks render. A jump live
+playing did not foresee (I move the position while it plays) starts the takes again there with a hard cut instead of
+a crossfade, for now. Live scenarios that play passes turn Play looped off during the last one, so the song ends where
+it ends. The whole chain on this machine's real devices is an opt-in
+test: `mvn test -Dtest=TestRealDevice -Dtg.audio.native=<TuxGuitar-audio-device's native-build/lib>` (skipped, saying
+so, without it).
+No scenario is `@planned` any more.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
 the words of someone using TuxGuitar; behaviour, never the GUI; the action under test is the one `When`; earlier actions
@@ -12,7 +84,8 @@ are past-tense `Given`s; boundaries in Scenario Outlines; every `Then` fails if 
 | What | Where |
 |---|---|
 | Feature files | `src/test/resources/features/<area>/<name>.feature` (this folder) |
-| Step definitions | `src/test/java/app/tuxguitar/audio/features/*Steps.java` (none yet) |
+| Step definitions | `src/test/java/app/tuxguitar/audio/features/*Steps.java` |
+| Scenario state | `AudioWorld`: the song of a document (for undo), the Test Interface, remembered takes |
 | Runner | `TestFeatures` |
 
 ```
@@ -49,14 +122,19 @@ Where playing and recording stop: "play the song from A" plays until the song en
 pass N; "to B" or "until B" stops at B. All of them run on until the most delayed track has sounded everything before
 the stop point, and a recording keeps taking input for one round trip after it, so what was played before the stop
 point is in the take. That run-on is TuxGuitar's, not the step's: the step captures the output until TuxGuitar reports
-it has stopped. "Stop at X" stops at once; "stop after X" stops at the first block after X sounds. "And do not stop it"
+it has stopped. "Stop at X" stops at once; "stop after X" stops at the first block after X sounds, but "stop after the
+second Count In click" stops half a beat after that click's note reaches the drums, clear of its attack and of the third
+click. "And do not stop it"
 waits up to 10 seconds past the end of the song for TuxGuitar to stop on its own, and fails if it does not. A range
 "from A to B" includes A and ends just before B. "I am recording from A" and "I am playing the song from A" mean that
 recording or playing from A is under way when the `When` happens.
 
 The test plugins are real VST3 bundles built for the tests, so scanning, loading in the helper process and the
 plugin's own editor are exercised for real; their audio behaviour is fixed below, so every number can be checked
-exactly. One integration test outside the features loads the VST3 SDK's `again` example.
+exactly. One integration test outside the features loads the VST3 SDK's `again` example. Their C++ source, and the
+helper process's, is in `common/TuxGuitar-vst3/native`: before the tests of this module (and of `TuxGuitar-vst3`) Maven
+runs its build (CMake, against the VST3 SDK pinned there) into `common/TuxGuitar-vst3/native-build`, once, and stops
+saying what to install when no C++ toolchain is found. No binary is committed.
 
 The module needs, besides `tuxguitar-lib`: `tuxguitar-editor-utils` (editing actions and undo), the synthesizer host
 core and Gervill moved out of `desktop/TuxGuitar-synth` so they run headless, and at test scope `tuxguitar-midi` and
@@ -74,6 +152,9 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **A native audio backend** replaces Java Sound for the TuxGuitar Synthesizer. It opens the audio device chosen in
   TuxGuitar's settings at the device's sample rate, opens its input channels one by one, and reports the device's input
   and output latency. The audio between processors is 32-bit float, so a sound chain has room above full scale.
+  The backend is `common/TuxGuitar-audio-device`, a JNI library over PortAudio (MIT-style licence) with ASIO, WASAPI,
+  DirectSound and MME on Windows. The ASIO SDK is used under its GPLv3 option: builds with ASIO are distributed under
+  GPLv3 (that module's README; a build configured without ASIO is not).
 - **The sound chain is today's synthesizer program** (`TGProgram`: a MIDI receiver followed by audio processors,
   each enabled or disabled, moved up or down). VST3 effects and instruments are new processor types next to LV2's;
   LV2 entries appear in the readings and the numbering like VST3 ones. When the source is a General MIDI program it
@@ -83,28 +164,46 @@ These features change how TuxGuitar works today. They are requirements, not side
   per-instrument presets in the synthesizer settings (`synth.program.<bank>.<program>`) are not changed by this
   feature: they apply where they apply today.
 - **Plugins run apart from TuxGuitar, with no network port.** VST3 and LV2 plugins run in a helper process that talks to
-  TuxGuitar over pipes or shared memory and never listens on a network port. LV2 moves off its TCP socket
+  TuxGuitar over pipes or shared memory and never listens on a network port. For VST3 the helper's commands and replies
+  go over the helper's own standard input and output (anonymous pipes: no name, so no other process can connect to
+  them), and the audio stays in shared memory (a file both map); there is no named pipe, Unix socket or network port.
+  Each VST3 plugin runs in a helper process of its own, so a plugin that crashes or hangs silences only itself; it is
+  opened again, with its last state, the next time its sound chain opens.
+  LV2 moves off its TCP socket
   (`TGRemoteHost`). Plugins load only from the VST3 (or LV2) folders. VST2 hosting was removed in 2024 because its
   bridge listened on a network port and was flagged as a Trojan (issue #312); the VST3 SDK is MIT-licensed since 3.8
   (October 2025), which fits TuxGuitar's LGPL-2.1.
 - **Sample-accurate playback.** While the TuxGuitar Synthesizer plays, the audio device's sample clock drives the
   player, and every note reaches its instrument on its exact sample inside a block. The player reports a beat when the
-  output sounds it, so the played beat is no longer highlighted early by the output buffer.
+  output sounds it (the plugin delay compensation and the output latency after the beat's events), so the played beat
+  is no longer highlighted early by the output buffer. Live and offline the same
+  synthesizer code times the events: before each block the sequencer sends the block's events, each on its frame (a
+  note starts on that sample; Gervill starts its other events with the control period that holds it). Gervill's
+  stream sounds what it renders two control periods later (600 samples at 44100 Hz): that is the latency of a sound
+  chain with a General MIDI source, counted like a plugin's by plugin delay compensation and so by the round trip;
+  offline each track's chain latency is taken out, so a note is heard from its sample. A MIDI Port other than the
+  TuxGuitar Synthesizer keeps today's timing.
 - **Seamless loops.** With Play looped on, the jump back to the start of the Loop Range is seamless: no restart, no gap,
   tails carry across. Count In sounds once, before the first pass, at the first pass's Percentage of Tempo.
 - **Count In and Metronome** sound through the TuxGuitar Synthesizer's General MIDI drums, outside every sound chain,
   whether or not the song has a percussion channel, on the sample clock, at the exact Percentage of Tempo (today's
   Count In rounds the tempo down to a whole bpm), and delayed like the tracks by plugin delay compensation. A Count In
-  or Metronome click's position is the sample on which its note reaches the drums.
+  or Metronome click's position is the sample on which its note reaches the drums. The drums join the output at the
+  Volume and Balance of the song's percussion channel, the channel they click on today, with the tracks' law; a song
+  without one (today it has no Count In and no Metronome) clicks as a new channel sounds: Volume 127, Balance 64.
 - **File format 3.0** for a song with an audio track. A reader of format 2.0 opening it as a `.tg` file refuses it with
   its "please upgrade" message (the step compares the message of the innermost cause). This version still opens format 2.0 files, and saves
   a song without audio tracks as format 2.0. A VST3 sound chain is saved under channel parameter keys outside the
-  `synth.program` prefix, which older versions keep but do not use, so they play the General MIDI program.
+  `synth.program` prefix, which older versions keep but do not use, so they play the General MIDI program. Which
+  message an older version gives depends on the release: the released 2.1.x readers check the zip's entries before the
+  version and refuse a 3.0 file with "Unsupported file format"; 2.0.x, and versions from this one on (whose format
+  detector takes every major version from 2 up, and whose reader checks the version first), say "please upgrade".
 - **Audio export** gets sample rate and bit depth options (16 bits, 24 bits, 32-bit float) next to its File Type
   (as today: WAVE, AIFF, AU) and File Encoding; 32-bit float is the PCM_FLOAT encoding it offers today. Takes recorded at
   another sample rate are resampled. Exporting always renders through the TuxGuitar Synthesizer, whatever the MIDI
   Port. The file runs on for the longest tail of an effect or a VST3 instrument that is heard; tails of muted or
-  left-out tracks and of disabled effects do not count.
+  left-out tracks and of disabled effects do not count. Along one sound chain the tails add up (an echo of an echo rings
+  for both); an endless tail counts as 10 seconds.
 
 ## Rules every feature relies on
 
@@ -117,9 +216,9 @@ These features change how TuxGuitar works today. They are requirements, not side
   offset are not part of the song. A track's monitoring is `Off` until I set it, and is kept while the track is
   disarmed and armed again. They are not saved, not undoable, and do not mark the song modified. Each audio
   track's input channel(s) and each track's next take number are part of the song.
-- **During a recording** the song cannot be edited and Play Mode, the punch range, arming and input channels cannot be
-  changed; such actions are refused. Mute, solo, monitoring and gestures in a plugin's editor still work; mute and solo
-  change what is heard, never what is recorded. An undo step made during a recording comes before the recording's.
+- **During a recording** the song cannot be edited (moving a track and copying a song in included) and Play Mode, the
+  punch range, arming and input channels cannot be changed; such actions are refused. Mute, solo, a channel's Volume and
+  Balance, monitoring and gestures in a plugin's editor still work; they change what is heard, never what is recorded. An undo step made during a recording comes before the recording's.
 - **Recording stops at the end of the song**: to keep the ring of a last chord, add an empty measure.
 
 ## Glossary
@@ -137,7 +236,9 @@ These features change how TuxGuitar works today. They are requirements, not side
   through a repeated or looped range. "Until the song ends" follows song time; "to the end of measure 4" is a position.
 - **Percentage of Tempo, Play looped, Loop Range, Training Mode, Count In, Count In ticks, Metronome**: the existing
   Play Mode and transport settings. Training Mode raises the percentage after each pass of the Loop Range, from its
-  start percentage to its end, by its increment.
+  start percentage to its end, by its increment. Count In starts playing: its first click is where the output starts.
+- **Click sound**: the drum note and velocity Count In and the Metronome play, a TuxGuitar setting (not saved in the
+  song, not undoable): Side Stick (note 37) at velocity 95 until I change it.
 
 ### Tracks and sound
 
@@ -191,12 +292,15 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **Playback reading**: which take a track plays, measure by measure: `"m1: take 1, m2: take 2, m3: take 2, m4: none"`.
   A measure where the take changes inside it is split by beat: `"m2b1: take 1, m2b3: take 2"`.
 - **Crossfade**: where a track goes from one take to another, the fade lies on the newer take's side of the boundary
-  (a take chosen for a measure counts as the newer there): going to a newer take, it fades in over its first 256
-  samples while the older fades out; going back to an older take, the newer fades out over its last 256 samples before
-  the boundary while the older fades in. Where a take starts or ends against silence there is no fade. At a jump in song
+  (a take chosen for a measure counts as the newer there; between takes chosen for neighbouring measures, the newer is
+  the one recorded later): going to a newer take, it fades in over its first 256 samples while the older fades out;
+  going back to an older take, the newer fades out over its last 256 samples before the boundary while the older fades
+  in. Where a take starts or ends against silence there is no fade, except between two chosen takes: there the newer
+  one fades on its side even where the older has no audio under the fade (it just fades in, or out). At a jump in song
   time (a loop's jump back, a repeat, an alternate ending), and where a take's audio is cut inside it (a removed
   measure, an inserted one, a shortened measure), the audio before fades out over its last 256 samples and the audio
-  after starts at full level. At a punch range boundary, the monitored input counts as the newer take.
+  after starts at full level; only the monitored input never fades there when it goes on after the jump (the input
+  itself never jumps). At a punch range boundary, the monitored input counts as the newer take.
 - **Punch range**: measures outside which a recording keeps nothing. It stays on measure numbers and ends with the
   song; one that starts past the end of the song is refused, and removing all its measures removes it.
 - **Loop recording**: recording with Play looped on: each pass over the Loop Range records a take. One recording is
@@ -208,9 +312,11 @@ These features change how TuxGuitar works today. They are requirements, not side
   the song without recording. `Off`: the input is never heard. Whatever the monitoring, while recording the armed
   track's takes are silent where it records (inside the punch range, or everywhere without one).
 - **Input level**: the peak of what a track's input channel(s) delivered in the last second, in dBFS (the higher of
-  the two for a pair). At -0.1 dBFS or above the input is **clipping**; it shows **has clipped** until I reset it.
+  the two for a pair). At -0.1 dBFS or above the input is **clipping**; it shows **has clipped** until I reset it. An
+  armed track's input level follows its input whenever the audio device runs: stopped, playing and recording.
 - **Round trip**: output latency + the plugin delay compensation of what I hear + input latency + recording offset.
-  A take is placed earlier by its round trip.
+  A take is placed earlier by its round trip, so one recorded against General MIDI tracks or the Count In lands on the
+  beat although Gervill sounds them 600 samples late (at 44100 Hz).
 - **Latency**: how many samples late something delivers its sound: a plugin, the audio input or the audio output.
 - **Recording offset**: a setting, in samples, added to the input latency the audio device reports, because drivers
   sometimes report it wrong.
@@ -218,8 +324,9 @@ These features change how TuxGuitar works today. They are requirements, not side
 ### Sync
 
 - **Plugin delay compensation**: delaying each track, the Count In and the Metronome so that all reach the output as
-  late as the slowest track. A monitored input is not delayed by it. When a plugin's latency changes while playing, the
-  tracks are together again from the next beat. Playing to the end of the song runs on until the most delayed track has
+  late as the slowest track: the slowest sound chain's latency, Gervill's included, a muted track's too, and the
+  General MIDI drums' (Count In and Metronome) whether or not they click. A monitored input is not delayed by it. When a plugin's latency changes while playing, the
+  tracks are together again from the next beat (TuxGuitar realigns them at the next block it renders). Playing to the end of the song runs on until the most delayed track has
   sounded its last beat.
 - **Time-stretch**: playing a take faster or slower without changing its pitch.
 - **Tail**: what an effect still sounds after its input stops, as long as it reports (an echo, a reverb). Tails carry
@@ -231,10 +338,16 @@ These features change how TuxGuitar works today. They are requirements, not side
 - **A track's tap**: the audio of the track's channel where it joins the output mix: after its sound chain and plugin
   delay compensation, before Volume and Balance. "Track 2 sounds ..." is measured at track 2's tap.
 - **The output**: what the audio device plays, left and right: every channel after Volume and Balance, the Count In and
-  the Metronome. Count In and Metronome clicks are counted where they join the mix.
+  the Metronome.
+- **The drum tap**: the General MIDI drums Count In and the Metronome play on, where they join the mix. Count In and
+  Metronome clicks are counted there, in two parts: a click's position is the sample on which TuxGuitar sends its note to
+  the drums (a drum's attack is no click, so the position is not measured from the audio), and each click must sound on
+  the drum tap, and in the output, above -60 dBFS within its beat. **Every Count In click sounds drum note N at velocity
+  V**: the drum tap is, sample for sample, what the General MIDI drums sound playing that note at that velocity on the
+  clicks' samples.
 - **A track plays for N seconds**: how long its audio lasts as the song plays; **a take is N samples long**: how long it
   is stored.
-- **Click**: a one-sample impulse. Its position is its first sample above half its peak; next to a tone, a click is a
+- **Click** (in a take or a signal): a one-sample impulse. Its position is its first sample above half its peak; next to a tone, a click is a
   jump of more than 0.1 between two samples. A time-stretched click is no longer one sample.
 - **Peak**: the largest absolute sample value, 1.0 being full scale (0 dBFS).
 - **A tone within 1% (or 1 Hz)**: by its fundamental frequency. **No ... above -60 dBFS**: by the level at that
@@ -256,6 +369,7 @@ These features change how TuxGuitar works today. They are requirements, not side
 | `Test Latency` | VST3 effect | delays the signal by its parameter `Latency` in samples (0 by default) | `Latency` | 0 |
 | `Test Echo` | VST3 effect | adds one copy of the signal at half its level, 0.3 s later (13230 samples at 44100 Hz) | 0 | 0.3 s |
 | `Test Drone` | VST3 effect | passes the signal and adds a 100 Hz tone at 0.1 forever | 0 | infinite |
+| `Test Hang` | VST3 effect | passes the signal, and hangs once: the block holding the sample its parameter `Hang at` counts to (samples processed since it started; never by default) comes back `Hang for` milliseconds later (never by default) | 0 | 0 |
 | `Test Stereo` | VST3 effect | mono in, stereo out: the signal on the left, half of it on the right | 0 | 0 |
 | `Test Tempo` | VST3 effect | passes the signal and records the tempo, time signature, play state and musical position it is given | 0 | 0 |
 | `Test Sine` | VST3 instrument | a sine at each note's pitch, peaking at 0.5 × velocity / 127, following per-note tuning | 0 | 0 |
@@ -285,7 +399,10 @@ measures 1 to 3" means each measure sounds its tone, within 1%, and no other abo
 ## Out of scope
 
 - Failure handling: a plugin that crashes or hangs, a plugin missing on another machine, an audio device unplugged
-  while recording, a song opened on a device whose sample rate differs from its takes'.
+  while recording, a song opened on a device whose sample rate differs from its takes'. One narrow exception: a VST3
+  plugin that hangs goes silent for each block it does not answer in time while the other tracks keep playing on their
+  beats, and is restarted (on its own, with its last state) after a longer wait. An offline render (an export) waits for each block
+  instead, and ends only a plugin that has not answered for 2 seconds.
 - Importing audio or backing tracks from Guitar Pro 7 files (they are dropped on import today).
 - Android (it shares the file reader, so it refuses a song with audio tracks as older desktop versions do).
 - Recording MIDI from a MIDI input.

@@ -1,0 +1,9 @@
+# Add here the TGPlugin implementation class names.
+app.tuxguitar.audio.ui.TGAudioPlugin
+app.tuxguitar.audio.ui.TGAudioSettingsToolPlugin
+app.tuxguitar.audio.ui.TGRecordToolPlugin
+app.tuxguitar.audio.ui.TGArmTrackToolPlugin
+app.tuxguitar.audio.ui.TGAddAudioTrackToolPlugin
+app.tuxguitar.audio.ui.TGAudioTrackToolPlugin
+app.tuxguitar.audio.ui.TGRecordingToolPlugin
+app.tuxguitar.audio.ui.TGSoundChainToolPlugin

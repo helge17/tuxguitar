@@ -10,7 +10,7 @@ import app.tuxguitar.util.TGException;
 
 public class TGAudioLine {
 
-	public static final AudioFormat AUDIO_FORMAT = new AudioFormat(TGAudioBuffer.SAMPLE_RATE, 16, TGAudioBuffer.CHANNELS, true, TGAudioBuffer.BIGENDIAN);
+	public static final AudioFormat AUDIO_FORMAT = TGAudioBuffer.AUDIO_FORMAT;
 
 	private SourceDataLine line;
 

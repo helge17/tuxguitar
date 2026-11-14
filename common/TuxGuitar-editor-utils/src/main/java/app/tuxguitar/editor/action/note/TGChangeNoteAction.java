@@ -34,7 +34,8 @@ public class TGChangeNoteAction extends TGActionBase {
 		TGSongManager songManager = getSongManager(context);
 		boolean freeEditionMode = songManager.isFreeEditionMode(measure);
 		
-		if ((track != null) && (track.isPercussion() || (fret <= track.getMaxFret()))) {
+		// an audio track holds no notes
+		if ((track != null) && !track.isAudio() && (track.isPercussion() || (fret <= track.getMaxFret()))) {
 			TGNote note = songManager.getFactory().newNote();
 			note.setValue(fret);
 			note.setVelocity(velocity);

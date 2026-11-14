@@ -1,0 +1,23 @@
+TuxGuitar for Windows: audio device licence notice
+===================================================
+
+This Windows build plays and records through the native audio library tuxguitar-audio-device.dll (lib folder),
+built from common/TuxGuitar-audio-device in the TuxGuitar sources. That library contains:
+
+- PortAudio v19.7.0 (http://www.portaudio.com), under its MIT-style licence.
+- Steinberg's ASIO SDK 2.3.4, for the ASIO host API. The ASIO SDK is licensed under the Steinberg ASIO License or,
+  alternatively, under the GNU General Public License version 3. TuxGuitar takes the GPLv3 option.
+
+Because of the ASIO SDK, this Windows build as distributed (TuxGuitar together with tuxguitar-audio-device.dll) is
+distributed under the terms of the GNU General Public License version 3, whose full text is COPYING-GPL3.txt next to
+this notice (also at https://www.gnu.org/licenses/gpl-3.0.html).
+TuxGuitar's own sources stay under the GNU Lesser General Public License 2.1 (see LICENSE). The complete
+corresponding source code is the TuxGuitar source tree this build was made from; the native library's build
+(native/CMakeLists.txt) downloads PortAudio and the ASIO SDK from their official sources, pinned by SHA-256.
+
+Redistributors who want an LGPL-only build: configure the native library without ASIO,
+    cmake -S common/TuxGuitar-audio-device/native -B <build dir> -G Ninja -DCMAKE_BUILD_TYPE=Release -DTG_AUDIO_ASIO=OFF
+    cmake --build <build dir>
+and ship that library and this notice without the ASIO paragraphs.
+
+The VST3 host process (tuxguitar-vst3-host.exe, lib folder) is built with the Steinberg VST3 SDK under its MIT licence.

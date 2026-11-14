@@ -7,6 +7,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
 import app.tuxguitar.app.view.dialog.fretboard.TGFretBoardConfig;
 import app.tuxguitar.graphics.control.TGLayout;
+import app.tuxguitar.player.base.MidiClick;
 import app.tuxguitar.ui.resource.UIFontModel;
 import app.tuxguitar.util.properties.TGProperties;
 import app.tuxguitar.util.properties.TGPropertiesManager;
@@ -89,6 +90,8 @@ public class TGConfigDefaults{
 		loadProperty(properties, TGConfigKeys.COLOR_INVALID_ENTRY, "230,110,110");
 		loadProperty(properties, TGConfigKeys.MIDI_PORT, "tuxguitar-synth.port");
 		loadProperty(properties, TGConfigKeys.MIDI_SEQUENCER, "tuxguitar.sequencer");
+		loadProperty(properties, MidiClick.NOTE, MidiClick.DEFAULT.getNote());
+		loadProperty(properties, MidiClick.VELOCITY, MidiClick.DEFAULT.getVelocity());
 		loadProperty(properties, TGConfigKeys.MAX_HISTORY_FILES, 10);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STRING_SPACING, 20);
 		loadProperty(properties, TGConfigKeys.FRETBOARD_STYLE, TGFretBoardConfig.DISPLAY_TEXT_SCALE);

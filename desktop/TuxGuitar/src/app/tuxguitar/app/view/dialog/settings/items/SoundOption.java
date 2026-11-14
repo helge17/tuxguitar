@@ -1,19 +1,23 @@
 package app.tuxguitar.app.view.dialog.settings.items;
 
 import java.util.List;
+import java.util.function.Function;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.view.dialog.settings.TGSettingsEditor;
+import app.tuxguitar.player.base.MidiClick;
 import app.tuxguitar.player.base.MidiOutputPort;
 import app.tuxguitar.player.base.MidiSequencer;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.toolbar.UIToolBar;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
+import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UILayoutContainer;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISelectItem;
+import app.tuxguitar.ui.widget.UISpinner;
 import app.tuxguitar.util.TGSynchronizer;
 
 public class SoundOption extends TGSettingsOption {
@@ -29,6 +33,10 @@ public class SoundOption extends TGSettingsOption {
 	private String mpCurrentKey;
 	private List<MidiOutputPort> mpList;
 	private UIDropDownSelect<MidiOutputPort> mpCombo;
+
+	//**Count In / Metronome click**//
+	private UISpinner clickNote;
+	private UISpinner clickVelocity;
 
 	public SoundOption(TGSettingsEditor configEditor, UIToolBar toolBar, UILayoutContainer parent){
 		super(configEditor, toolBar, parent, TuxGuitar.getProperty("settings.config.sound"));
@@ -64,7 +72,33 @@ public class SoundOption extends TGSettingsOption {
 		this.mpCombo = uiFactory.createDropDownSelect(mpComposite);
 		mpCompositeLayout.set(this.mpCombo, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true);
 
+		//---Count In / Metronome click---//
+		showLabel(getPanel(), TuxGuitar.getProperty("midi.click"), true, 5, 1);
+
+		UITableLayout clickCompositeLayout = new UITableLayout();
+		UIPanel clickComposite = uiFactory.createPanel(getPanel(), false);
+		clickComposite.setLayout(clickCompositeLayout);
+		this.indent(clickComposite, 6, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, false);
+
+		MidiClick click = MidiClick.read(getConfig());
+		this.clickNote = this.createClickSpinner(clickComposite, 1, "midi.click.note", 0, click.getNote());
+		this.clickVelocity = this.createClickSpinner(clickComposite, 3, "midi.click.velocity", 1, click.getVelocity());
+
 		this.loadConfig();
+	}
+
+	// a label and a spinner from the minimum to 127 (a MIDI note or velocity), in the columns from the given one
+	private UISpinner createClickSpinner(UIPanel parent, int column, String key, int minimum, int value) {
+		UITableLayout layout = (UITableLayout) parent.getLayout();
+		UILabel label = getUIFactory().createLabel(parent);
+		label.setText(TuxGuitar.getProperty(key) + ":");
+		layout.set(label, 1, column, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, false, false);
+		UISpinner spinner = getUIFactory().createSpinner(parent);
+		spinner.setMinimum(minimum);
+		spinner.setMaximum(127);
+		spinner.setValue(value);
+		layout.set(spinner, 1, column + 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
+		return spinner;
 	}
 
 	public void loadConfig(){
@@ -136,16 +170,20 @@ public class SoundOption extends TGSettingsOption {
 		}).start();
 	}
 
+	// the click is kept whether or not the devices were listed yet: its spinners are filled at once
 	public void updateConfig(){
 		if(this.initialized){
-			MidiSequencer midiSequencer = this.msCombo.getSelectedValue();
-			if( midiSequencer != null ){
-				getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, midiSequencer.getKey());
-			}
-			MidiOutputPort midiPort = this.mpCombo.getSelectedValue();
-			if( midiPort != null ){
-				getConfig().setValue(TGConfigKeys.MIDI_PORT, midiPort.getKey());
-			}
+			this.updateKey(TGConfigKeys.MIDI_SEQUENCER, this.msCombo, MidiSequencer::getKey);
+			this.updateKey(TGConfigKeys.MIDI_PORT, this.mpCombo, MidiOutputPort::getKey);
+		}
+		new MidiClick(this.clickNote.getValue(), this.clickVelocity.getValue()).write(getConfig());
+	}
+
+	// the key of what is selected, if anything is
+	private <T> void updateKey(String configKey, UIDropDownSelect<T> combo, Function<T, String> keyOf){
+		T selected = combo.getSelectedValue();
+		if( selected != null ){
+			getConfig().setValue(configKey, keyOf.apply(selected));
 		}
 	}
 
@@ -154,5 +192,6 @@ public class SoundOption extends TGSettingsOption {
 			getConfig().setValue(TGConfigKeys.MIDI_PORT, getDefaults().getValue(TGConfigKeys.MIDI_PORT));
 			getConfig().setValue(TGConfigKeys.MIDI_SEQUENCER, getDefaults().getValue(TGConfigKeys.MIDI_SEQUENCER));
 		}
+		MidiClick.DEFAULT.write(getConfig());
 	}
 }

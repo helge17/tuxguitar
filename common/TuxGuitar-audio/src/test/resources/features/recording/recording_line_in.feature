@@ -1,4 +1,3 @@
-@planned
 Feature: Recording line-in audio
   An armed audio track records what its input channels deliver while the song plays, as a take that starts where
   recording started and sits on the song's beats. A take keeps the dry input: VST3 effects shape what I hear, never
@@ -152,6 +151,9 @@ Feature: Recording line-in audio
       | set the punch range to measures 2 to 3   | there is no punch range         |
       | disarm track 2                           | track 2 is armed                |
       | set track 2 to record input channel 2    | track 2 records input channel 1 |
+      | move track 2 up                          | track 2 is an audio track       |
+      | move track 1 down                        | track 2 is an audio track       |
+      | copy in a song of 2 measures             | the song has 4 measures         |
 
   Scenario: a gesture in a plugin's editor during a recording is undone after the recording
     Given I have added the VST3 effect "Test Gain" to track 1
@@ -218,6 +220,14 @@ Feature: Recording line-in audio
     And track 2's takes read ""
     And the undo history is as it was before the recording
 
+  Scenario: Count In sounds the click sound I have set
+    Given I have set the click sound to drum note 42 at velocity 127
+    And I have turned Count In on
+    And I have armed track 2
+    When I record from measure 2 beat 1 to measure 3 beat 1
+    Then the output holds 4 Count In clicks, 22050 samples apart within 1 sample
+    And every Count In click sounds drum note 42 at velocity 127
+
   # Input level
 
   Scenario Outline: the input level shows the peak an input channel delivered, and whether it is clipping
@@ -248,6 +258,20 @@ Feature: Recording line-in audio
     And track 2's input has clipped
     When I reset track 2's clip indicator
     Then track 2's input has not clipped
+
+  Scenario: the input level goes on showing what the input delivers while recording
+    Given I have armed track 2
+    And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
+    When I record from measure 1 beat 1 to measure 2 beat 1
+    Then track 2's input level reads -20 dBFS within 0.01 dB
+    And track 2's input has clipped
+
+  Scenario: the input level goes on showing what the input delivers while the song plays
+    Given I have armed track 2
+    And the player plays a constant level of 1.0 for 1 sample, then a constant level of 0.1, on input channel 1
+    When I play the song from measure 1 beat 1 to measure 2 beat 1
+    Then track 2's input level reads -20 dBFS within 0.01 dB
+    And track 2's input has clipped
 
   # Monitoring
 
@@ -339,6 +363,45 @@ Feature: Recording line-in audio
       | 0     | 0      | 0   | 0    |
       | 300   | 1024   | 0   | 1324 |
       | 300   | 1024   | 128 | 1452 |
+
+  # live: on the audio device's clock, through the native backend, while it runs
+  Scenario Outline: live, with monitoring on Auto I hear the input while stopped, late by its own path only
+    Given I have set the audio device to "Test Interface" with <input> samples of input latency and <output> of output latency
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to 2048
+    And I have added the VST3 effect "Test Latency" to track 2
+    And I have set "Latency" of VST3 effect 1 of track 2 to <own>
+    And I have armed track 2
+    And I have set track 2's monitoring to Auto
+    And the player plays one click of -0.25 at measure 1 beat 2 on input channel 1
+    When the input has delivered 1 second live
+    Then the click reaches the output <late> samples after the player played it, within 1 sample, live
+
+    Examples:
+      | input | output | own | late |
+      | 0     | 0      | 0   | 0    |
+      | 300   | 1024   | 0   | 1324 |
+      | 300   | 1024   | 128 | 1452 |
+
+  Scenario Outline: live, just playing, monitoring decides whether I hear the takes or my input
+    Given track 2 has a take of a 440 Hz tone peaking at 0.4 from measure 1 beat 1 to the end of measure 4
+    And I have armed track 2
+    And I have set track 2's monitoring to <monitoring>
+    And the player plays a 880 Hz tone peaking at 0.4 on input channel 1
+    When I play the song live from measure 1 beat 1
+    Then the output sounds a <heard> Hz tone and no <silent> Hz tone above -60 dBFS in measures 2 to 3, live
+
+    Examples:
+      | monitoring | heard | silent |
+      | Off        | 440   | 880    |
+      | Auto       | 440   | 880    |
+      | Always     | 880   | 440    |
+
+  Scenario: live, the input level of an armed track follows its input while the song plays
+    Given I have armed track 2
+    And the player plays a 440 Hz tone peaking at -6 dBFS on input channel 1
+    When I play the song live from measure 1 beat 1
+    Then track 2's input level reads -6 dBFS within 0.01 dB
 
   # Recording at another Percentage of Tempo
 

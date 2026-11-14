@@ -36,6 +36,7 @@ public abstract class TGTrack {
 	private TGLyric lyrics;
 	private TGSong song;
 	private int maxFret;
+	private int nextTakeNumber;
 
 	public TGTrack(TGFactory factory) {
 		this.number = 0;
@@ -49,6 +50,7 @@ public abstract class TGTrack {
 		this.color = factory.newColor();
 		this.lyrics = factory.newLyric();
 		this.maxFret = DEFAULT_MAX_FRET;
+		this.nextTakeNumber = 1;
 	}
 
 	public int getNumber() {
@@ -81,12 +83,7 @@ public abstract class TGTrack {
 	}
 
 	public int getHighestFret() {
-		int highestFret = -1;
-		for (TGMeasure measure : this.measures) {
-			int measureHighestFret = measure.getHighestFret();
-			highestFret = (measureHighestFret > highestFret ? measureHighestFret : highestFret);
-		}
-		return highestFret;
+		return this.measures.stream().mapToInt(TGMeasure::getHighestFret).max().orElse(-1);
 	}
 
 	public void removeMeasure(int index){
@@ -153,16 +150,37 @@ public abstract class TGTrack {
 		this.channelId = channelId;
 	}
 
+	// an audio track sounds takes instead of notes: its channel is an audio channel
+	public boolean isAudio() {
+		TGChannel channel = this.findChannel();
+		return (channel != null && channel.isAudioChannel());
+	}
+
+	// the number the next take recorded on this track gets
+	public int getNextTakeNumber() {
+		return this.nextTakeNumber;
+	}
+
+	public void setNextTakeNumber(int nextTakeNumber) {
+		this.nextTakeNumber = nextTakeNumber;
+	}
+
 	public boolean isPercussion() {
-		if (getSong()==null) return false;
+		TGChannel channel = this.findChannel();
+		return (channel != null && channel.isPercussionChannel());
+	}
+
+	// the song's channel this track plays on, or null when it has none
+	private TGChannel findChannel() {
+		if (getSong()==null) return null;
 		Iterator<TGChannel> it = getSong().getChannels();
 		while (it.hasNext()) {
 			TGChannel channel = it.next();
 			if (channel.getChannelId() == this.channelId) {
-				return (channel.isPercussionChannel());
+				return channel;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public TGLyric getLyrics() {
@@ -244,6 +262,7 @@ public abstract class TGTrack {
 		this.setSolo(track.isSolo());
 		this.setMute(track.isMute());
 		this.setChannelId(track.getChannelId());
+		this.setNextTakeNumber(track.getNextTakeNumber());
 		this.getColor().copyFrom(track.getColor());
 		this.getLyrics().copyFrom(track.getLyrics());
 		for (int i = 0; i < track.getStrings().size(); i++) {

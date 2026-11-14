@@ -1,4 +1,3 @@
-@planned
 Feature: Keeping audio in sync
   Takes, the notes of other tracks, the Count In, the Metronome and the player's position stay together, whatever
   plugins and the audio device delay. Every track is delayed to the latest one (plugin delay compensation). A take is
@@ -38,6 +37,23 @@ Feature: Keeping audio in sync
       | 512      | 0            | 2048     |
       | 0        | 0            | 30000    |
 
+  # live: on the audio device's clock, through the native backend; a time-stretched click is no longer one sample
+  Scenario Outline: live, a take reaches the output with the other tracks, whatever their latencies
+    Given I have set the Percentage of Tempo to <percent>
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to <effect 1>
+    And I have added the VST3 effect "Test Latency" to track 2
+    And I have set "Latency" of VST3 effect 1 of track 2 to <effect 2>
+    When I play the song live from <from>
+    Then the output's right side holds <clicks> clicks, each within <within> samples of a click on its left side
+
+    Examples:
+      | percent | effect 1 | effect 2 | from             | clicks | within |
+      | 100     | 0        | 0        | measure 1 beat 1 | 16     | 1      |
+      | 100     | 0        | 1024     | measure 1 beat 1 | 16     | 1      |
+      | 100     | 2048     | 512      | measure 3 beat 2 | 7      | 1      |
+      | 80      | 0        | 1024     | measure 1 beat 1 | 16     | 220    |
+
   Scenario: disabling a delaying VST3 effect keeps the tracks together
     Given I have added the VST3 effect "Test Latency" to track 2
     And I have set "Latency" of VST3 effect 1 of track 2 to 2048
@@ -71,6 +87,60 @@ Feature: Keeping audio in sync
     And I have turned the Metronome on
     When I play the song from measure 1 beat 1
     Then the output holds 16 Metronome clicks, each within 1 sample of the left click on its beat
+
+  # Live, the right side holds the audio track's take and the Metronome, on the same beats. A click is where it first
+  # reaches half its peak: the Side Stick's, 7 samples into its note
+  Scenario: while the song plays live, the Metronome sounds with the tracks whatever the plugins delay
+    Given I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to 2048
+    And I have turned the Metronome on
+    When I play the song live from measure 1 beat 1
+    Then the output's right side holds 16 clicks, each within 10 samples of a click on its left side
+
+  # Live recording: the audio interface's output is wired back to its input (a loopback cable), so input channel 1
+  # delivers the left side of what the output sounded, its output latency and input latency later. While recording,
+  # track 2's take is silent where it records (monitoring Off): the new take holds track 1's clicks as I heard them.
+  # Like any device, it delivers a block's input before it plays the block: wired, it is at least a block late
+  Scenario Outline: live, a recording of what I heard lands on the beat, whatever the latencies
+    Given the audio device's output is wired to its input, with <input> samples of input latency and <output> of output latency
+    And I have added the VST3 effect "Test Latency" to track 1
+    And I have set "Latency" of VST3 effect 1 of track 1 to <plugin>
+    And I have armed track 2
+    When I record live from measure 1 beat 1 until the song ends
+    Then track 2's takes read "take 2: m1b1 to m5b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 16 clicks, each within 1 sample of a beat
+
+    Examples:
+      | input | output | plugin |
+      | 0     | 512    | 0      |
+      | 300   | 1024   | 0      |
+      | 300   | 1024   | 2048   |
+
+  Scenario: live, a recording from where I start keeps only what falls inside the punch range
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have armed track 2
+    And I have set the punch range to measures 2 to 3
+    When I record live from measure 2 beat 3 until the song ends
+    Then track 2's takes read "take 2: m2b3 to m4b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 6 clicks, each within 1 sample of a beat
+
+  Scenario: live, with Play looped on, each pass over the Loop Range records a take, all one undo step
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have turned Play looped on over measures 2 to 3
+    And I have armed track 2
+    When I record live from measure 2 beat 1 for 2 passes
+    Then track 2's takes read "take 3: m2b1 to m4b1, take 2: m2b1 to m4b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 8 clicks, each within 1 sample of a beat
+    And take 3 of track 2 holds 8 clicks, each within 1 sample of a beat
+    When I undo
+    Then track 2's takes read "take 1: m1b1 to m5b1"
+
+  Scenario: live, the song cannot change during a recording
+    Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
+    And I have armed track 2
+    When I record live from measure 1 beat 1 until the song ends, inserting a measure before measure 3 while it records
+    Then the action is refused
+    And the song has 4 measures
 
   Scenario: Count In sounds one beat before the first beat, whatever the plugins delay
     Given I have added the VST3 effect "Test Latency" to track 1
@@ -165,6 +235,43 @@ Feature: Keeping audio in sync
     Then the output's left side holds 24 clicks and its right side 24 clicks
     And on every beat the left and right clicks reach the output within 1 sample of each other
 
+  # live, each pass starts on the sample the last one ends on: the notes keep the beat across each jump back, and the
+  # take with them
+  Scenario: live, with Play looped on, the passes join on the sample
+    Given I have turned Play looped on over measures 2 to 3
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's left side holds 24 clicks, one every 22050 samples within 1 sample
+    And the output's right side holds 24 clicks, each within 1 samples of a click on its left side
+
+  # live, as offline, nothing drops out at the jump back, though the takes play late by the plugin delay compensation
+  # (the drums' 600 samples here): the audio before the jump fades out over 256 samples (the second half of the fade
+  # is below half the level), the next pass starts at full level
+  Scenario: live, with Play looped on, a take sounds on across each jump back
+    Given track 2 has a take of a constant level of 0.25 from measure 1 beat 1 to the end of measure 4
+    And I have turned Play looped on over measures 2 to 3
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's right side sounds for at least 528000 samples, at most 129 samples at a time below half its peak
+
+  # live, a monitored input sounds from the very first sample of play: the track's timeline plays late by the plugin
+  # delay compensation (the drums' 600 samples here), but the input it starts with goes on before it, as while stopped
+  Scenario: live, a monitored input sounds from the very start of play
+    Given I have armed track 2
+    And I have set track 2's monitoring to Always
+    And the player plays a constant level of 0.25 on input channel 1
+    When I play the song live from measure 2 beat 1
+    Then the output's right side sounds from its first sample on
+    And the output's right side sounds for at least 264000 samples, at most 0 samples at a time below half its peak
+
+  # monitored, the input sounds as the device delivers it, whatever pass plays; it never jumps, so unlike a take it does
+  # not fade at the jump back: not one sample below half the level
+  Scenario: live, with Play looped on, a monitored input sounds on across each jump back
+    Given I have turned Play looped on over measures 2 to 3
+    And I have armed track 2
+    And I have set track 2's monitoring to Always
+    And the player plays a constant level of 0.25 on input channel 1
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's right side sounds for at least 528000 samples, at most 0 samples at a time below half its peak
+
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
@@ -173,8 +280,8 @@ Feature: Keeping audio in sync
     Then the echo of the click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample
 
   Scenario: a tail carries across a repeat
-    Given I have repeated measures 2 to 3 once
-    And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
+    Given track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1
+    And I have repeated measures 2 to 3 once
     And I have added the VST3 effect "Test Echo" to track 2
     When I play the song from measure 1 beat 1
     Then the echo of the first pass's click of measure 3 beat 4.5 reaches the output 2205 samples into the second pass, within 1 sample

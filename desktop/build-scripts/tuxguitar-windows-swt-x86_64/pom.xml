@@ -49,9 +49,15 @@
 		<module>../../TuxGuitar-tuner</module>
 		<module>../../TuxGuitar-svg</module>
 		<module>../../TuxGuitar-image-swt</module>
+		<module>../../../common/TuxGuitar-synth-core</module>
 		<module>../../TuxGuitar-synth</module>
 		<module>../../TuxGuitar-synth-gervill</module>
 		<module>../../TuxGuitar-synth-export</module>
+		<!-- audio tracks, line-in recording and VST3 hosting (their native parts are built and copied below) -->
+		<module>../../../common/TuxGuitar-audio-device</module>
+		<module>../../../common/TuxGuitar-vst3</module>
+		<module>../../../common/TuxGuitar-audio</module>
+		<module>../../TuxGuitar-audio-ui</module>
 		<module>../../TuxGuitar-debug-helper</module>
 		<module>../../TuxGuitar-tray-swt</module>
 	</modules>
@@ -285,6 +291,12 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-synth-core</artifactId>
+									<destFileName>tuxguitar-synth-core.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-synth</artifactId>
 									<destFileName>tuxguitar-synth.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
@@ -299,6 +311,34 @@
 									<groupId>${project.groupId}</groupId>
 									<artifactId>tuxguitar-synth-export</artifactId>
 									<destFileName>tuxguitar-synth-export.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-audio-device</artifactId>
+									<version>${project.version}</version>
+									<destFileName>tuxguitar-audio-device.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-vst3</artifactId>
+									<version>${project.version}</version>
+									<destFileName>tuxguitar-vst3.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-audio</artifactId>
+									<version>${project.version}</version>
+									<destFileName>tuxguitar-audio.jar</destFileName>
+									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>tuxguitar-audio-ui</artifactId>
+									<version>${project.version}</version>
+									<destFileName>tuxguitar-audio-ui.jar</destFileName>
 									<outputDirectory>${project.build.directory}/${project.finalName}/share/plugins</outputDirectory>
 								</artifactItem>
 								<artifactItem>
@@ -331,6 +371,21 @@
 						<phase>package</phase>
 						<configuration>
 							<target name="copy-files">
+								<!-- the native audio backend (PortAudio with ASIO: GPLv3, see AUDIO-NOTICE.txt) and the VST3 host
+									process, built with MSVC (native/build.cmd finds Visual Studio) and copied next to the other
+									native libraries; their build folders stay out of git -->
+								<exec executable="cmd" failonerror="true">
+									<arg value="/c" />
+									<arg file="${project.basedir}/${project.rootPath}/../common/TuxGuitar-audio-device/native/build.cmd" />
+								</exec>
+								<exec executable="cmd" failonerror="true">
+									<arg value="/c" />
+									<arg file="${project.basedir}/${project.rootPath}/../common/TuxGuitar-vst3/native/build.cmd" />
+								</exec>
+								<copy todir="${project.build.directory}/${project.finalName}/lib" overwrite="true">
+									<fileset file="${project.rootPath}/../common/TuxGuitar-audio-device/native-build/lib/tuxguitar-audio-device.dll" />
+									<fileset file="${project.rootPath}/../common/TuxGuitar-vst3/native-build/bin/tuxguitar-vst3-host.exe" />
+								</copy>
 								<copy todir="${project.build.directory}/${project.finalName}/share" overwrite="true">
 									<fileset dir="${project.rootPath}/TuxGuitar/share/" />
 								</copy>

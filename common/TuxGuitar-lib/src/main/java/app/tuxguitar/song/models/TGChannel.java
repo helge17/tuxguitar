@@ -35,6 +35,7 @@ public abstract class TGChannel {
 	private short tremolo;
 	private String name;
 	private List<TGChannelParameter> parameters;
+	private TGAudioInput audioInput;
 
 	public TGChannel() {
 		this.channelId = 0;
@@ -165,6 +166,20 @@ public abstract class TGChannel {
 		return (this.getBank() == DEFAULT_PERCUSSION_BANK);
 	}
 
+	// the input an audio channel records from; null on a channel that plays notes
+	public TGAudioInput getAudioInput() {
+		return this.audioInput;
+	}
+
+	public void setAudioInput(TGAudioInput audioInput) {
+		this.audioInput = audioInput;
+	}
+
+	// an audio channel sounds the takes of its audio track instead of notes
+	public boolean isAudioChannel(){
+		return (this.audioInput != null);
+	}
+
 	public TGChannel clone(TGFactory factory){
 		TGChannel tgChannel = factory.newChannel();
 		tgChannel.copyFrom(factory, this);
@@ -182,6 +197,7 @@ public abstract class TGChannel {
 		this.setPhaser(channel.getPhaser());
 		this.setTremolo(channel.getTremolo());
 		this.setName(channel.getName());
+		this.setAudioInput(channel.getAudioInput());
 
 		this.removeParameters();
 		for(int i = 0; i < channel.countParameters(); i ++){

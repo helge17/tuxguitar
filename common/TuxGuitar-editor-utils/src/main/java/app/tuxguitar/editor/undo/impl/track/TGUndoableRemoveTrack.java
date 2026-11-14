@@ -4,6 +4,7 @@ import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.editor.undo.TGCannotRedoException;
 import app.tuxguitar.editor.undo.TGCannotUndoException;
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
 
@@ -11,6 +12,7 @@ public class TGUndoableRemoveTrack extends TGUndoableTrackBase{
 
 	private int doAction;
 	private TGTrack undoableTrack;
+	private TGChannel ownChannel;
 
 	private TGUndoableRemoveTrack(TGContext context){
 		super(context);
@@ -28,7 +30,7 @@ public class TGUndoableRemoveTrack extends TGUndoableTrackBase{
 		if(!canUndo()){
 			throw new TGCannotUndoException();
 		}
-		this.addTrack(actionContext, getSong(), this.undoableTrack.clone(getSongManager().getFactory(), getSong()));
+		this.addTrack(actionContext, getSong(), this.undoableTrack.clone(getSongManager().getFactory(), getSong()), this.ownChannel);
 		this.doAction = REDO_ACTION;
 	}
 
@@ -44,6 +46,7 @@ public class TGUndoableRemoveTrack extends TGUndoableTrackBase{
 		TGUndoableRemoveTrack undoable = new TGUndoableRemoveTrack(context);
 		undoable.doAction = UNDO_ACTION;
 		undoable.undoableTrack = track.clone(new TGFactory(), getSong(context));
+		undoable.ownChannel = findOwnChannel(context, track);
 
 		return undoable;
 	}

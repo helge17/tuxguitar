@@ -1,0 +1,5 @@
+### Plugin Information ###
+plugin.name=TuxGuitar audio
+plugin.description=Audio tracks, line-in recording and VST3 plugins: plays the TuxGuitar Synthesizer through the\nchosen audio device (PortAudio), records armed audio tracks.
+plugin.author=TuxGuitar
+plugin.version=1.0

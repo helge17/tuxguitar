@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 
@@ -40,11 +41,15 @@ public class MidiSequenceParser {
 	public static final int DEFAULT_PLAY_FLAGS = (ADD_METRONOME);
 	public static final int DEFAULT_EXPORT_FLAGS = (ADD_FIRST_TICK_MOVE | ADD_DEFAULT_CONTROLS | ADD_MIXER_MESSAGES);
 
-	private static final int DEFAULT_METRONOME_KEY = 37;
 	private static final int DEFAULT_DURATION_PM = 60;
 	private static final int DEFAULT_DURATION_DEAD = 30;
 	private static final int DEFAULT_BEND = 64;
+	// the 7-bit pitch bend steps per quarter tone (the pitch bend range is 12 semitones: 5.33 per semitone)
 	private static final float DEFAULT_BEND_SEMI_TONE = 2.75f;
+	// a bend point's value counts quarter tones
+	private static final double BEND_PER_SEMITONE = 2.0 * TGEffectBend.SEMITONE_LENGTH;
+	private static final double VIBRATO_SEMITONES = 0.25;
+	private static final int NO_METRONOME_CHANNEL = -1;
 
 	private TGSong song;
 	private TGSongManager songManager;
@@ -52,6 +57,7 @@ public class MidiSequenceParser {
 	private int infoTrack;
 	private int metronomeTrack;
 	private int metronomeChannelId;
+	private MidiClick metronomeClick = MidiClick.DEFAULT;
 	private int firstTickMove;
 	private int tempoPercent;
 	private int transpose;
@@ -103,6 +109,11 @@ public class MidiSequenceParser {
 
 	public void setMetronomeChannelId(int metronomeChannelId) {
 		this.metronomeChannelId = metronomeChannelId;
+	}
+
+	// the drum note and velocity of the Metronome's ticks
+	public void setMetronomeClick(MidiClick metronomeClick) {
+		this.metronomeClick = metronomeClick;
 	}
 
 	public void setTempoPercent(int tempoPercent) {
@@ -159,7 +170,7 @@ public class MidiSequenceParser {
 		if( tgChannel != null ){
 			TGMeasure previous = null;
 
-			this.addBend(sh,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND, tgChannel.getChannelId(), -1, false);
+			this.addBend(sh,track.getNumber(),TGDuration.QUARTER_TIME,DEFAULT_BEND, 0, tgChannel.getChannelId(), -1, false);
 			this.makeTrackChannel(sh, tgChannel, track);
 
 			int mCount = sh.getMeasureHelpers().size();
@@ -348,13 +359,14 @@ public class MidiSequenceParser {
 		sh.getSequence().addTrackName(tick,trackNum,track.getName());
 	}
 
+	// on the Metronome's channel, unless that is -1 (none): a song channel, or a synthesizer's drums (MidiSampleClock.DRUMS)
 	public void addMetronome(MidiSequenceHelper sh,TGMeasureHeader header, long startMove){
 		if( (this.flags & ADD_METRONOME) != 0) {
-			if( this.metronomeChannelId >= 0 ){
+			if( this.metronomeChannelId != NO_METRONOME_CHANNEL ){
 				long start = (startMove + header.getStart());
 				long length = header.getTimeSignature().getDenominator().getTime();
 				for(int i = 1; i <= header.getTimeSignature().getNumerator();i ++){
-					addNote(sh,getMetronomeTrack(),DEFAULT_METRONOME_KEY,start,length,TGVelocities.DEFAULT,this.metronomeChannelId,-1,false);
+					addNote(sh,getMetronomeTrack(),this.metronomeClick.getNote(),start,length,this.metronomeClick.getVelocity(),this.metronomeChannelId,-1,false);
 					start += length;
 				}
 			}
@@ -362,41 +374,45 @@ public class MidiSequenceParser {
 	}
 
 
-	private void addBend(MidiSequenceHelper sh,int track, long tick,int bend, int channel, int midiVoice, boolean bendMode) {
-		sh.getSequence().addPitchBend(getTick(tick), track, channel, fix(bend), midiVoice, bendMode);
+	// the 7-bit value (fixed to the MIDI range) and the exact semitones of a bend
+	private void addBend(MidiSequenceHelper sh,int track, long tick,int bend, double semitones, int channel, int midiVoice, boolean bendMode) {
+		sh.getSequence().addPitchBend(getTick(tick), track, channel, fix(bend), semitones, midiVoice, bendMode);
 	}
 
+	// swings between the normal pitch and a quarter of a semitone above it
 	public void addVibrato(MidiSequenceHelper sh,int track,long start, long duration,int channel, int midiVoice, boolean bendMode){
 		long nextStart = start;
 		long end = nextStart + duration;
 
 		while(nextStart < end){
 			nextStart = ((nextStart + 160 > end)?end:nextStart + 160);
-			addBend(sh, track, nextStart, DEFAULT_BEND, channel, midiVoice, bendMode);
+			addBend(sh, track, nextStart, DEFAULT_BEND, 0, channel, midiVoice, bendMode);
 			nextStart = ((nextStart + 160 > end)?end:nextStart + 160);
-			addBend(sh, track, nextStart, DEFAULT_BEND + (int)(DEFAULT_BEND_SEMI_TONE / 2.0f), channel, midiVoice, bendMode);
+			addBend(sh, track, nextStart, DEFAULT_BEND + (int)(DEFAULT_BEND_SEMI_TONE / 2.0f), VIBRATO_SEMITONES, channel, midiVoice, bendMode);
 		}
-		addBend(sh, track, nextStart, DEFAULT_BEND, channel, midiVoice, bendMode);
+		addBend(sh, track, nextStart, DEFAULT_BEND, 0, channel, midiVoice, bendMode);
 	}
 
+	// a bend point's value counts quarter tones (4 is a full bend, a whole tone)
 	public void addBend(MidiSequenceHelper sh,int track,long start, long duration, TGEffectBend bend, int channel, int midiVoice, boolean bendMode){
 		List<PitchPoint> curve = pitchCurve(bend.getPoints(), point -> start + point.getTime(duration),
-				point -> DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH));
+				point -> DEFAULT_BEND + (int)(point.getValue() * DEFAULT_BEND_SEMI_TONE / TGEffectBend.SEMITONE_LENGTH),
+				point -> point.getValue() / BEND_PER_SEMITONE);
 		addPitchCurve(sh, track, curve, start + duration, channel, midiVoice, bendMode);
 	}
 
-	// a tremolo bar point's value counts whole tones
+	// a tremolo bar point's value counts semitones
 	public void addTremoloBar(MidiSequenceHelper sh,int track,long start, long duration, TGEffectTremoloBar effect, int channel, int midiVoice, boolean bendMode){
 		List<PitchPoint> curve = pitchCurve(effect.getPoints(), point -> start + point.getTime(duration),
-				point -> DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2)));
+				point -> DEFAULT_BEND + (int)(point.getValue() * (DEFAULT_BEND_SEMI_TONE * 2)), point -> point.getValue());
 		addPitchCurve(sh, track, curve, start + duration, channel, midiVoice, bendMode);
 	}
 
-	// the points of a bend or tremolo bar as a pitch curve: when each point is, and its pitch bend value
-	private <P> List<PitchPoint> pitchCurve(List<P> points, ToLongFunction<P> start, ToIntFunction<P> pitch) {
+	// the points of a bend or tremolo bar as a pitch curve: when each point is, its pitch bend value and its semitones
+	private <P> List<PitchPoint> pitchCurve(List<P> points, ToLongFunction<P> start, ToIntFunction<P> pitch, ToDoubleFunction<P> semitones) {
 		List<PitchPoint> curve = new ArrayList<PitchPoint>();
 		for(P point : points){
-			curve.add(new PitchPoint(start.applyAsLong(point), pitch.applyAsInt(point)));
+			curve.add(new PitchPoint(start.applyAsLong(point), pitch.applyAsInt(point), semitones.applyAsDouble(point)));
 		}
 		return curve;
 	}
@@ -405,21 +421,23 @@ public class MidiSequenceParser {
 	private void addPitchCurve(MidiSequenceHelper sh, int track, List<PitchPoint> curve, long end, int channel, int midiVoice, boolean bendMode) {
 		for(int i = 0; i < curve.size(); i++){
 			PitchPoint point = curve.get(i).played();
-			addBend(sh, track, point.start, point.pitch, channel, midiVoice, bendMode);
+			addBend(sh, track, point.start, point.pitch, point.semitones, channel, midiVoice, bendMode);
 			if(i + 1 < curve.size()){
 				addPitchSteps(sh, track, point, curve.get(i + 1), channel, midiVoice, bendMode);
 			}
 		}
-		addBend(sh, track, end, DEFAULT_BEND, channel, midiVoice, bendMode);
+		addBend(sh, track, end, DEFAULT_BEND, 0, channel, midiVoice, bendMode);
 	}
 
-	// one pitch bend per value from a point's pitch to the next point's, a whole number of ticks apart
+	// one pitch bend per value from a point's pitch to the next point's, a whole number of ticks apart, each with its
+	// share of the semitones between them
 	private void addPitchSteps(MidiSequenceHelper sh, int track, PitchPoint from, PitchPoint to, int channel, int midiVoice, boolean bendMode) {
 		int steps = Math.abs(to.pitch - from.pitch);
 		int direction = Integer.signum(to.pitch - from.pitch);
 		long width = (to.start - from.start) / Math.max(steps, 1);
 		for(int step = 1; step <= steps; step++){
-			addBend(sh, track, from.start + (width * step), from.pitch + (direction * step), channel, midiVoice, bendMode);
+			double semitones = from.semitones + (to.semitones - from.semitones) * step / steps;
+			addBend(sh, track, from.start + (width * step), from.pitch + (direction * step), semitones, channel, midiVoice, bendMode);
 		}
 	}
 
@@ -435,10 +453,11 @@ public class MidiSequenceParser {
 			// Make the Slide
 			this.addSlide(sh, track.getNumber(), tick1, value1, tick2, value2, channel, midiVoice, bendMode);
 			// Normalize the Bend
-			this.addBend(sh,track.getNumber(), tick2 ,DEFAULT_BEND, channel, midiVoice, bendMode);
+			this.addBend(sh,track.getNumber(), tick2 ,DEFAULT_BEND, 0, channel, midiVoice, bendMode);
 		}
 	}
 
+	// glides from one fret to the other: tone counts the semitones glided so far
 	public void addSlide(MidiSequenceHelper sh,int track,long tick1,int value1,long tick2,int value2,int channel, int midiVoice, boolean bendMode){
 		long distance = (value2 - value1);
 		long length = (tick2 - tick1);
@@ -446,7 +465,7 @@ public class MidiSequenceParser {
 		for(int i = 1;i <= points; i ++){
 			float tone = ((((length / points) * (float)i) * distance) / length);
 			int bend = (DEFAULT_BEND + (int)(tone * (DEFAULT_BEND_SEMI_TONE * 2)));
-			addBend(sh, track, tick1 + ( (length / points) * i), bend, channel, midiVoice, bendMode);
+			addBend(sh, track, tick1 + ( (length / points) * i), bend, tone, channel, midiVoice, bendMode);
 		}
 	}
 
@@ -774,15 +793,17 @@ public class MidiSequenceParser {
 	private class PitchPoint {
 		private final long start;
 		private final int pitch;
+		private final double semitones;
 
-		public PitchPoint(long start, int pitch){
+		public PitchPoint(long start, int pitch, double semitones){
 			this.start = start;
 			this.pitch = pitch;
+			this.semitones = semitones;
 		}
 
-		// the point as played, its pitch within the MIDI range
+		// the point as played, its pitch within the MIDI range (its semitones are exact)
 		public PitchPoint played() {
-			return new PitchPoint(this.start, fix(this.pitch));
+			return new PitchPoint(this.start, fix(this.pitch), this.semitones);
 		}
 	}
 

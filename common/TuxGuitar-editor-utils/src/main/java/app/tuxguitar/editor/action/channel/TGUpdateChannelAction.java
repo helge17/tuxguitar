@@ -57,11 +57,20 @@ public class TGUpdateChannelAction extends TGActionBase{
 			}
 		}
 
+		if(!isAllowed(channel, channelClone)) {
+			return;
+		}
 		songManager.updateChannel(song, channelClone);
+		context.setAttribute(ATTRIBUTE_SUCCESS, Boolean.TRUE);
 
 		if (oldVolume != channelClone.getVolume()) {
 			TGEventManager.getInstance(getContext()).fireEvent(new TGUpdateEvent(TGUpdateEvent.VOLUME_CHANGED, getContext()));
 		}
+	}
+
+	// an audio channel sounds its takes: it takes no General MIDI bank or program
+	private boolean isAllowed(TGChannel channel, TGChannel update) {
+		return (!channel.isAudioChannel() || (update.getBank() == channel.getBank() && update.getProgram() == channel.getProgram()));
 	}
 
 	private Object findAttribute(TGActionContext context, String attribute, Object defaultValue) {

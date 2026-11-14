@@ -28,7 +28,7 @@ public class ToolMenuItem extends TGMenuItem {
 	private UIMenuActionItem plugins;
 	private UIMenuActionItem config;
 	private UIMenuActionItem keyBindings;
-	private HashMap<UIMenuActionItem, String> pluginsMap = new HashMap<UIMenuActionItem, String>();	// plugins menu items and their names
+	private HashMap<UIMenuActionItem, TGCustomTool> pluginsMap = new HashMap<UIMenuActionItem, TGCustomTool>();	// plugins menu items and their tools
 
 	public ToolMenuItem(UIMenu parent) {
 		this.settingsMenuItem = parent.createSubMenuItem();
@@ -52,7 +52,7 @@ public class ToolMenuItem extends TGMenuItem {
 		while(it.hasNext()){
 			TGCustomTool tool = it.next();
 			UIMenuActionItem uiMenuItem = this.settingsMenuItem.getMenu().createActionItem();
-			pluginsMap.put(uiMenuItem, tool.getName());
+			pluginsMap.put(uiMenuItem, tool);
 			uiMenuItem.addSelectionListener(this.createActionProcessor(tool.getAction()));
 		}
 
@@ -84,8 +84,8 @@ public class ToolMenuItem extends TGMenuItem {
 		setMenuItemTextAndAccelerator(this.keyBindings, "tools.shortcuts", TGOpenKeyBindingEditorAction.NAME);
 		setMenuItemTextAndAccelerator(this.config, "tools.settings", TGOpenSettingsEditorAction.NAME);
 		// update labels for plugins menu items
-		for (Map.Entry<UIMenuActionItem, String> mapItem : pluginsMap.entrySet()) {
-			mapItem.getKey().setText(TuxGuitar.getProperty(mapItem.getValue()));
+		for (Map.Entry<UIMenuActionItem, TGCustomTool> mapItem : pluginsMap.entrySet()) {
+			mapItem.getKey().setText(TuxGuitar.getProperty(mapItem.getValue().getName()));
 		}
 	}
 
@@ -99,5 +99,8 @@ public class ToolMenuItem extends TGMenuItem {
 	public void update(){
 		boolean running = TuxGuitar.getInstance().getPlayer().isRunning();
 		this.transpose.setEnabled( !running );
+		for (Map.Entry<UIMenuActionItem, TGCustomTool> mapItem : pluginsMap.entrySet()) {
+			mapItem.getKey().setEnabled(mapItem.getValue().isEnabled());
+		}
 	}
 }

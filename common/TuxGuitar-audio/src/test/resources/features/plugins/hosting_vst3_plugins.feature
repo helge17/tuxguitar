@@ -1,4 +1,3 @@
-@planned
 Feature: Hosting VST3 plugins
   Each track sounds through its sound chain: a source followed by effects, in order. The source is a General MIDI
   program played by the TuxGuitar Synthesizer, a VST3 instrument, or an audio track's takes. A disabled effect is
@@ -15,20 +14,34 @@ Feature: Hosting VST3 plugins
 
   Scenario: scanning the VST3 folders lists VST3 effects and VST3 instruments apart
     When I scan the VST3 folders
-    Then the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Latency, Test Stereo, Test Tempo"
+    Then the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Hang, Test Latency, Test Stereo, Test Tempo"
     And the VST3 instruments read "Test Click, Test Sine"
 
   Scenario: a VST 2 plugin in the VST3 folders is not listed
     Given the VST3 folders also hold the VST 2 plugin "Old Amp"
     When I scan the VST3 folders
     Then neither the VST3 effects nor the VST3 instruments name "Old Amp"
-    And the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Latency, Test Stereo, Test Tempo"
+    And the VST3 effects read "Test Clip 0.5, Test Drone, Test Echo, Test Gain, Test Hang, Test Latency, Test Stereo, Test Tempo"
 
   Scenario: VST3 plugins run in a process apart from TuxGuitar, and nothing listens on a network port
     Given I have added the VST3 effect "Test Gain" to track 1
     When I play the song from measure 1 beat 1
     Then "Test Gain" runs in a process other than TuxGuitar's
     And neither TuxGuitar nor the plugin process listens on a network port
+
+  Scenario: a VST3 effect that hangs goes silent while the other tracks keep playing on their beats
+    Given track 1 has a quarter note on every beat
+    And I have chosen the VST3 instrument "Test Click" for track 1
+    And I have set the Balance of track 1's channel to 0
+    And I have added an audio track recording input channel 1
+    And I have set the Balance of track 2's channel to 127
+    And track 2 has a take of clicks of -0.25 on every beat from measure 1 beat 1 to the end of measure 4
+    And I have added the VST3 effect "Test Hang" to track 1
+    And I have set "Hang at" of VST3 effect 1 of track 1 to 88200
+    When I play the song from measure 1 beat 1
+    Then the output's left side holds 4 clicks and its right side 16 clicks
+    # 600 samples: the General MIDI drums' latency, which plugin delay compensation counts
+    And every right click reaches the output 600 samples after its beat, within 1 sample
 
   # VST3 effects
 
@@ -70,6 +83,16 @@ Feature: Hosting VST3 plugins
     And I have set "Gain" of VST3 effect 2 of track 2 to 0.25
     When I play the song from measure 1 beat 1
     Then track 2 sounds a 440 Hz tone peaking at 0.4 within 0.01 in measure 1
+
+  Scenario: a VST3 instrument's sound chain has room above full scale between effects
+    Given I have entered fret 5 on string 1 at dynamic fff
+    And I have chosen the VST3 instrument "Test Sine" for track 1
+    And I have added the VST3 effect "Test Gain" to track 1
+    And I have set "Gain" of VST3 effect 1 of track 1 to 4.0
+    And I have added the VST3 effect "Test Gain" to track 1
+    And I have set "Gain" of VST3 effect 2 of track 1 to 0.25
+    When I play the song from measure 1 beat 1
+    Then track 1 sounds a 440 Hz tone peaking at 0.5 within 0.01 in measure 1
 
   Scenario: Volume applies after the sound chain
     Given I have added an audio track recording input channel 1
@@ -251,6 +274,15 @@ Feature: Hosting VST3 plugins
     Then track 1 sounds a 440 Hz tone rising to 493.9 Hz within 1 Hz in measure 1
     And track 1 sounds a 329.6 Hz tone that stays within 1 Hz in measure 1
 
+  # unison: the same key on two strings is two notes to the instrument; the bent one ends a whole tone up, the other
+  # where both started
+  Scenario: a bend on one of two unison notes reaches the VST3 instrument for that note only
+    Given I have entered fret 5 on string 1 with a full bend
+    And I have entered fret 10 on string 2
+    And I have chosen the VST3 instrument "Test Sine" for track 1
+    When I play the song from measure 1 beat 1
+    Then track 1 ends measure 1 sounding a 493.9 Hz tone and a 440 Hz tone, each peaking above 0.1
+
   Scenario: the Metronome does not go through a percussion track's VST3 instrument
     Given I have added a percussion track
     And I have chosen the VST3 instrument "Test Sine" for track 2
@@ -258,6 +290,14 @@ Feature: Hosting VST3 plugins
     When I play the song from measure 1 beat 1
     Then the output holds 16 Metronome clicks
     And track 2 sounds no tone above -60 dBFS
+
+  # the click, Side Stick (key 37), is a 69.3 Hz tone on Test Sine
+  Scenario: while the song plays live, the Metronome does not go through a percussion track's VST3 instrument
+    Given I have added a percussion track
+    And I have chosen the VST3 instrument "Test Sine" for track 2
+    And I have turned the Metronome on
+    When I play the song live from measure 1 beat 1
+    Then the output's left side holds 16 clicks and no 69.3 Hz tone above -60 dBFS
 
   Scenario Outline: VST3 plugins are told the tempo, time signature and play state that sound
     Given I have set the tempo of measure 3 only to 60 bpm
@@ -272,6 +312,20 @@ Feature: Hosting VST3 plugins
       | percent | first | third |
       | 100     | 120   | 60    |
       | 80      | 96    | 48    |
+
+  Scenario: while the song plays live, VST3 plugins are told a new time signature from the measure it starts on
+    Given I have set the time signature of measure 3 only to 3/4
+    And track 1 has a quarter note on every beat
+    And I have added the VST3 effect "Test Tempo" to track 1
+    When I play the song live from measure 1 beat 1
+    Then "Test Tempo" was told 120 bpm in 4/4 in measure 1 and 120 bpm in 3/4 in measure 3
+
+  Scenario: while the song plays live, VST3 plugins are told a new tempo from the sample its measure starts on
+    Given I have set the tempo of measure 3 only to 60 bpm
+    And track 1 has a quarter note on every beat
+    And I have added the VST3 effect "Test Tempo" to track 1
+    When I play the song live from measure 1 beat 1
+    Then "Test Tempo" was told 60 bpm from musical position 8, within 1/22050 of a quarter note
 
   Scenario: VST3 plugins are told the musical position, which jumps back with a loop
     Given I have turned Play looped on over measures 2 to 3

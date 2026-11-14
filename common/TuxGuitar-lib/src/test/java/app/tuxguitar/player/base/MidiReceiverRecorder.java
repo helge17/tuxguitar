@@ -4,18 +4,24 @@ import java.util.List;
 
 /**
  * A MidiReceiver that writes each call it receives as one line, "kind a b c ..." in argument order; bend mode is
- * written 0/1.
+ * written 0/1; a recorder made with a prefix writes it before each line.
  */
 public class MidiReceiverRecorder implements MidiReceiver {
 
 	private final List<String> received;
+	private final String prefix;
 
 	public MidiReceiverRecorder(List<String> received) {
+		this(received, "");
+	}
+
+	public MidiReceiverRecorder(List<String> received, String prefix) {
 		this.received = received;
+		this.prefix = prefix;
 	}
 
 	private void record(String kind, int... values) {
-		StringBuilder call = new StringBuilder(kind);
+		StringBuilder call = new StringBuilder(this.prefix).append(kind);
 		for (int value : values) {
 			call.append(' ').append(value);
 		}

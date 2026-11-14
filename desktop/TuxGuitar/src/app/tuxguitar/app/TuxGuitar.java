@@ -46,6 +46,7 @@ import app.tuxguitar.editor.action.file.TGLoadTemplateAction;
 import app.tuxguitar.editor.undo.TGUndoableManager;
 import app.tuxguitar.event.TGEventManager;
 import app.tuxguitar.io.base.TGFileFormatManager;
+import app.tuxguitar.player.base.MidiClick;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.impl.sequencer.MidiSequencerProviderImpl;
@@ -348,6 +349,9 @@ public class TuxGuitar {
 
 		//check midi port
 		getPlayer().openOutputPort(getConfig().getStringValue(TGConfigKeys.MIDI_PORT), true);
+
+		//the Count In / Metronome click
+		getPlayer().setClick(MidiClick.read(getConfig()));
 	}
 
 	public void updateCache(final boolean updateItems){

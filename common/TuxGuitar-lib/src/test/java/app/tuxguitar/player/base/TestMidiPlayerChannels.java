@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.song.managers.TGSongManager;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
@@ -46,7 +47,11 @@ public class TestMidiPlayerChannels {
 		public void sendNoteOff(int key, int velocity, int voice, boolean bendMode) { }
 		public void sendPitchBend(int value, int voice, boolean bendMode) { }
 		public void sendControlChange(int controller, int value) { }
-		public void sendParameter(String key, String value) { }
+		public void sendParameter(String key, String value) {
+			if (MidiParameters.AUDIO_CHANNEL.equals(key)) {
+				log.add("audio " + this.id + "=" + value);
+			}
+		}
 		public void sendAllNotesOff() { }
 	}
 
@@ -102,6 +107,14 @@ public class TestMidiPlayerChannels {
 
 		assertEquals("open 1, open 2, program 1=25, program 2=30 -> [1, 2] | program 1=25, program 2=30 -> [1, 2]",
 			first + " | " + update());
+	}
+
+	// an audio track's channel sounds its takes: the synthesizer is told so with its settings
+	@Test
+	public void anAudioChannelIsToldItIsOneWithItsSettings() throws MidiPlayerException {
+		songManager.getChannel(song, 2).setAudioInput(TGAudioInput.mono(1));
+
+		assertEquals("open 1, open 2, program 1=25, audio 2=true, program 2=30 -> [1, 2]", update());
 	}
 
 	@Test

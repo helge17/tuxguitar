@@ -1,4 +1,3 @@
-@planned
 Feature: Audio tracks
   An audio track sounds its takes instead of notes. It has no strings, holds no notes, and has a channel of its own,
   outside the 16 MIDI channels. Audio tracks need the TuxGuitar Synthesizer as the MIDI Port.
@@ -55,7 +54,10 @@ Feature: Audio tracks
       | change                                                                            |
       | set the General MIDI program of track 2's channel to "Distortion Electric Guitar" |
       | make track 2's channel a percussion channel                                       |
-      | give track 1's channel the source "takes"                                         |
+
+    Examples:
+      | change                                    |
+      | give track 1's channel the source "takes" |
 
   Scenario: cloning an audio track clones its takes and sound chain onto a new channel
     Given I have added an audio track recording input channel 1

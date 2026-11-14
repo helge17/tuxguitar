@@ -81,4 +81,12 @@ public class MidiTrackController {
 	public boolean isAnySolo(){
 		return this.anySolo;
 	}
+
+	// a track's events are heard unless it is muted or another track is soloed; events of all tracks always are
+	public boolean isAudible(int track){
+		if(track == MidiEvent.ALL_TRACKS){
+			return true;
+		}
+		return (!this.isMute(track) && (!this.isAnySolo() || this.isSolo(track)));
+	}
 }

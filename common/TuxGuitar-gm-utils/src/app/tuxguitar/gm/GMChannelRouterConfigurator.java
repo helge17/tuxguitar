@@ -3,6 +3,7 @@ package app.tuxguitar.gm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
@@ -23,7 +24,8 @@ public class GMChannelRouterConfigurator {
 		this.configureRouter(channels);
 	}
 
-	public void configureRouter(List<TGChannel> channels) {
+	public void configureRouter(List<TGChannel> songChannels) {
+		List<TGChannel> channels = this.findMidiChannels(songChannels);
 		List<GMChannelRoute> routes = this.findCurrentRoutes(channels);
 
 		this.router.resetRoutes();
@@ -45,6 +47,11 @@ public class GMChannelRouterConfigurator {
 				this.router.configureRoutes(route, channel.isPercussionChannel());
 			}
 		}
+	}
+
+	// an audio channel sounds takes, not MIDI: it is given no MIDI channel
+	private List<TGChannel> findMidiChannels(List<TGChannel> channels) {
+		return channels.stream().filter(channel -> !channel.isAudioChannel()).collect(Collectors.toList());
 	}
 
 	private List<GMChannelRoute> findCurrentRoutes(List<TGChannel> channels) {

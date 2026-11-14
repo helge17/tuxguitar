@@ -81,11 +81,14 @@ class ParserFixture {
 	}
 
 	MidiEventRecorder parse() {
+		return parse(new MidiEventRecorder(song.countTracks() + 2));
+	}
+
+	<R extends MidiSequenceHandler> R parse(R recorder) {
 		MidiSequenceParser parser = new MidiSequenceParser(song, songManager, flags);
 		parser.setTranspose(transpose);
 		parser.setMetronomeChannelId(metronomeChannelId);
 		parser.setSHeader(sHeader);
-		MidiEventRecorder recorder = new MidiEventRecorder(song.countTracks() + 2);
 		parser.parse(recorder);
 		return recorder;
 	}
@@ -97,5 +100,17 @@ class ParserFixture {
 	// notes and pitch bends; the first one is always the track's initial bend reset "bend 960 t1 c1 64 s-1 b0"
 	List<String> notesAndBends() {
 		return parse().events("bend", "on", "off");
+	}
+
+	// the exact semitones of each pitch bend, "TICK sVOICE SEMITONES" to the thousandth; the first one is always the
+	// track's initial reset "960 s-1 0.0"
+	List<String> semitones() {
+		List<String> semitones = new java.util.ArrayList<String>();
+		parse(new MidiEventRecorder(song.countTracks() + 2) {
+			public void addPitchBend(long tick, int track, int channel, int value, double bend, int voice, boolean bendMode) {
+				semitones.add(tick + " s" + voice + " " + (Math.round(bend * 1000) / 1000.0));
+			}
+		});
+		return semitones;
 	}
 }

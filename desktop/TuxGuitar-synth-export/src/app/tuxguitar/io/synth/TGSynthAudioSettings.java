@@ -10,6 +10,8 @@ public class TGSynthAudioSettings {
 
 	private AudioFileFormat.Type type;
 	private AudioFormat format;
+	private String export;
+	private String extension;
 
 	public TGSynthAudioSettings() {
 		this.setType(DEFAULT_TYPE);
@@ -30,5 +32,20 @@ public class TGSynthAudioSettings {
 
 	public void setFormat(AudioFormat format) {
 		this.format = format;
+	}
+
+	// a registered audio exporter's format (see TGSynthAudioExporter), with its files' extension; null: Java Sound's
+	public String getExport() {
+		return this.export;
+	}
+
+	public void setExport(String export, String extension) {
+		this.export = export;
+		this.extension = extension;
+	}
+
+	// the extension of the files written: the exporter's format's, else the type's
+	public String getExtension() {
+		return (this.export != null ? this.extension : this.type.getExtension());
 	}
 }

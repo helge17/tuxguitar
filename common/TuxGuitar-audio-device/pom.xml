@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>tuxguitar-pom</artifactId>
+		<groupId>app.tuxguitar</groupId>
+		<version>9.99-SNAPSHOT</version>
+		<relativePath>../../desktop/</relativePath>
+	</parent>
+
+	<!-- The native audio backend: audio devices listed per host API and opened as streams whose device callback runs
+		on the device's own thread, through a JNI library over PortAudio (native/). Before the tests, build.cmd /
+		build.sh builds it with CMake into native-build/ (outside target/, so it survives `mvn clean` and is built
+		once); without a C++ toolchain the build stops there and says what to install. -DskipTests skips the native
+		build too. See README.md for the licensing of a build with ASIO (GPLv3). -->
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tuxguitar-audio-device</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<skipTests>false</skipTests>
+		<audio.native.dir>${project.basedir}/native-build</audio.native.dir>
+	</properties>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>build-audio-native</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<target name="build-audio-native">
+								<exec executable="cmd" osfamily="windows" failonerror="true">
+									<arg value="/c" />
+									<arg value="${project.basedir}/native/build.cmd" />
+									<arg value="${audio.native.dir}" />
+								</exec>
+								<exec executable="sh" osfamily="unix" failonerror="true">
+									<arg value="${project.basedir}/native/build.sh" />
+									<arg value="${audio.native.dir}" />
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<tg.audio.native>${audio.native.dir}/lib</tg.audio.native>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.14.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import app.tuxguitar.song.factory.TGFactory;
 import app.tuxguitar.song.helpers.TGMeasureError;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGColor;
 import app.tuxguitar.song.models.TGDuration;
@@ -273,14 +274,19 @@ public class TGSongManager {
 	}
 
 	public boolean isAnyPercussionChannel(TGSong song){
+		return (this.getPercussionChannel(song) != null);
+	}
+
+	// the song's first percussion channel, the one Count In and the Metronome click on; null when it has none
+	public TGChannel getPercussionChannel(TGSong song){
 		Iterator<TGChannel> it = song.getChannels();
 		while( it.hasNext() ){
 			TGChannel channel = it.next();
 			if( channel.isPercussionChannel() ){
-				return true;
+				return channel;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public boolean isAnyTrackConnectedToChannel(TGSong song, int channelId ){
@@ -361,6 +367,18 @@ public class TGSongManager {
 		return tgTrack;
 	}
 
+	// a new audio track at the end of the song: no strings, on a new channel of its own that records from the input
+	public TGTrack addAudioTrack(TGSong song, TGAudioInput input){
+		TGChannel tgChannel = addChannel(song);
+		tgChannel.setAudioInput(input);
+
+		TGTrack tgTrack = createTrack(song);
+		tgTrack.setStrings(new ArrayList<TGString>());
+		tgTrack.setChannelId(tgChannel.getChannelId());
+		addTrack(song, tgTrack);
+		return tgTrack;
+	}
+
 	public void addTrack(TGSong song, TGTrack trackToAdd){
 		this.orderTracks(song);
 		int addIndex = -1;
@@ -398,7 +416,15 @@ public class TGSongManager {
 			}
 
 		}
+		removeOwnChannel(song, trackToRemove);
 		song.removeTrack(trackToRemove);
+	}
+
+	// an audio track's channel is its own: it goes with the track
+	private void removeOwnChannel(TGSong song, TGTrack track){
+		if( track.isAudio() ){
+			removeChannel(song, getChannel(song, track.getChannelId()));
+		}
 	}
 
 	private void orderTracks(TGSong song){
@@ -456,6 +482,12 @@ public class TGSongManager {
 	public TGTrack cloneTrack(TGSong song, TGTrack track){
 		TGTrack clone = track.clone(getFactory(),song);
 		clone.setNumber(getNextTrackNumber(song));
+		if( track.isAudio() ){
+			// an audio track's channel is its own: the clone gets a copy of it
+			TGChannel channel = getChannel(song, track.getChannelId()).clone(getFactory());
+			channel.setChannelId(getNextChannelId(song));
+			clone.setChannelId(addChannel(song, channel).getChannelId());
+		}
 		addTrack(song, clone);
 		return clone;
 	}

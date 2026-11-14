@@ -7,6 +7,7 @@
 package app.tuxguitar.song.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import app.tuxguitar.song.factory.TGFactory;
@@ -33,12 +34,15 @@ public abstract class TGMeasure {
 	private int keySignature;
 
 	private List<TGBeat> beats;
+	private List<TGTakeClip> takeClips;
+	private TGTake chosenTake;
 
 	public TGMeasure(TGMeasureHeader header){
 		this.header = header;
 		this.clef = DEFAULT_CLEF;
 		this.keySignature = DEFAULT_KEY_SIGNATURE;
 		this.beats = new ArrayList<TGBeat>();
+		this.takeClips = new ArrayList<TGTakeClip>();
 	}
 
 	public TGTrack getTrack() {
@@ -71,12 +75,7 @@ public abstract class TGMeasure {
 	}
 
 	public int getHighestFret() {
-		int highestFret = -1;
-		for (TGBeat beat : this.beats) {
-			int beatHighestFret = beat.getHighestFret();
-			highestFret = (beatHighestFret > highestFret ? beatHighestFret : highestFret);
-		}
-		return highestFret;
+		return this.beats.stream().mapToInt(TGBeat::getHighestFret).max().orElse(-1);
 	}
 
 	public void addBeat(TGBeat beat){
@@ -102,6 +101,32 @@ public abstract class TGMeasure {
 
 	public int countBeats(){
 		return this.beats.size();
+	}
+
+	// the parts of takes that sit in this measure, in the order they were added
+	public List<TGTakeClip> getTakeClips() {
+		return Collections.unmodifiableList(this.takeClips);
+	}
+
+	public void addTakeClip(TGTakeClip clip) {
+		this.takeClips.add(clip);
+	}
+
+	// removes the take from this measure: its clips, and the choice of it
+	public void removeTake(TGTake take) {
+		this.takeClips.removeIf(clip -> clip.getTake() == take);
+		if (this.chosenTake == take) {
+			this.chosenTake = null;
+		}
+	}
+
+	// the take chosen to play in this measure (comping), or null to play the newest one
+	public TGTake getChosenTake() {
+		return this.chosenTake;
+	}
+
+	public void setChosenTake(TGTake chosenTake) {
+		this.chosenTake = chosenTake;
 	}
 
 	public TGMeasureHeader getHeader() {
@@ -177,6 +202,10 @@ public abstract class TGMeasure {
 		for(int i = 0; i < measure.countBeats(); i ++){
 			this.addBeat(measure.getBeat(i).clone(factory));
 		}
+		// takes are immutable: the copy shares them
+		this.takeClips.clear();
+		this.takeClips.addAll(measure.takeClips);
+		this.chosenTake = measure.chosenTake;
 	}
 
 	public TGMeasure clone(TGFactory factory,TGMeasureHeader header){

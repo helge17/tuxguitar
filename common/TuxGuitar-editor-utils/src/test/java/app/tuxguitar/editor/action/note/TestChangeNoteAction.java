@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.SongActionFixture;
 import app.tuxguitar.song.models.TGBeat;
+import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
@@ -14,7 +15,8 @@ import app.tuxguitar.song.models.TGTrack;
 
 /**
  * Pins TGChangeNoteAction, putting a note of a given fret and velocity on the caret string, unless the fret passes
- * the track's last fret (a percussion track has none). Normally the note goes in the beat at the given position, and
+ * the track's last fret (a percussion track has none), or the track is an audio track, which holds no notes. Normally
+ * the note goes in the beat at the given position, and
  * only with a fret of 0 or more. In free edition mode it goes in the caret beat, whatever the fret, taking the given
  * duration; without a caret beat it goes at the position as normally.
  *
@@ -101,6 +103,13 @@ public class TestChangeNoteAction {
 		fixture.song.getChannel(0).setBank(TGChannel.DEFAULT_PERCUSSION_BANK);
 
 		assertEquals(" |  | s3f35v47 |  | success", changeNote(35));
+	}
+
+	@Test
+	public void anAudioTrackHoldsNoNotes() {
+		fixture.song.getChannel(0).setAudioInput(TGAudioInput.mono(1));
+
+		assertEquals(" |  |  |  | ", changeNote(5));
 	}
 
 	@Test

@@ -50,7 +50,10 @@ public class MidiPlayer{
 	private boolean paused;
 	private boolean changeTickPosition;
 	private boolean metronomeEnabled;
+	private MidiClick click = MidiClick.DEFAULT;
 	private int metronomeTrack;
+	// the synthesizer's drums while open (see updateDrums)
+	private MidiChannel drums;
 	private int infoTrack;
 	private int loopSHeader;
 	private int loopEHeader;
@@ -66,6 +69,10 @@ public class MidiPlayer{
 	private boolean tryOpenFistDevice;
 	private TreeMap<Long, TGTempo> tempoMap;	// ordered map of ticks where tempo changes
 	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (ms) where tempo changes, not considering tempo defined by player mode
+	// the passes the sequencer started again by itself that the player has seen (see followLoop), and the next pass
+	// given to it, parsed at the percent the mode plays it at, until it starts
+	private int passes;
+	private MidiSequenceParser nextPass;
 	protected TGLock lock;
 
 	private MidiPlayer(TGContext context) {
@@ -258,7 +265,8 @@ public class MidiPlayer{
 		}
 	}
 
-	// a running player starts its sequencer, from the new position if one was set; then reads where it is
+	// a running player starts its sequencer, from the new position if one was set, on the sample clock of the
+	// synthesizer when it has one; then reads where it is
 	private void startSequencer() throws MidiPlayerException {
 		try {
 			this.lock();
@@ -266,7 +274,11 @@ public class MidiPlayer{
 				if( this.isChangeTickPosition() ){
 					this.changeTickPosition();
 				}
+				this.getSequencer().setClock(this.getSampleClock());
 				this.getSequencer().start();
+				this.passes = this.getSequencer().getPasses();
+				this.nextPass = null;
+				this.followLoop();
 			}
 
 			this.tickLength = getSequencer().getTickLength();
@@ -288,6 +300,7 @@ public class MidiPlayer{
 		try {
 			// Play loop
 			if( this.getSequencer().isRunning() && this.isRunning()) {
+				boolean loopsItself;
 				try {
 					this.lock();
 
@@ -295,10 +308,11 @@ public class MidiPlayer{
 						this.changeTickPosition();
 					}
 					this.tickPosition = getSequencer().getTickPosition();
+					loopsItself = this.followLoop();
 				} finally {
 					this.unlock();
 				}
-				return true;
+				return loopsItself || !this.loopsAtTheScheduledEnd();
 			}
 
 			else {
@@ -310,6 +324,63 @@ public class MidiPlayer{
 			throwable.printStackTrace();
 		}
 		return false;
+	}
+
+	// tells the sequencer where the song plays again once it ends (Play looped on, no selection), or that it ends there:
+	// true when the sequencer starts each pass itself, on the frame the last one ends on (on a sample clock). Each pass it
+	// started since is one loop; the pass after the one playing is given as the mode will play it
+	private boolean followLoop() throws MidiPlayerException {
+		boolean loops = this.loopsAtTheEnd();
+		boolean itself = this.getSequencer().loop(loops ? this.getLoopSPosition() : -1);
+		this.passesStarted();
+		if( itself && loops && this.nextPass == null ){
+			this.nextPass = this.parse(this.getSequencer().createNextPass(this.sequenceTracks()), this.nextPercent());
+		}
+		return itself;
+	}
+
+	// the tracks of the sequence the song plays as: the song's, then the info track and the Metronome's (the last)
+	private int sequenceTracks() {
+		return this.getSong().countTracks() + 2;
+	}
+
+	// each pass the sequencer started by itself since the last look: the mode's next loop, notified
+	private void passesStarted() throws MidiPlayerException {
+		for( ; this.passes < this.getSequencer().getPasses(); this.passes++ ){
+			this.getMode().notifyLoop();
+			this.nextPassPlays();
+			this.notifyLoop();
+		}
+	}
+
+	// the next pass given plays: its tempos are the player's (none given: the pass played again keeps them)
+	private void nextPassPlays() {
+		if( this.nextPass != null ){
+			this.tempoMap = this.nextPass.getTempoMap();
+			this.timestampMap = this.nextPass.getTimestampMap();
+		}
+		this.nextPass = null;
+	}
+
+	// the percent of the tempo the mode plays its next pass at
+	private int nextPercent() {
+		MidiPlayerMode next = new MidiPlayerMode();
+		next.copyFrom(this.getMode());
+		next.notifyLoop();
+		return next.getCurrentPercent();
+	}
+
+	// the next pass of a loop starts where this one is scheduled to end, while the output still sounds its end
+	private boolean loopsAtTheScheduledEnd() throws MidiPlayerException {
+		if( this.loopsAtTheEnd() && getSequencer().getScheduledTickPosition() >= this.tickLength ){
+			this.finish();
+			return true;
+		}
+		return false;
+	}
+
+	private boolean loopsAtTheEnd() {
+		return this.getMode().isLoop() && (this.selectionEndBeat==null);
 	}
 
 	public void runPlayEndProcess() {
@@ -342,7 +413,7 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			if( this.getMode().isLoop() && (this.selectionEndBeat==null)){
+			if( this.loopsAtTheEnd() ){
 				this.stopSequencer();
 				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
@@ -397,6 +468,23 @@ public class MidiPlayer{
 			}
 		}
 		return TGDuration.QUARTER_TIME;
+	}
+
+	// the song into the sequence, at the percent of its tempo, over the selection, else the loop
+	private MidiSequenceParser parse(MidiSequenceHandler sequence, int percent) {
+		MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
+		midiSequenceParser.setTempoPercent(percent);
+		if (this.selectionEndBeat!=null) {
+			midiSequenceParser.setSHeader( selectionStartBeat.getMeasure().getNumber() );
+			midiSequenceParser.setEHeader( selectionEndBeat.getMeasure().getNumber() );
+		} else {
+			midiSequenceParser.setSHeader( getLoopSHeader() );
+			midiSequenceParser.setEHeader( getLoopEHeader() );
+		}
+		midiSequenceParser.setMetronomeChannelId(this.getMetronomeChannelId());
+		midiSequenceParser.setMetronomeClick(getClick());
+		midiSequenceParser.parse(sequence);
+		return midiSequenceParser;
 	}
 
 	public void checkDevices() throws Throwable {
@@ -535,17 +623,7 @@ public class MidiPlayer{
 		try{
 			this.lock();
 
-			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
-			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
-			if (this.selectionEndBeat!=null) {
-				midiSequenceParser.setSHeader( selectionStartBeat.getMeasure().getNumber() );
-				midiSequenceParser.setEHeader( selectionEndBeat.getMeasure().getNumber() );
-			} else {
-				midiSequenceParser.setSHeader( getLoopSHeader() );
-				midiSequenceParser.setEHeader( getLoopEHeader() );
-			}
-			midiSequenceParser.setMetronomeChannelId(getPercussionChannelId());
-			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
+			MidiSequenceParser midiSequenceParser = this.parse(getSequencer().createSequence(this.sequenceTracks()), getMode().getCurrentPercent());
 			this.tempoMap = midiSequenceParser.getTempoMap();
 			this.timestampMap = midiSequenceParser.getTimestampMap();
 			this.infoTrack = midiSequenceParser.getInfoTrack();
@@ -582,8 +660,35 @@ public class MidiPlayer{
 				this.getSynthesizerProxy().closeChannel(getChannelRouter().getMidiChannel(channelId));
 				this.getChannelRouter().removeMidiChannel(channelId);
 			}
+			if( this.drums != null ){
+				this.getSynthesizerProxy().closeChannel(this.drums);
+				this.drums = null;
+			}
 		} finally {
 			this.unlock();
+		}
+	}
+
+	// where the Metronome clicks: on the drums of a synthesizer's sample clock that has them (the TuxGuitar
+	// Synthesizer's, outside every sound chain), else on the song's percussion channel (-1, none, without one)
+	private int getMetronomeChannelId() {
+		return (this.hasDrums() ? MidiSampleClock.DRUMS : this.getPercussionChannelId());
+	}
+
+	private boolean hasDrums() {
+		MidiSampleClock clock = this.getSampleClock();
+		return (clock != null && clock.hasDrums());
+	}
+
+	// a synthesizer's drums, opened once, play at the percussion channel's Volume and Balance as the channel would (a
+	// new channel's without one)
+	private void updateDrums() throws MidiPlayerException {
+		if( this.hasDrums() ){
+			this.drums = (this.drums != null ? this.drums : this.getSynthesizerProxy().openChannel(MidiSampleClock.DRUMS));
+			TGChannel percussion = this.getSongManager().getPercussionChannel(this.getSong());
+			TGChannel levels = (percussion != null ? percussion : this.getSongManager().getFactory().newChannel());
+			this.drums.sendControlChange(MidiControllers.VOLUME, (int)((this.getVolume() / 10.00) * levels.getVolume()));
+			this.drums.sendControlChange(MidiControllers.BALANCE, levels.getBalance());
 		}
 	}
 
@@ -593,6 +698,7 @@ public class MidiPlayer{
 
 			this.removeUnusedChannels();
 			this.openMissingChannels();
+			this.updateDrums();
 
 			// Update channels
 			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
@@ -657,6 +763,9 @@ public class MidiPlayer{
 			while( parameters.hasNext() ){
 				TGChannelParameter tgChannelParameter = parameters.next();
 				this.updateParameter(tgChannel, tgChannelParameter.getKey(), tgChannelParameter.getValue());
+			}
+			if( tgChannel.isAudioChannel() ){
+				this.updateParameter(tgChannel, MidiParameters.AUDIO_CHANNEL, Boolean.TRUE.toString());
 			}
 
 			this.updateParameter(tgChannel, MidiParameters.SENDING_PARAMS, Boolean.FALSE.toString());
@@ -803,6 +912,15 @@ public class MidiPlayer{
 		return this.metronomeEnabled;
 	}
 
+	// the click sound Count In and the Metronome play (the Metronome's from the next sequence made)
+	public MidiClick getClick() {
+		return this.click;
+	}
+
+	public void setClick(MidiClick click) {
+		this.click = click;
+	}
+
 	public void setMetronomeEnabled(boolean metronomeEnabled) {
 		try {
 			this.lock();
@@ -901,14 +1019,8 @@ public class MidiPlayer{
 		try {
 			this.lock();
 
-			Iterator<TGChannel> tgChannels = this.getSong().getChannels();
-			while( tgChannels.hasNext() ){
-				TGChannel tgChannel = tgChannels.next();
-				if( tgChannel.isPercussionChannel() ){
-					return tgChannel.getChannelId();
-				}
-			}
-			return -1;
+			TGChannel percussion = this.getSongManager().getPercussionChannel(this.getSong());
+			return (percussion != null ? percussion.getChannelId() : -1);
 		} finally {
 			this.unlock();
 		}
@@ -1353,6 +1465,11 @@ public class MidiPlayer{
 			this.channelRouter = new MidiChannelRouter();
 		}
 		return this.channelRouter;
+	}
+
+	private MidiSampleClock getSampleClock(){
+		MidiSynthesizer synthesizer = this.getSynthesizerProxy().getMidiSynthesizer();
+		return (synthesizer instanceof MidiSampleClock ? (MidiSampleClock) synthesizer : null);
 	}
 
 	public MidiSynthesizerProxy getSynthesizerProxy(){

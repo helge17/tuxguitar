@@ -57,27 +57,45 @@ import org.w3c.dom.Node;
 public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 
 	private Document document;
+	// the codec of the takes of a song with audio channels; none (Android): such a song cannot be written
+	private volatile TGTakeCodec takeCodec;
+
+	public TGSongWriterImpl() {
+	}
+
+	// TuxGuitar's audio support gives it to the writer of the file format manager: it then writes format 3.0
+	public void setTakeCodec(TGTakeCodec takeCodec) {
+		this.takeCodec = takeCodec;
+	}
 
 	public TGFileFormat getFileFormat(){
 		return TG_FORMAT;
 	}
 
 	@Override
+	// format 3.0 for a song with an audio channel, its takes after content.xml; else format 2.0, as before
 	public void write(TGSongWriterHandle handle) throws TGFileFormatException {
-		this.writeXMLDocument(handle);
+		TGAudioPart audio = this.writeXMLDocument(handle);
+		TGTakeCodec codec = this.takeCodec;
+		if (audio != null && codec == null) {
+			throw new TGFileFormatException("A song with audio tracks needs TuxGuitar's audio support to be saved");
+		}
 		ArchiveOutputStream<ZipArchiveEntry> outputStream;
 		try {
 			outputStream = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, handle.getOutputStream());
 			// version
 			ZipArchiveEntry zaeVersion = new ZipArchiveEntry(VERSION_FILE_NAME);
 			outputStream.putArchiveEntry(zaeVersion);
-			this.addVersion(outputStream);
+			this.addVersion(outputStream, (audio != null ? AUDIO_FILE_FORMAT_TGVERSION : FILE_FORMAT_TGVERSION));
 			outputStream.closeArchiveEntry();
 			// content
 			ZipArchiveEntry zaeContent = new ZipArchiveEntry(CONTENT_FILE_NAME);
 			outputStream.putArchiveEntry(zaeContent);
 			this.saveDocument(outputStream);
 			outputStream.closeArchiveEntry();
+			if (audio != null) {
+				audio.writeTakes(outputStream, codec);
+			}
 			outputStream.close();
 		} catch (ArchiveException | IOException e) {
 			e.printStackTrace();
@@ -90,7 +108,8 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		this.saveDocument(handle.getOutputStream());
 	}
 
-	private void writeXMLDocument(TGSongWriterHandle handle) throws TGFileFormatException {
+	// the song's audio, written with it; null for a song without audio channels
+	private TGAudioPart writeXMLDocument(TGSongWriterHandle handle) throws TGFileFormatException {
 		try {
 			this.document = newDocument();
 			Node nodeRoot = this.addNode(this.document,TAG_TGFile);
@@ -98,7 +117,13 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 			this.addAttributeInt(nodeVersion, "major", TGVersion.CURRENT.getMajor());
 			this.addAttributeInt(nodeVersion, "minor", TGVersion.CURRENT.getMinor());
 			this.addAttributeInt(nodeVersion, "revision", TGVersion.CURRENT.getRevision());
-			this.writeSong(handle.getSong(), this.addNode(nodeRoot, TAG_TGSONG));
+			Node nodeSong = this.addNode(nodeRoot, TAG_TGSONG);
+			this.writeSong(handle.getSong(), nodeSong);
+			TGAudioPart audio = (TGAudioPart.isIn(handle.getSong()) ? new TGAudioPart(handle.getSong()) : null);
+			if (audio != null) {
+				audio.write(this.document, nodeSong);
+			}
+			return audio;
 		}catch( Throwable throwable ){
 			throw new TGFileFormatException(throwable);
 		}
@@ -378,9 +403,9 @@ public class TGSongWriterImpl extends TGStream implements TGSongWriter {
 		this.addAttributeBool(nodeGrace, TAG_DEAD, grace.isDead());
 	}
 
-	private void addVersion(OutputStream stream) throws IOException {
+	private void addVersion(OutputStream stream, TGVersion version) throws IOException {
 		OutputStreamWriter writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
-		writer.write(VERSION_PREFIX + VERSION_SEPARATOR + FILE_FORMAT_TGVERSION.toString());
+		writer.write(VERSION_PREFIX + VERSION_SEPARATOR + version.toString());
 		writer.flush();
 	}
 
