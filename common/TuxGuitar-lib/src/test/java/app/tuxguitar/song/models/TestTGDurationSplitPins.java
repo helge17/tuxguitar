@@ -28,7 +28,8 @@ import app.tuxguitar.song.factory.TGFactory;
 
 /**
  * Golden-master pins for TGDuration.splitPreciseDuration and splitPreciseDurationApproximately.
- * The expected digests were recorded from the original implementation (before its refactoring):
+ * The expected digests were recorded from the original implementation (before its refactoring), and re-recorded
+ * from upstream's implementation with its 9-tuplet fix (helge17/tuxguitar #1230) when that was merged in:
  * each digest covers every "input=output" line of one group, so any change in any split result fails the group.
  */
 public class TestTGDurationSplitPins {
@@ -44,22 +45,22 @@ public class TestTGDurationSplitPins {
 
 	private static final Map<String, String> EXPECTED = new HashMap<String, String>();
 	static {
-		EXPECTED.put("exact pairs", "653085697e2ec9c906fbfa61");
-		EXPECTED.put("approximate pairs", "56b9747b40fadb273c0be86e");
-		EXPECTED.put("exact maxDivision=null", "fbb2078fe3e8d24d5c9f07b1");
+		EXPECTED.put("exact pairs", "276179af79d9a67053becc3b");
+		EXPECTED.put("approximate pairs", "ce77605302eff5502b563dfe");
+		EXPECTED.put("exact maxDivision=null", "268f24aa34b39a075c7b1d42");
 		EXPECTED.put("exact maxDivision=1", "b0677c9f8be4f2f10469f9d2");
 		EXPECTED.put("exact maxDivision=3", "0127a95d3030ebc0d0cfc5ef");
 		EXPECTED.put("exact maxDivision=7", "c8f6e36a2c44d30f216e9d14");
-		EXPECTED.put("exact maxDivision=9", "77afa3a7b4ad377bdefa7555");
-		EXPECTED.put("exact maxDivision=11", "b1d70ed86ace430f7282afb5");
-		EXPECTED.put("exact maxDivision=13", "3678ab7ea29cf02ab4da3b4a");
-		EXPECTED.put("approximate maxDivision=null", "c8b85e201d9ae2ec4a510add");
+		EXPECTED.put("exact maxDivision=9", "f226be1c2a63d9b37368d074");
+		EXPECTED.put("exact maxDivision=11", "602b54863ecea8c7efe31444");
+		EXPECTED.put("exact maxDivision=13", "af5178c2c1e0efbb263cad05");
+		EXPECTED.put("approximate maxDivision=null", "23a8deecc49d62acb8cc71dd");
 		EXPECTED.put("approximate maxDivision=1", "510f87bb7b2a3f5f238fcf84");
 		EXPECTED.put("approximate maxDivision=3", "6e84dd9d57b270026c75d851");
 		EXPECTED.put("approximate maxDivision=7", "7a20988b3cc6dc6b3bd62c89");
-		EXPECTED.put("approximate maxDivision=9", "e0ae156a6dfa24296ae13aa2");
-		EXPECTED.put("approximate maxDivision=11", "1214c02fdce693b0a196cf66");
-		EXPECTED.put("approximate maxDivision=13", "a562f75242ac768cac1cb231");
+		EXPECTED.put("approximate maxDivision=9", "7f1063a66afca2701981b10c");
+		EXPECTED.put("approximate maxDivision=11", "f58b196420b3f855cf1b696b");
+		EXPECTED.put("approximate maxDivision=13", "9d49b888812d81f70c0df285");
 	}
 
 	private interface Splitter {
