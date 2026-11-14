@@ -1,11 +1,13 @@
 package app.tuxguitar.audio.ui;
 
 import java.util.List;
+import java.util.Optional;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.audio.TGLivePlugins;
 import app.tuxguitar.audio.TGSoundChainRows;
 import app.tuxguitar.audio.action.TGAddVst3EffectAction;
 import app.tuxguitar.audio.action.TGChooseGeneralMidiAction;
@@ -35,9 +37,10 @@ import app.tuxguitar.vst3.TGVst3Plugin;
 /**
  * A track's sound chain (its channel's): the source and the effects in processing order (TGSoundChainRows), and the
  * changes of it, each one undo step (the sound chain actions): add a VST3 effect, make a VST3 instrument or the General
- * MIDI program the source, move the picked effect up, remove it, enable or disable it, open the picked plugin's editor.
- * The plugins offered are those the last scan of the VST3 folders found. What can be done with the row picked is
- * decided there; the rows are read again after each change.
+ * MIDI program the source, move the picked effect up, remove it, enable or disable it, open the picked plugin's editor
+ * (its own, else TuxGuitar's parameter editor, TGPluginParametersDialog). The plugins offered are those the last scan of
+ * the VST3 folders found. What can be done with the row picked is decided there; the rows are read again after each
+ * change.
  */
 public class TGSoundChainDialog {
 
@@ -63,16 +66,15 @@ public class TGSoundChainDialog {
 	}
 
 	public void open() {
-		List<TGVst3Plugin> plugins = TGVst3Hosting.getInstance(this.context).getPlugins();
 		this.dialog = this.factory.createWindow(TGWindow.getInstance(this.context).getWindow(), true, false);
 		this.dialog.setLayout(new UITableLayout());
 		this.dialog.setText(TuxGuitar.getProperty("audio.sound-chain.title") + ": " + this.track.getName());
 		this.rows = this.factory.createListBoxSelect(this.dialog);
 		this.rows.addSelectionListener(event -> this.updateButtons());
 		this.layout().set(this.rows, 1, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_FILL, true, true, 1, 4, 360f, 160f, null);
-		this.effects = this.plugins(2, "audio.sound-chain.effect", TGSoundChainRows.effects(plugins));
+		this.effects = this.plugins(2, "audio.sound-chain.effect");
 		this.addEffect = this.button(2, 4, "audio.sound-chain.add-effect", this::addEffect);
-		this.instruments = this.plugins(3, "audio.sound-chain.instrument", TGSoundChainRows.instruments(plugins));
+		this.instruments = this.plugins(3, "audio.sound-chain.instrument");
 		this.chooseInstrument = this.button(3, 4, "audio.sound-chain.choose-instrument", this::chooseInstrument);
 		this.generalMidi = this.button(4, 4, "audio.sound-chain.general-midi", () -> this.change(new TGActionProcessor(this.context, TGChooseGeneralMidiAction.NAME)));
 		this.up = this.button(5, 1, "audio.sound-chain.up", () -> this.changeEffect(TGMoveEffectUpAction.NAME));
@@ -80,6 +82,7 @@ public class TGSoundChainDialog {
 		this.enable = this.button(5, 3, "audio.sound-chain.disable", this::toggleEnabled);
 		this.edit = this.button(5, 4, "audio.sound-chain.edit", this::openEditor);
 		this.button(6, 4, "close", this.dialog::dispose);
+		this.showPlugins();
 		this.refresh();
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
@@ -88,15 +91,26 @@ public class TGSoundChainDialog {
 		return (UITableLayout) this.dialog.getLayout();
 	}
 
-	// a drop-down of the plugins, with its label, on the row
-	private UIDropDownSelect<TGVst3Plugin> plugins(int row, String key, List<TGVst3Plugin> plugins) {
+	// a drop-down of plugins, with its label, on the row
+	private UIDropDownSelect<TGVst3Plugin> plugins(int row, String key) {
 		TGDialogParts.label(this.factory, this.dialog, row, key);
 		UIDropDownSelect<TGVst3Plugin> select = this.factory.createDropDownSelect(this.dialog);
-		plugins.forEach(plugin -> select.addItem(new UISelectItem<TGVst3Plugin>(plugin.getName(), plugin)));
-		plugins.stream().findFirst().ifPresent(select::setSelectedValue);
 		select.addSelectionListener(event -> this.updateButtons());
 		this.layout().set(select, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 2, 200f, null, null);
 		return select;
+	}
+
+	// the drop-downs offer the plugins the last scan found, each its first picked
+	private void showPlugins() {
+		List<TGVst3Plugin> plugins = TGVst3Hosting.getInstance(this.context).getPlugins();
+		offer(this.effects, TGSoundChainRows.effects(plugins));
+		offer(this.instruments, TGSoundChainRows.instruments(plugins));
+	}
+
+	private static void offer(UIDropDownSelect<TGVst3Plugin> select, List<TGVst3Plugin> plugins) {
+		select.removeItems();
+		plugins.forEach(plugin -> select.addItem(new UISelectItem<TGVst3Plugin>(plugin.getName(), plugin)));
+		plugins.stream().findFirst().ifPresent(select::setSelectedValue);
 	}
 
 	private UIButton button(int row, int column, String key, Runnable action) {
@@ -140,8 +154,12 @@ public class TGSoundChainDialog {
 
 	// the change runs on the action's thread; the rows are read again on the UI thread once it is done
 	private void change(TGActionProcessor processor) {
+		this.change(processor, this::refresh);
+	}
+
+	private void change(TGActionProcessor processor, Runnable done) {
 		processor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, this.channel());
-		processor.setOnFinish(() -> TGSynchronizer.getInstance(this.context).executeLater(this::refresh));
+		processor.setOnFinish(() -> TGSynchronizer.getInstance(this.context).executeLater(done));
 		processor.process();
 	}
 
@@ -177,7 +195,15 @@ public class TGSoundChainDialog {
 		this.change(processor);
 	}
 
+	// the picked plugin's own editor opens (a window of its host process), or else TuxGuitar's parameter editor here
 	private void openEditor() {
-		this.change(this.onPicked(TGOpenPluginEditorAction.NAME));
+		Integer effect = TGSoundChainRows.effect(TGSoundChainRows.row(this.rows.getSelectedValue()));
+		this.change(this.onPicked(TGOpenPluginEditorAction.NAME), () -> this.showParameters(effect));
+	}
+
+	private void showParameters(Integer effect) {
+		this.refresh();
+		Optional.ofNullable(TGLivePlugins.getInstance(this.context).parameterEditor(this.channel(), effect))
+			.ifPresent(editor -> new TGPluginParametersDialog(this.context, this.track, effect, editor).open(this.dialog));
 	}
 }
