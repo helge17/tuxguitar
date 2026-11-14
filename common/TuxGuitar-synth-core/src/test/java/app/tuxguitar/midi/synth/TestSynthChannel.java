@@ -517,6 +517,26 @@ public class TestSynthChannel {
 		assertTrue(this.model.isBusy());
 	}
 
+	// whoever runs with a channel's processors (an app's live plugins) hears each time they change: a program loaded
+	// (again or anew), the chain silenced by a bank select, the channel closed; a listener removed hears no more
+	@Test
+	public void aChannelListenerHearsEachChangeOfAChannelsProcessorsInOrder() throws MidiPlayerException {
+		StringBuilder heard = new StringBuilder();
+		TGSynthChannelListener listener = changed -> heard.append(changed.getId()).append(changed.getProcessor() != null ? " " + changed.getProcessor().countOutputs() + " effects | " : " closed | ");
+		this.model.getProgram(0, 5).copyFrom(program("source"));
+		this.model.getProgram(0, 6).copyFrom(program("source", "lift", "twice"));
+		this.model.addChannelListener(listener);
+		this.channel.sendProgramChange(5);
+		this.channel.sendProgramChange(6);
+		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 1);
+		this.channel.sendControlChange(MidiControllers.BANK_SELECT, 0);
+		this.channel.sendProgramChange(5);
+		this.model.closeChannel(this.channel);
+		this.model.removeChannelListener(listener);
+		((TGSynthChannel) this.model.openChannel(4)).sendProgramChange(5);
+		assertEquals("3 0 effects | 3 2 effects | 3 closed | 3 0 effects | 3 closed | ", heard.toString());
+	}
+
 	@Test
 	public void programsExistForEveryBankAndProgramOnly() {
 		assertEquals(null, this.model.getProgram(129, 0));

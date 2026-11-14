@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import app.tuxguitar.midi.synth.impl.GervillProcessorFactory;
 import app.tuxguitar.player.base.MidiChannel;
@@ -32,6 +33,7 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 	private volatile Listener listener;
 	private final MidiTransport transport = new MidiTransport();
 	private volatile int outputLatency;
+	private final List<TGSynthChannelListener> channelListeners = new CopyOnWriteArrayList<TGSynthChannelListener>();
 
 	public TGSynthModel(TGContext context){
 		this(context, TGAudioBuffer.SAMPLE_RATE);
@@ -95,6 +97,20 @@ public class TGSynthModel implements MidiSynthesizer, MidiSampleClock{
 		List<TGSynthChannel> open = new ArrayList<TGSynthChannel>(Arrays.asList(this.channels));
 		open.remove(channel);
 		this.channels = open.toArray(new TGSynthChannel[0]);
+	}
+
+	// hears each change of a channel's processors, from now on
+	public void addChannelListener(TGSynthChannelListener listener){
+		this.channelListeners.add(listener);
+	}
+
+	public void removeChannelListener(TGSynthChannelListener listener){
+		this.channelListeners.remove(listener);
+	}
+
+	// the channel's processors changed
+	void chainChanged(TGSynthChannel channel){
+		this.channelListeners.forEach(listener -> listener.chainChanged(channel));
 	}
 
 	public boolean isChannelOpen(MidiChannel midiChannel) throws MidiPlayerException{
