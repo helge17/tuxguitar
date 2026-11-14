@@ -12,11 +12,16 @@ helper processes, and plugin delay compensation. Export is implemented headless 
 desktop export dialog does not call it yet). Saving is implemented in lib's TuxGuitar file format (format 3.0: a
 `TGAudio` node in content.xml, each take a 32-bit float wave entry `takes/<id>.wav` written by this module's
 `TGTakeWave`) and `TGAudioSaving.install`, which gives the take codec to the reader and writer and stores each VST3
-plugin's state before the write action; the desktop does not call it yet. The player's position
+plugin's state before the write action. The player's position
 is the one the output sounds: live, lib's sequencer on the synthesizer's clock reports the tick the output sounds
 (chains' latency plus output latency behind what it schedules); offline, `TGReportedPositions` reports it block by
-block the same way. The desktop does not feed the audio device's output latency in yet
-(`TGSynthModel.setOutputLatency`). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
+block the same way. An app installs all this with `TGLiveAudio.install` and plays through `TGLiveAudio`: it loads the
+native backend from the native folder, opens the devices `TGAudioSettings` choose (host API and device names, input
+channels, recording offset) at the synthesizer's rate, makes that device the session's, meters and monitors through it
+(`TGLiveInput`), and the TuxGuitar Synthesizer plays through it (synth-core's `TGSynthOutput`), the device's output
+latency reaching `TGSynthModel.setOutputLatency`; without a device it says why and the synthesizer plays its own way.
+The desktop does so in its audio plugin (`desktop/TuxGuitar-audio-ui`: settings, Record, arming, adding an audio track;
+see the plugin for what it does not offer yet). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
 sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
 parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
 `TGSetPluginStateAction`; the desktop does not map those actions or bind its synthesizer's chains yet. The Metronome
