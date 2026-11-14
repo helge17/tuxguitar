@@ -138,7 +138,7 @@ public class TestTakeTap {
 		TGTimeline timeline = wholeSong(100);
 		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		Arrays.fill(sources, TGTrackSource.TAKES);
-		TGTakeTap tap = TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, new TGTapInput(0, null));
+		TGTakeTap tap = TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, new TGTapInput(0, null), new TGStretches());
 		float[][] whole = new float[2][512];
 		tap.render(whole, M + 50);
 		float[][] part = new float[2][512];
@@ -517,7 +517,7 @@ public class TestTakeTap {
 	// live, a block of the tap from the sample, the measures sounding what the sources say, the block's input delivered
 	private float[][] liveBlock(TGTrackSource[] sources, long from, float... delivered) {
 		TGTapInput input = new TGTapInput(0, null);
-		TGTakeTap tap = TGTakeTap.of(track, wholeSong(100), halfOfTheFirstSample, sources, input);
+		TGTakeTap tap = TGTakeTap.of(track, wholeSong(100), halfOfTheFirstSample, sources, input, new TGStretches());
 		float[][] block = new float[2][delivered.length];
 		input.set(from, new float[][] {delivered});
 		tap.render(block, from);
@@ -571,7 +571,7 @@ public class TestTakeTap {
 	private TGTakeTap takesOf(TGTimeline timeline) {
 		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
 		Arrays.fill(sources, TGTrackSource.TAKES);
-		return TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, null);
+		return TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, null, new TGStretches());
 	}
 
 	// live, the tap is rendered a block at a time, from the sample of the timeline a block starts on (silence before

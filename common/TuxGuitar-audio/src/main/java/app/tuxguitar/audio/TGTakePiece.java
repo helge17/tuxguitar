@@ -1,7 +1,6 @@
 package app.tuxguitar.audio;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import app.tuxguitar.song.models.TGTake;
@@ -34,11 +33,9 @@ final class TGTakePiece {
 	final int takeEnd;
 	// the takes covering the stretch, with the samples of each that would play there: {start, end}
 	final Map<TGTake, int[]> under;
-	// what makes the stretched audio (null when it plays the samples as they are), and that audio once made: by the
-	// first thread to ask (live, a worker ahead of the audio thread, else the audio thread when a block reaches it);
-	// should two make it at once, the first one made is kept
+	// its stretched audio, made once when first asked for (TGStretches.Stretch), or null when it plays the samples as
+	// they are
 	private final Supplier<float[][]> stretch;
-	private final AtomicReference<float[][]> audio = new AtomicReference<float[][]>();
 	private final float[][] source;
 	private final TGTapInput monitored;
 
@@ -49,8 +46,8 @@ final class TGTakePiece {
 	// it sounds before the tap's first sample too (the monitored input the tap starts with)
 	boolean lead;
 
-	// a take (chosen for its measure or not) from takeStart to takeEnd of its samples (source), the audio over the
-	// stretch made by the supplier when it first sounds (null when it plays the samples as they are)
+	// a take (chosen for its measure or not) from takeStart to takeEnd of its samples (source), its stretched audio over
+	// the stretch (null when it plays the samples as they are)
 	TGTakePiece(long start, long end, boolean jump, TGTake take, boolean chosen, int takeStart, int takeEnd, float[][] source, Supplier<float[][]> audio, Map<TGTake, int[]> under) {
 		this.start = start;
 		this.end = end;
@@ -168,16 +165,13 @@ final class TGTakePiece {
 		return this.takeSample(this.source[own], o);
 	}
 
+	// its stretched audio, made unless it was (on the thread that asks), or null
 	private float[][] audio() {
-		this.prepare();
-		return this.audio.get();
+		return (this.stretch != null ? this.stretch.get() : null);
 	}
 
-	// its stretched audio, made unless it was (on the thread that asks)
 	void prepare() {
-		if (this.stretch != null && this.audio.get() == null) {
-			this.audio.compareAndSet(null, this.stretch.get());
-		}
+		this.audio();
 	}
 
 	// the take's own sample there, counted from where it starts or stops; silence outside the take

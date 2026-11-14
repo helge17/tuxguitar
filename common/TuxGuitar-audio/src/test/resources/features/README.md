@@ -65,7 +65,11 @@ transport a span from that frame; the takes' live timeline starts each pass ther
 it (the takes and a monitored input sound late by plugin delay compensation, so that pass's end still sounds after
 the jump) and always the next one, so the jump back crossfades as offline with nothing dropping out (a monitored
 input going on across it does not even fade), and a live
-recording's take of each pass starts on its first sample. A jump live
+recording's take of each pass starts on its first sample. Live, a take played at another tempo than it was recorded
+at is time-stretched ahead of the blocks by a worker of the takes, and a stretch once made is kept (`TGStretches`:
+the last tap's, no more): a loop's passes at one speed are stretched once, a Training Mode pass at its new speed while
+the pass before it plays, and nothing is stretched again at a jump back or when the same passage plays again at the
+same speed; only the first stretch of a passage played at a new speed is made while its first blocks render. A jump live
 playing did not foresee (I move the position while it plays) starts the takes again there with a hard cut instead of
 a crossfade, for now. Live scenarios that play passes turn Play looped off during the last one, so the song ends where
 it ends. The whole chain on this machine's real devices is an opt-in

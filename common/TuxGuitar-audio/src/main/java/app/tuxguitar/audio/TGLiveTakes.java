@@ -25,7 +25,11 @@ import app.tuxguitar.util.TGContext;
  * timeline of what plays (TGLiveTimeline: two passes of the Loop Range when looped, after the pass that ended). It
  * delays the tap itself by plugin delay compensation (it renders the timeline's samples that many frames back, so after
  * a jump back the end of the pass that ended), so what else it sounds can go undelayed. A worker of its own makes the
- * stretches ahead of the blocks (TGStretchAhead).
+ * stretches ahead of the blocks (TGStretchAhead), and each new tap (at a jump back, when playing starts) finds the
+ * stretches the last one had (TGStretches): a loop's passes at one speed are stretched once, the next pass at another
+ * speed while the one before plays (its timeline foresees it), and nothing is stretched again at a jump back or when
+ * the same passage plays again at the same speed. The first stretch of a passage played at a new speed is still made
+ * by the audio thread: it learns that playing started, where and how fast, only from the first block's transport.
  */
 public final class TGLiveTakes implements TGMidiProcessor {
 
@@ -35,6 +39,8 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	private final TGStretchAhead ahead;
 	// the time stretcher at a sample rate
 	private final IntFunction<TGTimeStretcher> stretchers;
+	// the stretches of the last tap, which the next one finds (the audio thread builds the taps)
+	private final TGStretches kept = new TGStretches();
 	// the monitored input of the block being rendered
 	private final TGTapInput input = new TGTapInput(0, null);
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
@@ -149,7 +155,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	private void start(TGAudioSession session, TGSong song, TGTrack track) {
 		TGTimeline timeline = this.followed.getTimeline();
 		TGTrackSource[] sources = TGTrackSource.of(session, song, track, timeline, session.isRecording(), session.isArmed(track));
-		this.tap = TGTakeTap.of(track, timeline, this.stretchers.apply(Math.round(this.sampleRate)), sources, this.input);
+		this.tap = TGTakeTap.of(track, timeline, this.stretchers.apply(Math.round(this.sampleRate)), sources, this.input, this.kept);
 	}
 
 	// the audio track of the channel (an audio channel is its track's own)
