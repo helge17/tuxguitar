@@ -54,9 +54,14 @@ round trip more has been delivered, makes the takes as offline (`TGRecording`: r
 pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.
 Should the device deliver nothing for a second meanwhile (its stream ended), the recording ends by itself, stops the
 player and keeps the takes of what was delivered, still one undo step.
-Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). A jump live
-playing did not foresee exactly (a loop restarts on the block after its pass ends; a move) starts the takes again
-there with a hard cut instead of a crossfade, for now. The whole chain on this machine's real devices is an opt-in
+Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). Live, each pass
+of a loop (a Training Mode pass too, at its own percentage) starts on the very sample the last one ends on: the
+sequencer starts it inside the block (`MidiSequencer.loop`), with nothing silenced between the passes, and tells the
+transport a span from that frame; the takes' live timeline starts each pass there and always holds the next one, so
+the jump back crossfades as offline, and a live recording's take of each pass starts on its first sample. A jump live
+playing did not foresee (I move the position while it plays) starts the takes again there with a hard cut instead of
+a crossfade, for now. Live scenarios that play passes turn Play looped off during the last one, so the song ends where
+it ends. The whole chain on this machine's real devices is an opt-in
 test: `mvn test -Dtest=TestRealDevice -Dtg.audio.native=<TuxGuitar-audio-device's native-build/lib>` (skipped, saying
 so, without it).
 No scenario is `@planned` any more.
