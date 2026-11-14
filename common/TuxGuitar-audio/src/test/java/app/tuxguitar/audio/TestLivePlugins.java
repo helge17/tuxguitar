@@ -167,6 +167,22 @@ public class TestLivePlugins {
 		assertEquals("true true | false", reloaded + " | " + (this.live.getEditor(this.guitar.getChannelId(), "effect-1") != null));
 	}
 
+	// TuxGuitar's parameter editor, open for a plugin without an editor of its own, has a row per parameter (not its
+	// preset list) at the value the plugin holds; there is none for a plugin with its own editor, nor for one not opened
+	@Test
+	public void aPluginWithoutAnEditorOfItsOwnIsEditedInRowsOfItsParameters() throws TGVst3Exception {
+		this.fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, this.hosting.find("Test Clip 0.5"));
+		this.fixture.execute(new TGAddVst3EffectAction(this.fixture.context));
+		gain("effect-2").setParameter(1, 0.25);
+		String unopened = String.valueOf(this.live.parameterEditor(this.guitar, 2));
+		this.live.openEditor(this.guitar.getChannelId(), "effect-1");
+		this.live.openEditor(this.guitar.getChannelId(), "effect-2");
+		TGPluginEditor clip = this.live.parameterEditor(this.guitar, 2);
+		TGPluginParameterRow row = clip.getRows().get(0);
+		assertEquals("null null null | 1 Ceiling 0.25 250 [Ceiling]", unopened + " " + this.live.parameterEditor(this.guitar, 1) + " " + this.live.parameterEditor(this.guitar, 3)
+			+ " | " + row.getId() + " " + row.getTitle() + " " + row.getPlain() + " " + row.position(row.getPlain()) + " " + clip.getParameters());
+	}
+
 	// a gesture undone, then redone: the synthesizer, sent the channel again (as the app's player is after a channel's
 	// change is undone or redone), runs its plugin as the song has it each time
 	@Test

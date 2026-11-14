@@ -19,6 +19,7 @@ import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthChannelListener;
 import app.tuxguitar.midi.synth.TGSynthChannelProcessor;
+import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
 import app.tuxguitar.vst3.TGVst3Element;
@@ -212,26 +213,34 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 	// the plugin's own editor, or TuxGuitar's parameter editor for a plugin without one
 	public synchronized TGPluginEditor openEditor(int channel, String element) throws TGVst3Exception {
 		TGVst3Instance instance = this.get(channel, element);
-		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), titles(instance.getParameters()));
+		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), rows(instance));
 		this.editors.put(key(channel, element), new Editor(editor, instance));
 		return editor;
 	}
 
-	// the parameters TuxGuitar's parameter editor shows: not the one choosing presets
-	private static List<String> titles(List<TGVst3Parameter> parameters) {
-		List<String> titles = new ArrayList<String>();
-		for (TGVst3Parameter parameter : parameters) {
+	// the rows TuxGuitar's parameter editor shows, at the values the plugin holds: not the parameter choosing presets
+	private static List<TGPluginParameterRow> rows(TGVst3Instance instance) throws TGVst3Exception {
+		List<TGPluginParameterRow> rows = new ArrayList<TGPluginParameterRow>();
+		for (TGVst3Parameter parameter : instance.getParameters()) {
 			if (!parameter.choosesPresets()) {
-				titles.add(parameter.getTitle());
+				rows.add(new TGPluginParameterRow(parameter.getId(), parameter.getTitle(), instance.getParameter(parameter.getId()), parameter.getMinimum(), parameter.getMaximum(), parameter.getSteps()));
 			}
 		}
-		return titles;
+		return rows;
 	}
 
 	// the editor open for the element, or null
 	public synchronized TGPluginEditor getEditor(int channel, String element) {
 		Editor editor = this.editors.get(key(channel, element));
 		return (editor != null ? editor.editor : null);
+	}
+
+	// TuxGuitar's parameter editor open for the channel's effect (by its number; none: the VST3 instrument that is the
+	// source), or null when that plugin's editor is its own or none is open
+	public synchronized TGPluginEditor parameterEditor(TGChannel channel, Integer effect) {
+		TGProgramElement plugin = TGSoundChain.plugin(TGSoundChain.get(channel), effect);
+		TGPluginEditor editor = (plugin != null ? this.getEditor(channel.getChannelId(), plugin.getId()) : null);
+		return (editor != null && !editor.isOwn() ? editor : null);
 	}
 
 	// the editors whose plugin is no longer the element's (it stopped running) close
