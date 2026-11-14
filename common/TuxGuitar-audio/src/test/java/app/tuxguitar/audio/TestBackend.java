@@ -2,12 +2,13 @@ package app.tuxguitar.audio;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import app.tuxguitar.audio.device.TGAudioBackend;
 import app.tuxguitar.audio.device.TGAudioCallback;
+import app.tuxguitar.audio.device.TGAudioDeviceException;
 import app.tuxguitar.audio.device.TGAudioDeviceInfo;
 import app.tuxguitar.audio.device.TGAudioStream;
 
@@ -21,12 +22,25 @@ public final class TestBackend implements TGAudioBackend {
 	private final TGAudioDevice input;
 	private final int inputLatency;
 	private final int outputLatency;
+	private List<TGAudioDeviceInfo> devices;
+	private int defaultInput;
+	private int defaultOutput;
 	private Stream stream;
 
 	public TestBackend(TGAudioDevice input, int inputLatency, int outputLatency) {
 		this.input = input;
 		this.inputLatency = inputLatency;
 		this.outputLatency = outputLatency;
+		this.list(0, 0, new TGAudioDeviceInfo(0, "Test Interface", "Test", 2, 2, input.getSampleRate()));
+	}
+
+	// it lists these devices (each at its index) and defaults instead; a stream opens on any of them, all delivering the
+	// same input
+	public TestBackend list(int defaultInput, int defaultOutput, TGAudioDeviceInfo... devices) {
+		this.devices = Arrays.asList(devices);
+		this.defaultInput = defaultInput;
+		this.defaultOutput = defaultOutput;
+		return this;
 	}
 
 	// its output wired back to its input, as a loopback cable would: input channel 1 delivers the left side the callback
@@ -58,24 +72,30 @@ public final class TestBackend implements TGAudioBackend {
 		}
 	}
 
+	// those of the devices it lists, in their order
 	public List<String> getHostApis() {
-		return Collections.singletonList("Test");
+		return this.devices.stream().map(TGAudioDeviceInfo::getHostApi).distinct().collect(Collectors.toList());
 	}
 
 	public List<TGAudioDeviceInfo> getDevices() {
-		return Collections.singletonList(new TGAudioDeviceInfo(0, "Test Interface", "Test", 2, 2, this.input.getSampleRate()));
+		return this.devices;
 	}
 
 	public int getDefaultInput() {
-		return 0;
+		return this.defaultInput;
 	}
 
 	public int getDefaultOutput() {
-		return 0;
+		return this.defaultOutput;
 	}
 
-	public TGAudioStream open(int inputDevice, int inputChannels, int outputDevice, int outputChannels, double sampleRate, int frames, TGAudioCallback callback) {
-		this.stream = new Stream(inputChannels, outputChannels, frames, callback);
+	// an output device it does not list does not open
+	public TGAudioStream open(int inputDevice, int inputChannels, int outputDevice, int outputChannels, double sampleRate, int frames, TGAudioCallback callback) throws TGAudioDeviceException {
+		if (outputDevice < 0 || outputDevice >= this.devices.size()) {
+			throw new TGAudioDeviceException("no output device " + outputDevice);
+		}
+		this.stream = new Stream(inputChannels, outputChannels, sampleRate, frames, callback);
+		this.stream.opened = inputDevice + " x" + inputChannels + " to " + outputDevice + " at " + this.stream.getSampleRate();
 		return this.stream;
 	}
 
@@ -93,14 +113,20 @@ public final class TestBackend implements TGAudioBackend {
 		private boolean started;
 		private boolean closed;
 
-		Stream(int inputChannels, int outputChannels, int frames, TGAudioCallback callback) {
+		// the rate asked for, else the input's
+		private final int sampleRate;
+		// "<input device> x<input channels> to <output device> at <sample rate>"
+		private String opened;
+
+		Stream(int inputChannels, int outputChannels, double sampleRate, int frames, TGAudioCallback callback) {
 			this.callback = callback;
 			this.inputs = new float[inputChannels][frames];
 			this.outputs = new float[outputChannels][frames];
+			this.sampleRate = (sampleRate != 0 ? (int) sampleRate : TestBackend.this.input.getSampleRate());
 		}
 
 		public int getSampleRate() {
-			return TestBackend.this.input.getSampleRate();
+			return this.sampleRate;
 		}
 
 		public int getBlock() {
@@ -125,6 +151,11 @@ public final class TestBackend implements TGAudioBackend {
 
 		public boolean isRunning() {
 			return this.started && !this.closed;
+		}
+
+		// "<input device> x<input channels> to <output device> at <sample rate>"
+		public String getOpened() {
+			return this.opened;
 		}
 
 		// the device asks for the next blocks, as many as given

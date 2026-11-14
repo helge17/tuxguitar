@@ -24,6 +24,7 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	static final int KEPT_SECONDS = 30;
 
 	private static final MidiTransport STOPPED = new MidiTransport();
+	private static final float[][] SILENCE = new float[2][TGBlocks.FRAMES];
 
 	private final TGAudioStream stream;
 	// per input channel, a ring of the frames delivered: frame f of the clock at f % its length
@@ -36,15 +37,20 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	private volatile TGAudioBufferProcessor synthesizer;
 	private volatile TGSynthModel model;
 
-	private TGLiveDevice(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice) throws TGAudioDeviceException {
-		this.stream = backend.open(inputDevice, inputChannels, outputDevice, 2, 0, TGBlocks.FRAMES, this);
+	private TGLiveDevice(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice, double sampleRate) throws TGAudioDeviceException {
+		this.stream = backend.open(inputDevice, inputChannels, outputDevice, 2, sampleRate, TGBlocks.FRAMES, this);
 		this.kept = new float[inputChannels][this.stream.getSampleRate() * KEPT_SECONDS];
 	}
 
 	// the stream opened on input channels 1 to inputChannels of the input device and the first two of the output
-	// device, and started
+	// device, at the output device's sample rate, and started
 	public static TGLiveDevice open(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice) throws TGAudioDeviceException {
-		TGLiveDevice device = new TGLiveDevice(backend, inputDevice, inputChannels, outputDevice);
+		return open(backend, inputDevice, inputChannels, outputDevice, 0);
+	}
+
+	// so, at the sample rate (0: the output device's)
+	public static TGLiveDevice open(TGAudioBackend backend, int inputDevice, int inputChannels, int outputDevice, double sampleRate) throws TGAudioDeviceException {
+		TGLiveDevice device = new TGLiveDevice(backend, inputDevice, inputChannels, outputDevice, sampleRate);
 		device.stream.start();
 		return device;
 	}
@@ -63,13 +69,21 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	}
 
 	// from now on the synthesizer plays through the device; it renders at the device's sample rate
-	public void play(TGSynthModel synthesizer) {
+	public synchronized void play(TGSynthModel synthesizer) {
 		if (synthesizer.getSampleRate() != this.getSampleRate()) {
 			throw new IllegalArgumentException("the synthesizer renders at " + synthesizer.getSampleRate() + " Hz, the device runs at " + this.getSampleRate() + " Hz");
 		}
 		synthesizer.setOutputLatency(this.getOutputLatency());
 		this.model = synthesizer;
 		this.synthesizer = new TGAudioBufferProcessor(synthesizer);
+	}
+
+	// from now on that synthesizer plays through the device no more: it plays silence until another one does
+	public synchronized void stop(TGSynthModel synthesizer) {
+		if (this.model == synthesizer) {
+			this.synthesizer = null;
+			this.model = null;
+		}
 	}
 
 	// the synthesizer playing through the device, or null
@@ -106,14 +120,21 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	}
 
 	private void render(float[][] output, int frames) {
-		TGAudioBufferProcessor synthesizer = this.synthesizer;
-		if (synthesizer != null) {
-			synthesizer.process();
-			synthesizer.getBuffer().read(this.block);
-		}
+		float[][] block = this.rendered();
 		for (int side = 0; side < output.length; side++) {
-			System.arraycopy(this.block[side], 0, output[side], 0, frames);
+			System.arraycopy(block[side], 0, output[side], 0, frames);
 		}
+	}
+
+	// the next block the synthesizer playing through the device renders; silence while none does
+	private float[][] rendered() {
+		TGAudioBufferProcessor synthesizer = this.synthesizer;
+		if (synthesizer == null) {
+			return SILENCE;
+		}
+		synthesizer.process();
+		synthesizer.getBuffer().read(this.block);
+		return this.block;
 	}
 
 	// what the input channel delivered over the frames of the clock from the given one that are still kept; silence for

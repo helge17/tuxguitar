@@ -87,8 +87,18 @@ class TestLiveDevice {
 		}
 	}
 
+	// an A4 on channel 0, General MIDI program 0, once the synthesizer has loaded it
+	private static void soundANote(TGSynthModel synthesizer) throws MidiPlayerException {
+		TGSynthChannel channel = (TGSynthChannel) synthesizer.openChannel(0);
+		channel.sendProgramChange(0);
+		while (synthesizer.isBusy()) {
+			Thread.yield();
+		}
+		channel.sendNoteOn(69, 100, 0, false);
+	}
+
 	@Test
-	void eachBlockTheDeviceAsksForPlaysTheNextBlockTheSynthesizerRenders() throws TGAudioDeviceException, MidiPlayerException {
+	void eachBlockTheDeviceAsksForPlaysTheNextBlockTheSynthesizerRenders()throws TGAudioDeviceException, MidiPlayerException {
 		TestBackend backend = new TestBackend(RAMPS, 0, 0);
 		TGSynthModel synthesizer = LiveOutput.synthesizer(this.context, RATE);
 		int[] frames = new int[1];
@@ -96,12 +106,7 @@ class TestLiveDevice {
 		try (TGLiveDevice device = open(backend)) {
 			backend.getStream().run(2);
 			device.play(synthesizer);
-			TGSynthChannel channel = (TGSynthChannel) synthesizer.openChannel(0);
-			channel.sendProgramChange(0);
-			while (synthesizer.isBusy()) {
-				Thread.yield();
-			}
-			channel.sendNoteOn(69, 100, 0, false);
+			soundANote(synthesizer);
 			backend.getStream().run(20);
 		}
 		float[][] played = backend.getStream().getPlayed();
@@ -109,6 +114,33 @@ class TestLiveDevice {
 		assertEquals(0f, Meters.peak(played[0], 0, 2 * TGBlocks.FRAMES));
 		assertTrue(Meters.peak(played[0], 2 * TGBlocks.FRAMES, 22 * TGBlocks.FRAMES) > 0.01, "the note was not played");
 		assertTrue(Meters.peak(played[1], 2 * TGBlocks.FRAMES, 22 * TGBlocks.FRAMES) > 0.01, "the note was not played on the right");
+	}
+
+	@Test
+	void itRunsAtTheSampleRateAskedFor() throws TGAudioDeviceException {
+		try (TGLiveDevice device = TGLiveDevice.open(new TestBackend(RAMPS, 0, 0), 0, 2, 0, 44100)) {
+			assertEquals(44100, device.getSampleRate());
+		}
+	}
+
+	// a note sounds for 2 blocks, then the synthesizer stops playing through the device (stopping another one changes
+	// nothing): the device plays silence, not its last block again
+	@Test
+	void aSynthesizerStoppedPlaysThroughItNoMore() throws TGAudioDeviceException, MidiPlayerException {
+		TestBackend backend = new TestBackend(RAMPS, 0, 0);
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.context, RATE);
+		try (TGLiveDevice device = open(backend)) {
+			device.play(synthesizer);
+			soundANote(synthesizer);
+			backend.getStream().run(2);
+			device.stop(LiveOutput.synthesizer(this.context, RATE));
+			backend.getStream().run(2);
+			device.stop(synthesizer);
+			backend.getStream().run(2);
+		}
+		float[][] played = backend.getStream().getPlayed();
+		assertTrue(Meters.peak(played[0], 2 * TGBlocks.FRAMES, 4 * TGBlocks.FRAMES) > 0.01, "the note stopped with another synthesizer");
+		assertEquals(0f, Meters.peak(played[0], 4 * TGBlocks.FRAMES, 6 * TGBlocks.FRAMES) + Meters.peak(played[1], 4 * TGBlocks.FRAMES, 6 * TGBlocks.FRAMES));
 	}
 
 	@Test
