@@ -16,6 +16,11 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	protected abstract void doAction(TGContext context);
 	protected abstract String getItemName() throws TGPluginException ;
 
+	// whether the item can be chosen now, asked each time the menus update (on the UI thread); always, unless a tool says
+	protected boolean isEnabled(TGContext context) {
+		return true;
+	}
+
 	public void connect(TGContext context) throws TGPluginException {
 		if( this.hasNoTool() ) {
 			pluginStep(() -> this.addTool(context));
@@ -39,7 +44,7 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	private void addTool(TGContext context) throws Throwable {
 		String name = getItemName();
 
-		this.tool = new TGCustomTool(name, name);
+		this.tool = new TGCustomTool(name, name, () -> isEnabled(context));
 		this.toolAction = new TGCustomToolAction(context, this.tool.getName());
 
 		TuxGuitar.getInstance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
