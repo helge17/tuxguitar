@@ -16,6 +16,11 @@ public class TGRecordToolPlugin extends TGAudioToolPlugin {
 	}
 
 	protected void doAction(TGContext context) {
+		record(context);
+	}
+
+	// what Record does, from this item and the Recording window
+	static void record(TGContext context) {
 		TGActionProcessor processor = new TGActionProcessor(context, TGRecordAction.NAME);
 		processor.setAttribute(TGRecordAction.ATTRIBUTE_START, TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getPosition());
 		processor.processOnNewThread();

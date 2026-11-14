@@ -12,6 +12,7 @@ import app.tuxguitar.audio.action.TGAddAudioTrackAction;
 import app.tuxguitar.audio.action.TGArmTrackAction;
 import app.tuxguitar.audio.action.TGDisarmTrackAction;
 import app.tuxguitar.audio.action.TGRecordAction;
+import app.tuxguitar.audio.action.TGResetClipIndicatorAction;
 import app.tuxguitar.audio.action.TGSetInputChannelsAction;
 import app.tuxguitar.audio.action.TGSetMonitoringAction;
 import app.tuxguitar.audio.action.TGSetPluginStateAction;
@@ -44,6 +45,7 @@ final class TGAudioActions {
 		map(context, new TGArmTrackAction(context), new TGUpdateItemsController(), null);
 		map(context, new TGDisarmTrackAction(context), new TGUpdateItemsController(), null);
 		map(context, new TGSetMonitoringAction(context), new TGUpdateItemsController(), null);
+		map(context, new TGResetClipIndicatorAction(context), new TGUpdateItemsController(), null);
 		soundNotesOnce(context);
 	}
 

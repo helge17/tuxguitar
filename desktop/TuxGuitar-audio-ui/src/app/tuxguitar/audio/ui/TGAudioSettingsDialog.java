@@ -10,7 +10,6 @@ import app.tuxguitar.audio.TGAudioSettings;
 import app.tuxguitar.audio.TGLiveAudio;
 import app.tuxguitar.ui.UIFactory;
 import app.tuxguitar.ui.layout.UITableLayout;
-import app.tuxguitar.ui.widget.UIButton;
 import app.tuxguitar.ui.widget.UIDropDownSelect;
 import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UISelectItem;
@@ -58,20 +57,14 @@ public class TGAudioSettingsDialog {
 		this.hostApi.addSelectionListener(event -> this.listDevices());
 		this.inputChannels = this.spinner(5, "audio.settings.input-channels", 0, 64, settings.getInputChannels());
 		this.recordingOffset = this.spinner(6, "audio.settings.recording-offset", -96000, 96000, settings.getRecordingOffset());
-		this.button(7, 1, "ok", this::keep);
-		this.button(7, 2, "cancel", this.dialog::dispose);
+		TGDialogParts.button(this.factory, this.dialog, 7, 1, "ok", this::keep);
+		TGDialogParts.button(this.factory, this.dialog, 7, 2, "cancel", this.dialog::dispose);
 		TGDialogUtil.openDialog(this.dialog, TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
-	}
-
-	private void label(int row, String key) {
-		UILabel label = this.factory.createLabel(this.dialog);
-		label.setText(TuxGuitar.getProperty(key) + ":");
-		this.layout.set(label, row, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, false, false);
 	}
 
 	// the default ("") first, then the names
 	private UIDropDownSelect<String> select(int row, String key, List<String> names, String selected) {
-		this.label(row, key);
+		TGDialogParts.label(this.factory, this.dialog, row, key);
 		UIDropDownSelect<String> select = this.factory.createDropDownSelect(this.dialog);
 		this.layout.set(select, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false, 1, 1, 320f, null, null);
 		fill(select, names, selected);
@@ -94,20 +87,13 @@ public class TGAudioSettingsDialog {
 	}
 
 	private UISpinner spinner(int row, String key, int minimum, int maximum, int value) {
-		this.label(row, key);
+		TGDialogParts.label(this.factory, this.dialog, row, key);
 		UISpinner spinner = this.factory.createSpinner(this.dialog);
 		spinner.setMinimum(minimum);
 		spinner.setMaximum(maximum);
 		spinner.setValue(value);
 		this.layout.set(spinner, row, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 		return spinner;
-	}
-
-	private void button(int row, int column, String key, Runnable action) {
-		UIButton button = this.factory.createButton(this.dialog);
-		button.setText(TuxGuitar.getProperty(key));
-		button.addSelectionListener(event -> action.run());
-		this.layout.set(button, row, column, UITableLayout.ALIGN_RIGHT, UITableLayout.ALIGN_FILL, true, false, 1, 1, 80f, 25f, null);
 	}
 
 	// the settings are kept, and their devices open
