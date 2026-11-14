@@ -2,8 +2,10 @@ package app.tuxguitar.audio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionException;
@@ -15,9 +17,8 @@ import app.tuxguitar.midi.synth.TGAudioProcessor;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.midi.synth.TGSynthChannel;
+import app.tuxguitar.midi.synth.TGSynthChannelListener;
 import app.tuxguitar.midi.synth.TGSynthChannelProcessor;
-import app.tuxguitar.midi.synth.TGSynthManager;
-import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
 import app.tuxguitar.vst3.TGVst3Element;
@@ -29,27 +30,31 @@ import app.tuxguitar.vst3.TGVst3PluginProcessor;
 
 /**
  * The VST3 plugins of the song's sound chains as they run, each known by its channel and the id of its element of the
- * channel's chain: while the song plays or records, the plugins of that render (it binds them); otherwise one kept open
- * for the element, as the TuxGuitar Synthesizer keeps its chains open, opened from the song's element and opened again
- * when the element changes (by undo, say). A gesture in a plugin's own editor, or a preset chosen there, changes the
- * song once it ends: the element keeps the plugin's state, by one TGSetPluginStateAction run on an action context of its
- * own (so it is one undo step). A plugin's editor is its own, or, without one, TuxGuitar's parameter editor.
+ * channel's chain: those of a render that runs (it binds them; the synthesizer playing live tells this listener each
+ * time a channel's chain changes); otherwise one kept open for the element, as the TuxGuitar Synthesizer keeps its
+ * chains open, opened from the song's element and opened again when the element changes (by undo, say). A plugin's
+ * editor is its own, or, without one, TuxGuitar's parameter editor; it closes once its plugin no longer runs (the chain
+ * changed, the channel closed).
  *
- * Notices from a plugin come with its host's replies, on the thread that called it: a gesture's change of the song
- * runs there.
+ * A gesture in a plugin's own editor, or a preset chosen there, is heard with its host's replies, on the thread that
+ * called the plugin (live, the audio thread), which only notes it. Draining, on the thread that edits the song (an
+ * app's UI thread), changes the song: each element whose plugin ended gestures keeps that plugin's state, by one
+ * TGSetPluginStateAction run on an action context of its own (one undo step per element).
  */
-public final class TGLivePlugins {
+public final class TGLivePlugins implements TGSynthChannelListener {
 
 	// what a render that is not live (an export) binds its plugins to: nothing
 	public static final TGLivePlugins NONE = new TGLivePlugins(null, false);
 
 	private final TGContext context;
 	private final boolean live;
-	// by key (see key): the instances of the render that runs
+	// by key (see key): the instances of the renders that run
 	private final Map<String, TGVst3Instance> running = new HashMap<String, TGVst3Instance>();
 	// by key: the processors kept open while no render runs the element, and the element's parameters they were opened with
 	private final Map<String, Kept> kept = new HashMap<String, Kept>();
-	private final Map<String, TGPluginEditor> editors = new HashMap<String, TGPluginEditor>();
+	private final Map<String, Editor> editors = new HashMap<String, Editor>();
+	// the gestures ended, in order, until drained (the audio thread adds, the app's UI thread drains)
+	private final ConcurrentLinkedQueue<Gesture> ended = new ConcurrentLinkedQueue<Gesture>();
 
 	private TGLivePlugins(TGContext context, boolean live) {
 		this.context = context;
@@ -73,7 +78,7 @@ public final class TGLivePlugins {
 	}
 
 	// the processors of the synthesizer channel's chain (its source, when it has one, and its effects)
-	public void bind(int channel, TGSynthChannel synthesizer) {
+	public synchronized void bind(int channel, TGSynthChannel synthesizer) {
 		TGProgram chain = synthesizer.getProgram();
 		TGSynthChannelProcessor processors = synthesizer.getProcessor();
 		if (chain.getReceiver() != null) {
@@ -86,11 +91,25 @@ public final class TGLivePlugins {
 
 	// the render that ran the channel's plugins ended
 	public synchronized void unbind(int channel) {
+		this.forget(channel);
+		this.closeEditors();
+	}
+
+	private void forget(int channel) {
 		this.running.keySet().removeIf(key -> key.startsWith(channel + "/"));
 	}
 
+	// the live synthesizer's channel runs the processors of its chain now, or none (closed)
+	public synchronized void chainChanged(TGSynthChannel synthesizer) {
+		this.forget(synthesizer.getId());
+		if (synthesizer.getProcessor() != null) {
+			this.bind(synthesizer.getId(), synthesizer);
+		}
+		this.closeEditors();
+	}
+
 	private TGVst3Instance listened(int channel, String element, TGVst3Instance instance) {
-		instance.setListener(new TGVst3Gestures(() -> this.store(channel, element, instance)));
+		instance.setListener(new TGVst3Gestures(() -> this.ended.add(new Gesture(channel, element, instance))));
 		return instance;
 	}
 
@@ -98,6 +117,16 @@ public final class TGLivePlugins {
 	public synchronized TGVst3Instance get(int channel, String element) throws TGVst3Exception {
 		TGVst3Instance instance = this.running.get(key(channel, element));
 		return (instance != null ? instance : this.kept(channel, element));
+	}
+
+	// the plugin of the element as it runs, or the one kept open for it; null when neither is (none is opened)
+	public synchronized TGVst3Instance find(int channel, String element) {
+		return this.current(key(channel, element));
+	}
+
+	private TGVst3Instance current(String key) {
+		Kept kept = this.kept.get(key);
+		return this.running.getOrDefault(key, (kept != null ? kept.instance : null));
 	}
 
 	// the plugin kept open for the element, opened again when the song's element is not what it was opened with
@@ -138,7 +167,23 @@ public final class TGLivePlugins {
 		return TGSoundChain.get(document.getSongManager().getChannel(document.getSong(), channel));
 	}
 
-	// a gesture ended: the song's element keeps the plugin's state, one change of the song
+	// whether a gesture ended since the last drain (any thread may ask)
+	public boolean hasEnded() {
+		return !this.ended.isEmpty();
+	}
+
+	// the gestures ended since the last drain change the song: one change per element, with its plugin's state now, in
+	// the order of each element's last gesture. Run where the app edits the song (its UI thread)
+	public void drain() {
+		Map<String, Gesture> last = new LinkedHashMap<String, Gesture>();
+		for (Gesture gesture = this.ended.poll(); gesture != null; gesture = this.ended.poll()) {
+			last.remove(key(gesture.channel, gesture.element));
+			last.put(key(gesture.channel, gesture.element), gesture);
+		}
+		last.values().forEach(gesture -> this.store(gesture.channel, gesture.element, gesture.instance));
+	}
+
+	// the song's element keeps the plugin's state, one change of the song
 	private void store(int channel, String element, TGVst3Instance instance) {
 		TGDocumentManager document = TGDocumentManager.getInstance(this.context);
 		TGActionContext change = new TGActionContext() {
@@ -168,7 +213,7 @@ public final class TGLivePlugins {
 	public synchronized TGPluginEditor openEditor(int channel, String element) throws TGVst3Exception {
 		TGVst3Instance instance = this.get(channel, element);
 		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), titles(instance.getParameters()));
-		this.editors.put(key(channel, element), editor);
+		this.editors.put(key(channel, element), new Editor(editor, instance));
 		return editor;
 	}
 
@@ -185,7 +230,13 @@ public final class TGLivePlugins {
 
 	// the editor open for the element, or null
 	public synchronized TGPluginEditor getEditor(int channel, String element) {
-		return this.editors.get(key(channel, element));
+		Editor editor = this.editors.get(key(channel, element));
+		return (editor != null ? editor.editor : null);
+	}
+
+	// the editors whose plugin is no longer the element's (it stopped running) close
+	private void closeEditors() {
+		this.editors.entrySet().removeIf(editor -> editor.getValue().instance != this.current(editor.getKey()) && editor.getValue().close());
 	}
 
 	// the plugins kept open close (their editors with them)
@@ -205,6 +256,38 @@ public final class TGLivePlugins {
 			this.processor = processor;
 			this.instance = instance;
 			this.parameters = new HashMap<String, String>(parameters);
+		}
+	}
+
+	private static final class Editor {
+		private final TGPluginEditor editor;
+		private final TGVst3Instance instance;
+
+		Editor(TGPluginEditor editor, TGVst3Instance instance) {
+			this.editor = editor;
+			this.instance = instance;
+		}
+
+		// the plugin's own editor closes; a plugin that is gone has none left to close
+		boolean close() {
+			try {
+				this.instance.closeEditor();
+			} catch (TGVst3Exception e) {
+				// its host stopped, the editor with it
+			}
+			return true;
+		}
+	}
+
+	private static final class Gesture {
+		private final int channel;
+		private final String element;
+		private final TGVst3Instance instance;
+
+		Gesture(int channel, String element, TGVst3Instance instance) {
+			this.channel = channel;
+			this.element = element;
+			this.instance = instance;
 		}
 	}
 }

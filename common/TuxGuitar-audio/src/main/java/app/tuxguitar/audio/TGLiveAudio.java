@@ -184,7 +184,10 @@ public final class TGLiveAudio implements TGSynthOutput {
 		return (this.device != null ? this.device.getInputChannels() : 0);
 	}
 
+	// the synthesizer opening plays through the device, if there is one; either way its chains' plugins are the live
+	// plugins (TGLivePlugins hears each change of them)
 	public synchronized boolean play(TGSynthModel synthesizer) {
+		synthesizer.addChannelListener(TGLivePlugins.getInstance(this.context));
 		if (this.device == null) {
 			return false;
 		}

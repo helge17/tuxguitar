@@ -98,8 +98,10 @@ public class EditorSteps {
 		gesture(running(effect, track), title, values);
 	}
 
-	private static void gesture(TGVst3Instance instance, String title, double... values) throws TGVst3Exception {
+	// then the app drains it at once, as its UI thread does within a few milliseconds
+	private void gesture(TGVst3Instance instance, String title, double... values) throws TGVst3Exception {
 		instance.message("TG.gesture", Map.of("id", (long) instance.findParameter(title)), Map.of("values", TGVst3Instance.doubles(values)));
+		live().drain();
 	}
 
 	// the gesture, while the song plays, once it reaches the position
@@ -146,6 +148,7 @@ public class EditorSteps {
 	public void thePluginLoadsItsPreset(String preset, int effect, int track) throws TGVst3Exception {
 		this.beforePreset = state(effect(effect, track));
 		running(effect, track).message("TG.preset", Map.of("index", (long) PRESETS.indexOf(preset)), Collections.<String, byte[]>emptyMap());
+		live().drain();
 	}
 
 	// the state of the plugin opened from the element

@@ -17,10 +17,12 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import app.tuxguitar.audio.action.TGAddVst3EffectAction;
 import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.audio.action.TGRecordingVeto;
 import app.tuxguitar.audio.device.TGAudioDeviceInfo;
 import app.tuxguitar.audio.device.TGPortAudio;
+import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.SongActionFixture;
 import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
@@ -32,9 +34,12 @@ import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiSynthesizer;
 import app.tuxguitar.song.models.TGAudioInput;
+import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.vst3.TGVst3Folders;
 import app.tuxguitar.vst3.TGVst3Hosting;
+import app.tuxguitar.vst3.TGVst3Instance;
+import app.tuxguitar.vst3.TGVst3PluginProcessor;
 
 /**
  * The app's live audio, installed as an app does at startup, on a double of the native backend listing two devices.
@@ -235,6 +240,26 @@ class TestLiveAudio {
 		this.open(settings("ASIO", "Interface", 2, 0));
 		int channel = this.fixture.song.getChannel(0).getChannelId();
 		assertTrue(this.player.getChannelRouter().getMidiChannel(channel) instanceof TGSynthChannel);
+	}
+
+	// with or without a device: the VST3 plugins of the synthesizer's chains are the live plugins (whose editors open)
+	@Test
+	void theOpenedSynthesizersPluginsAreTheLivePlugins() throws Exception {
+		TGVst3Hosting hosting = TestPluginHosting.host(this.fixture.context);
+		TGLivePlugins live = TGLivePlugins.getInstance(this.fixture.context);
+		try {
+			TGChannel guitar = this.fixture.song.getChannel(0);
+			this.fixture.actionContext.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_CHANNEL, guitar);
+			this.fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, hosting.find("Test Gain"));
+			this.fixture.execute(new TGAddVst3EffectAction(this.fixture.context));
+			openPort();
+			TGSynthChannel played = TestPluginHosting.play(this.synthesizer, this.fixture.songManager, this.fixture.song, guitar);
+			TGVst3Instance running = ((TGVst3PluginProcessor) played.getProcessor().getAudioProcessor(played.getProgram().getOutput(0))).getInstance();
+			assertTrue(running != null && running == live.find(guitar.getChannelId(), "effect-1"));
+		} finally {
+			live.close();
+			hosting.close();
+		}
 	}
 
 	@Test
