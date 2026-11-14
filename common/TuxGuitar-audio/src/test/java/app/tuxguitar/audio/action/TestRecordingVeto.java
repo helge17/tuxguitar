@@ -57,4 +57,13 @@ public class TestRecordingVeto {
 			refused(TGSetPunchRangeAction.NAME, TGTransportModeAction.NAME, TGMoveTrackUpAction.NAME, TGMoveTrackDownAction.NAME,
 				TGCopySongFromAction.NAME, TGAddMeasureAction.NAME, TGSetTrackMuteAction.NAME, TGUpdateChannelAction.NAME));
 	}
+
+	// the app says which actions it refuses as a rule (desktop: those it disables while playing, as they are mapped)
+	@Test
+	public void duringARecordingTheActionsTheAppsRuleNamesAreRefusedToo() throws Exception {
+		TGRecordingVeto.getInstance(context).refuse(id -> id.startsWith("edit."));
+		TGAudioSession.getInstance(context).setRecording(true);
+
+		assertEquals(List.of("edit.a", TGSetPunchRangeAction.NAME, "edit.b"), refused("edit.a", TGSetPunchRangeAction.NAME, "view.c", "edit.b"));
+	}
 }

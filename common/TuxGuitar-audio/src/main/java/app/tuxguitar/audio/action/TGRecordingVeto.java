@@ -3,6 +3,7 @@ package app.tuxguitar.audio.action;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionInterceptor;
@@ -30,6 +31,8 @@ public final class TGRecordingVeto implements TGActionInterceptor {
 
 	private final TGAudioSession session;
 	private final Set<String> refused = ConcurrentHashMap.newKeySet();
+	// the actions refused: those named, and those of the rules an app gave
+	private volatile Predicate<String> rule = this.refused::contains;
 
 	private TGRecordingVeto(TGAudioSession session) {
 		this.session = session;
@@ -53,7 +56,12 @@ public final class TGRecordingVeto implements TGActionInterceptor {
 		this.refused.addAll(Arrays.asList(actionIds));
 	}
 
+	// the actions the rule names are refused during a recording too
+	public void refuse(Predicate<String> rule) {
+		this.rule = this.rule.or(rule);
+	}
+
 	public boolean intercept(String id, TGActionContext context) {
-		return (this.session.isRecording() && this.refused.contains(id));
+		return (this.session.isRecording() && this.rule.test(id));
 	}
 }
