@@ -90,6 +90,7 @@ tresult PLUGIN_API TestPlugin::setBusArrangements(SpeakerArrangement* inputs, in
 }
 
 tresult PLUGIN_API TestPlugin::process(ProcessData& data) {
+	gestureNow();
 	applyChanges(data.inputParameterChanges);
 	if (data.numSamples > 0 && data.numOutputs > 0) {
 		float** in = (spec.instrument || data.numInputs == 0 ? nullptr : data.inputs[0].channelBuffers32);
@@ -204,22 +205,23 @@ IPlugView* PLUGIN_API TestPlugin::createView(FIDString name) {
 }
 
 // the test messages play the plugin's own editor: "TG.gesture" moves a parameter through values in one gesture,
-// "TG.preset" chooses a preset; "TG.report" answers with what the plugin was told; "TG.crash" takes its process down, as
-// a plugin that crashes does
+// "TG.gesture-later" does it at the plugin's next call from its host (a process, or a parameter read), as an editor
+// does on its own window's thread between the host's calls; "TG.preset" chooses a preset; "TG.report" answers with what
+// the plugin was told; "TG.crash" takes its process down, as a plugin that crashes does
 tresult PLUGIN_API TestPlugin::notify(IMessage* message) {
 	FIDString id = message->getMessageID();
 	IAttributeList* attributes = message->getAttributes();
 	if (std::strcmp(id, "TG.gesture") == 0) {
 		int64 param = 0;
-		const void* data = nullptr;
-		uint32 size = 0;
 		attributes->getInt("id", param);
-		attributes->getBinary("values", data, size);
-		std::vector<double> plain(size / sizeof(double));
-		if (size > 0) {
-			std::memcpy(plain.data(), data, plain.size() * sizeof(double));
-		}
-		gesture((ParamID) param, plain);
+		gesture((ParamID) param, doubles(attributes));
+		return kResultOk;
+	}
+	if (std::strcmp(id, "TG.gesture-later") == 0) {
+		int64 param = 0;
+		attributes->getInt("id", param);
+		laterParam = (ParamID) param;
+		later = doubles(attributes);
 		return kResultOk;
 	}
 	if (std::strcmp(id, "TG.preset") == 0) {
@@ -241,6 +243,32 @@ tresult PLUGIN_API TestPlugin::notify(IMessage* message) {
 tresult PLUGIN_API TestPlugin::queryInterface(const TUID _iid, void** obj) {
 	DEF_INTERFACE(IConnectionPoint)
 	return SingleComponentEffect::queryInterface(_iid, obj);
+}
+
+// the message's "values": plain values one after the other
+std::vector<double> TestPlugin::doubles(IAttributeList* attributes) {
+	const void* data = nullptr;
+	uint32 size = 0;
+	attributes->getBinary("values", data, size);
+	std::vector<double> plain(size / sizeof(double));
+	if (size > 0) {
+		std::memcpy(plain.data(), data, plain.size() * sizeof(double));
+	}
+	return plain;
+}
+
+// the gesture of a "TG.gesture-later", once
+void TestPlugin::gestureNow() {
+	if (!later.empty()) {
+		std::vector<double> values;
+		values.swap(later);
+		gesture(laterParam, values);
+	}
+}
+
+ParamValue PLUGIN_API TestPlugin::getParamNormalized(ParamID id) {
+	gestureNow();
+	return SingleComponentEffect::getParamNormalized(id);
 }
 
 void TestPlugin::gesture(ParamID id, const std::vector<double>& plain) {

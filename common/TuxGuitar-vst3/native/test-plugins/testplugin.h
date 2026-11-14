@@ -60,6 +60,7 @@ public:
 	tresult PLUGIN_API getState(IBStream* state) SMTG_OVERRIDE;
 	tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE { return setState(state); }
 	tresult PLUGIN_API setParamNormalized(ParamID id, ParamValue value) SMTG_OVERRIDE;
+	ParamValue PLUGIN_API getParamNormalized(ParamID id) SMTG_OVERRIDE;
 	IPlugView* PLUGIN_API createView(FIDString name) SMTG_OVERRIDE;
 	tresult PLUGIN_API notify(IMessage* message) SMTG_OVERRIDE;
 	// the test messages come through IConnectionPoint, which SingleComponentEffect hides from hosts
@@ -87,6 +88,8 @@ private:
 	void applyPreset(int32 preset);
 	void applyChanges(IParameterChanges* changes);
 	void gesture(ParamID id, const std::vector<double>& values);
+	void gestureNow();
+	static std::vector<double> doubles(IAttributeList* attributes);
 	void choosePreset(int32 preset);
 	void edit(ParamID id, double plain);
 
@@ -94,6 +97,9 @@ private:
 	std::vector<double> values;
 	int32 preset;
 	uint32 reportedLatency;
+	// the gesture of a "TG.gesture-later" not done yet: its parameter and values
+	ParamID laterParam = 0;
+	std::vector<double> later;
 };
 
 }  // namespace TuxGuitar

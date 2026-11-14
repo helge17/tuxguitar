@@ -168,6 +168,28 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 		return TGSoundChain.get(document.getSongManager().getChannel(document.getSong(), channel));
 	}
 
+	// each plugin kept open whose element no render runs (nothing else calls it) is asked for its first parameter, so
+	// what its editor did since comes with the reply; one without parameters is not asked. Any thread may poll
+	public synchronized void poll() {
+		this.kept.forEach((key, kept) -> {
+			if (!this.running.containsKey(key)) {
+				ask(kept.instance);
+			}
+		});
+	}
+
+	private static void ask(TGVst3Instance instance) {
+		instance.getParameters().stream().findFirst().ifPresent(first -> read(instance, first.getId()));
+	}
+
+	private static void read(TGVst3Instance instance, int parameter) {
+		try {
+			instance.getParameter(parameter);
+		} catch (TGVst3Exception e) {
+			// its host stopped: there is nothing more to hear from it
+		}
+	}
+
 	// whether a gesture ended since the last drain (any thread may ask)
 	public boolean hasEnded() {
 		return !this.ended.isEmpty();

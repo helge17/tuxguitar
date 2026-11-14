@@ -167,6 +167,37 @@ public class TestLivePlugins {
 		assertEquals("true true | false", reloaded + " | " + (this.live.getEditor(this.guitar.getChannelId(), "effect-1") != null));
 	}
 
+	// a gesture its editor makes between the host's calls, as a plugin's own window does
+	private static void gestureLater(TGVst3Instance plugin, double value) throws TGVst3Exception {
+		plugin.message("TG.gesture-later", Map.of("id", 1L), Map.of("values", TGVst3Instance.doubles(value)));
+	}
+
+	// a kept plugin (no render runs it, so nothing calls it) is asked now and then: a gesture its editor made since
+	// comes with the reply, and reaches the song once drained
+	@Test
+	public void aGestureInAKeptPluginsEditorReachesTheSongOnceItIsPolled() throws TGVst3Exception {
+		gestureLater(gain("effect-1"), 3.0);
+		boolean unpolled = this.live.hasEnded();
+		this.live.poll();
+		boolean polled = this.live.hasEnded();
+		this.live.drain();
+		assertEquals("false true 3.0", unpolled + " " + polled + " " + songGain("effect-1"));
+	}
+
+	// a plugin kept before its element ran live is no longer the element's: it is not asked (its editor closed); an
+	// effect added since (the synthesizer not sent the chain again) runs nowhere: its kept plugin is
+	@Test
+	public void onlyKeptPluginsWhoseElementNoRenderRunsArePolled() throws Exception {
+		TGVst3Instance shadowed = gain("effect-1");
+		playLive(LiveOutput.synthesizer(this.fixture.context, 44100));
+		this.addGain();
+		gestureLater(shadowed, 3.0);
+		gestureLater(gain("effect-2"), 4.0);
+		this.live.poll();
+		this.live.drain();
+		assertEquals("[effect-2] 4.0", this.changes + " " + songGain("effect-2"));
+	}
+
 	// TuxGuitar's parameter editor, open for a plugin without an editor of its own, has a row per parameter (not its
 	// preset list) at the value the plugin holds; there is none for a plugin with its own editor, nor for one not opened
 	@Test
