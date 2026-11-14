@@ -37,7 +37,9 @@ round trip more has been delivered, makes the takes as offline (`TGRecording`: r
 pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.
 Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). A jump live
 playing did not foresee exactly (a loop restarts on the block after its pass ends; a move) starts the takes again
-there with a hard cut instead of a crossfade, for now.
+there with a hard cut instead of a crossfade, for now. The whole chain on this machine's real devices is an opt-in
+test: `mvn test -Dtest=TestRealDevice -Dtg.audio.native=<TuxGuitar-audio-device's native-build/lib>` (skipped, saying
+so, without it).
 No scenario is `@planned` any more.
 
 The conventions are those of `common/TuxGuitar-editor-utils/src/test/resources/features/README.md`: first person, in
