@@ -1,6 +1,7 @@
 package app.tuxguitar.audio.ui;
 
 import app.tuxguitar.app.TuxGuitar;
+import app.tuxguitar.audio.TGAudioStatus;
 import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.editor.action.TGActionProcessor;
 import app.tuxguitar.util.TGContext;
@@ -13,6 +14,11 @@ public class TGRecordToolPlugin extends TGAudioToolPlugin {
 
 	public TGRecordToolPlugin() {
 		super("audio.record");
+	}
+
+	// greyed unless a recording can start (a device, an armed track, none under way)
+	protected boolean isEnabled(TGContext context) {
+		return TGAudioStatus.of(context).canRecord();
 	}
 
 	protected void doAction(TGContext context) {
