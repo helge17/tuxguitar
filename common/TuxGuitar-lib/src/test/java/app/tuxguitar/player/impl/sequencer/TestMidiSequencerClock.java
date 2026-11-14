@@ -483,6 +483,77 @@ public class TestMidiSequencerClock {
 		assertFalse(sequencer.isRunning());
 	}
 
+	// a note on tick 0 to the end of the sequence, tick 100 (frame 2297: the 250th of the fifth block), played from
+	// tick 0 on the clock, looping from tick 0: whether the sequencer loops by itself
+	private boolean loopingFromTheStart() throws MidiPlayerException {
+		note(0, 0, 60);
+		sequence.addNoteOff(100, 0, 1, 60, 0, 1, false);
+		playToTheEndFrom(0);
+		return sequencer.loop(0);
+	}
+
+	// the next pass starts on the frame the end sounds on, inside its block, after the end's own events, with nothing
+	// silenced between the passes
+	@Test
+	public void aLoopPlaysItsStartAgainOnTheFrameItsEndSoundsOn() throws MidiPlayerException {
+		boolean itself = loopingFromTheStart();
+		blocks(4);
+
+		assertEquals("true | @2297 off 1 60 0 1 0, @2297 on 1 60 100 1 0 | true 1", itself + " | " + blocks(1) + " | " + sequencer.isRunning() + " " + sequencer.getPasses());
+	}
+
+	// the block the next pass starts in is told two spans: this pass's end (from frame 2048, tick 89.2), the loop's
+	// start (tick 0, quarter -1) from frame 249
+	@Test
+	public void theTransportIsToldTheLoopsStartFromTheFrameTheEndSoundsOn() throws MidiPlayerException {
+		loopingFromTheStart();
+		blocks(5);
+
+		assertEquals("@0 true q-907; @249 true q-1000; ", told(span -> String.valueOf(span.isPlaying())));
+	}
+
+	// the next pass given (a Training Mode pass at 60 bpm) plays from the end on in place of this pass's events; the
+	// pass after it plays it again: its 100 ticks last 4594 frames, to frame 6891 (block 14)
+	@Test
+	public void theNextPassGivenPlaysInPlaceOfThisPassFromWhereItStartsAgain() throws MidiPlayerException {
+		loopingFromTheStart();
+		MidiSequenceHandler next = sequencer.createNextPass(2);
+		next.addTempoInUSQ(0, 0, 1000000);
+		next.addNoteOn(0, 0, 1, 62, 100, 1, false);
+		next.addNoteOff(100, 0, 1, 62, 0, 1, false);
+		blocks(4);
+		String second = blocks(1);
+		blocks(8);
+
+		assertEquals("@2297 off 1 60 0 1 0, @2297 on 1 62 100 1 0 | @6891 off 1 62 0 1 0, @6891 on 1 62 100 1 0", second + " | " + blocks(1));
+	}
+
+	// told the loop is over, or that it starts at the end (no pass to play again), the sequence ends at its end,
+	// silencing, and the sequencer stops; each on a sequencer of its own
+	@Test
+	@org.junit.jupiter.api.Timeout(10)
+	public void aLoopNoLongerAskedForOrWithoutAPassEndsAtTheEnd() throws MidiPlayerException {
+		assertEquals("@2297 off 1 60 0 1 0, all notes off, pitch bend reset | false 0 / same", new TestMidiSequencerClock().endedLooping(-1) + " / "
+			+ (new TestMidiSequencerClock().endedLooping(100).equals(new TestMidiSequencerClock().endedLooping(-1)) ? "same" : "not the same"));
+	}
+
+	// looping from the start, then told to loop from the tick: the fifth block | whether it runs, its passes
+	private String endedLooping(long start) throws MidiPlayerException {
+		loopingFromTheStart();
+		sequencer.loop(start);
+		blocks(4);
+		return blocks(1) + " | " + sequencer.isRunning() + " " + sequencer.getPasses();
+	}
+
+	// on its own timer the sequencer does not loop: the player starts each pass
+	@Test
+	public void onTheTimerTheSequencerDoesNotLoopByItself() throws MidiPlayerException {
+		sequencer.setClock(null);
+		sequencer.start();
+
+		assertFalse(sequencer.loop(0));
+	}
+
 	@Test
 	public void stoppingLeavesTheClock() throws MidiPlayerException {
 		playOnTheClockFrom(0);

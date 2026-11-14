@@ -17,8 +17,6 @@ public class MidiSequencerImpl implements MidiSequencer {
 	private static final int DEFAULT_TEMPO_IN_USQ = 500000;
 
 	private boolean reset;
-	// the next start plays the next pass of a loop
-	private boolean looping;
 	private boolean running;
 	private boolean stopped;
 	private Object lock;
@@ -126,8 +124,7 @@ public class MidiSequencerImpl implements MidiSequencer {
 					this.reset();
 					this.reset = false;
 					this.midiEventPlayer.reset();
-					this.midiBlockPlayer.reset(this.looping);
-					this.looping = false;
+					this.midiBlockPlayer.reset();
 				}
 				this.stopped = false;
 				step.run();
@@ -246,9 +243,30 @@ public class MidiSequencerImpl implements MidiSequencer {
 		}
 	}
 
-	public void loopOnNextStart() {
+	// on the clock the block player starts each pass at the frame the end sounds on; on the timer the player does
+	public boolean loop(long start) {
 		synchronized (this.lock) {
-			this.looping = true;
+			this.midiBlockPlayer.setLoopStart(start);
+			return (this.playingClock != null);
+		}
+	}
+
+	public int getPasses() {
+		synchronized (this.lock) {
+			return this.midiBlockPlayer.getPasses();
+		}
+	}
+
+	public MidiSequenceHandler createNextPass(int tracks) {
+		synchronized (this.lock) {
+			this.midiBlockPlayer.clearNextPass();
+		}
+		return MidiSequenceHandlerImpl.nextPass(this, tracks);
+	}
+
+	void addNextPassEvent(MidiEvent event) {
+		synchronized (this.lock) {
+			this.midiBlockPlayer.addNextPassEvent(event);
 		}
 	}
 

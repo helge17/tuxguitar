@@ -49,14 +49,13 @@ public class RecordingSteps {
 
 	// live: the recording runs on a thread of its own, as the app runs it, while the live device runs a block at a time
 	// and the player's play loop takes a turn after each (see LivePlay); it ends by itself at the end of the song, or
-	// after the passes of Play looped (the player stopped where the last one loops). The change given is made half a
-	// second in, while it records; then the synthesizer's channels close
+	// after the passes of Play looped (see PlaySteps.turn). The change given is made half a second in, while it records;
+	// then the synthesizer's channels close
 	private void recordLive(SongPosition from, RecordingStop stop, Runnable change) throws TGAudioDeviceException, MidiPlayerException {
 		historyBeforeRecording = world.undoHistory();
 		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
 		player.loadSequencer(new MidiSequencerImpl(world.fixture().context));
 		Map<String, Object> attributes = Map.<String, Object>of(TGRecordAction.ATTRIBUTE_START, from.tick(world.song()));
-		int[] pass = {1};
 		world.setLive(LivePlay.run(world.fixture().context, world.synthesizer(), world.backend(), () -> {
 			recording = world.executeInBackground(new TGRecordAction(world.fixture().context), new TGUndoableRecordingController(), attributes);
 			world.threads().runStartHere(recording);
@@ -64,8 +63,8 @@ public class RecordingSteps {
 			if (block == HALF_A_SECOND) {
 				change.run();
 			}
-			if (player.isRunning() && !player.runPlayLoopProcess() && player.isRunning()) {
-				pass[0] = nextPass(player, pass[0], stop.passes());
+			if (player.isRunning()) {
+				PlaySteps.turn(player, stop.passes());
 			}
 			return recording.isAlive();
 		}));
@@ -73,16 +72,6 @@ public class RecordingSteps {
 		for (int number = 1; number <= world.song().countTracks(); number++) {
 			world.rememberTakes(number);
 		}
-	}
-
-	// the play loop ended where a pass loops, the next pass kept to start: it starts, unless the passes are done
-	private int nextPass(MidiPlayer player, int pass, int passes) {
-		if (pass < passes) {
-			world.threads().runStartHere();
-		} else {
-			player.stop();
-		}
-		return pass + 1;
 	}
 
 	@When("I record live from {position} {stop}")

@@ -235,6 +235,14 @@ Feature: Keeping audio in sync
     Then the output's left side holds 24 clicks and its right side 24 clicks
     And on every beat the left and right clicks reach the output within 1 sample of each other
 
+  # live, each pass starts on the sample the last one ends on: the notes keep the beat across each jump back, and the
+  # take with them
+  Scenario: live, with Play looped on, the passes join on the sample
+    Given I have turned Play looped on over measures 2 to 3
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's left side holds 24 clicks, one every 22050 samples within 1 sample
+    And the output's right side holds 24 clicks, each within 1 samples of a click on its left side
+
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1

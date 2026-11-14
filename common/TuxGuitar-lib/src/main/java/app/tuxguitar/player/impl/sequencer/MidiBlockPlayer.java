@@ -30,8 +30,6 @@ class MidiBlockPlayer {
 	// put in tick order when playing starts or moves, events on the same tick in the order they were added
 	private final List<MidiEvent> events = new ArrayList<MidiEvent>();
 	private boolean moved;
-	// the move is the next pass of a loop
-	private boolean looping;
 	// the first event not sent yet
 	private int next;
 	private long anchorTick;
@@ -48,6 +46,11 @@ class MidiBlockPlayer {
 	private long played;
 	// the tick at the end of the last block played
 	private volatile long scheduled;
+	// where the sequence plays again once its end is reached (negative: nowhere), and how many times it did
+	private long loopStart = -1;
+	private int passes;
+	// the events of the next pass, when given: from where it starts they replace the events
+	private final List<MidiEvent> nextPass = new ArrayList<MidiEvent>();
 
 	MidiBlockPlayer(MidiSequencerImpl sequencer) {
 		this.sequencer = sequencer;
@@ -65,17 +68,36 @@ class MidiBlockPlayer {
 		this.usq = usq;
 	}
 
-	// playing goes on from the sequencer's position, with the next block: as the next pass of a loop, or anew
-	void reset(boolean looping) {
+	// playing goes on anew from the sequencer's position, with the next block
+	void reset() {
 		this.moved = true;
-		this.looping = looping;
 	}
 
 	long getScheduledTick() {
 		return this.scheduled;
 	}
 
-	// sends the events of the next block and moves the sequencer's position to the tick the output sounds at its end
+	// from now on the sequence plays again from the tick each time its end is reached (a negative tick: it ends there)
+	void setLoopStart(long tick) {
+		this.loopStart = tick;
+	}
+
+	// how many times the sequence played again
+	int getPasses() {
+		return this.passes;
+	}
+
+	// the next pass's events are given again
+	void clearNextPass() {
+		this.nextPass.clear();
+	}
+
+	void addNextPassEvent(MidiEvent event) {
+		this.nextPass.add(event);
+	}
+
+	// sends the events of the next block and moves the sequencer's position to the tick the output sounds at its end; the
+	// end of a loop reached in the block starts the next pass on its frame
 	void process(MidiSampleClock clock, int frames) throws MidiPlayerException {
 		float rate = clock.getSampleRate();
 		if (this.moved) {
@@ -83,18 +105,47 @@ class MidiBlockPlayer {
 		}
 		MidiTransport transport = (clock.getTransport() != null ? clock.getTransport() : this.untold);
 		this.tell(transport, rate);
-		for (; this.next < this.events.size(); this.next++) {
-			MidiEvent event = this.events.get(this.next);
-			long frame = this.frameOf(event.getTick(), rate);
-			if (frame >= frames) {
-				break;
-			}
-			this.play(event, frame, clock, transport);
+		this.playBefore(frames, clock, transport);
+		while (this.loopsHere()) {
+			this.wrap(clock, transport, this.frameOf(this.sequencer.getTickLength(), rate));
+			this.playBefore(frames, clock, transport);
 		}
 		this.played += frames;
 		this.anchorFrame -= frames;
 		this.scheduled = this.sounding.tickAt(this.played);
 		this.sequencer.getMidiTickPlayer().setTick(this.sounding.tickAt(this.played - clock.getSoundingDelay()));
+	}
+
+	// the events not sent yet whose frames are in the block
+	private void playBefore(int frames, MidiSampleClock clock, MidiTransport transport) throws MidiPlayerException {
+		for (; this.next < this.events.size(); this.next++) {
+			MidiEvent event = this.events.get(this.next);
+			long frame = this.frameOf(event.getTick(), clock.getSampleRate());
+			if (frame >= frames) {
+				break;
+			}
+			this.play(event, frame, clock, transport);
+		}
+	}
+
+	// a loop whose end (the sequence's last tick, after its start) is reached: every event of the pass is sent
+	private boolean loopsHere() {
+		return (this.loopStart >= 0 && this.loopStart < this.sequencer.getTickLength() && this.next == this.events.size());
+	}
+
+	// the next pass from the frame the end sounds on, from the loop's start, with the next pass's events when given: the
+	// anchors are kept (until the output sounds the next pass the position is this one's), the transport told from there
+	private void wrap(MidiSampleClock clock, MidiTransport transport, long frame) throws MidiPlayerException {
+		this.passes++;
+		if (!this.nextPass.isEmpty()) {
+			this.events.clear();
+			this.events.addAll(this.nextPass);
+			this.events.sort(Comparator.comparingLong(MidiEvent::getTick));
+			this.nextPass.clear();
+		}
+		this.seek(clock, this.loopStart, frame);
+		this.sounding.anchor(this.played + frame, this.loopStart, MICROSECONDS_PER_QUARTER, this.usq * (double) clock.getSampleRate());
+		this.span(transport, frame, clock.getSampleRate());
 	}
 
 	// an event to the receiver of its frame; a tempo (sent, so the player takes it on) moves the anchor there; it, or a
@@ -133,28 +184,29 @@ class MidiBlockPlayer {
 	}
 
 	// the channel setup before the position, on the first frame, then the events from the position, anchored at the
-	// tempo in force there; the anchors before are forgotten, but for the next pass of a loop
+	// tempo in force there; the anchors before are forgotten (a loop's next pass keeps them: see wrap)
 	private void move(MidiSampleClock clock, long position) throws MidiPlayerException {
 		this.moved = false;
 		this.events.sort(Comparator.comparingLong(MidiEvent::getTick));
 		this.signature = null;
+		this.seek(clock, position, 0);
+		this.sounding.restart(this.played, position, MICROSECONDS_PER_QUARTER, this.usq * (double) clock.getSampleRate());
+	}
+
+	// the events from the position on, played from the frame of the next block at the tempo in force; the channel setup
+	// before the position sent on that frame, the last time signature before it kept
+	private void seek(MidiSampleClock clock, long position, long frame) throws MidiPlayerException {
 		this.next = 0;
 		for (; this.next < this.events.size() && this.events.get(this.next).getTick() < position; this.next++) {
 			MidiEvent event = this.events.get(this.next);
 			if (event.isTimeSignature()) {
 				this.signature = event;
 			} else if (MidiEventPlayer.isChannelSetup(event.getType())) {
-				this.sequencer.sendEvent(event, clock.at(0));
+				this.sequencer.sendEvent(event, clock.at((int) frame));
 			}
 		}
 		this.anchorTick = position;
-		this.anchorFrame = 0;
-		double frames = this.usq * (double) clock.getSampleRate();
-		if (this.looping) {
-			this.sounding.anchor(this.played, position, MICROSECONDS_PER_QUARTER, frames);
-		} else {
-			this.sounding.restart(this.played, position, MICROSECONDS_PER_QUARTER, frames);
-		}
+		this.anchorFrame = frame;
 	}
 
 	// the tick on the frame of the next block, at the tempo played from there

@@ -60,13 +60,16 @@ public final class TGLiveRecording implements TGLiveDevice.Listener {
 	// on the device's thread
 	public void played(long clock, int frames) {
 		this.keep(clock, frames);
-		MidiTransport.Span span = this.device.getTransport().get(0);
-		if (span.isPlaying()) {
-			this.follow(span, clock, frames, this.device.getSynthesizer().getLatency());
-		} else {
+		MidiTransport transport = this.device.getTransport();
+		boolean playing = transport.get(0).isPlaying();
+		for (int span = 0; playing && span < transport.count(); span++) {
+			int offset = transport.get(span).getFrame();
+			this.follow(transport.get(span), clock + offset, TGLiveTimeline.end(transport, span, frames) - offset, this.device.getSynthesizer().getLatency());
+		}
+		if (!playing) {
 			this.followed.stop();
 		}
-		this.playing = span.isPlaying();
+		this.playing = playing;
 		this.delivered = clock + frames;
 	}
 

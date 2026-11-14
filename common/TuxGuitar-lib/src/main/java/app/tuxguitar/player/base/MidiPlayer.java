@@ -69,6 +69,10 @@ public class MidiPlayer{
 	private boolean tryOpenFistDevice;
 	private TreeMap<Long, TGTempo> tempoMap;	// ordered map of ticks where tempo changes
 	private TreeMap<Long, Long> timestampMap;	// ordered map of timestamps (ms) where tempo changes, not considering tempo defined by player mode
+	// the passes the sequencer started again by itself that the player has seen (see followLoop), and the next pass
+	// given to it, parsed at the percent the mode plays it at, until it starts
+	private int passes;
+	private MidiSequenceParser nextPass;
 	protected TGLock lock;
 
 	private MidiPlayer(TGContext context) {
@@ -272,6 +276,9 @@ public class MidiPlayer{
 				}
 				this.getSequencer().setClock(this.getSampleClock());
 				this.getSequencer().start();
+				this.passes = this.getSequencer().getPasses();
+				this.nextPass = null;
+				this.followLoop();
 			}
 
 			this.tickLength = getSequencer().getTickLength();
@@ -293,6 +300,7 @@ public class MidiPlayer{
 		try {
 			// Play loop
 			if( this.getSequencer().isRunning() && this.isRunning()) {
+				boolean loopsItself;
 				try {
 					this.lock();
 
@@ -300,10 +308,11 @@ public class MidiPlayer{
 						this.changeTickPosition();
 					}
 					this.tickPosition = getSequencer().getTickPosition();
+					loopsItself = this.followLoop();
 				} finally {
 					this.unlock();
 				}
-				return !this.loopsAtTheScheduledEnd();
+				return loopsItself || !this.loopsAtTheScheduledEnd();
 			}
 
 			else {
@@ -315,6 +324,50 @@ public class MidiPlayer{
 			throwable.printStackTrace();
 		}
 		return false;
+	}
+
+	// tells the sequencer where the song plays again once it ends (Play looped on, no selection), or that it ends there:
+	// true when the sequencer starts each pass itself, on the frame the last one ends on (on a sample clock). Each pass it
+	// started since is one loop; the pass after the one playing is given as the mode will play it
+	private boolean followLoop() throws MidiPlayerException {
+		boolean loops = this.loopsAtTheEnd();
+		boolean itself = this.getSequencer().loop(loops ? this.getLoopSPosition() : -1);
+		this.passesStarted();
+		if( itself && loops && this.nextPass == null ){
+			this.nextPass = this.parse(this.getSequencer().createNextPass(this.sequenceTracks()), this.nextPercent());
+		}
+		return itself;
+	}
+
+	// the tracks of the sequence the song plays as: the song's, then the info track and the Metronome's (the last)
+	private int sequenceTracks() {
+		return this.getSong().countTracks() + 2;
+	}
+
+	// each pass the sequencer started by itself since the last look: the mode's next loop, notified
+	private void passesStarted() throws MidiPlayerException {
+		for( ; this.passes < this.getSequencer().getPasses(); this.passes++ ){
+			this.getMode().notifyLoop();
+			this.nextPassPlays();
+			this.notifyLoop();
+		}
+	}
+
+	// the next pass given plays: its tempos are the player's (none given: the pass played again keeps them)
+	private void nextPassPlays() {
+		if( this.nextPass != null ){
+			this.tempoMap = this.nextPass.getTempoMap();
+			this.timestampMap = this.nextPass.getTimestampMap();
+		}
+		this.nextPass = null;
+	}
+
+	// the percent of the tempo the mode plays its next pass at
+	private int nextPercent() {
+		MidiPlayerMode next = new MidiPlayerMode();
+		next.copyFrom(this.getMode());
+		next.notifyLoop();
+		return next.getCurrentPercent();
 	}
 
 	// the next pass of a loop starts where this one is scheduled to end, while the output still sounds its end
@@ -362,7 +415,6 @@ public class MidiPlayer{
 
 			if( this.loopsAtTheEnd() ){
 				this.stopSequencer();
-				this.getSequencer().loopOnNextStart();
 				this.setTickPosition(TGDuration.QUARTER_TIME);
 				this.getMode().notifyLoop();
 				this.notifyLoop();
@@ -416,6 +468,23 @@ public class MidiPlayer{
 			}
 		}
 		return TGDuration.QUARTER_TIME;
+	}
+
+	// the song into the sequence, at the percent of its tempo, over the selection, else the loop
+	private MidiSequenceParser parse(MidiSequenceHandler sequence, int percent) {
+		MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
+		midiSequenceParser.setTempoPercent(percent);
+		if (this.selectionEndBeat!=null) {
+			midiSequenceParser.setSHeader( selectionStartBeat.getMeasure().getNumber() );
+			midiSequenceParser.setEHeader( selectionEndBeat.getMeasure().getNumber() );
+		} else {
+			midiSequenceParser.setSHeader( getLoopSHeader() );
+			midiSequenceParser.setEHeader( getLoopEHeader() );
+		}
+		midiSequenceParser.setMetronomeChannelId(this.getMetronomeChannelId());
+		midiSequenceParser.setMetronomeClick(getClick());
+		midiSequenceParser.parse(sequence);
+		return midiSequenceParser;
 	}
 
 	public void checkDevices() throws Throwable {
@@ -554,18 +623,7 @@ public class MidiPlayer{
 		try{
 			this.lock();
 
-			MidiSequenceParser midiSequenceParser = new MidiSequenceParser(this.getSong(), this.getSongManager(), MidiSequenceParser.DEFAULT_PLAY_FLAGS);
-			midiSequenceParser.setTempoPercent(getMode().getCurrentPercent());
-			if (this.selectionEndBeat!=null) {
-				midiSequenceParser.setSHeader( selectionStartBeat.getMeasure().getNumber() );
-				midiSequenceParser.setEHeader( selectionEndBeat.getMeasure().getNumber() );
-			} else {
-				midiSequenceParser.setSHeader( getLoopSHeader() );
-				midiSequenceParser.setEHeader( getLoopEHeader() );
-			}
-			midiSequenceParser.setMetronomeChannelId(this.getMetronomeChannelId());
-			midiSequenceParser.setMetronomeClick(getClick());
-			midiSequenceParser.parse(getSequencer().createSequence(this.getSong().countTracks() + 2));
+			MidiSequenceParser midiSequenceParser = this.parse(getSequencer().createSequence(this.sequenceTracks()), getMode().getCurrentPercent());
 			this.tempoMap = midiSequenceParser.getTempoMap();
 			this.timestampMap = midiSequenceParser.getTimestampMap();
 			this.infoTrack = midiSequenceParser.getInfoTrack();

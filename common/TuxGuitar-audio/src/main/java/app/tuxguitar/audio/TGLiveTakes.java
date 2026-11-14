@@ -79,18 +79,26 @@ public final class TGLiveTakes implements TGMidiProcessor {
 		TGTrack track = this.track(song);
 		TGAudioSession session = TGAudioSession.getInstance(this.context);
 		boolean monitored = (TGTrackSource.stopped(session.isArmed(track), session.getMonitoring(track)) == TGTrackSource.INPUT);
-		MidiTransport.Span span = this.transport.get(0);
-		if (!span.isPlaying()) {
+		if (!this.transport.get(0).isPlaying()) {
 			this.followed.stop();
 			this.monitor(block, session, song, track, monitored);
 			return;
 		}
-		if (this.followed.follow(span, block[0].length)) {
+		for (int span = 0; span < this.transport.count(); span++) {
+			int offset = this.transport.get(span).getFrame();
+			this.play(block, offset, TGLiveTimeline.end(this.transport, span, block[0].length) - offset, this.transport.get(span), session, song, track, monitored);
+		}
+	}
+
+	// the frames of the block from the offset, which the transport says play from the span on: on the timeline followed,
+	// a new one starting there (a jump: a loop's next pass from the very frame it starts on)
+	private void play(float[][] block, int offset, int frames, MidiTransport.Span span, TGAudioSession session, TGSong song, TGTrack track, boolean monitored) {
+		if (this.followed.follow(span, frames)) {
 			this.start(session, song, track);
 		}
 		long from = this.followed.getPosition() - this.delay;
-		this.deliver(session, song, track, from, block[0].length, monitored);
-		this.tap.render(block, from);
+		this.deliver(session, song, track, from - offset, block[0].length, monitored);
+		this.tap.render(block, offset, frames, from);
 	}
 
 	// while stopped, a monitored input sounds as it is delivered

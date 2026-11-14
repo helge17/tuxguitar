@@ -56,13 +56,30 @@ public class PlaySteps {
 	// output sounded is kept (see LiveSteps); then the synthesizer's channels close
 	@When("I play the song live from {position}")
 	public void playLive(SongPosition from) throws MidiPlayerException, TGAudioDeviceException {
+		playLive(from, 1);
+	}
+
+	// with Play looped on, the passes: the last one ends the song (see turn)
+	@When("I play the song live from {position} for {int} passes")
+	public void playLive(SongPosition from, int passes) throws MidiPlayerException, TGAudioDeviceException {
 		MidiPlayer player = MidiPlayer.getInstance(world.fixture().context);
 		player.loadSequencer(new MidiSequencerImpl(world.fixture().context));
 		player.setTickPosition(from.tick(world.song()));
 		player.play();
 		world.threads().runStartHere();
-		world.setLive(LivePlay.play(world.fixture().context, player, world.synthesizer(), world.backend()));
+		world.setLive(LivePlay.run(world.fixture().context, world.synthesizer(), world.backend(), () -> { }, block -> turn(player, passes)));
 		player.closeChannels();
+	}
+
+	// a turn of the play loop, as it plays the passes: in the last one Play looped goes off, so the song ends where that
+	// pass ends, as when I turn it off while it plays. Whether playing goes on
+	static boolean turn(MidiPlayer player, int passes) {
+		try {
+			player.getMode().setLoop(player.getMode().isLoop() && player.getSequencer().getPasses() < passes - 1);
+		} catch (MidiPlayerException e) {
+			throw new IllegalStateException(e);
+		}
+		return player.runPlayLoopProcess();
 	}
 
 	// live, TuxGuitar stopped while the audio device runs (see LivePlay); then the synthesizer's channels close

@@ -60,6 +60,14 @@ public class LiveSteps {
 		right.forEach(click -> assertTrue(left.stream().anyMatch(other -> Math.abs(other - click) <= within), "right " + right + " left " + left));
 	}
 
+	// evenly: no gap and no overlap anywhere between them
+	@Then("the output's left side holds {int} clicks, one every {int} samples within {int} sample(s)")
+	public void leftClicksEvenly(int count, int every, int within) {
+		List<Integer> left = clicks(0);
+		assertEquals(count, left.size(), "left " + left);
+		IntStream.range(1, left.size()).forEach(i -> assertEquals(every, left.get(i) - left.get(i - 1), within, "left " + left));
+	}
+
 	@Then("the output's left side holds {int} clicks and no {double} Hz tone above -60 dBFS")
 	public void leftClicksAndNoTone(int count, double frequency) {
 		float[] left = world.live()[0];

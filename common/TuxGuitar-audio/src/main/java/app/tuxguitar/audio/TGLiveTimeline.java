@@ -12,10 +12,12 @@ import app.tuxguitar.song.models.TGSong;
 import app.tuxguitar.util.TGContext;
 
 /**
- * What the song plays live, followed a block at a time from the transport: a timeline of what plays from where the
- * transport was when playing started, and the sample of it each block starts on. When the transport is not where the
- * timeline is (playing started, moved, or the song jumped other than the timeline did) a new timeline starts there:
- * to the end of the song, or over as many passes of the Loop Range as asked for when Play looped is on.
+ * What the song plays live, followed a stretch at a time from the transport (each span it was told for a block, over
+ * the frames the span lasts): a timeline of what plays from where the transport was when it started, and the sample of
+ * it each stretch starts on. A new timeline starts when playing starts, when the transport is not where the timeline
+ * is (it moved, or the song jumped other than the timeline did), and when it goes back (a loop's next pass, which plays
+ * as the mode's next loop: so the timeline, over as many passes of the Loop Range as asked for when Play looped is on,
+ * always foresees the next jump back): to the end of the song, or over those passes.
  */
 final class TGLiveTimeline {
 
@@ -27,9 +29,12 @@ final class TGLiveTimeline {
 	private final MidiTransport expected = new MidiTransport();
 	private int sampleRate = Math.round(TGAudioBuffer.SAMPLE_RATE);
 	private TGTimeline timeline;
-	// the timeline's sample the block followed last starts on, and its frames
+	// the mode the timeline plays (a copy of the player's when playing started or moved; its next loop for a next pass)
+	private final MidiPlayerMode mode = new MidiPlayerMode();
+	// the timeline's sample the stretch followed last starts on, its frames, and the quarter note it starts on
 	private long position;
 	private int frames;
+	private double quarters;
 
 	TGLiveTimeline(TGContext context, int passes) {
 		this.context = context;
@@ -40,14 +45,22 @@ final class TGLiveTimeline {
 		this.sampleRate = sampleRate;
 	}
 
-	// the next block, which the transport says plays from the span on: whether a new timeline starts with it
+	// the frame of the block the transport's span ends on: the next span's, else the block's end
+	static int end(MidiTransport transport, int span, int frames) {
+		return (span + 1 < transport.count() ? transport.get(span + 1).getFrame() : frames);
+	}
+
+	// the next stretch, which the transport says plays from the span on, over the frames: whether a new timeline starts
+	// with it
 	boolean follow(MidiTransport.Span span, int frames) {
 		this.position += this.frames;
 		this.frames = frames;
-		if (this.timeline != null && this.isOnTheTimeline(span)) {
+		boolean back = (this.timeline != null && span.getQuarters() < this.quarters);
+		this.quarters = span.getQuarters();
+		if (this.timeline != null && !back && this.isOnTheTimeline(span)) {
 			return false;
 		}
-		this.start(span);
+		this.start(span, back);
 		return true;
 	}
 
@@ -60,7 +73,7 @@ final class TGLiveTimeline {
 		return this.timeline;
 	}
 
-	// the timeline's sample the block followed last starts on
+	// the timeline's sample the stretch followed last starts on
 	long getPosition() {
 		return this.position;
 	}
@@ -70,11 +83,15 @@ final class TGLiveTimeline {
 		return Math.abs(this.expected.get(0).getQuarters() - span.getQuarters()) < ON_THE_TIMELINE;
 	}
 
-	private void start(MidiTransport.Span span) {
+	private void start(MidiTransport.Span span, boolean nextPass) {
+		if (nextPass) {
+			this.mode.notifyLoop();
+		} else {
+			this.mode.copyFrom(MidiPlayer.getInstance(this.context).getMode());
+		}
 		TGSong song = TGDocumentManager.getInstance(this.context).getSong();
-		MidiPlayerMode mode = MidiPlayer.getInstance(this.context).getMode();
 		long tick = Math.round(span.getQuarters() * TGDuration.QUARTER_TIME) + TGDuration.QUARTER_TIME;
-		List<TGPlayedMeasure> played = TGSongTime.play(song, mode, tick, Long.MAX_VALUE, (mode.isLoop() ? this.passes : 1));
+		List<TGPlayedMeasure> played = TGSongTime.play(song, this.mode, tick, Long.MAX_VALUE, (this.mode.isLoop() ? this.passes : 1));
 		this.timeline = new TGTimeline(song, played, this.sampleRate);
 		this.position = 0;
 	}

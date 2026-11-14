@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,11 @@ import app.tuxguitar.thread.TGThreadManager;
 /**
  * The player and TuxGuitar's sequencer on a synthesizer's sample clock, blocks of 512 frames rendered one at a time:
  * where the player is (the position the caret, the transport, Count In and the loops read) while it plays, after a
- * pause, and at the end of the song.
+ * pause, and at the end of the song; where the notes start, and where a loop's next pass starts.
  *
  * The song has 4 measures of 4/4 at 120 bpm (a tick lasts 22.96875 frames at 44100 Hz) and a quarter note on the first
- * and on the last beat; its sequence ends at tick 16320. Its threads run step by step (SteppedThreads).
+ * and on the last beat (frames 0 and 330750); its sequence ends at tick 16320 (frame 352800, in block 690). Its threads
+ * run step by step (SteppedThreads).
  */
 public class TestMidiPlayerOnTheClock {
 
@@ -35,6 +37,9 @@ public class TestMidiPlayerOnTheClock {
 	// how many frames after an event's frame the synthesizer's output sounds it
 	private int delay;
 	private float sampleRate = 44100;
+	// what the clock's receivers were sent, each "@frame" counted from the first block; the first frame of the next block
+	private final List<String> sent = new ArrayList<String>();
+	private long blockStart;
 
 	private final class ClockedSynthesizer implements MidiSynthesizer, MidiSampleClock {
 		public MidiChannel openChannel(int channelId) { return null; }
@@ -44,7 +49,7 @@ public class TestMidiPlayerOnTheClock {
 		public float getSampleRate() { return sampleRate; }
 		public int getSoundingDelay() { return delay; }
 		public void setListener(Listener listener) { TestMidiPlayerOnTheClock.this.listener = listener; }
-		public MidiReceiver at(int frame) { return new MidiReceiverRecorder(new ArrayList<String>()); }
+		public MidiReceiver at(int frame) { return new MidiReceiverRecorder(sent, "@" + (blockStart + frame) + " "); }
 	}
 
 	private final ClockedSynthesizer synthesizer = new ClockedSynthesizer();
@@ -79,10 +84,15 @@ public class TestMidiPlayerOnTheClock {
 	// the clock renders the blocks, the play loop taking a turn after each: where the player is
 	private long blocks(int count) throws MidiPlayerException {
 		for (int b = 0; b < count; b++) {
-			listener.beforeBlock(synthesizer, BLOCK);
+			block();
 			player.runPlayLoopProcess();
 		}
 		return player.getTickPosition();
+	}
+
+	private void block() throws MidiPlayerException {
+		listener.beforeBlock(synthesizer, BLOCK);
+		blockStart += BLOCK;
 	}
 
 	// the blocks the clock renders, the play loop taking a turn after each, until the play loop ends
@@ -93,7 +103,7 @@ public class TestMidiPlayerOnTheClock {
 	// the clock renders a block, the play loop takes a turn: whether that ended the play loop
 	private boolean lastTurn() {
 		try {
-			listener.beforeBlock(synthesizer, BLOCK);
+			block();
 			return !player.runPlayLoopProcess();
 		} catch (MidiPlayerException e) {
 			throw new IllegalStateException(e);
@@ -108,19 +118,28 @@ public class TestMidiPlayerOnTheClock {
 		return blocks + " | " + player.getTickPosition() + " " + player.isRunning() + " " + notified;
 	}
 
-	// plays to the end on a clock at the sample rate whose output sounds it the delay late, in loop mode or not
-	private String playedToTheEnd(float rate, int late, boolean loop) throws MidiPlayerException {
+	// plays to the end on a clock at the sample rate whose output sounds it the delay late
+	private String playedToTheEnd(float rate, int late) throws MidiPlayerException {
 		sampleRate = rate;
 		delay = late;
-		player.getMode().setLoop(loop);
 		return playedToTheEnd();
 	}
 
-	// in loop mode, with the output the delay late, plays to the end of the first pass, then starts the next one
-	private void nextPassStarted(int late) throws MidiPlayerException {
-		playedToTheEnd(44100, late, true);
-		threads.runStarted();
-		threads.runLoop();
+	// the frames the song's notes started on ("@frame"), in order
+	private String notesStarted() {
+		return sent.stream().filter(call -> call.contains(" on ")).map(call -> call.substring(0, call.indexOf(' '))).collect(Collectors.joining(" "));
+	}
+
+	// in loop mode, on a clock at the sample rate whose output sounds it the delay late, played for the blocks: where the
+	// notes started | where the player is, whether it runs, what it notified meanwhile, the threads left to run
+	private String looped(float rate, int late, int blocks) throws MidiPlayerException {
+		sampleRate = rate;
+		delay = late;
+		player.getMode().setLoop(true);
+		play();
+		notified.clear();
+		long position = blocks(blocks);
+		return notesStarted() + " | " + position + " " + player.isRunning() + " " + notified + " " + threads.pending();
 	}
 
 	// 10 blocks from tick 960 reach 5120 frames: 222.9 ticks
@@ -171,49 +190,74 @@ public class TestMidiPlayerOnTheClock {
 		assertEquals("690 | 960 false [2]", playedToTheEnd());
 	}
 
-	// the loop (5) plays again from the song's start: the sequencer is moved there, to start once the new start runs (the
-	// first play loop, its turns taken here, is still handed on)
-	@Test
-	public void inLoopModeThePlayerPlaysTheSongAgainOnceItsEndIsReached() throws MidiPlayerException {
-		player.getMode().setLoop(true);
-
-		assertEquals("690 | 960 true [5] | 1 started, 1 looped", playedToTheEnd() + " | " + threads.pending());
-	}
-
-	// the next pass starts on block 691's first frame (353280), which the output sounds 1024 frames later, at the end of
-	// block 692: until then the player is where the output still sounds this pass (frame 352768: tick 16318). Between
-	// the loop's turn and the next pass's first block it reports the loop's start (960), where it moves the sequencer
-	@Test
-	public void inLoopModeThePlayerReportsThisPassUntilTheOutputSoundsTheNext() throws MidiPlayerException {
-		nextPassStarted(1024);
-		long started = player.getTickPosition();
-
-		assertEquals("960 | 16318 960 982", started + " | " + blocks(1) + " " + blocks(1) + " " + blocks(1));
-	}
-
-	// 600 frames late, the output sounds the last frames of this pass, past its end (frame 352680: tick 16337), while the
-	// next pass plays: that does not end the next pass
-	@Test
-	public void inLoopModeTheEndOfThisPassStillSoundingDoesNotEndTheNext() throws MidiPlayerException {
-		nextPassStarted(600);
-
-		assertEquals("16337 true", blocks(1) + " " + player.getSequencer().isRunning());
-	}
-
 	// where playing ends, each on a player of its own. The song ends once the output sounds past the end of the
 	// sequence: 1024 frames late, after block 692, its last notes heard; at 48000 Hz (the sequence's 15360 ticks last
 	// 384000 frames, 750 blocks) and 512 frames late, the end of block 751 sounds exactly the end, which the song ends
-	// past, after block 752. In loop mode (5) the next pass starts where this one is scheduled to end, whatever the
-	// output's delay: after block 690, as without latency; at 48000 Hz on the block after 750, which ends exactly there
+	// past, after block 752
 	@Test
-	public void theSongEndsWhereItsEndIsHeardAndTheNextPassStartsWhereThisOneIsScheduledToEnd() throws MidiPlayerException {
-		String ended = fresh(44100, 1024, false) + " / " + fresh(48000, 512, false);
-		String looped = fresh(44100, 1024, true) + " / " + fresh(48000, 0, true);
-
-		assertEquals("692 | 960 false [2] / 752 | 960 false [2] | 690 | 960 true [5] / 750 | 960 true [5]", ended + " | " + looped);
+	public void theSongEndsWhereItsEndIsHeard() throws MidiPlayerException {
+		assertEquals("692 | 960 false [2] / 752 | 960 false [2]", fresh().playedToTheEnd(44100, 1024) + " / " + fresh().playedToTheEnd(48000, 512));
 	}
 
-	private static String fresh(float rate, int late, boolean loop) throws MidiPlayerException {
-		return new TestMidiPlayerOnTheClock().playedToTheEnd(rate, late, loop);
+	private static TestMidiPlayerOnTheClock fresh() {
+		return new TestMidiPlayerOnTheClock();
+	}
+
+	// in loop mode the next pass starts on the very frame this one ends on (352800, inside block 690), the player going
+	// on without a stop or a new start: after 700 blocks it is 5600 frames into the next pass (tick 1203), one loop
+	// notified (5), no start left to run (the one play loop, which these turns stand for, still handed on)
+	@Test
+	public void inLoopModeTheNextPassStartsOnTheFrameThisOneEndsOn() throws MidiPlayerException {
+		assertEquals("@0 @330750 @352800 | 1203 true [5] 0 started, 1 looped", looped(44100, 0, 700));
+	}
+
+	// at 48000 Hz the end falls on the first frame of block 750 (384000): the next pass starts there, whatever the delay
+	@Test
+	public void aPassEndingOnABlocksFirstFrameStartsTheNextThere() throws MidiPlayerException {
+		assertEquals("@0 @360000 @384000", looped(48000, 1024, 760).split(" \\| ")[0]);
+	}
+
+	// the output 1024 frames late: after blocks 690 and 691 it still sounds this pass (frames 352256 and 352768: ticks
+	// 16296 and 16318), after block 692 the next one, from its start on frame 352800 (frame 353280: tick 980)
+	@Test
+	public void inLoopModeThePlayerReportsThisPassUntilTheOutputSoundsTheNext() throws MidiPlayerException {
+		looped(44100, 1024, 689);
+
+		assertEquals("16296 16318 980", blocks(1) + " " + blocks(1) + " " + blocks(1));
+	}
+
+	// two passes started while the play loop took no turn (the second plays the next pass given once more) are two loops
+	// at its next turn; the third pass's first note is on frame 705600
+	@Test
+	public void passesStartedBetweenTwoTurnsAreEachALoop() throws MidiPlayerException {
+		looped(44100, 0, 1);
+		for (int b = 0; b < 1400; b++) {
+			block();
+		}
+		blocks(1);
+
+		assertEquals("[5, 5] @0 @330750 @352800 @683550 @705600", notified + " " + notesStarted());
+	}
+
+	// Training Mode from 50% by 50: the first pass at 60 bpm ends on frame 705600, the next plays at 120 bpm from there,
+	// its last beat on frame 1036350, and the 2030 blocks reach its tick 15491; the pass notified (5) as it starts
+	@Test
+	public void aTrainingModePassStartsAtItsOwnTempoOnTheFrameTheLastOneEnds() throws MidiPlayerException {
+		player.getMode().setType(MidiPlayerMode.TYPE_CUSTOM);
+		player.getMode().setCustomPercentFrom(50);
+		player.getMode().setCustomPercentTo(100);
+		player.getMode().setCustomPercentIncrement(50);
+		player.getMode().reset();
+
+		assertEquals("@0 @661500 @705600 @1036350 | 15491 true [5] 0 started, 1 looped", looped(44100, 0, 2030));
+	}
+
+	// Play looped turned off while playing: the pass under way plays to the end of the sequence, and the song ends there
+	@Test
+	public void aLoopTurnedOffWhilePlayingEndsWithItsPass() throws MidiPlayerException {
+		looped(44100, 0, 100);
+		player.getMode().setLoop(false);
+
+		assertEquals("590 | 960 false [2]", blocksToTheEnd() + " | " + player.getTickPosition() + " " + player.isRunning() + " " + notified);
 	}
 }

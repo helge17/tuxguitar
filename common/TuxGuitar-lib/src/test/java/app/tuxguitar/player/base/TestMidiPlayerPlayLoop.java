@@ -59,6 +59,17 @@ public class TestMidiPlayerPlayLoop {
 		assertEquals(" | true | 3000 | true / seek 5000 | true | 5000 | true", following + " / " + loopTurn());
 	}
 
+	// a sequencer that does not loop by itself (on its own timer, another MIDI Port's) is given no next pass in loop mode
+	// (this one refuses it): the player starts each pass, as before
+	@Test
+	public void inLoopModeASequencerThatDoesNotLoopByItselfIsGivenNoNextPass() {
+		player.getMode().setLoop(true);
+		sequencer.running = true;
+		sequencer.position = 3000;
+
+		assertEquals(" | true | 3000 | true | ", loopTurn() + " | " + err.reported());
+	}
+
 	@Test
 	public void onceTheSequencerStopsTheLoopEndsThePlay() {
 		player.setRunning(true);
