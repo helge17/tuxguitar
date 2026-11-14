@@ -48,13 +48,17 @@ public class TestLiveTakes {
 	private final Set<float[][]> given = Collections.synchronizedSet(Collections.newSetFromMap(new IdentityHashMap<float[][], Boolean>()));
 	private final TGLiveTakes takes = new TGLiveTakes(this.fixture.context, this.worker, rate -> this::stretch);
 	private final MidiTransport transport = new MidiTransport();
+	private final TGTrack track;
+	// the take's clip over measure 1
+	private final TGTakeClip clip;
 
 	public TestLiveTakes() {
 		this.fixture.measureCount(4);
-		TGTrack track = this.fixture.songManager.addAudioTrack(this.fixture.song, TGAudioInput.mono(1));
+		this.track = this.fixture.songManager.addAudioTrack(this.fixture.song, TGAudioInput.mono(1));
 		float[] samples = new float[2 * M];
 		Arrays.fill(samples, 1f);
-		track.getMeasure(0).addTakeClip(new TGTakeClip(new TGTake(1, samples, 44100), 0, BAR, 0, 120));
+		this.clip = new TGTakeClip(new TGTake(1, samples, 44100), 0, BAR, 0, 120);
+		this.track.getMeasure(0).addTakeClip(this.clip);
 		this.takes.restoreParameters(Map.of(TGSynthChannel.TAKES_CHANNEL, Integer.toString(track.getChannelId())));
 		this.takes.setSampleRate(44100);
 		this.takes.setTransport(this.transport);
@@ -88,8 +92,14 @@ public class TestLiveTakes {
 	// plays from measure 1 for the samples, as the device tells the transport for each block what the mode plays there
 	// (the jump back of each pass inside the block it falls in), the worker catching up after each block; then stops
 	private void play(long samples) {
+		this.play(samples, 44100);
+	}
+
+	// the same on a device at the sample rate
+	private void play(long samples, int sampleRate) {
+		this.takes.setSampleRate(sampleRate);
 		long start = this.fixture.song.getMeasureHeader(0).getStart();
-		TGTimeline device = new TGTimeline(this.fixture.song, TGSongTime.play(this.fixture.song, this.mode, start, Long.MAX_VALUE, 4), 44100);
+		TGTimeline device = new TGTimeline(this.fixture.song, TGSongTime.play(this.fixture.song, this.mode, start, Long.MAX_VALUE, 4), sampleRate);
 		for (long from = 0; from < samples; from += FRAMES) {
 			device.tell(this.transport, from, FRAMES);
 			this.takes.process(new float[2][FRAMES]);
@@ -147,6 +157,29 @@ public class TestLiveTakes {
 		assertEquals("[" + this.audioThread() + " 110250]", this.stretches.toString());
 	}
 
+	// the take's samples are read once for every tap that plays them: the stretches at 80% and at 50%, made for two
+	// plays, are given the same samples
+	@Test
+	public void theTakesSamplesAreReadOnceForEveryPlay() {
+		this.loopedAt(80);
+		this.play(10 * FRAMES);
+		this.loopedAt(50);
+		this.play(10 * FRAMES);
+
+		assertEquals("2 stretches of 1 samples", this.stretches.size() + " stretches of " + this.given.size() + " samples");
+	}
+
+	// on a device at another sample rate the take is read (resampled) again, and stretched again: at 48000 Hz measure 1
+	// at 80% lasts 120000 samples
+	@Test
+	public void atAnotherSampleRateTheTakeIsReadAndStretchedAgain() {
+		this.loopedAt(80);
+		this.play(10 * FRAMES);
+		this.play(10 * FRAMES, 48000);
+
+		assertEquals("[main 110250, main 120000] of 2 samples", this.stretches + " of " + this.given.size() + " samples");
+	}
+
 	// what the last play did not use is dropped (memory does not grow with each speed played): at 80%, at 50%, at 80%
 	// again, the stretch at 80% is made again
 	@Test
@@ -159,5 +192,19 @@ public class TestLiveTakes {
 		this.play(10 * FRAMES);
 
 		assertEquals("[" + this.audioThread() + " 110250, " + this.audioThread() + " 176400, " + this.audioThread() + " 110250]", this.stretches.toString());
+	}
+
+	// a take the last play did not use is dropped too (memory does not grow with each edit): played, taken out of
+	// measure 1 and played, put back and played, it is read and stretched again
+	@Test
+	public void aTakeTheLastPlayDidNotUseIsReadAgain() {
+		this.loopedAt(80);
+		this.play(10 * FRAMES);
+		this.track.getMeasure(0).removeTake(this.clip.getTake());
+		this.play(10 * FRAMES);
+		this.track.getMeasure(0).addTakeClip(this.clip);
+		this.play(10 * FRAMES);
+
+		assertEquals("2 stretches of 2 samples", this.stretches.size() + " stretches of " + this.given.size() + " samples");
 	}
 }

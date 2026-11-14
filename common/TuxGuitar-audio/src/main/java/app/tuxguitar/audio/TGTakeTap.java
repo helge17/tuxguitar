@@ -37,8 +37,8 @@ public final class TGTakeTap {
 	}
 
 	// the same, to be rendered a block at a time (live; the input as the block being rendered delivers it), with the
-	// stretches the last tap built with them was (kept: a stretch is made when first asked for, by a block that reaches
-	// it or ahead of it)
+	// stretches and take samples the last tap built with them had (kept: a stretch is made when first asked for, by a
+	// block that reaches it or ahead of it)
 	static TGTakeTap of(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input, TGStretches kept) {
 		return kept.build(() -> {
 			List<TGTakePiece> pieces = pieces(track, timeline, stretcher, sources, input, kept);
@@ -80,12 +80,11 @@ public final class TGTakeTap {
 	}
 
 	private static List<TGTakePiece> pieces(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input, TGStretches kept) {
-		Map<TGTake, float[][]> samples = new HashMap<TGTake, float[][]>();
 		List<TGTakePiece> pieces = new ArrayList<TGTakePiece>();
 		for (int i = 0; i < timeline.count(); i++) {
 			TGPlayedMeasure played = timeline.get(i);
 			TGMeasure measure = track.getMeasure(played.getHeader().getNumber() - 1);
-			Measure cut = new Measure(timeline, i, measure, stretcher, samples, kept);
+			Measure cut = new Measure(timeline, i, measure, stretcher, kept);
 			if (sources[i] == TGTrackSource.TAKES) {
 				pieces.addAll(cut.pieces());
 			} else {
@@ -139,16 +138,14 @@ public final class TGTakeTap {
 		private final TGMeasure measure;
 		private final TGPlayedMeasure played;
 		private final TGTimeStretcher stretcher;
-		private final Map<TGTake, float[][]> samples;
 		private final TGStretches kept;
 
-		Measure(TGTimeline timeline, int index, TGMeasure measure, TGTimeStretcher stretcher, Map<TGTake, float[][]> samples, TGStretches kept) {
+		Measure(TGTimeline timeline, int index, TGMeasure measure, TGTimeStretcher stretcher, TGStretches kept) {
 			this.timeline = timeline;
 			this.index = index;
 			this.measure = measure;
 			this.played = timeline.get(index);
 			this.stretcher = stretcher;
-			this.samples = samples;
 			this.kept = kept;
 		}
 
@@ -189,7 +186,7 @@ public final class TGTakeTap {
 			TGTake take = clip.getTake();
 			int takeStart = this.sampleOf(clip, from);
 			int takeEnd = this.sampleOf(clip, to);
-			float[][] source = this.samples.computeIfAbsent(clip.getSource(), each -> samplesOf(each, this.timeline.getSampleRate()));
+			float[][] source = this.kept.samples(clip.getSource(), this.timeline.getSampleRate());
 			int length = (int) (end - start);
 			Supplier<float[][]> audio = (clip.getTempo() == this.played.getTempo() ? null
 				: this.kept.stretch(clip.getSource(), this.timeline.getSampleRate(), takeStart, takeEnd, length, () -> this.stretch(source, takeStart, takeEnd, length)));
@@ -227,20 +224,5 @@ public final class TGTakeTap {
 		private int onTimeline(int sample, TGTakeClip clip) {
 			return (int) Math.round((double) sample * this.timeline.getSampleRate() / clip.getSource().getSampleRate());
 		}
-	}
-
-	// one array per side of the take, at the sample rate (resampled when it was recorded at another)
-	private static float[][] samplesOf(TGTake take, int sampleRate) {
-		return TGResampler.resample(samplesOf(take), take.getSampleRate(), sampleRate);
-	}
-
-	private static float[][] samplesOf(TGTake take) {
-		float[][] samples = new float[take.countChannels()][take.countSamples()];
-		for (int side = 0; side < samples.length; side++) {
-			for (int i = 0; i < samples[side].length; i++) {
-				samples[side][i] = take.getSample(side, i);
-			}
-		}
-		return samples;
 	}
 }
