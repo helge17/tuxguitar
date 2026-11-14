@@ -24,7 +24,7 @@
 
 namespace TuxGuitar {
 
-const int32_t kProtocolVersion = 1;
+const int32_t kProtocolVersion = 2;
 
 enum Operation {
 	kHello = 1,
@@ -172,6 +172,9 @@ private:
 			wire.writeInt(parameter.id);
 			wire.writeString(parameter.title);
 			wire.writeDouble(parameter.plain);
+			wire.writeDouble(parameter.minimum);
+			wire.writeDouble(parameter.maximum);
+			wire.writeInt(parameter.steps);
 			wire.writeInt(parameter.flags);
 		}
 	}

@@ -317,7 +317,9 @@ std::vector<ParameterInfo> Instance::parameters() {
 			for (int k = 0; k < 128 && info.title[k] != 0; k++) {
 				title.push_back(info.title[k] < 128 ? (char) info.title[k] : '?');
 			}
-			infos.push_back(ParameterInfo{(int32) info.id, title, parameter((int32) info.id), info.flags});
+			double minimum = controller->normalizedParamToPlain(info.id, 0.0);
+			double maximum = controller->normalizedParamToPlain(info.id, 1.0);
+			infos.push_back(ParameterInfo{(int32) info.id, title, parameter((int32) info.id), minimum, maximum, info.stepCount, info.flags});
 		}
 	}
 	return infos;

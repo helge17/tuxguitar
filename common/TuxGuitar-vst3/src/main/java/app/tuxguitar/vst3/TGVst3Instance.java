@@ -51,7 +51,7 @@ public final class TGVst3Instance implements AutoCloseable {
 		boolean editor = (in.readInt() == 1);
 		List<TGVst3Parameter> parameters = new ArrayList<TGVst3Parameter>();
 		for (int count = in.readInt(); count > 0; count--) {
-			parameters.add(new TGVst3Parameter(in.readInt(), TGVst3Request.readString(in), in.readDouble(), (in.readInt() & PROGRAM_CHANGE) != 0));
+			parameters.add(new TGVst3Parameter(in.readInt(), TGVst3Request.readString(in), in.readDouble(), in.readDouble(), in.readDouble(), in.readInt(), (in.readInt() & PROGRAM_CHANGE) != 0));
 		}
 		TGVst3Instance instance = new TGVst3Instance(host, blocks, id, inputs, outputs, editor, Collections.unmodifiableList(parameters));
 		instance.readTiming(in);

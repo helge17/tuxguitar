@@ -55,6 +55,10 @@ struct ParameterInfo {
 	int32 id;
 	std::string title;
 	double plain;
+	// the plain values at normalized 0 and 1, and the steps between (0: continuous)
+	double minimum;
+	double maximum;
+	int32 steps;
 	int32 flags;
 };
 

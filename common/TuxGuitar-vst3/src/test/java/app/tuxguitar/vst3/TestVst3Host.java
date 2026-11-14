@@ -73,7 +73,7 @@ public class TestVst3Host {
 	public void aHostOfAnotherProtocolVersionIsRefused() throws TGVst3Exception {
 		assertEquals(42L, TGVst3Protocol.greeted(TGVst3Protocol.VERSION, 42));
 		TGVst3Exception refused = assertThrows(TGVst3Exception.class, () -> TGVst3Protocol.greeted(TGVst3Protocol.VERSION + 1, 42));
-		assertEquals("the VST3 host speaks version 2, not 1", refused.getMessage());
+		assertEquals("the VST3 host speaks version 3, not 2", refused.getMessage());
 	}
 
 	@Test
@@ -144,13 +144,15 @@ public class TestVst3Host {
 		assertEquals("120.0 4/4 0 0.0 0", told(stopped.message("TG.report", Collections.<String, Long>emptyMap(), Collections.<String, byte[]>emptyMap())));
 	}
 
+	// each with its plain values at either end and its steps (none: continuous); Test Gain's two presets are one step
 	@Test
 	public void aPluginListsItsParametersWithTheirValues() throws TGVst3Exception {
 		List<String> read = new ArrayList<String>();
 		for (TGVst3Parameter parameter : open("Test Gain").getParameters()) {
-			read.add(parameter.getTitle() + "=" + parameter.getPlain() + (parameter.choosesPresets() ? " (presets)" : ""));
+			read.add(parameter.getTitle() + "=" + parameter.getPlain() + " " + parameter.getMinimum() + ".." + parameter.getMaximum() + " in " + parameter.getSteps()
+				+ (parameter.choosesPresets() ? " (presets)" : ""));
 		}
-		assertEquals(Arrays.asList("Gain=2.0", "Preset=0.0 (presets)"), read);
+		assertEquals(Arrays.asList("Gain=2.0 0.0..16.0 in 0", "Preset=0.0 0.0..1.0 in 1 (presets)"), read);
 	}
 
 	@Test

@@ -8,14 +8,15 @@ package app.tuxguitar.vst3;
  */
 final class TGVst3Protocol {
 
-	static final int VERSION = 1;
+	static final int VERSION = 2;
 
 	// -> version, process id
 	static final int HELLO = 1;
 	// module path -> count, then for each: class id, name, instrument (1) or effect (0)
 	static final int SCAN = 2;
 	// module path, class id, sample rate (double), maximum block, shared file path -> instance, input and output
-	// channels, editor (1 or 0), parameters (count, then id, title, plain value, flags), latency, tail
+	// channels, editor (1 or 0), parameters (count, then id, title, plain value, plain values at either end of the
+	// range, steps, flags), latency, tail
 	static final int OPEN = 3;
 	// instance
 	static final int CLOSE = 4;
