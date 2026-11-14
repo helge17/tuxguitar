@@ -7,6 +7,8 @@ public class TGSynthesizer extends TGSynthModel {
 
 	private TGSynthThread synthesizerThread;
 	private TGSynthSettings settings;
+	// what it plays through while open: an output an app registered (the live audio device), else its Java Sound thread
+	private TGSynthOutput output;
 
 	public TGSynthesizer(TGContext context) {
 		super(context);
@@ -16,17 +18,18 @@ public class TGSynthesizer extends TGSynthModel {
 	}
 
 	public boolean isOpen(){
-		return this.synthesizerThread.isRunning();
+		return this.output != null;
 	}
 
 	public void open() throws MidiPlayerException{
 		this.settings.loadPrograms(this);
-		this.synthesizerThread.start();
+		this.output = TGSynthOutput.open(this.getContext(), this, this.synthesizerThread);
 	}
 
 	public void close() throws MidiPlayerException{
 		if( this.isOpen() ){
-			this.synthesizerThread.stop();
+			this.output.stop(this);
+			this.output = null;
 			this.closeChannels();
 		}
 	}

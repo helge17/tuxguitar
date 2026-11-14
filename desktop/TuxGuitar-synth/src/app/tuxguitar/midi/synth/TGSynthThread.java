@@ -1,6 +1,7 @@
 package app.tuxguitar.midi.synth;
 
-public class TGSynthThread implements Runnable {
+// the synthesizer's own output: a thread rendering it into a Java Sound line
+public class TGSynthThread implements Runnable, TGSynthOutput {
 
 	private boolean running;
 	private boolean finished;
@@ -9,6 +10,15 @@ public class TGSynthThread implements Runnable {
 	public TGSynthThread(TGSynthesizer synthesizer) {
 		this.synthesizer = synthesizer;
 		this.finished = true;
+	}
+
+	public boolean play(TGSynthModel played) {
+		this.start();
+		return true;
+	}
+
+	public void stop(TGSynthModel stopped) {
+		this.stop();
 	}
 
 	public void run() {
