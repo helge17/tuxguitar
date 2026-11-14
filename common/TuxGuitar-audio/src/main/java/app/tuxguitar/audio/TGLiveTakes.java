@@ -2,6 +2,8 @@ package app.tuxguitar.audio;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.midi.synth.TGAudioBuffer;
@@ -21,12 +23,15 @@ import app.tuxguitar.util.TGContext;
  * plays, it renders the track's tap (TGTakeTap: time-stretched, crossfaded, as offline) a block at a time on the
  * timeline of what plays (TGLiveTimeline: two passes of the Loop Range when looped, after the pass that ended). It
  * delays the tap itself by plugin delay compensation (it renders the timeline's samples that many frames back, so after
- * a jump back the end of the pass that ended), so what else it sounds can go undelayed.
+ * a jump back the end of the pass that ended), so what else it sounds can go undelayed. A worker of its own makes the
+ * stretches ahead of the blocks (TGStretchAhead).
  */
 public final class TGLiveTakes implements TGMidiProcessor {
 
 	private final TGContext context;
 	private final TGLiveTimeline followed;
+	private final ExecutorService worker = Executors.newSingleThreadExecutor(TGLiveTakes::daemon);
+	private final TGStretchAhead ahead = new TGStretchAhead(this.worker);
 	// the monitored input of the block being rendered
 	private final TGTapInput input = new TGTapInput(0, null);
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
@@ -38,6 +43,13 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	TGLiveTakes(TGContext context) {
 		this.context = context;
 		this.followed = new TGLiveTimeline(context, 2, true);
+	}
+
+	// the worker's thread does not keep the app running
+	private static Thread daemon(Runnable task) {
+		Thread thread = new Thread(task, "TuxGuitar audio stretch ahead");
+		thread.setDaemon(true);
+		return thread;
 	}
 
 	// audio tracks sound their takes on the TuxGuitar Synthesizer of the context
@@ -99,6 +111,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 		long from = this.followed.getPosition() - this.delay;
 		this.deliver(session, song, track, from - offset, block[0].length, monitored);
 		this.tap.render(block, offset, frames, from);
+		this.ahead.after(this.tap, from + frames, Math.round(this.sampleRate));
 	}
 
 	// while stopped, a monitored input sounds as it is delivered
@@ -153,6 +166,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 
 	public void close() {
 		this.followed.stop();
+		this.worker.shutdownNow();
 	}
 
 	public void finalize() {

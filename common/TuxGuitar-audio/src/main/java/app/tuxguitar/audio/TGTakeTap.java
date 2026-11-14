@@ -58,6 +58,16 @@ public final class TGTakeTap {
 		}
 	}
 
+	// makes the stretches of the pieces sounding between the timeline's samples (from included, to excluded), on the
+	// thread that asks, unless they were made
+	void prepare(long from, long to) {
+		for (TGTakePiece piece : this.pieces) {
+			if (piece.start < to && piece.end > from) {
+				piece.prepare();
+			}
+		}
+	}
+
 	private static List<TGTakePiece> pieces(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input) {
 		Map<TGTake, float[][]> samples = new HashMap<TGTake, float[][]>();
 		List<TGTakePiece> pieces = new ArrayList<TGTakePiece>();

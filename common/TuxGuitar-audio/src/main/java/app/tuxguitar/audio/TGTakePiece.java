@@ -1,6 +1,7 @@
 package app.tuxguitar.audio;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import app.tuxguitar.song.models.TGTake;
@@ -33,9 +34,11 @@ final class TGTakePiece {
 	final int takeEnd;
 	// the takes covering the stretch, with the samples of each that would play there: {start, end}
 	final Map<TGTake, int[]> under;
-	// the stretched audio, made when first sounded (null when it plays the samples as they are)
-	private Supplier<float[][]> stretch;
-	private float[][] audio;
+	// what makes the stretched audio (null when it plays the samples as they are), and that audio once made: by the
+	// first thread to ask (live, a worker ahead of the audio thread, else the audio thread when a block reaches it);
+	// should two make it at once, the first one made is kept
+	private final Supplier<float[][]> stretch;
+	private final AtomicReference<float[][]> audio = new AtomicReference<float[][]>();
 	private final float[][] source;
 	private final TGTapInput monitored;
 
@@ -75,6 +78,7 @@ final class TGTakePiece {
 		this.takeEnd = 0;
 		this.source = null;
 		this.monitored = input;
+		this.stretch = null;
 		this.under = under;
 	}
 
@@ -156,11 +160,15 @@ final class TGTakePiece {
 	}
 
 	private float[][] audio() {
-		if (this.stretch != null) {
-			this.audio = this.stretch.get();
-			this.stretch = null;
+		this.prepare();
+		return this.audio.get();
+	}
+
+	// its stretched audio, made unless it was (on the thread that asks)
+	void prepare() {
+		if (this.stretch != null && this.audio.get() == null) {
+			this.audio.compareAndSet(null, this.stretch.get());
 		}
-		return this.audio;
 	}
 
 	// the take's own sample there, counted from where it starts or stops; silence outside the take

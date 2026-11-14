@@ -39,9 +39,12 @@ public class TestTakeTap {
 	private final TGSong song = songManager.newSong();
 	private final TGTrack track;
 	private final List<String> stretches = new ArrayList<String>();
+	// the thread each stretch was made on
+	private final List<String> threads = new ArrayList<String>();
 
 	private final TGTimeStretcher halfOfTheFirstSample = (input, from, to, length) -> {
 		stretches.add(from + "-" + to + ":" + length);
+		threads.add(Thread.currentThread().getName());
 		float[][] output = new float[input.length][length];
 		for (int side = 0; side < input.length; side++) {
 			Arrays.fill(output[side], input[side][from] / 2);
@@ -534,6 +537,67 @@ public class TestTakeTap {
 		tap.render(new float[2][TGBlocks.FRAMES], 0);
 		tap.render(new float[2][TGBlocks.FRAMES], TGBlocks.FRAMES);
 		assertEquals("[] [0-88200:176400]", before + " " + stretches);
+	}
+
+	// what makes stretches ahead of the live takes: each task on a thread of its own named "worker", waited for
+	private static void onAWorker(Runnable task) {
+		Thread worker = new Thread(task, "worker");
+		worker.start();
+		try {
+			worker.join();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	// live, the stretches the tap is about to reach are made ahead, on a worker: asked 100000 samples into the song at
+	// 50% (a measure stretched over 176400 samples), the worker makes those of the pieces within the next 2 seconds
+	// (measures 1 and 2); the block that reaches measure 2 plays its stretch without making it
+	@Test
+	public void theStretchesAboutToBeReachedAreMadeAheadOnTheWorker() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(wholeSong(50));
+		new TGStretchAhead(TestTakeTap::onAWorker).after(tap, 100000, 44100);
+		float[][] block = new float[2][TGBlocks.FRAMES];
+		tap.render(block, 2 * M);
+		assertEquals("[0-88200:176400, 88200-176400:176400] [worker, worker] 0.5", stretches + " " + threads + " " + block[0][0]);
+	}
+
+	// the pieces sounding in the next two seconds and no other: asked at 176400 (where measure 1's piece ends) and at
+	// 264600 (two seconds before measure 3's piece starts), the worker makes measure 2's stretch alone
+	@Test
+	public void theWorkerMakesThePiecesSoundingInTheNextTwoSecondsOnly() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(wholeSong(50));
+		TGStretchAhead ahead = new TGStretchAhead(TestTakeTap::onAWorker);
+		ahead.after(tap, 2 * M, 44100);
+		ahead.after(tap, 3 * M, 44100);
+		assertEquals("[88200-176400:176400]", stretches.toString());
+	}
+
+	// a stretch the worker has not made yet (it did not get to it) is made by the block that reaches it
+	@Test
+	public void aStretchNotMadeAheadIsMadeByTheBlockThatReachesIt() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(wholeSong(50));
+		new TGStretchAhead(task -> { }).after(tap, 0, 44100);
+		tap.render(new float[2][TGBlocks.FRAMES], 0);
+		assertEquals("[0-88200:176400] [" + Thread.currentThread().getName() + "]", stretches + " " + threads);
+	}
+
+	// while the worker has not run the last task it was given, it is given none: one task at a time
+	@Test
+	public void theWorkerIsGivenATaskOnceItRanTheLast() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(wholeSong(50));
+		List<Runnable> tasks = new ArrayList<Runnable>();
+		TGStretchAhead ahead = new TGStretchAhead(tasks::add);
+		ahead.after(tap, 0, 44100);
+		ahead.after(tap, 512, 44100);
+		int given = tasks.size();
+		tasks.get(0).run();
+		ahead.after(tap, 1024, 44100);
+		assertEquals("1 2", given + " " + tasks.size());
 	}
 
 	// playing stops at measure 1 beat 3, where take 2 ends over take 1: the tap ends at full level
