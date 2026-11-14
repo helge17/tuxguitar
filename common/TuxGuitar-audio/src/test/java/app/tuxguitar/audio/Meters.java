@@ -111,6 +111,12 @@ public final class Meters {
 		return breaks;
 	}
 
+	// where a sound starts: its first sample above half the peak (the length when silent)
+	public static int onset(float[] samples) {
+		int[] above = above(samples, 0, samples.length, peak(samples, 0, samples.length) / 2);
+		return (above.length > 0 ? above[0] : samples.length);
+	}
+
 	// how long a sound lasts: from the first sample above half the peak to the last, both included (0 when silent)
 	public static int sounding(float[] samples) {
 		int[] above = above(samples, 0, samples.length, peak(samples, 0, samples.length) / 2);

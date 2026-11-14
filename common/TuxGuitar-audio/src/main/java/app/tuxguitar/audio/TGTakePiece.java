@@ -46,6 +46,8 @@ final class TGTakePiece {
 	boolean fadeOut;
 	boolean head;
 	boolean tail;
+	// it sounds before the tap's first sample too (the monitored input the tap starts with)
+	boolean lead;
 
 	// a take (chosen for its measure or not) from takeStart to takeEnd of its samples (source), the audio over the
 	// stretch made by the supplier when it first sounds (null when it plays the samples as they are)
@@ -117,9 +119,9 @@ final class TGTakePiece {
 	}
 
 	// adds what it sounds over the frames of the block from the offset, from the sample of the tap the offset is on
-	// (before the tap's first sample nothing sounds), to each side of the block: a mono piece's one side to both
+	// (before the tap's first sample only a lead sounds), to each side of the block: a mono piece's one side to both
 	void addTo(float[][] block, int offset, int frames, long from) {
-		long first = Math.max(Math.max(0, from), this.start - (this.head ? FADE : 0));
+		long first = Math.max(from, this.earliest());
 		long last = Math.min(from + frames, this.end + (this.tail ? FADE : 0));
 		for (int side = 0; side < block.length; side++) {
 			for (long o = first; o < last; o++) {
@@ -128,8 +130,14 @@ final class TGTakePiece {
 		}
 	}
 
+	// the first sample of the tap it sounds on: a lead from any; else from its start (FADE before, its head), not before
+	// the tap's first
+	private long earliest() {
+		return (this.lead ? Long.MIN_VALUE : Math.max(0, this.start - (this.head ? FADE : 0)));
+	}
+
 	private double gain(long o) {
-		if (o < this.start) {
+		if (o < this.start && this.head) {
 			return (o - (this.start - FADE) + 1) / (double) FADE;
 		}
 		if (o >= this.end) {

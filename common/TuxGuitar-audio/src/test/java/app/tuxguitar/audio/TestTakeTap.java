@@ -484,19 +484,58 @@ public class TestTakeTap {
 		assertSamples(new double[] {0.5, 0.5}, tap[1], 0, 4 * M - 1);
 	}
 
+	// live, a block of the tap from the sample, the measures sounding what the sources say, the block's input delivered
+	private float[][] liveBlock(TGTrackSource[] sources, long from, float... delivered) {
+		TGTapInput input = new TGTapInput(0, null);
+		TGTakeTap tap = TGTakeTap.of(track, wholeSong(100), halfOfTheFirstSample, sources, input);
+		float[][] block = new float[2][delivered.length];
+		input.set(from, new float[][] {delivered});
+		tap.render(block, from);
+		return block;
+	}
+
+	private static TGTrackSource[] monitoredEverywhere() {
+		TGTrackSource[] sources = new TGTrackSource[4];
+		Arrays.fill(sources, TGTrackSource.INPUT);
+		return sources;
+	}
+
 	// live, the input is only the block's: read from the sample of the tap the block starts on
 	@Test
 	public void liveTheMonitoredInputIsTheBlocksFromWhereItStarts() {
-		TGTrackSource[] sources = new TGTrackSource[4];
-		Arrays.fill(sources, TGTrackSource.INPUT);
-		TGTapInput input = new TGTapInput(0, null);
-		TGTakeTap tap = TGTakeTap.of(track, wholeSong(100), halfOfTheFirstSample, sources, input);
-		float[][] block = new float[2][2];
-		input.set(M + 1000, new float[][] {{0.25f, 0.75f}});
-		tap.render(block, M + 1000);
+		float[][] block = liveBlock(monitoredEverywhere(), M + 1000, 0.25f, 0.75f);
 
 		assertArrayEquals(new float[] {0.25f, 0.75f}, block[0]);
 		assertArrayEquals(new float[] {0.25f, 0.75f}, block[1]);
+	}
+
+	// live, the tap plays late by plugin delay compensation: when playing starts, a monitored input the timeline starts
+	// with sounds before the timeline's first sample too, the input going on as it did while stopped
+	@Test
+	public void liveAMonitoredInputTheTimelineStartsWithSoundsBeforeItsFirstSample() {
+		float[][] block = liveBlock(monitoredEverywhere(), -2, 0.25f, 0.5f, 0.75f, 1f);
+
+		assertArrayEquals(new float[] {0.25f, 0.5f, 0.75f, 1f}, block[0]);
+	}
+
+	// the timeline starts with the takes (none here): the input monitored from measure 2 on does not sound before it
+	@Test
+	public void liveAMonitoredInputTheTimelineDoesNotStartWithIsSilentBeforeItsFirstSample() {
+		TGTrackSource[] sources = {TGTrackSource.TAKES, TGTrackSource.INPUT, TGTrackSource.INPUT, TGTrackSource.INPUT};
+		float[][] block = liveBlock(sources, -2, 0.25f, 0.5f, 0.75f, 1f);
+
+		assertArrayEquals(new float[4], block[0]);
+	}
+
+	// played from measure 2, the timeline starts inside a take: its samples before do not sound before the timeline
+	@Test
+	public void liveATakeTheTimelineStartsInsideOfIsSilentBeforeItsFirstSample() {
+		clips(take(1, 4 * M, 1), 1, 4);
+		TGTakeTap tap = takesOf(played(new MidiPlayerMode(), BAR, 4 * BAR, 1));
+		float[][] block = new float[2][4];
+		tap.render(block, -2);
+
+		assertArrayEquals(new float[] {0, 0, 1, 1}, block[0]);
 	}
 
 	private TGTakeTap takesOf(TGTimeline timeline) {

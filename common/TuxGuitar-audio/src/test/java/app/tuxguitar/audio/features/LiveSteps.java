@@ -79,6 +79,12 @@ public class LiveSteps {
 		assertTrue(Meters.sounding(samples) >= least, "sounds for " + Meters.sounding(samples) + " samples");
 	}
 
+	// its very first sample is above half its peak
+	@Then("the output's {side} side sounds from its first sample on")
+	public void soundsFromTheFirstSample(int side) {
+		assertEquals(0, Meters.onset(world.live()[side]), "first sample above half the peak");
+	}
+
 	@Then("the output's left side holds {int} clicks and no {double} Hz tone above -60 dBFS")
 	public void leftClicksAndNoTone(int count, double frequency) {
 		float[] left = world.live()[0];

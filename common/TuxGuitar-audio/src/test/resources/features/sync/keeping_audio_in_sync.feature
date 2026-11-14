@@ -252,6 +252,16 @@ Feature: Keeping audio in sync
     When I play the song live from measure 2 beat 1 for 3 passes
     Then the output's right side sounds for at least 528000 samples, at most 129 samples at a time below half its peak
 
+  # live, a monitored input sounds from the very first sample of play: the track's timeline plays late by the plugin
+  # delay compensation (the drums' 600 samples here), but the input it starts with goes on before it, as while stopped
+  Scenario: live, a monitored input sounds from the very start of play
+    Given I have armed track 2
+    And I have set track 2's monitoring to Always
+    And the player plays a constant level of 0.25 on input channel 1
+    When I play the song live from measure 2 beat 1
+    Then the output's right side sounds from its first sample on
+    And the output's right side sounds for at least 264000 samples, at most 0 samples at a time below half its peak
+
   # monitored, the input sounds as the device delivers it, whatever pass plays, and fades out before each jump as a
   # take does
   Scenario: live, with Play looped on, a monitored input sounds on across each jump back

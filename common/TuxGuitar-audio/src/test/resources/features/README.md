@@ -51,7 +51,8 @@ scenarios play through the player on a live synthesizer of the scenario, which p
 `LiveOutput`). Live, an audio track's takes play as its channel's source on the TuxGuitar Synthesizer (`TGLiveTakes`,
 installed like `TGNoteEntry`), rendered a block at a time as offline, and so does its monitored input, undelayed by
 plugin delay compensation; while the live device runs, the armed tracks are metered and kept monitored while stopped
-(`TGLiveInput.install`). On the live device the record action records live (`TGLiveRecording`): it keeps all the
+(`TGLiveInput.install`). The takes play late by plugin delay compensation, but a monitored input the track starts
+playing with sounds from the very first sample of play, going on as it did while stopped. On the live device the record action records live (`TGLiveRecording`): it keeps all the
 input from its start, follows what the transport plays a block at a time, and once the player has stopped and one
 round trip more has been delivered, makes the takes as offline (`TGRecording`: round trip, punch range, one take per
 pass of a loop, one undo step); a live Count In stays a timer before the sequencer and plays no part of the takes.

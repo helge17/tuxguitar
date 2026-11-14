@@ -40,7 +40,14 @@ public final class TGTakeTap {
 	static TGTakeTap of(TGTrack track, TGTimeline timeline, TGTimeStretcher stretcher, TGTrackSource[] sources, TGTapInput input) {
 		List<TGTakePiece> pieces = pieces(track, timeline, stretcher, sources, input);
 		fade(pieces);
+		lead(pieces);
 		return new TGTakeTap(pieces);
+	}
+
+	// live the tap plays late by plugin delay compensation: a monitored input it starts with leads, sounding before its
+	// first sample too (playing just started, the input goes on as it did while stopped)
+	private static void lead(List<TGTakePiece> pieces) {
+		pieces.stream().findFirst().ifPresent(first -> first.lead = first.input);
 	}
 
 	// adds what the tap sounds over the block's frames, from the sample of the timeline the block starts on (none
