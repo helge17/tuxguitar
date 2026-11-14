@@ -446,5 +446,108 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<!-- audio tracks, line-in recording and VST3 hosting: OFF by default (not yet tested on this platform), so CI
+				and releases are unchanged; enable with -Paudio or -Daudio=true. Builds the four audio modules (and runs
+				their tests unless -DskipTests), the native audio backend (PortAudio: CMake 3.25+, a C++17 compiler, the
+				platform's audio development files) and the VST3 host with their build.sh, and puts the jars in
+				share/plugins and the natives in lib -->
+			<id>audio</id>
+			<activation>
+				<property>
+					<name>audio</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>../../../common/TuxGuitar-audio-device</module>
+				<module>../../../common/TuxGuitar-vst3</module>
+				<module>../../../common/TuxGuitar-audio</module>
+				<module>../../TuxGuitar-audio-ui</module>
+			</modules>
+			<properties>
+				<audio.plugins>${project.build.directory}/${project.finalName}/Contents/MacOS/share/plugins</audio.plugins>
+				<audio.natives>${project.build.directory}/${project.finalName}/Contents/MacOS/lib</audio.natives>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>3.5.0</version>
+						<executions>
+							<execution>
+								<id>copy-audio</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>${project.groupId}</groupId>
+											<artifactId>tuxguitar-audio-device</artifactId>
+											<version>${project.version}</version>
+											<destFileName>tuxguitar-audio-device.jar</destFileName>
+											<outputDirectory>${audio.plugins}</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>${project.groupId}</groupId>
+											<artifactId>tuxguitar-vst3</artifactId>
+											<version>${project.version}</version>
+											<destFileName>tuxguitar-vst3.jar</destFileName>
+											<outputDirectory>${audio.plugins}</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>${project.groupId}</groupId>
+											<artifactId>tuxguitar-audio</artifactId>
+											<version>${project.version}</version>
+											<destFileName>tuxguitar-audio.jar</destFileName>
+											<outputDirectory>${audio.plugins}</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>${project.groupId}</groupId>
+											<artifactId>tuxguitar-audio-ui</artifactId>
+											<version>${project.version}</version>
+											<destFileName>tuxguitar-audio-ui.jar</destFileName>
+											<outputDirectory>${audio.plugins}</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<id>audio-natives</id>
+								<phase>package</phase>
+								<configuration>
+									<target name="audio-natives">
+										<exec executable="sh" failonerror="true">
+											<arg file="${project.basedir}/${project.rootPath}/../common/TuxGuitar-audio-device/native/build.sh" />
+										</exec>
+										<exec executable="sh" failonerror="true">
+											<arg file="${project.basedir}/${project.rootPath}/../common/TuxGuitar-vst3/native/build.sh" />
+										</exec>
+										<copy todir="${audio.natives}" overwrite="true">
+											<fileset dir="${project.rootPath}/../common/TuxGuitar-audio-device/native-build/lib" includes="libtuxguitar-audio-device.*" />
+											<fileset file="${project.rootPath}/../common/TuxGuitar-vst3/native-build/bin/tuxguitar-vst3-host" />
+										</copy>
+										<chmod file="${audio.natives}/tuxguitar-vst3-host" perm="755" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
