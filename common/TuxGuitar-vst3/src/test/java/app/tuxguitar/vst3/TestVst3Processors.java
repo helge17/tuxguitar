@@ -290,6 +290,20 @@ public class TestVst3Processors {
 		assertEquals(0.5f, block[0][0]);
 	}
 
+	// an element without a state is its plugin as it opens: the plugin running it, restored from it again (an undo of the
+	// plugin's first change, say), goes back to that, whatever it was set to since
+	@Test
+	public void aRunningPluginRestoredFromAnElementWithoutAStateIsAsItOpened() throws TGVst3Exception {
+		TGProgramElement element = element("Test Gain");
+		TGAudioProcessor processor = effect(element);
+		TGVst3Instance gain = ((TGVst3Processor) processor).getInstance();
+		byte[] opened = gain.getState().getComponent();
+		gain.message("TG.preset", Map.of("index", 1L), new HashMap<String, byte[]>());
+		processor.restoreParameters(element.getParameters());
+		assertTrue(gain == ((TGVst3Processor) processor).getInstance());
+		org.junit.jupiter.api.Assertions.assertArrayEquals(opened, gain.getState().getComponent());
+	}
+
 	@Test
 	public void anEffectWhoseHostStoppedSoundsNothingAndTheStopIsReported() throws TGVst3Exception {
 		TGAudioProcessor processor = effect(element("Test Gain"));

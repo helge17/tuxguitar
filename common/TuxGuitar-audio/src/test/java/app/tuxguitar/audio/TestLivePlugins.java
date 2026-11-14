@@ -18,6 +18,8 @@ import app.tuxguitar.audio.action.TGSetPluginParameterAction;
 import app.tuxguitar.audio.action.TGSetPluginStateAction;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.SongActionFixture;
+import app.tuxguitar.editor.action.channel.TGUpdateChannelAction;
+import app.tuxguitar.editor.undo.impl.channel.TGUndoableModifyChannel;
 import app.tuxguitar.midi.synth.TGProgram;
 import app.tuxguitar.midi.synth.TGProgramElement;
 import app.tuxguitar.midi.synth.TGSynthChannel;
@@ -163,6 +165,25 @@ public class TestLivePlugins {
 		String reloaded = (running(channel, "effect-1") == running) + " " + (this.live.getEditor(this.guitar.getChannelId(), "effect-1") != null);
 		synthesizer.closeChannel(channel);
 		assertEquals("true true | false", reloaded + " | " + (this.live.getEditor(this.guitar.getChannelId(), "effect-1") != null));
+	}
+
+	// a gesture undone, then redone: the synthesizer, sent the channel again (as the app's player is after a channel's
+	// change is undone or redone), runs its plugin as the song has it each time
+	@Test
+	public void theRunningPluginFollowsAGestureUndoneAndRedone() throws Exception {
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.fixture.context, 44100);
+		TGSynthChannel channel = playLive(synthesizer);
+		TGUndoableModifyChannel undoable = TGUndoableModifyChannel.startUndo(this.fixture.context, this.guitar.getChannelId());
+		gesture(running(channel, "effect-1"), 3.0);
+		this.live.drain();
+		undoable.endUndo();
+		this.fixture.map(new TGUpdateChannelAction(this.fixture.context));
+		undoable.undo(this.fixture.actionContext);
+		TGMidiTaps.sendParameters(synthesizer, this.fixture.songManager, this.fixture.song, this.guitar.getChannelId());
+		double undone = running(channel, "effect-1").getParameter(1);
+		undoable.redo(this.fixture.actionContext);
+		TGMidiTaps.sendParameters(synthesizer, this.fixture.songManager, this.fixture.song, this.guitar.getChannelId());
+		assertEquals("2.0 3.0", undone + " " + running(channel, "effect-1").getParameter(1));
 	}
 
 	// a plugin changed as it runs (not through the song) gives the song its state; a disabled one is opened afresh

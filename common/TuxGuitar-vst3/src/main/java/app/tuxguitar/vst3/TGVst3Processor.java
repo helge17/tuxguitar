@@ -27,6 +27,8 @@ abstract class TGVst3Processor implements TGAudioProcessor, TGVst3PluginProcesso
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
 	private TGVst3Plugin plugin;
 	private TGVst3Instance instance;
+	// the state the plugin opened with
+	private TGVst3State opened;
 
 	TGVst3Processor(TGVst3Hosting hosting, boolean instrument) {
 		this.hosting = hosting;
@@ -42,9 +44,7 @@ abstract class TGVst3Processor implements TGAudioProcessor, TGVst3PluginProcesso
 		TGVst3Plugin wanted = TGVst3Element.plugin(parameters, this.instrument);
 		try {
 			if (!this.plays(wanted)) {
-				this.close();
-				this.instance = (wanted != null ? this.hosting.open(wanted, this.sampleRate, FRAMES) : null);
-				this.plugin = wanted;
+				this.open(wanted);
 			}
 			this.restore(parameters);
 		} catch (TGVst3Exception e) {
@@ -56,14 +56,21 @@ abstract class TGVst3Processor implements TGAudioProcessor, TGVst3PluginProcesso
 		return (this.instance != null && wanted != null && wanted.getModule().equals(this.plugin.getModule()) && wanted.getClassId().equals(this.plugin.getClassId()));
 	}
 
+	// the plugin, keeping the state it opened with (what an element without a state of its own is)
+	private void open(TGVst3Plugin wanted) throws TGVst3Exception {
+		this.close();
+		this.plugin = wanted;
+		this.instance = (wanted != null ? this.hosting.open(wanted, this.sampleRate, FRAMES) : null);
+		this.opened = (this.instance != null ? this.instance.getState() : null);
+	}
+
+	// the element's state, else the one the plugin opened with (a plugin running the element again goes back to it)
 	private void restore(Map<String, String> parameters) throws TGVst3Exception {
 		if (this.instance == null) {
 			return;
 		}
 		TGVst3State state = TGVst3Element.state(parameters);
-		if (state != null) {
-			this.instance.setState(state);
-		}
+		this.instance.setState(state != null ? state : this.opened);
 		for (Map.Entry<Integer, Double> parameter : TGVst3Element.parameters(parameters).entrySet()) {
 			this.instance.setParameter(parameter.getKey(), parameter.getValue());
 		}
