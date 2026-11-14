@@ -69,12 +69,11 @@ public class TGRecordAction extends TGActionBase {
 		return recording.record(tracks, render.getTimeline());
 	}
 
-	// live: the player plays from the start position (from where it is without one) until it stops, the recording
-	// running on for one round trip (see TGLiveRecording); this thread waits for it
+	// live: the player plays from the start position until it stops, the recording running on for one round trip (see
+	// TGLiveRecording); this thread waits for it
 	private int recordLive(TGActionContext context, TGSong song, TGLiveDevice device, MidiPlayer player, List<TGTrack> tracks) {
 		TGLiveRecording recording = TGLiveRecording.start(getContext(), device);
-		Long start = context.getAttribute(ATTRIBUTE_START);
-		player.setTickPosition(start != null ? start : player.getTickPosition());
+		player.setTickPosition(context.getAttribute(ATTRIBUTE_START));
 		try {
 			player.play();
 		} catch (MidiPlayerException e) {

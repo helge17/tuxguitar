@@ -116,13 +116,13 @@ Feature: Keeping audio in sync
       | 300   | 1024   | 0      |
       | 300   | 1024   | 2048   |
 
-  Scenario: live, a recording keeps only what falls inside the punch range
+  Scenario: live, a recording from where I start keeps only what falls inside the punch range
     Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency
     And I have armed track 2
     And I have set the punch range to measures 2 to 3
-    When I record live from measure 1 beat 1 until the song ends
-    Then track 2's takes read "take 2: m2b1 to m4b1, take 1: m1b1 to m5b1"
-    And take 2 of track 2 holds 8 clicks, each within 1 sample of a beat
+    When I record live from measure 2 beat 3 until the song ends
+    Then track 2's takes read "take 2: m2b3 to m4b1, take 1: m1b1 to m5b1"
+    And take 2 of track 2 holds 6 clicks, each within 1 sample of a beat
 
   Scenario: live, with Play looped on, each pass over the Loop Range records a take, all one undo step
     Given the audio device's output is wired to its input, with 300 samples of input latency and 1024 of output latency

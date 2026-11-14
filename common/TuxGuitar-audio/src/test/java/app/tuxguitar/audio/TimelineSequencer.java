@@ -6,8 +6,8 @@ import app.tuxguitar.song.models.TGSong;
 
 /**
  * A double of the sequencer on the synthesizer's sample clock: once started, it tells the clock's transport what the
- * song plays from its first measure to its end, a block at a time, so many times back to back (the transport goes back
- * to the start each time); then nothing, so the song is stopped. It sends no event.
+ * song plays from a measure to its end, a block at a time, so many times back to back (the transport goes back each
+ * time); then nothing, so the song is stopped. It sends no event.
  */
 final class TimelineSequencer implements MidiSampleClock.Listener {
 
@@ -16,8 +16,9 @@ final class TimelineSequencer implements MidiSampleClock.Listener {
 	// the frames told so far; none before it starts (started on another thread than the clock's)
 	private volatile long position = -1;
 
-	TimelineSequencer(TGSong song, int sampleRate, int times) {
-		this.timeline = new TGTimeline(song, TGSongTime.play(song, new MidiPlayerMode(), song.getMeasureHeader(0).getStart(), Long.MAX_VALUE, 1), sampleRate);
+	// from the start of the measure (from 1)
+	TimelineSequencer(TGSong song, int sampleRate, int measure, int times) {
+		this.timeline = new TGTimeline(song, TGSongTime.play(song, new MidiPlayerMode(), song.getMeasureHeader(measure - 1).getStart(), Long.MAX_VALUE, 1), sampleRate);
 		this.times = times;
 	}
 
