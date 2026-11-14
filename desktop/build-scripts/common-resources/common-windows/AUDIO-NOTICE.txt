@@ -9,7 +9,8 @@ built from common/TuxGuitar-audio-device in the TuxGuitar sources. That library 
   alternatively, under the GNU General Public License version 3. TuxGuitar takes the GPLv3 option.
 
 Because of the ASIO SDK, this Windows build as distributed (TuxGuitar together with tuxguitar-audio-device.dll) is
-distributed under the terms of the GNU General Public License version 3: https://www.gnu.org/licenses/gpl-3.0.html
+distributed under the terms of the GNU General Public License version 3, whose full text is COPYING-GPL3.txt next to
+this notice (also at https://www.gnu.org/licenses/gpl-3.0.html).
 TuxGuitar's own sources stay under the GNU Lesser General Public License 2.1 (see LICENSE). The complete
 corresponding source code is the TuxGuitar source tree this build was made from; the native library's build
 (native/CMakeLists.txt) downloads PortAudio and the ASIO SDK from their official sources, pinned by SHA-256.
