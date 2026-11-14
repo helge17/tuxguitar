@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.IntFunction;
 
 import app.tuxguitar.document.TGDocumentManager;
 import app.tuxguitar.midi.synth.TGAudioBuffer;
@@ -30,8 +31,10 @@ public final class TGLiveTakes implements TGMidiProcessor {
 
 	private final TGContext context;
 	private final TGLiveTimeline followed;
-	private final ExecutorService worker = Executors.newSingleThreadExecutor(TGLiveTakes::daemon);
-	private final TGStretchAhead ahead = new TGStretchAhead(this.worker);
+	private final ExecutorService worker;
+	private final TGStretchAhead ahead;
+	// the time stretcher at a sample rate
+	private final IntFunction<TGTimeStretcher> stretchers;
 	// the monitored input of the block being rendered
 	private final TGTapInput input = new TGTapInput(0, null);
 	private float sampleRate = TGAudioBuffer.SAMPLE_RATE;
@@ -41,8 +44,16 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	private TGTakeTap tap;
 
 	TGLiveTakes(TGContext context) {
+		this(context, Executors.newSingleThreadExecutor(TGLiveTakes::daemon), TGWsolaStretcher::new);
+	}
+
+	// the worker that makes the stretches ahead, and the stretcher at a sample rate
+	TGLiveTakes(TGContext context, ExecutorService worker, IntFunction<TGTimeStretcher> stretchers) {
 		this.context = context;
 		this.followed = new TGLiveTimeline(context, 2, true);
+		this.worker = worker;
+		this.ahead = new TGStretchAhead(worker);
+		this.stretchers = stretchers;
 	}
 
 	// the worker's thread does not keep the app running
@@ -138,7 +149,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 	private void start(TGAudioSession session, TGSong song, TGTrack track) {
 		TGTimeline timeline = this.followed.getTimeline();
 		TGTrackSource[] sources = TGTrackSource.of(session, song, track, timeline, session.isRecording(), session.isArmed(track));
-		this.tap = TGTakeTap.of(track, timeline, new TGWsolaStretcher(Math.round(this.sampleRate)), sources, this.input);
+		this.tap = TGTakeTap.of(track, timeline, this.stretchers.apply(Math.round(this.sampleRate)), sources, this.input);
 	}
 
 	// the audio track of the channel (an audio channel is its track's own)
