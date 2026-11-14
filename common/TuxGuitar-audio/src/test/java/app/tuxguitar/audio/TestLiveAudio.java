@@ -36,6 +36,7 @@ import app.tuxguitar.player.base.MidiSynthesizer;
 import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.vst3.TGVst3Element;
 import app.tuxguitar.vst3.TGVst3Folders;
 import app.tuxguitar.vst3.TGVst3Hosting;
 import app.tuxguitar.vst3.TGVst3Instance;
@@ -275,6 +276,13 @@ class TestLiveAudio {
 			live.close();
 			hosting.close();
 		}
+	}
+
+	// what an app installs gives the synthesizer VST3 effects and instruments to run
+	@Test
+	void installedTheSynthesizerRunsVst3EffectsAndInstruments() {
+		TGSynthManager manager = TGSynthManager.getInstance(this.fixture.context);
+		assertEquals("true true", (manager.findAudioProcessorFactory(TGVst3Element.EFFECT) != null) + " " + (manager.findMidiProcessorFactory(TGVst3Element.INSTRUMENT) != null));
 	}
 
 	@Test

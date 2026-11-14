@@ -26,6 +26,7 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 import app.tuxguitar.vst3.TGVst3Exception;
 import app.tuxguitar.vst3.TGVst3Folders;
 import app.tuxguitar.vst3.TGVst3Hosting;
+import app.tuxguitar.vst3.TGVst3Processors;
 
 /**
  * The app's live audio, one per context: the live audio device opened on the devices the settings choose, at the rate
@@ -59,8 +60,9 @@ public final class TGLiveAudio implements TGSynthOutput {
 
 	// what an app installs at startup: audio tracks sound their takes (TGLiveTakes), entering a note sounds it
 	// (TGNoteEntry), songs save their takes and plugin states (TGAudioSaving), editing actions are refused during a
-	// recording, those of the app's rule too (desktop: those it disables while playing), and the synthesizer plays
-	// through the live device
+	// recording, those of the app's rule too (desktop: those it disables while playing), the synthesizer plays through
+	// the live device and runs VST3 effects and instruments (TGVst3Processors), and the app's audio export writes
+	// through TGAudioExport
 	public static synchronized TGLiveAudio install(TGContext context, Predicate<String> refused) {
 		TGLiveAudio audio = getInstance(context);
 		if (!audio.installed) {
@@ -70,6 +72,7 @@ public final class TGLiveAudio implements TGSynthOutput {
 			TGRecordingVeto.getInstance(context).refuse(refused);
 			TGSynthManager.getInstance(context).addExtension(TGSynthOutput.class, audio);
 			TGSynthManager.getInstance(context).addExtension(TGSynthAudioExporter.class, new TGAudioExport(context));
+			TGVst3Processors.install(context);
 			audio.installed = true;
 		}
 		return audio;
