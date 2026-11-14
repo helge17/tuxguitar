@@ -20,8 +20,11 @@ native backend from the native folder, opens the devices `TGAudioSettings` choos
 channels, recording offset) at the synthesizer's rate, makes that device the session's, meters and monitors through it
 (`TGLiveInput`), and the TuxGuitar Synthesizer plays through it (synth-core's `TGSynthOutput`), the device's output
 latency reaching `TGSynthModel.setOutputLatency`; without a device it says why and the synthesizer plays its own way.
-The desktop does so in its audio plugin (`desktop/TuxGuitar-audio-ui`: settings, Record, arming, adding an audio track;
-see the plugin for what it does not offer yet). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
+The desktop does so in its audio plugin (`desktop/TuxGuitar-audio-ui`: settings, Record, arming, adding an audio track,
+a Recording window showing `TGAudioStatus` (recording state, Record only when it can start, the armed tracks' input
+meters), a track's monitoring and input channels picked through `TGInputChoice`; see the plugin for what it does not
+offer yet). Without a device Record is refused, and an input channel the device did not open captures silence. The
+Count In / Metronome click is a TuxGuitar setting kept in the app's configuration (`MidiClick.read`/`write`). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
 sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
 parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
 `TGSetPluginStateAction`; the desktop does not map those actions or bind its synthesizer's chains yet. The Metronome
