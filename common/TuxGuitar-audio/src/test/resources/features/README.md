@@ -31,12 +31,15 @@ sound chain as it runs (a live render's, else one kept open for its element), op
 parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
 `TGSetPluginStateAction` when an app drains it on the thread that edits the song (the audio thread only notes it).
 An installed app's synthesizer runs VST3 effects and instruments and tells `TGLivePlugins` each time a channel's chain
-changes (synth-core's `TGSynthChannelListener`), so editors open on the plugin that sounds and close when it stops;
-saving takes an enabled running plugin's state. `TGLiveAudio.load` also configures VST3 hosting (the host process in
+changes (synth-core's `TGSynthChannelListener`), so editors open on the plugin that sounds (an editor opened before
+the synthesizer runs a plugin just added waits for it, at most 5 s) and close when it stops; TuxGuitar's parameter
+editor reads its plugin again each time the chain runs again (a change, an undo, a redo) and tells its watcher; saving
+takes an enabled running plugin's state. `TGLiveAudio.load` also configures VST3 hosting (the host process in
 the native folder, the system's VST3 folders, `TGVst3Folders.standard`). The desktop maps the sound-chain actions,
 offers Tools > Sound Chain... (`TGSoundChainRows`), scans the VST3 folders at startup and drains gestures every 50 ms;
-Tools > Record and Audio Track Settings... grey when they cannot apply (a core enabled check on custom tools). The
-desktop has no parameter editor window yet for a plugin without its own editor. The Metronome
+Tools > Record and Audio Track Settings... grey when they cannot apply (a core enabled check on custom tools). Its
+parameter window (a slider per parameter, for a plugin without its own editor) follows that editor: it shows the
+values again after an undo or redo, and closes once the plugin no longer runs. The Metronome
 clicks on the General MIDI drums outside every sound chain: offline (`TGMetronome`), and live on the TuxGuitar
 Synthesizer's own drums (the channel `MidiSampleClock.DRUMS`, at the percussion channel's Volume and Balance, delayed by
 plugin delay compensation like the tracks); with another MIDI Port it is still the sequencer's metronome track on the
