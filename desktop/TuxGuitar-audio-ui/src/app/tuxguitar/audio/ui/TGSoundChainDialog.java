@@ -7,6 +7,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.main.TGWindow;
 import app.tuxguitar.app.view.util.TGDialogUtil;
+import app.tuxguitar.audio.TGLiveAudio;
 import app.tuxguitar.audio.TGLivePlugins;
 import app.tuxguitar.audio.TGSoundChainRows;
 import app.tuxguitar.audio.action.TGAddVst3EffectAction;
@@ -39,8 +40,8 @@ import app.tuxguitar.vst3.TGVst3Plugin;
  * changes of it, each one undo step (the sound chain actions): add a VST3 effect, make a VST3 instrument or the General
  * MIDI program the source, move the picked effect up, remove it, enable or disable it, open the picked plugin's editor
  * (its own, else TuxGuitar's parameter editor, TGPluginParametersDialog). The plugins offered are those the last scan of
- * the VST3 folders found. What can be done with the row picked is decided there; the rows are read again after each
- * change.
+ * the VST3 folders found; Scan again scans them off the UI thread, then offers what it found. What can be done with the
+ * row picked is decided there; the rows are read again after each change.
  */
 public class TGSoundChainDialog {
 
@@ -58,6 +59,7 @@ public class TGSoundChainDialog {
 	private UIButton remove;
 	private UIButton enable;
 	private UIButton edit;
+	private UIButton scan;
 
 	public TGSoundChainDialog(TGContext context, TGTrack track) {
 		this.context = context;
@@ -81,6 +83,7 @@ public class TGSoundChainDialog {
 		this.remove = this.button(5, 2, "audio.sound-chain.remove", () -> this.changeEffect(TGRemoveEffectAction.NAME));
 		this.enable = this.button(5, 3, "audio.sound-chain.disable", this::toggleEnabled);
 		this.edit = this.button(5, 4, "audio.sound-chain.edit", this::openEditor);
+		this.scan = this.button(6, 1, "audio.sound-chain.scan", this::scanAgain);
 		this.button(6, 4, "close", this.dialog::dispose);
 		this.showPlugins();
 		this.refresh();
@@ -111,6 +114,25 @@ public class TGSoundChainDialog {
 		select.removeItems();
 		plugins.forEach(plugin -> select.addItem(new UISelectItem<TGVst3Plugin>(plugin.getName(), plugin)));
 		plugins.stream().findFirst().ifPresent(select::setSelectedValue);
+	}
+
+	// the VST3 folders scanned again off the UI thread (a plugin installed while TuxGuitar runs), then offered here
+	private void scanAgain() {
+		this.scan.setEnabled(false);
+		Thread scanning = new Thread(() -> {
+			System.err.println(TGLiveAudio.getInstance(this.context).scanPlugins());
+			TGSynchronizer.getInstance(this.context).executeLater(this::scanned);
+		}, "TuxGuitar VST3 scan");
+		scanning.setDaemon(true);
+		scanning.start();
+	}
+
+	private void scanned() {
+		if (!this.dialog.isDisposed()) {
+			this.showPlugins();
+			this.scan.setEnabled(true);
+			this.updateButtons();
+		}
 	}
 
 	private UIButton button(int row, int column, String key, Runnable action) {
