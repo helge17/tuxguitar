@@ -16,7 +16,8 @@ import app.tuxguitar.song.models.TGTrack;
  * What an audio track sounds over a timeline, sample by sample: in each played measure its takes as TGTakes says
  * which plays where, its monitored input, or nothing. A take plays at the song's tempo: sample for sample at the tempo
  * it was recorded at, time-stretched otherwise. Where it goes from one take to another, the newer take's side
- * crossfades over 256 samples; at a jump in song time or where a take is cut, the audio before fades out; against
+ * crossfades over 256 samples; at a jump in song time or where a take is cut, the audio before fades out (a monitored
+input going on after a jump does not: the input never jumps); against
  * silence, nothing fades. The tap has two sides: a mono take or input sounds on both, a stereo one on its own.
  */
 public final class TGTakeTap {

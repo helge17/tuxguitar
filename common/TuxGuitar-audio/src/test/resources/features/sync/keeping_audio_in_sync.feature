@@ -262,15 +262,15 @@ Feature: Keeping audio in sync
     Then the output's right side sounds from its first sample on
     And the output's right side sounds for at least 264000 samples, at most 0 samples at a time below half its peak
 
-  # monitored, the input sounds as the device delivers it, whatever pass plays, and fades out before each jump as a
-  # take does
+  # monitored, the input sounds as the device delivers it, whatever pass plays; it never jumps, so unlike a take it does
+  # not fade at the jump back: not one sample below half the level
   Scenario: live, with Play looped on, a monitored input sounds on across each jump back
     Given I have turned Play looped on over measures 2 to 3
     And I have armed track 2
     And I have set track 2's monitoring to Always
     And the player plays a constant level of 0.25 on input channel 1
     When I play the song live from measure 2 beat 1 for 3 passes
-    Then the output's right side sounds for at least 528000 samples, at most 129 samples at a time below half its peak
+    Then the output's right side sounds for at least 528000 samples, at most 0 samples at a time below half its peak
 
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3

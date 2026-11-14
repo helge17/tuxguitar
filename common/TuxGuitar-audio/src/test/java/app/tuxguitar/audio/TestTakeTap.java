@@ -309,13 +309,43 @@ public class TestTakeTap {
 	@Test
 	public void atTheJumpBackOfALoopTheTakeFadesOutEvenAtItsEnd() {
 		clips(take(1, 2 * M, 1), 2, 3);
+		float[] tap = tap(looped());
+
+		assertSamples(new double[] {255 / F, 0, 1}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
+	}
+
+	// two passes of Play looped over measures 2 to 3, from measure 2
+	private TGTimeline looped() {
 		MidiPlayerMode mode = new MidiPlayerMode();
 		mode.setLoop(true);
 		mode.setLoopSHeader(2);
 		mode.setLoopEHeader(3);
-		float[] tap = tap(played(mode, BAR, Long.MAX_VALUE / 2, 2));
+		return played(mode, BAR, Long.MAX_VALUE / 2, 2);
+	}
 
-		assertSamples(new double[] {255 / F, 0, 1}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
+	// the loop's tap, its measures (2, 3, 2, 3) sounding what the sources say, the monitored input a constant 1
+	private float[] loopedWithInput(TGTrackSource... sources) {
+		TGTimeline timeline = looped();
+		float[] monitored = new float[(int) timeline.length()];
+		Arrays.fill(monitored, 1);
+		return tap(timeline, sources, new float[][] {monitored});
+	}
+
+	// monitored on both passes: the input never jumps, so it goes on across the jump back at full level
+	@Test
+	public void atTheJumpBackOfALoopTheMonitoredInputGoesOnUnfaded() {
+		float[] tap = loopedWithInput(TGTrackSource.INPUT, TGTrackSource.INPUT, TGTrackSource.INPUT, TGTrackSource.INPUT);
+
+		assertSamples(new double[] {1, 1, 1}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
+	}
+
+	// the next pass plays the takes (a silent one here): the input stops at the jump back, so it fades out before it
+	@Test
+	public void atTheJumpBackOfALoopTheMonitoredInputFadesOutBeforeTheTakes() {
+		clips(take(1, 2 * M, 0), 2, 3);
+		float[] tap = loopedWithInput(TGTrackSource.INPUT, TGTrackSource.INPUT, TGTrackSource.TAKES, TGTrackSource.TAKES);
+
+		assertSamples(new double[] {255 / F, 0, 0}, tap, 2 * M - 256, 2 * M - 1, 2 * M);
 	}
 
 	// the first take chosen for measure 2, the second for measure 3; between two chosen takes the one recorded later

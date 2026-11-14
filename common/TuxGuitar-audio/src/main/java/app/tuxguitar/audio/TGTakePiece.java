@@ -93,9 +93,10 @@ final class TGTakePiece {
 	}
 
 
-	// the next one goes on with the same audio, without a jump: the same take from where this one stops, or the input
+	// the next one goes on with the same audio: the monitored input, even across a jump (the input never jumps), or,
+	// without a jump, the same take from where this one stops
 	boolean playsOnInto(TGTakePiece next) {
-		return !next.jump && ((this.input && next.input) || (this.take != null && this.take == next.take && this.source == next.source && Math.abs(this.takeEnd - next.takeStart) <= 1));
+		return (this.input && next.input) || (!next.jump && this.take != null && this.take == next.take && this.source == next.source && Math.abs(this.takeEnd - next.takeStart) <= 1);
 	}
 
 	// this one's audio goes on under the next one

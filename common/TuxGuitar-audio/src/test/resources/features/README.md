@@ -63,7 +63,8 @@ of a loop (a Training Mode pass too, at its own percentage) starts on the very s
 sequencer starts it inside the block (`MidiSequencer.loop`), with nothing silenced between the passes, and tells the
 transport a span from that frame; the takes' live timeline starts each pass there, holding the pass that ended before
 it (the takes and a monitored input sound late by plugin delay compensation, so that pass's end still sounds after
-the jump) and always the next one, so the jump back crossfades as offline with nothing dropping out, and a live
+the jump) and always the next one, so the jump back crossfades as offline with nothing dropping out (a monitored
+input going on across it does not even fade), and a live
 recording's take of each pass starts on its first sample. A jump live
 playing did not foresee (I move the position while it plays) starts the takes again there with a hard cut instead of
 a crossfade, for now. Live scenarios that play passes turn Play looped off during the last one, so the song ends where
@@ -294,7 +295,8 @@ These features change how TuxGuitar works today. They are requirements, not side
   one fades on its side even where the older has no audio under the fade (it just fades in, or out). At a jump in song
   time (a loop's jump back, a repeat, an alternate ending), and where a take's audio is cut inside it (a removed
   measure, an inserted one, a shortened measure), the audio before fades out over its last 256 samples and the audio
-  after starts at full level. At a punch range boundary, the monitored input counts as the newer take.
+  after starts at full level; only the monitored input never fades there when it goes on after the jump (the input
+  itself never jumps). At a punch range boundary, the monitored input counts as the newer take.
 - **Punch range**: measures outside which a recording keeps nothing. It stays on measure numbers and ends with the
   song; one that starts past the end of the song is refused, and removing all its measures removes it.
 - **Loop recording**: recording with Play looped on: each pass over the Loop Range records a take. One recording is
