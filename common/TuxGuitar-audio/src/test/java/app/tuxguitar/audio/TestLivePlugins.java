@@ -68,8 +68,17 @@ public class TestLivePlugins {
 	}
 
 	private void addGain() {
-		this.fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, this.hosting.find("Test Gain"));
+		this.addEffect("Test Gain");
+	}
+
+	private void addEffect(String plugin) {
+		this.fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, this.hosting.find(plugin));
 		this.fixture.execute(new TGAddVst3EffectAction(this.fixture.context));
+	}
+
+	// the live synthesizer sent the guitar's channel again, as the app's player is after each change of it
+	private void sendAgain(TGSynthModel synthesizer) throws MidiPlayerException {
+		TGMidiTaps.sendParameters(synthesizer, this.fixture.songManager, this.fixture.song, this.guitar.getChannelId());
 	}
 
 	private TGVst3Instance gain(String element) throws TGVst3Exception {
@@ -202,8 +211,7 @@ public class TestLivePlugins {
 	// preset list) at the value the plugin holds; there is none for a plugin with its own editor, nor for one not opened
 	@Test
 	public void aPluginWithoutAnEditorOfItsOwnIsEditedInRowsOfItsParameters() throws TGVst3Exception {
-		this.fixture.actionContext.setAttribute(TGAddVst3EffectAction.ATTRIBUTE_PLUGIN, this.hosting.find("Test Clip 0.5"));
-		this.fixture.execute(new TGAddVst3EffectAction(this.fixture.context));
+		this.addEffect("Test Clip 0.5");
 		gain("effect-2").setParameter(1, 0.25);
 		String unopened = String.valueOf(this.live.parameterEditor(this.guitar, 2));
 		this.live.openEditor(this.guitar.getChannelId(), "effect-1");
@@ -212,6 +220,47 @@ public class TestLivePlugins {
 		TGPluginParameterRow row = clip.getRows().get(0);
 		assertEquals("null null null | 1 Ceiling 0.25 250 [Ceiling]", unopened + " " + this.live.parameterEditor(this.guitar, 1) + " " + this.live.parameterEditor(this.guitar, 3)
 			+ " | " + row.getId() + " " + row.getTitle() + " " + row.getPlain() + " " + row.position(row.getPlain()) + " " + clip.getParameters());
+	}
+
+	// TuxGuitar's parameter editor follows its plugin: each time the synthesizer runs the chain again (after a change of
+	// it, an undo of that change) its watcher is told, and its rows read again hold the values the plugin holds then
+	@Test
+	public void aParameterEditorReadsItsPluginAgainEachTimeItsChainRunsAgain() throws Exception {
+		this.addEffect("Test Clip 0.5");
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.fixture.context, 44100);
+		playLive(synthesizer);
+		TGPluginEditor clip = this.live.openEditor(this.guitar.getChannelId(), "effect-2");
+		int[] told = new int[1];
+		clip.watch(() -> told[0]++);
+		TGUndoableModifyChannel undoable = TGUndoableModifyChannel.startUndo(this.fixture.context, this.guitar.getChannelId());
+		this.fixture.actionContext.setAttribute(TGEffectAction.ATTRIBUTE_EFFECT, 2);
+		this.fixture.actionContext.setAttribute(TGSetPluginParameterAction.ATTRIBUTE_PARAMETER, 1);
+		this.fixture.actionContext.setAttribute(TGSetPluginParameterAction.ATTRIBUTE_VALUE, 0.25);
+		this.fixture.execute(new TGSetPluginParameterAction(this.fixture.context));
+		undoable.endUndo();
+		this.sendAgain(synthesizer);
+		clip.refresh();
+		String set = told[0] + " " + clip.getRows().get(0).getPlain();
+		this.fixture.map(new TGUpdateChannelAction(this.fixture.context));
+		undoable.undo(this.fixture.actionContext);
+		this.sendAgain(synthesizer);
+		clip.refresh();
+		assertEquals("1 0.25 | 2 0.5", set + " | " + told[0] + " " + clip.getRows().get(0).getPlain());
+	}
+
+	// once its plugin no longer runs (the channel closed) an editor is closed and its watcher told; one watching it
+	// since is told at once
+	@Test
+	public void anEditorWhosePluginStopsRunningIsClosedAndSaysSo() throws Exception {
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.fixture.context, 44100);
+		TGSynthChannel channel = playLive(synthesizer);
+		TGPluginEditor gain = this.live.openEditor(this.guitar.getChannelId(), "effect-1");
+		int[] told = new int[2];
+		gain.watch(() -> told[0]++);
+		boolean running = gain.isOpen();
+		synthesizer.closeChannel(channel);
+		gain.watch(() -> told[1]++);
+		assertEquals("true false 1 1", running + " " + gain.isOpen() + " " + told[0] + " " + told[1]);
 	}
 
 	// a gesture undone, then redone: the synthesizer, sent the channel again (as the app's player is after a channel's

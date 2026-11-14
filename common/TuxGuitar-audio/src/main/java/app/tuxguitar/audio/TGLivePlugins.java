@@ -100,13 +100,15 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 		this.running.keySet().removeIf(key -> key.startsWith(channel + "/"));
 	}
 
-	// the live synthesizer's channel runs the processors of its chain now, or none (closed)
+	// the live synthesizer's channel runs the processors of its chain now, or none (closed): the editors of plugins that
+	// still run there are told their plugins may hold other values (the chain ran again from the song's elements)
 	public synchronized void chainChanged(TGSynthChannel synthesizer) {
 		this.forget(synthesizer.getId());
 		if (synthesizer.getProcessor() != null) {
 			this.bind(synthesizer.getId(), synthesizer);
 		}
 		this.closeEditors();
+		this.editors.entrySet().stream().filter(editor -> editor.getKey().startsWith(synthesizer.getId() + "/")).forEach(editor -> editor.getValue().editor.changed());
 	}
 
 	private TGVst3Instance listened(int channel, String element, TGVst3Instance instance) {
@@ -235,7 +237,7 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 	// the plugin's own editor, or TuxGuitar's parameter editor for a plugin without one
 	public synchronized TGPluginEditor openEditor(int channel, String element) throws TGVst3Exception {
 		TGVst3Instance instance = this.get(channel, element);
-		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), rows(instance));
+		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), () -> rows(instance));
 		this.editors.put(key(channel, element), new Editor(editor, instance));
 		return editor;
 	}
@@ -275,6 +277,7 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 		new ArrayList<Kept>(this.kept.values()).forEach(this::close);
 		this.kept.clear();
 		this.running.clear();
+		this.editors.values().forEach(editor -> editor.editor.close());
 		this.editors.clear();
 	}
 
@@ -299,13 +302,14 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 			this.instance = instance;
 		}
 
-		// the plugin's own editor closes; a plugin that is gone has none left to close
+		// the plugin's own editor closes (a plugin that is gone has none left to close), TuxGuitar's with it
 		boolean close() {
 			try {
 				this.instance.closeEditor();
 			} catch (TGVst3Exception e) {
 				// its host stopped, the editor with it
 			}
+			this.editor.close();
 			return true;
 		}
 	}
