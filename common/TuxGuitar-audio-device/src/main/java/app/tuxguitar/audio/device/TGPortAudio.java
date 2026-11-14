@@ -11,7 +11,8 @@ import java.util.List;
  */
 public final class TGPortAudio implements TGAudioBackend {
 
-	static final String LIBRARY = "tuxguitar-audio-device";
+	// the library's name (System.mapLibraryName gives its file name)
+	public static final String LIBRARY = "tuxguitar-audio-device";
 
 	private TGPortAudio() {
 	}

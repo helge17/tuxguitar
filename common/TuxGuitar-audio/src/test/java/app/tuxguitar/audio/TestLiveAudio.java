@@ -6,16 +6,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import app.tuxguitar.audio.action.TGRecordAction;
 import app.tuxguitar.audio.action.TGRecordingVeto;
 import app.tuxguitar.audio.device.TGAudioDeviceInfo;
+import app.tuxguitar.audio.device.TGPortAudio;
 import app.tuxguitar.editor.action.SongActionFixture;
 import app.tuxguitar.midi.synth.TGSynthChannel;
 import app.tuxguitar.midi.synth.TGSynthManager;
@@ -111,6 +115,19 @@ class TestLiveAudio {
 		File library = TGLiveAudio.nativeFolder(properties);
 		properties.setProperty(TGLiveAudio.NATIVE_PATH, "natives");
 		assertEquals(new File("lib") + " " + new File("natives") + " " + new File("."), library + " " + TGLiveAudio.nativeFolder(properties) + " " + TGLiveAudio.nativeFolder(new Properties()));
+	}
+
+	// the Linux and macOS launchers' library path puts LD_LIBRARY_PATH's folders before the app's lib folder
+	@Test
+	void theNativeFolderIsTheFirstLibraryFolderHoldingTheNativeLibrary(@TempDir File temp) throws IOException {
+		File system = new File(temp, "system");
+		File lib = new File(temp, "lib");
+		system.mkdirs();
+		lib.mkdirs();
+		Files.createFile(new File(lib, System.mapLibraryName(TGPortAudio.LIBRARY)).toPath());
+		Properties properties = new Properties();
+		properties.setProperty("java.library.path", system + File.pathSeparator + lib);
+		assertEquals(lib, TGLiveAudio.nativeFolder(properties));
 	}
 
 	// what a track's input channels are picked from: the channels opened on the input device; none without a device

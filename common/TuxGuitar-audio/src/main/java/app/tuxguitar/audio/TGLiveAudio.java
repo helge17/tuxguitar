@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import app.tuxguitar.audio.action.TGRecordingVeto;
 import app.tuxguitar.audio.device.TGAudioBackend;
@@ -90,10 +91,12 @@ public final class TGLiveAudio implements TGSynthOutput {
 	}
 
 	// the folder of the native libraries: the one the app gives (NATIVE_PATH), else the first folder Java loads
-	// libraries from (empty entries skipped)
+	// libraries from that holds the native audio library, else the first of them (empty entries skipped)
 	public static File nativeFolder(Properties system) {
-		String libraries = Arrays.stream(system.getProperty("java.library.path", "").split(Pattern.quote(File.pathSeparator))).filter(folder -> !folder.isEmpty()).findFirst().orElse(".");
-		return new File(system.getProperty(NATIVE_PATH, libraries));
+		List<String> folders = Arrays.stream(system.getProperty("java.library.path", "").split(Pattern.quote(File.pathSeparator))).filter(folder -> !folder.isEmpty()).collect(Collectors.toList());
+		String library = System.mapLibraryName(TGPortAudio.LIBRARY);
+		String holding = folders.stream().filter(folder -> new File(folder, library).isFile()).findFirst().orElse(folders.stream().findFirst().orElse("."));
+		return new File(system.getProperty(NATIVE_PATH, holding));
 	}
 
 	// the native audio backend, from the folder; if it does not load, that is the problem
