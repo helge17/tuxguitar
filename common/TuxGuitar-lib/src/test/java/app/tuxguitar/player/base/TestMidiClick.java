@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.util.TGContext;
+import app.tuxguitar.util.configuration.TGConfigManager;
+import app.tuxguitar.util.properties.MapProperties;
+import app.tuxguitar.util.properties.TGPropertiesManager;
 
 /**
  * The click sound Count In and the Metronome play: a drum note from 0 to 127 at a velocity from 1 to 127 (0 would be
@@ -55,6 +58,33 @@ public class TestMidiClick {
 	@Test
 	public void keepsTheLowestAndHighestNoteAndVelocity() {
 		assertEquals("0 at 1, 127 at 127", read(new MidiClick(0, 1)) + ", " + read(new MidiClick(127, 127)));
+	}
+
+	// a TuxGuitar setting: kept in a configuration of the app's, which a test keeps in memory
+	private static TGConfigManager config() {
+		TGContext context = new TGContext();
+		TGPropertiesManager.getInstance(context).setPropertiesFactory(MapProperties::new);
+		return new TGConfigManager(context, "tuxguitar");
+	}
+
+	@Test
+	public void keptIsReadBackAsWrittenAndNothingKeptIsTheDefault() {
+		TGConfigManager config = config();
+		String none = read(MidiClick.read(config));
+		new MidiClick(76, 127).write(config);
+		assertEquals("37 at " + TGVelocities.DEFAULT + " | 76 at 127", none + " | " + read(MidiClick.read(config)));
+	}
+
+	// a configuration edited by hand: what is not a MIDI note and velocity is the default click
+	@Test
+	public void keptOutsideMidiIsTheDefault() {
+		TGConfigManager config = config();
+		config.setValue(MidiClick.NOTE, 128);
+		config.setValue(MidiClick.VELOCITY, 127);
+		String note = read(MidiClick.read(config));
+		config.setValue(MidiClick.NOTE, 76);
+		config.setValue(MidiClick.VELOCITY, 0);
+		assertEquals("37 at " + TGVelocities.DEFAULT + " | 37 at " + TGVelocities.DEFAULT, note + " | " + read(MidiClick.read(config)));
 	}
 
 	@Test
