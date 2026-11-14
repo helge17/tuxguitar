@@ -17,40 +17,61 @@ public abstract class TGToolItemPlugin implements TGPlugin{
 	protected abstract String getItemName() throws TGPluginException ;
 
 	public void connect(TGContext context) throws TGPluginException {
+		if( this.hasNoTool() ) {
+			pluginStep(() -> this.addTool(context));
+		}
+	}
+
+	public void disconnect(TGContext context) throws TGPluginException {
+		if( this.hasTool() ) {
+			pluginStep(this::removeTool);
+		}
+	}
+
+	private boolean hasNoTool() {
+		return this.tool == null && this.toolAction == null;
+	}
+
+	private boolean hasTool() {
+		return this.tool != null && this.toolAction != null;
+	}
+
+	private void addTool(TGContext context) throws Throwable {
+		String name = getItemName();
+
+		this.tool = new TGCustomTool(name, name);
+		this.toolAction = new TGCustomToolAction(context, this.tool.getName());
+
+		TuxGuitar.getInstance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
+
+		TGActionAdapterManager tgActionAdapterManager = TGActionAdapterManager.getInstance(context);
+		tgActionAdapterManager.getKeyBindingActionIds().addActionId(this.toolAction.getName());
+		tgActionAdapterManager.getSyncThreadInterceptor().addActionId(this.toolAction.getName());
+
+		TGCustomToolManager.instance().addCustomTool(this.tool);
+		TuxGuitar.getInstance().getItemManager().createMenu();
+	}
+
+	private void removeTool() throws Throwable {
+		TGCustomToolManager.instance().removeCustomTool(this.tool);
+		TuxGuitar.getInstance().getActionManager().unmapAction(this.tool.getAction());
+		TuxGuitar.getInstance().getItemManager().createMenu();
+
+		this.tool = null;
+		this.toolAction = null;
+	}
+
+	// whatever a step throws, the plugin's connect or disconnect throws as a plugin exception
+	private static void pluginStep(PluginStep step) throws TGPluginException {
 		try {
-			if( this.tool == null && this.toolAction == null ) {
-				String name = getItemName();
-
-				this.tool = new TGCustomTool(name, name);
-				this.toolAction = new TGCustomToolAction(context, this.tool.getName());
-
-				TuxGuitar.getInstance().getActionManager().mapAction(this.tool.getAction(), this.toolAction);
-
-				TGActionAdapterManager tgActionAdapterManager = TGActionAdapterManager.getInstance(context);
-				tgActionAdapterManager.getKeyBindingActionIds().addActionId(this.toolAction.getName());
-				tgActionAdapterManager.getSyncThreadInterceptor().addActionId(this.toolAction.getName());
-
-				TGCustomToolManager.instance().addCustomTool(this.tool);
-				TuxGuitar.getInstance().getItemManager().createMenu();
-			}
+			step.run();
 		} catch (Throwable throwable) {
 			throw new TGPluginException(throwable.getMessage(),throwable);
 		}
 	}
 
-	public void disconnect(TGContext context) throws TGPluginException {
-		try {
-			if( this.tool != null && this.toolAction != null ) {
-				TGCustomToolManager.instance().removeCustomTool(this.tool);
-				TuxGuitar.getInstance().getActionManager().unmapAction(this.tool.getAction());
-				TuxGuitar.getInstance().getItemManager().createMenu();
-
-				this.tool = null;
-				this.toolAction = null;
-			}
-		} catch (Throwable throwable) {
-			throw new TGPluginException(throwable.getMessage(),throwable);
-		}
+	private interface PluginStep {
+		void run() throws Throwable;
 	}
 
 	protected class TGCustomToolAction extends TGActionBase {
