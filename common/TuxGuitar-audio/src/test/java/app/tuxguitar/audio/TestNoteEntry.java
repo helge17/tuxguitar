@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import app.tuxguitar.document.TGDocumentContextAttributes;
 import app.tuxguitar.editor.action.SongActionFixture;
 import app.tuxguitar.editor.action.note.TGChangeNoteAction;
+import app.tuxguitar.editor.action.note.TGSetNoteFretNumberAction;
+import app.tuxguitar.song.models.TGVelocities;
 import app.tuxguitar.editor.action.track.TGChangeTrackMuteAction;
 import app.tuxguitar.player.base.MidiChannel;
 import app.tuxguitar.player.base.MidiPlayer;
@@ -107,10 +109,23 @@ public class TestNoteEntry {
 		assertEquals("", enter());
 	}
 
-	// an action that succeeds on the caret's beat but enters no note
+	// typing a fret number on the keyboard enters the note too (another action than the note action): fret 7 on string 1,
+	// at a new note's velocity
+	@Test
+	public void typingAFretNumberSoundsItsBeat() {
+		caret();
+		this.fixture.execute(new TGSetNoteFretNumberAction(this.fixture.context, 7));
+
+		assertEquals("on 71 " + TGVelocities.DEFAULT + ", off 71 " + TGVelocities.DEFAULT, sounded());
+	}
+
+	// an action that succeeds on the caret's beat, which holds a note, but enters none
 	@Test
 	public void anotherActionSoundsNothing() {
 		caret();
+		enter();
+		this.sounded.clear();
+		this.started.clear();
 		this.fixture.execute(new TGChangeTrackMuteAction(this.fixture.context));
 
 		assertEquals("", sounded());
