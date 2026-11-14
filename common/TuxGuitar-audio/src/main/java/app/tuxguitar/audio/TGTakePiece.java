@@ -112,14 +112,14 @@ final class TGTakePiece {
 		return this.input || (this.take != null && this.takeEnd < this.source[0].length - 1);
 	}
 
-	// adds what it sounds over the block's frames, from the sample of the tap the block starts on (before the tap's
-	// first sample nothing sounds), to each side of the block: a mono piece's one side to both
-	void addTo(float[][] block, long from) {
+	// adds what it sounds over the frames of the block from the offset, from the sample of the tap the offset is on
+	// (before the tap's first sample nothing sounds), to each side of the block: a mono piece's one side to both
+	void addTo(float[][] block, int offset, int frames, long from) {
 		long first = Math.max(Math.max(0, from), this.start - (this.head ? FADE : 0));
-		long last = Math.min(from + block[0].length, this.end + (this.tail ? FADE : 0));
+		long last = Math.min(from + frames, this.end + (this.tail ? FADE : 0));
 		for (int side = 0; side < block.length; side++) {
 			for (long o = first; o < last; o++) {
-				block[side][(int) (o - from)] += (float) (this.gain(o) * this.sample(side, o));
+				block[side][offset + (int) (o - from)] += (float) (this.gain(o) * this.sample(side, o));
 			}
 		}
 	}

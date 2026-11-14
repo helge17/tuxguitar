@@ -46,9 +46,14 @@ public final class TGTakeTap {
 	// adds what the tap sounds over the block's frames, from the sample of the timeline the block starts on (none
 	// before the timeline), to the block's left and right sides
 	public void render(float[][] block, long from) {
+		this.render(block, 0, block[0].length, from);
+	}
+
+	// the same over the frames of the block from the offset, from the sample of the timeline the offset is on
+	public void render(float[][] block, int offset, int frames, long from) {
 		for (TGTakePiece piece : this.pieces) {
 			if (piece.sounds()) {
-				piece.addTo(block, from);
+				piece.addTo(block, offset, frames, from);
 			}
 		}
 	}

@@ -124,6 +124,26 @@ public class TestTakeTap {
 		assertEquals("[192000-240000:96000]", stretches.toString());
 	}
 
+	// a part of a block holds what the tap sounds over its frames alone, from the sample the part starts on: the take's
+	// sample M + 100 lands 50 frames into the part, its sample M + 300 is past the part's 100 frames
+	@Test
+	public void aPartOfABlockHoldsWhatTheTapSoundsOverItsFrames() {
+		float[] samples = new float[4 * M];
+		samples[M + 100] = 1f;
+		samples[M + 300] = 0.5f;
+		clips(new TGTake(1, samples, 44100), 1, 2);
+		TGTimeline timeline = wholeSong(100);
+		TGTrackSource[] sources = new TGTrackSource[timeline.count()];
+		Arrays.fill(sources, TGTrackSource.TAKES);
+		TGTakeTap tap = TGTakeTap.of(track, timeline, halfOfTheFirstSample, sources, new TGTapInput(0, null));
+		float[][] whole = new float[2][512];
+		tap.render(whole, M + 50);
+		float[][] part = new float[2][512];
+		tap.render(part, 200, 100, M + 50);
+
+		assertEquals("1.0 0.5 | 0.0 1.0 0.0", whole[0][50] + " " + whole[0][250] + " | " + part[0][50] + " " + part[0][250] + " " + part[0][450]);
+	}
+
 	private static void assertSamples(double[] expected, float[] tap, int... at) {
 		double[] actual = new double[at.length];
 		for (int i = 0; i < at.length; i++) {
