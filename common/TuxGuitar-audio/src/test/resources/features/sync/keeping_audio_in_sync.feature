@@ -243,6 +243,25 @@ Feature: Keeping audio in sync
     Then the output's left side holds 24 clicks, one every 22050 samples within 1 sample
     And the output's right side holds 24 clicks, each within 1 samples of a click on its left side
 
+  # live, as offline, nothing drops out at the jump back, though the takes play late by the plugin delay compensation
+  # (the drums' 600 samples here): the audio before the jump fades out over 256 samples (the second half of the fade
+  # is below half the level), the next pass starts at full level
+  Scenario: live, with Play looped on, a take sounds on across each jump back
+    Given track 2 has a take of a constant level of 0.25 from measure 1 beat 1 to the end of measure 4
+    And I have turned Play looped on over measures 2 to 3
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's right side sounds for at least 528000 samples, at most 129 samples at a time below half its peak
+
+  # monitored, the input sounds as the device delivers it, whatever pass plays, and fades out before each jump as a
+  # take does
+  Scenario: live, with Play looped on, a monitored input sounds on across each jump back
+    Given I have turned Play looped on over measures 2 to 3
+    And I have armed track 2
+    And I have set track 2's monitoring to Always
+    And the player plays a constant level of 0.25 on input channel 1
+    When I play the song live from measure 2 beat 1 for 3 passes
+    Then the output's right side sounds for at least 528000 samples, at most 129 samples at a time below half its peak
+
   Scenario: a tail carries across the jump back of a loop
     Given I have turned Play looped on over measures 2 to 3
     And track 2 has a take of one click of -0.25 at measure 3 beat 4.5 from measure 3 beat 4 to measure 4 beat 1

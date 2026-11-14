@@ -102,6 +102,21 @@ public final class Meters {
 			.mapToObj(i -> above[i]).collect(java.util.stream.Collectors.toList());
 	}
 
+	// where a sound breaks off: the runs of samples at or below half the peak between the first sample above it and the
+	// last, their first sample to their length, in order
+	public static java.util.SortedMap<Integer, Integer> breaks(float[] samples) {
+		int[] above = above(samples, 0, samples.length, peak(samples, 0, samples.length) / 2);
+		java.util.SortedMap<Integer, Integer> breaks = new java.util.TreeMap<Integer, Integer>();
+		java.util.stream.IntStream.range(1, above.length).filter(i -> above[i] - above[i - 1] > 1).forEach(i -> breaks.put(above[i - 1] + 1, above[i] - above[i - 1] - 1));
+		return breaks;
+	}
+
+	// how long a sound lasts: from the first sample above half the peak to the last, both included (0 when silent)
+	public static int sounding(float[] samples) {
+		int[] above = above(samples, 0, samples.length, peak(samples, 0, samples.length) / 2);
+		return (above.length > 0 ? above[above.length - 1] - above[0] + 1 : 0);
+	}
+
 	private static int[] above(float[] samples, int from, int to, double level) {
 		return java.util.stream.IntStream.range(from, to).filter(i -> level > 0 && Math.abs(samples[i]) > level).toArray();
 	}

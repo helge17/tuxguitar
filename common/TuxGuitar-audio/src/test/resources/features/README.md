@@ -57,8 +57,10 @@ player and keeps the takes of what was delivered, still one undo step.
 Live scenarios that record wire the Test Interface's output back to its input (`TestBackend.loopback`). Live, each pass
 of a loop (a Training Mode pass too, at its own percentage) starts on the very sample the last one ends on: the
 sequencer starts it inside the block (`MidiSequencer.loop`), with nothing silenced between the passes, and tells the
-transport a span from that frame; the takes' live timeline starts each pass there and always holds the next one, so
-the jump back crossfades as offline, and a live recording's take of each pass starts on its first sample. A jump live
+transport a span from that frame; the takes' live timeline starts each pass there, holding the pass that ended before
+it (the takes and a monitored input sound late by plugin delay compensation, so that pass's end still sounds after
+the jump) and always the next one, so the jump back crossfades as offline with nothing dropping out, and a live
+recording's take of each pass starts on its first sample. A jump live
 playing did not foresee (I move the position while it plays) starts the takes again there with a hard cut instead of
 a crossfade, for now. Live scenarios that play passes turn Play looped off during the last one, so the song ends where
 it ends. The whole chain on this machine's real devices is an opt-in

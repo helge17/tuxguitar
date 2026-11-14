@@ -46,7 +46,7 @@ public final class TGLiveRecording implements TGLiveDevice.Listener {
 	private TGLiveRecording(TGContext context, TGLiveDevice device) {
 		this.context = context;
 		this.device = device;
-		this.followed = new TGLiveTimeline(context, 1);
+		this.followed = new TGLiveTimeline(context, 1, false);
 		this.followed.setSampleRate(device.getSampleRate());
 	}
 

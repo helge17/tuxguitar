@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import app.tuxguitar.audio.LiveOutput;
@@ -61,11 +62,21 @@ public class LiveSteps {
 	}
 
 	// evenly: no gap and no overlap anywhere between them
-	@Then("the output's left side holds {int} clicks, one every {int} samples within {int} sample(s)")
-	public void leftClicksEvenly(int count, int every, int within) {
-		List<Integer> left = clicks(0);
-		assertEquals(count, left.size(), "left " + left);
-		IntStream.range(1, left.size()).forEach(i -> assertEquals(every, left.get(i) - left.get(i - 1), within, "left " + left));
+	@Then("the output's {side} side holds {int} clicks, one every {int} samples within {int} sample(s)")
+	public void clicksEvenly(int side, int count, int every, int within) {
+		List<Integer> clicks = clicks(side);
+		assertEquals(count, clicks.size(), "clicks " + clicks);
+		IntStream.range(1, clicks.size()).forEach(i -> assertEquals(every, clicks.get(i) - clicks.get(i - 1), within, "clicks " + clicks));
+	}
+
+	// from the first sample above half its peak to the last, at least the samples long, and never at or below half its
+	// peak for more than the most samples running
+	@Then("the output's {side} side sounds for at least {int} samples, at most {int} samples at a time below half its peak")
+	public void soundsWithoutABreak(int side, int least, int most) {
+		float[] samples = world.live()[side];
+		Map<Integer, Integer> breaks = Meters.breaks(samples);
+		assertTrue(breaks.values().stream().allMatch(length -> length <= most), "breaks (first sample=length) " + breaks);
+		assertTrue(Meters.sounding(samples) >= least, "sounds for " + Meters.sounding(samples) + " samples");
 	}
 
 	@Then("the output's left side holds {int} clicks and no {double} Hz tone above -60 dBFS")

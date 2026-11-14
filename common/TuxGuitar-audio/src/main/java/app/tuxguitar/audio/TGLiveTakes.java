@@ -19,9 +19,9 @@ import app.tuxguitar.util.TGContext;
  * An audio track's takes, live: the source of its channel on the TuxGuitar Synthesizer (TGSynthChannel.TAKES), so its
  * sound chain's effects follow it and its channel joins the output like any other. While the transport says the song
  * plays, it renders the track's tap (TGTakeTap: time-stretched, crossfaded, as offline) a block at a time on the
- * timeline of what plays (TGLiveTimeline: two passes of the Loop Range when looped). It delays the tap itself by
- * plugin delay compensation (it renders the timeline's samples that many frames back), so what else it sounds can go
- * undelayed.
+ * timeline of what plays (TGLiveTimeline: two passes of the Loop Range when looped, after the pass that ended). It
+ * delays the tap itself by plugin delay compensation (it renders the timeline's samples that many frames back, so after
+ * a jump back the end of the pass that ended), so what else it sounds can go undelayed.
  */
 public final class TGLiveTakes implements TGMidiProcessor {
 
@@ -37,7 +37,7 @@ public final class TGLiveTakes implements TGMidiProcessor {
 
 	TGLiveTakes(TGContext context) {
 		this.context = context;
-		this.followed = new TGLiveTimeline(context, 2);
+		this.followed = new TGLiveTimeline(context, 2, true);
 	}
 
 	// audio tracks sound their takes on the TuxGuitar Synthesizer of the context
