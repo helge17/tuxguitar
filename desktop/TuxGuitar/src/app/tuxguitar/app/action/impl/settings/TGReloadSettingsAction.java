@@ -2,7 +2,10 @@ package app.tuxguitar.app.action.impl.settings;
 
 import app.tuxguitar.action.TGActionContext;
 import app.tuxguitar.action.TGActionManager;
+import app.tuxguitar.app.system.config.TGConfigManager;
 import app.tuxguitar.editor.action.TGActionBase;
+import app.tuxguitar.player.base.MidiClick;
+import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.util.TGContext;
 
 public class TGReloadSettingsAction extends TGActionBase {
@@ -23,5 +26,6 @@ public class TGReloadSettingsAction extends TGActionBase {
 		tgActionManager.execute(TGReloadStylesAction.NAME, context);
 		tgActionManager.execute(TGReloadTableSettingsAction.NAME, context);
 		tgActionManager.execute(TGReloadMidiDevicesAction.NAME, context);
+		MidiPlayer.getInstance(getContext()).setClick(MidiClick.read(TGConfigManager.getInstance(getContext())));
 	}
 }
