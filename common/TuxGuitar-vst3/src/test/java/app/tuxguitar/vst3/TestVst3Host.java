@@ -62,6 +62,13 @@ public class TestVst3Host {
 		assertTrue(ProcessHandle.of(this.host.getPid()).isPresent());
 	}
 
+	// as the native build names it on this system, and on Windows and elsewhere
+	@Test
+	public void theHostsExecutableIsNamedForTheSystem() {
+		File bin = new File(TestPlugins.nativeBuild(), "bin");
+		assertEquals(TestPlugins.host() + " | " + new File("lib", "tuxguitar-vst3-host.exe") + " " + new File("lib", "tuxguitar-vst3-host"), TGVst3Hosting.executable(bin, System.getProperty("os.name")) + " | " + TGVst3Hosting.executable(new File("lib"), "Windows 11") + " " + TGVst3Hosting.executable(new File("lib"), "Linux"));
+	}
+
 	@Test
 	public void aHostOfAnotherProtocolVersionIsRefused() throws TGVst3Exception {
 		assertEquals(42L, TGVst3Protocol.greeted(TGVst3Protocol.VERSION, 42));

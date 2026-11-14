@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonFactory;
@@ -41,6 +42,15 @@ public final class TGVst3Hosting {
 
 	public synchronized List<File> getFolders() {
 		return Collections.unmodifiableList(this.folders);
+	}
+
+	public synchronized File getExecutable() {
+		return this.executable;
+	}
+
+	// the host process's executable in the folder, as it is built on the system (os: its name, as os.name says it)
+	public static File executable(File folder, String os) {
+		return new File(folder, "tuxguitar-vst3-host" + (os.toLowerCase(Locale.ROOT).startsWith("windows") ? ".exe" : ""));
 	}
 
 	// a new host process
