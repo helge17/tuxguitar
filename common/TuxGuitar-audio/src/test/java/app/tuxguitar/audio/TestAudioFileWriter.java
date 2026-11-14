@@ -4,7 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.stream.Collectors;
+
+import javax.sound.sampled.AudioSystem;
 
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +49,26 @@ public class TestAudioFileWriter {
 	@Test
 	public void aWaveFileOfFloatSamplesKeepsWhatGoesAboveFullScale() throws Exception {
 		assertWritten("WAVE 44100 Hz 32 bits PCM_FLOAT", Type.WAVE, 44100, Samples.FLOAT_32, SAMPLES, 0f);
+	}
+
+	// Sun/NeXT AU: big-endian 16-bit integers only
+	@Test
+	public void anAuFileHoldsBigEndian16BitIntegersAndRefusesOthers() throws Exception {
+		long frames = assertWritten("AU 44100 Hz 16 bits PCM_SIGNED", Type.AU, 44100, Samples.PCM_16, CLIPPED, 1 / 32767f);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		TGAudioFileWriter.write(SAMPLES, new TGExportFormat(Type.AU, 44100, Samples.PCM_16), out);
+		boolean bigEndian = AudioSystem.getAudioFileFormat(new ByteArrayInputStream(out.toByteArray())).getFormat().isBigEndian();
+		assertEquals("4 true", frames + " " + bigEndian);
+		assertThrows(IllegalArgumentException.class, () -> new TGExportFormat(Type.AU, 44100, Samples.PCM_24));
+		assertThrows(IllegalArgumentException.class, () -> new TGExportFormat(Type.AU, 44100, Samples.FLOAT_32));
+	}
+
+	// what an app's export offers, at 44100 Hz, by name, with the extension of its files (Java Sound's: .aif, as the
+	// desktop's export names AIFF files today)
+	@Test
+	public void theFormatsOffered() {
+		String offered = TGExportFormat.offered().stream().map(format -> format.getName() + " ." + format.getExtension() + " " + format.getSampleRate()).collect(Collectors.joining(" | "));
+		assertEquals("WAVE 16-bit .wav 44100 | WAVE 24-bit .wav 44100 | WAVE 32-bit float .wav 44100 | AIFF 16-bit .aif 44100 | AU 16-bit .au 44100", offered);
 	}
 
 	@Test

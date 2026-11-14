@@ -16,6 +16,7 @@ import app.tuxguitar.audio.device.TGAudioDeviceException;
 import app.tuxguitar.audio.device.TGAudioDeviceInfo;
 import app.tuxguitar.audio.device.TGPortAudio;
 import app.tuxguitar.midi.synth.TGAudioBuffer;
+import app.tuxguitar.midi.synth.TGSynthAudioExporter;
 import app.tuxguitar.midi.synth.TGSynthManager;
 import app.tuxguitar.midi.synth.TGSynthModel;
 import app.tuxguitar.midi.synth.TGSynthOutput;
@@ -68,6 +69,7 @@ public final class TGLiveAudio implements TGSynthOutput {
 			TGAudioSaving.install(context);
 			TGRecordingVeto.getInstance(context).refuse(refused);
 			TGSynthManager.getInstance(context).addExtension(TGSynthOutput.class, audio);
+			TGSynthManager.getInstance(context).addExtension(TGSynthAudioExporter.class, new TGAudioExport(context));
 			audio.installed = true;
 		}
 		return audio;

@@ -2,39 +2,53 @@ package app.tuxguitar.audio;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 
 /**
  * What an exported file is: its type, its sample rate and how each sample is written, left and right. A WAVE file holds
- * 16 or 24-bit integers (little-endian) or 32-bit floats; an AIFF file holds integers (big-endian). Immutable.
+ * 16 or 24-bit integers (little-endian) or 32-bit floats; an AIFF file holds integers (big-endian); an AU file 16-bit
+ * integers (big-endian). Immutable. An app offers the formats of offered(), each named "<type> <samples>".
  */
 public final class TGExportFormat {
 
-	public enum Type {
-		WAVE(AudioFileFormat.Type.WAVE, false),
-		AIFF(AudioFileFormat.Type.AIFF, true);
-
-		private final AudioFileFormat.Type fileType;
-		private final boolean bigEndian;
-
-		Type(AudioFileFormat.Type fileType, boolean bigEndian) {
-			this.fileType = fileType;
-			this.bigEndian = bigEndian;
-		}
-	}
+	// the rate an app's export writes at (the TuxGuitar Synthesizer's)
+	private static final int OFFERED_RATE = 44100;
 
 	// how a sample is written: integers are clipped to full scale, a float keeps what goes above it
 	public enum Samples {
-		PCM_16(2),
-		PCM_24(3),
-		FLOAT_32(4);
+		PCM_16(2, "16-bit"),
+		PCM_24(3, "24-bit"),
+		FLOAT_32(4, "32-bit float");
 
 		private final int bytes;
+		private final String name;
 
-		Samples(int bytes) {
+		Samples(int bytes, String name) {
 			this.bytes = bytes;
+			this.name = name;
+		}
+	}
+
+	public enum Type {
+		WAVE(AudioFileFormat.Type.WAVE, false, EnumSet.allOf(Samples.class)),
+		AIFF(AudioFileFormat.Type.AIFF, true, EnumSet.of(Samples.PCM_16, Samples.PCM_24)),
+		AU(AudioFileFormat.Type.AU, true, EnumSet.of(Samples.PCM_16));
+
+		private final AudioFileFormat.Type fileType;
+		private final boolean bigEndian;
+		// the samples a file of the type holds
+		private final Set<Samples> holds;
+
+		Type(AudioFileFormat.Type fileType, boolean bigEndian, Set<Samples> holds) {
+			this.fileType = fileType;
+			this.bigEndian = bigEndian;
+			this.holds = holds;
 		}
 	}
 
@@ -42,14 +56,39 @@ public final class TGExportFormat {
 	private final int sampleRate;
 	private final Samples samples;
 
-	// an AIFF file of floats is refused
+	// samples the type does not hold are refused (an AIFF file of floats, an AU file of other than 16-bit integers)
 	public TGExportFormat(Type type, int sampleRate, Samples samples) {
-		if (type == Type.AIFF && samples == Samples.FLOAT_32) {
-			throw new IllegalArgumentException("an AIFF file holds integer samples only");
+		if (!type.holds.contains(samples)) {
+			throw new IllegalArgumentException("an " + type + " file holds no " + samples.name + " samples");
 		}
 		this.type = type;
 		this.sampleRate = sampleRate;
 		this.samples = samples;
+	}
+
+	// what an app's export offers, the first being its default
+	public static List<TGExportFormat> offered() {
+		return Arrays.asList(
+			new TGExportFormat(Type.WAVE, OFFERED_RATE, Samples.PCM_16),
+			new TGExportFormat(Type.WAVE, OFFERED_RATE, Samples.PCM_24),
+			new TGExportFormat(Type.WAVE, OFFERED_RATE, Samples.FLOAT_32),
+			new TGExportFormat(Type.AIFF, OFFERED_RATE, Samples.PCM_16),
+			new TGExportFormat(Type.AU, OFFERED_RATE, Samples.PCM_16));
+	}
+
+	// the format offered with the name; refused when none is
+	public static TGExportFormat named(String name) {
+		return offered().stream().filter(format -> format.getName().equals(name)).findFirst().orElseThrow(() -> new IllegalArgumentException("no export format is named " + name));
+	}
+
+	// "WAVE 16-bit"
+	public String getName() {
+		return this.type + " " + this.samples.name;
+	}
+
+	// of its files, without the dot
+	public String getExtension() {
+		return this.type.fileType.getExtension();
 	}
 
 	public Type getType() {
