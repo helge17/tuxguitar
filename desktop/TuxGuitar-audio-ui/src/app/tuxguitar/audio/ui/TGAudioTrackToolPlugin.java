@@ -1,8 +1,6 @@
 package app.tuxguitar.audio.ui;
 
-import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.audio.TGAudioStatus;
-import app.tuxguitar.song.models.TGTrack;
 import app.tuxguitar.util.TGContext;
 
 /**
@@ -24,9 +22,5 @@ public class TGAudioTrackToolPlugin extends TGAudioToolPlugin {
 		if (isEnabled(context)) {
 			new TGAudioTrackSettingsDialog(context, caretTrack()).open();
 		}
-	}
-
-	private static TGTrack caretTrack() {
-		return TuxGuitar.getInstance().getTablatureEditor().getTablature().getCaret().getTrack();
 	}
 }

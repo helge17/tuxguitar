@@ -2,7 +2,6 @@ package app.tuxguitar.audio.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public class TGRecordingWindow {
 
 	private final TGContext context;
 	private final UIFactory factory;
-	private final ScheduledExecutorService poll = Executors.newSingleThreadScheduledExecutor(TGRecordingWindow::daemon);
+	private final ScheduledExecutorService poll = TGAudioPlugin.scheduler("TuxGuitar audio status");
 	private UIWindow window;
 	private UILabel state;
 	private UIButton record;
@@ -46,12 +45,6 @@ public class TGRecordingWindow {
 	public TGRecordingWindow(TGContext context) {
 		this.context = context;
 		this.factory = TGApplication.getInstance(context).getFactory();
-	}
-
-	private static Thread daemon(Runnable runnable) {
-		Thread thread = new Thread(runnable, "TuxGuitar audio status");
-		thread.setDaemon(true);
-		return thread;
 	}
 
 	public void open() {

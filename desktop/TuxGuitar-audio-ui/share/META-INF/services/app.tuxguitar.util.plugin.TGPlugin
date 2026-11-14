@@ -6,3 +6,4 @@ app.tuxguitar.audio.ui.TGArmTrackToolPlugin
 app.tuxguitar.audio.ui.TGAddAudioTrackToolPlugin
 app.tuxguitar.audio.ui.TGAudioTrackToolPlugin
 app.tuxguitar.audio.ui.TGRecordingToolPlugin
+app.tuxguitar.audio.ui.TGSoundChainToolPlugin
