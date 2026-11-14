@@ -138,11 +138,14 @@ public final class TGLiveDevice implements TGAudioDevice, TGAudioCallback, AutoC
 	}
 
 	// what the input channel delivered over the frames of the clock from the given one that are still kept; silence for
-	// the others
+	// the others, and from a channel not opened
 	public float[] capture(int inputChannel, long from, int count) {
+		float[] samples = new float[count];
+		if (inputChannel > this.kept.length) {
+			return samples;
+		}
 		float[] kept = this.kept[inputChannel - 1];
 		long delivered = this.delivered;
-		float[] samples = new float[count];
 		for (int i = 0; i < count; i++) {
 			long frame = from + i;
 			if (frame < delivered && frame >= delivered - kept.length) {

@@ -154,6 +154,18 @@ class TestLiveDevice {
 		}
 	}
 
+	// a track picked a channel the device did not open (fewer channels, or no input device): its meter and takes get
+	// silence, the device runs on
+	@Test
+	void anInputChannelNotOpenedIsSilence() throws TGAudioDeviceException {
+		TestBackend backend = new TestBackend(RAMPS, 0, 0);
+		try (TGLiveDevice device = open(backend); TGLiveDevice deaf = TGLiveDevice.open(new TestBackend(RAMPS, 0, 0), 0, 0, 0)) {
+			backend.getStream().run(1);
+			assertArrayEquals(new float[2], device.capture(3, 100, 2));
+			assertArrayEquals(new float[2], deaf.capture(1, 100, 2));
+		}
+	}
+
 	@Test
 	void itKeepsTheLastThirtySecondsOfInput() throws TGAudioDeviceException {
 		TestBackend backend = new TestBackend(RAMPS, 0, 0);
