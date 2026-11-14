@@ -113,6 +113,14 @@ class TestLiveAudio {
 		assertEquals(new File("lib") + " " + new File("natives") + " " + new File("."), library + " " + TGLiveAudio.nativeFolder(properties) + " " + TGLiveAudio.nativeFolder(new Properties()));
 	}
 
+	// what a track's input channels are picked from: the channels opened on the input device; none without a device
+	@Test
+	void theInputChannelsAreThoseOpenedOnTheDevice() {
+		int none = this.audio.countInputChannels();
+		this.open(settings("ASIO", "Interface", 4, 0));
+		assertEquals("0 4", none + " " + this.audio.countInputChannels());
+	}
+
 	@Test
 	void theSynthesizerPlaysThroughTheDeviceTheSettingsChooseAtItsOwnRate() {
 		this.open(settings("ASIO", "Interface", 4, 0));

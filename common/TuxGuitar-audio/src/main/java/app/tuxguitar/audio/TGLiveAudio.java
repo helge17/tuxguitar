@@ -165,6 +165,11 @@ public final class TGLiveAudio implements TGSynthOutput {
 		return this.problem;
 	}
 
+	// the input channels opened on the device, which tracks record from; none without a device
+	public synchronized int countInputChannels() {
+		return (this.device != null ? this.device.getInputChannels() : 0);
+	}
+
 	public synchronized boolean play(TGSynthModel synthesizer) {
 		if (this.device == null) {
 			return false;
