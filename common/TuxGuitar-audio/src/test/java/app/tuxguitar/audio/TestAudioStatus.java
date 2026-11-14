@@ -91,6 +91,13 @@ class TestAudioStatus {
 		return status.substring(status.indexOf(" | ") + 3);
 	}
 
+	// the settings of an audio track (monitoring, input channels): none for another track, or when there is no track
+	@Test
+	void onlyAnAudioTrackHasAudioTrackSettings() {
+		TGTrack guitar = this.fixture.song.getTrack(0);
+		assertEquals("guitar false | Voice true | none false", "guitar " + TGAudioStatus.hasTrackSettings(guitar) + " | Voice " + TGAudioStatus.hasTrackSettings(this.voice) + " | none " + TGAudioStatus.hasTrackSettings(null));
+	}
+
 	@Test
 	void whileRecordingItCannotRecordAgain() {
 		device();

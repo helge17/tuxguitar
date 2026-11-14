@@ -43,6 +43,14 @@ public final class TGAudioStatus {
 		return new TGAudioStatus(recording ? RECORDING : NOT_RECORDING, !recording && !meters.isEmpty(), meters);
 	}
 
+	/**
+	 * Whether a track has audio track settings (monitoring, input channels) an app can show: an audio track does, other
+	 * tracks do not, nor does no track (an app's caret before a song is shown).
+	 */
+	public static boolean hasTrackSettings(TGTrack track) {
+		return track != null && track.isAudio();
+	}
+
 	public String getState() {
 		return this.state;
 	}
