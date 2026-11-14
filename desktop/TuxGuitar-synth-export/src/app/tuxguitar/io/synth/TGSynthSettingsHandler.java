@@ -4,6 +4,7 @@ import app.tuxguitar.app.io.persistence.TGPersistenceSettingsHandler;
 import app.tuxguitar.app.io.persistence.TGPersistenceSettingsMode;
 import app.tuxguitar.io.base.TGFileFormat;
 import app.tuxguitar.io.base.TGSongStreamContext;
+import app.tuxguitar.midi.synth.TGSynthAudioExporter;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGSynchronizer;
 
@@ -28,7 +29,7 @@ public class TGSynthSettingsHandler implements TGPersistenceSettingsHandler {
 			public void run() {
 				final TGSynthAudioSettings midiToAudioSettings = new TGSynthAudioSettings();
 
-				new TGSynthSettingsDialog(TGSynthSettingsHandler.this.context).open(midiToAudioSettings, new Runnable() {
+				TGSynthSettingsHandler.this.openDialog(midiToAudioSettings, new Runnable() {
 					public void run() {
 						context.setAttribute(TGSynthAudioSettings.class.getName(), midiToAudioSettings);
 						context.setAttribute(TGFileFormat.class.getName(), new TGSynthAudioFormat(midiToAudioSettings));
@@ -37,5 +38,15 @@ public class TGSynthSettingsHandler implements TGPersistenceSettingsHandler {
 				});
 			}
 		});
+	}
+
+	// the formats of the audio exporter registered (see TGSynthExportWriter), else Java Sound's encodings and types
+	private void openDialog(TGSynthAudioSettings settings, Runnable onSuccess) {
+		TGSynthAudioExporter exporter = TGSynthExportWriter.exporter(this.context);
+		if (exporter != null) {
+			new TGSynthExportDialog(this.context).open(exporter, settings, onSuccess);
+			return;
+		}
+		new TGSynthSettingsDialog(this.context).open(settings, onSuccess);
 	}
 }

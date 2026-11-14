@@ -14,7 +14,7 @@ public class TGSynthSongWriterPlugin extends TGSongWriterPlugin {
 	}
 
 	protected TGSongWriter createOutputStream(TGContext context) throws TGPluginException {
-		return new TGSynthSongWriter(context);
+		return new TGSynthExportWriter(context, new TGSynthSongWriter(context));
 	}
 
 	public String getModuleId(){

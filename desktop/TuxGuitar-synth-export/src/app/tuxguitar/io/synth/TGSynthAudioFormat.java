@@ -5,7 +5,7 @@ import app.tuxguitar.io.base.TGFileFormat;
 public class TGSynthAudioFormat extends TGFileFormat {
 
 	public TGSynthAudioFormat(TGSynthAudioSettings settings) {
-		super("Audio File", ("audio/" + settings.getType().getExtension()), new String[]{settings.getType().getExtension()});
+		super("Audio File", ("audio/" + settings.getExtension()), new String[]{settings.getExtension()});
 	}
 
 	public TGSynthAudioFormat() {
