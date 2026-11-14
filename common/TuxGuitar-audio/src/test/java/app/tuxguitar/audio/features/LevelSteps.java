@@ -142,6 +142,16 @@ public class LevelSteps {
 			assertEquals(frequency, Meters.peakFrequency(tap, from, from + LONG, frequency - NEAR, frequency + NEAR, TestInterface.SAMPLE_RATE), 1.0, "from " + from));
 	}
 
+	// in the last long window before it stops sounding in the measure, a tone at each frequency
+	@Then("track {int} ends measure {int} sounding a {double} Hz tone and a {double} Hz tone, each peaking above {float}")
+	public void endsSoundingTwoTones(int number, int measure, double one, double other, float level) {
+		float[] tap = tap(number, 0);
+		int[] sounding = sounding(tap, measure);
+		double first = Meters.level(tap, sounding[1] - LONG, sounding[1], one, TestInterface.SAMPLE_RATE);
+		double second = Meters.level(tap, sounding[1] - LONG, sounding[1], other, TestInterface.SAMPLE_RATE);
+		assertTrue(first > level && second > level, one + " Hz peaks at " + first + ", " + other + " Hz at " + second);
+	}
+
 	@Then("the output peaks below {float} in measure {int}")
 	public void theOutputPeaksBelow(float level, int measure) {
 		float peak = Math.max(peak(heard().left(), measure), peak(heard().right(), measure));

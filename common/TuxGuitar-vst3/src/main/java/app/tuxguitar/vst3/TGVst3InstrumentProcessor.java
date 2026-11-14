@@ -7,18 +7,20 @@ import app.tuxguitar.midi.synth.TGMidiProcessor;
 
 /**
  * A VST3 instrument as the source of a sound chain: the notes sent to it are played in the next block, each on its
- * frame (an untimed note on the block's first), with its velocity. A note is known by its key. A bend of a voice (the
- * string a note is played on) tunes the note that voice last started, alone, by its exact semitones; a bend of no
- * voice, or one without semitones, is not played.
+ * frame (an untimed note on the block's first), with its velocity. A note is known by its voice (the string it is
+ * played on) and its key, so two notes of one key on different strings (unison) are two notes the instrument stops and
+ * tunes apart; a note of no voice by its key. A bend of a voice tunes the note that voice last started, alone, by its
+ * exact semitones; a bend of no voice, or one without semitones, is not played.
  */
 public final class TGVst3InstrumentProcessor extends TGVst3Processor implements TGMidiProcessor {
 
-	// the voices a note can be played on: MIDI's 128
+	// the voices a note can be played on, and its keys: MIDI's 128 each
 	private static final int VOICES = 128;
+	private static final int KEYS = 128;
 	private static final int NONE = -1;
 
 	private final List<TGVst3NoteEvent> events = new ArrayList<TGVst3NoteEvent>();
-	// by voice, the key (the note id) of the note it last started; NONE before
+	// by voice, the key of the note it last started; NONE before
 	private final int[] notes = new int[VOICES];
 
 	public TGVst3InstrumentProcessor(TGVst3Hosting hosting) {
@@ -35,7 +37,7 @@ public final class TGVst3InstrumentProcessor extends TGVst3Processor implements 
 			if (isVoice(voice)) {
 				this.notes[voice] = key;
 			}
-			this.events.add(TGVst3NoteEvent.noteOn((int) frame, key, key, velocity / 127f));
+			this.events.add(TGVst3NoteEvent.noteOn((int) frame, key, noteId(key, voice), velocity / 127f));
 		}
 	}
 
@@ -43,12 +45,18 @@ public final class TGVst3InstrumentProcessor extends TGVst3Processor implements 
 		return (voice >= 0 && voice < VOICES);
 	}
 
+	// the note's id: by its voice and key (a note of no voice: by its key alone)
+	private static int noteId(int key, int voice) {
+		return (isVoice(voice) ? (voice + 1) * KEYS : 0) + key;
+	}
+
 	// the tuning of the note the voice last started, on the frame
 	public void sendPitchBend(int value, double semitones, int voice, boolean bendMode, long frame) {
 		synchronized (this.events) {
 			int note = (isVoice(voice) ? this.notes[voice] : NONE);
 			if (note != NONE) {
-				this.events.add(TGVst3NoteEvent.tuning((int) frame, note, (float) semitones));			}
+				this.events.add(TGVst3NoteEvent.tuning((int) frame, noteId(note, voice), (float) semitones));
+			}
 		}
 	}
 
@@ -57,7 +65,7 @@ public final class TGVst3InstrumentProcessor extends TGVst3Processor implements 
 	}
 
 	public void sendNoteOff(int key, int velocity, int voice, boolean bendMode, long frame) {
-		this.add(TGVst3NoteEvent.noteOff((int) frame, key, key));
+		this.add(TGVst3NoteEvent.noteOff((int) frame, key, noteId(key, voice)));
 	}
 
 	public void sendPitchBend(int value, int voice, boolean bendMode) {

@@ -274,6 +274,15 @@ Feature: Hosting VST3 plugins
     Then track 1 sounds a 440 Hz tone rising to 493.9 Hz within 1 Hz in measure 1
     And track 1 sounds a 329.6 Hz tone that stays within 1 Hz in measure 1
 
+  # unison: the same key on two strings is two notes to the instrument; the bent one ends a whole tone up, the other
+  # where both started
+  Scenario: a bend on one of two unison notes reaches the VST3 instrument for that note only
+    Given I have entered fret 5 on string 1 with a full bend
+    And I have entered fret 10 on string 2
+    And I have chosen the VST3 instrument "Test Sine" for track 1
+    When I play the song from measure 1 beat 1
+    Then track 1 ends measure 1 sounding a 493.9 Hz tone and a 440 Hz tone, each peaking above 0.1
+
   Scenario: the Metronome does not go through a percussion track's VST3 instrument
     Given I have added a percussion track
     And I have chosen the VST3 instrument "Test Sine" for track 2

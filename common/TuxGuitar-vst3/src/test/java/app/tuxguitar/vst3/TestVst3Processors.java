@@ -238,6 +238,58 @@ public class TestVst3Processors {
 		assertEquals(6, periods(sine));
 	}
 
+	// two notes of key 69 on voices 0 and 1 (unison on two strings), what is done to the note of voice 1, then that
+	// note stopped: the periods of what Test Sine still sounds
+	private long periodsOfTheFirstOfTwoUnisonNotes(java.util.function.Consumer<TGMidiProcessor> toTheSecond) {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(69, 127, 0, true, 0);
+		sine.sendNoteOn(69, 127, 1, true, 0);
+		toTheSecond.accept(sine);
+		sine.sendNoteOff(69, 0, 1, true, 0);
+		return periods(sine);
+	}
+
+	// unison notes are two notes: the note-off of one leaves the other sounding (440 Hz, 6 periods)
+	@Test
+	public void theNoteOffOfOneUnisonNoteLeavesTheOtherSounding() {
+		assertEquals(6, periodsOfTheFirstOfTwoUnisonNotes(sine -> { }));
+	}
+
+	// a note of no voice (a beat played as a note is entered) is none of a voice's notes: notes of no voice started and
+	// stopped, of the same key or another, leave the note of voice 0 sounding (440 Hz, 6 periods)
+	@Test
+	public void aNoteOfNoVoiceIsNotTheNoteOfAVoice() {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(69, 127, 0, false, 0);
+		for (int key : new int[] {69, 59}) {
+			sine.sendNoteOn(key, 127, -1, false, 0);
+			sine.sendNoteOff(key, 0, -1, false, 0);
+		}
+
+		assertEquals(6, periods(sine));
+	}
+
+	// where the notes of no voice end, those of voice 0 begin: the top key of no voice stopped leaves voice 0's lowest
+	// key sounding (8.18 Hz, peaking at 0.5: 0.058 on sample 100)
+	@Test
+	public void theTopKeyOfNoVoiceIsNotTheLowestKeyOfVoiceZero() {
+		TGMidiProcessor sine = instrument("Test Sine");
+		sine.sendNoteOn(0, 127, 0, false, 0);
+		sine.sendNoteOn(127, 127, -1, false, 0);
+		sine.sendNoteOff(127, 0, -1, false, 0);
+		float[][] block = new float[2][FRAMES];
+		sine.process(block);
+
+		assertEquals(0.058f, block[0][100], 0.001f);
+	}
+
+	// a bend of one of two unison notes tunes that one alone: once it stops, the other still sounds untuned (440 Hz, 6
+	// periods, not 880 Hz's 11)
+	@Test
+	public void aBendOfOneUnisonNoteLeavesTheOtherUntuned() {
+		assertEquals(6, periodsOfTheFirstOfTwoUnisonNotes(sine -> sine.sendPitchBend(127, 12.0, 1, true, 0)));
+	}
+
 	@Test
 	public void anInstrumentHearsTheVelocityAndTheNoteOff() {
 		TGMidiProcessor sine = instrument("Test Sine");
