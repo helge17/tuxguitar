@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import app.tuxguitar.action.TGActionContext;
@@ -46,6 +48,9 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 
 	// what a render that is not live (an export) binds its plugins to: nothing
 	public static final TGLivePlugins NONE = new TGLivePlugins(null, false);
+	// how long an editor waits at most for the live synthesizer to run a plugin just added (it loads in a few hundred
+	// milliseconds; the app opens editors on its UI thread, which waits meanwhile)
+	static final long LOAD_WAIT = 5000;
 
 	private final TGContext context;
 	private final boolean live;
@@ -54,6 +59,8 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 	// by key: the processors kept open while no render runs the element, and the element's parameters they were opened with
 	private final Map<String, Kept> kept = new HashMap<String, Kept>();
 	private final Map<String, Editor> editors = new HashMap<String, Editor>();
+	// the channels whose chains the live synthesizer runs
+	private final Set<Integer> played = new HashSet<Integer>();
 	// the gestures ended, in order, until drained (the audio thread adds, the app's UI thread drains)
 	private final ConcurrentLinkedQueue<Gesture> ended = new ConcurrentLinkedQueue<Gesture>();
 
@@ -98,17 +105,21 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 
 	private void forget(int channel) {
 		this.running.keySet().removeIf(key -> key.startsWith(channel + "/"));
+		this.played.remove(channel);
 	}
 
 	// the live synthesizer's channel runs the processors of its chain now, or none (closed): the editors of plugins that
-	// still run there are told their plugins may hold other values (the chain ran again from the song's elements)
+	// still run there are told their plugins may hold other values (the chain ran again from the song's elements), and
+	// an editor waiting for its plugin to run looks again
 	public synchronized void chainChanged(TGSynthChannel synthesizer) {
 		this.forget(synthesizer.getId());
 		if (synthesizer.getProcessor() != null) {
+			this.played.add(synthesizer.getId());
 			this.bind(synthesizer.getId(), synthesizer);
 		}
 		this.closeEditors();
 		this.editors.entrySet().stream().filter(editor -> editor.getKey().startsWith(synthesizer.getId() + "/")).forEach(editor -> editor.getValue().editor.changed());
+		this.notifyAll();
 	}
 
 	private TGVst3Instance listened(int channel, String element, TGVst3Instance instance) {
@@ -236,10 +247,31 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 
 	// the plugin's own editor, or TuxGuitar's parameter editor for a plugin without one
 	public synchronized TGPluginEditor openEditor(int channel, String element) throws TGVst3Exception {
+		return this.openEditor(channel, element, LOAD_WAIT);
+	}
+
+	// waiting at most the milliseconds while the live synthesizer runs the channel but not the element yet (one just
+	// added: the app sends the synthesizer the chain a moment later), so the editor is the running plugin's
+	synchronized TGPluginEditor openEditor(int channel, String element, long wait) throws TGVst3Exception {
+		long end = System.currentTimeMillis() + wait;
+		while (this.played.contains(channel) && !this.running.containsKey(key(channel, element)) && System.currentTimeMillis() < end) {
+			this.await(end - System.currentTimeMillis());
+		}
 		TGVst3Instance instance = this.get(channel, element);
 		TGPluginEditor editor = new TGPluginEditor(instance.openEditor(), () -> rows(instance));
 		this.editors.put(key(channel, element), new Editor(editor, instance));
 		return editor;
+	}
+
+	// until the chain changes or the milliseconds pass (at least one: no wait without end); interrupted, the editor waits
+	// no longer
+	private void await(long millis) throws TGVst3Exception {
+		try {
+			this.wait(Math.max(1, millis));
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new TGVst3Exception("interrupted while waiting for the plugin to run");
+		}
 	}
 
 	// the rows TuxGuitar's parameter editor shows, at the values the plugin holds: not the parameter choosing presets
@@ -277,6 +309,7 @@ public final class TGLivePlugins implements TGSynthChannelListener {
 		new ArrayList<Kept>(this.kept.values()).forEach(this::close);
 		this.kept.clear();
 		this.running.clear();
+		this.played.clear();
 		this.editors.values().forEach(editor -> editor.editor.close());
 		this.editors.clear();
 	}

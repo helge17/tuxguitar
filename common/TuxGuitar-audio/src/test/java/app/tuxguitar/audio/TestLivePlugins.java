@@ -263,6 +263,63 @@ public class TestLivePlugins {
 		assertEquals("true false 1 1", running + " " + gain.isOpen() + " " + told[0] + " " + told[1]);
 	}
 
+	// the thread waits (for the synthesizer to run a plugin), or has ended
+	private static void waitUntilWaiting(Thread thread) throws InterruptedException {
+		long end = System.currentTimeMillis() + 10000;
+		while (!java.util.EnumSet.of(Thread.State.WAITING, Thread.State.TIMED_WAITING, Thread.State.TERMINATED).contains(thread.getState()) && System.currentTimeMillis() < end) {
+			Thread.sleep(5);
+		}
+	}
+
+	// Edit right after Add, before the synthesizer runs the new effect (the app's player sends it the chain a moment
+	// later): the editor waits for the plugin the synthesizer runs and edits that one, not a second one kept open
+	@Test
+	public void anEditorOpenedBeforeTheSynthesizerRunsANewEffectEditsThePluginItRuns() throws Exception {
+		TGSynthModel synthesizer = LiveOutput.synthesizer(this.fixture.context, 44100);
+		TGSynthChannel channel = playLive(synthesizer);
+		this.addGain();
+		java.util.concurrent.CompletableFuture<TGPluginEditor> edit = new java.util.concurrent.CompletableFuture<TGPluginEditor>();
+		Thread editing = new Thread(() -> edit.complete(this.edit("effect-2", TGLivePlugins.LOAD_WAIT)));
+		editing.start();
+		waitUntilWaiting(editing);
+		this.sendAgain(synthesizer);
+		editing.join();
+		assertEquals("true true", (this.live.getEditor(this.guitar.getChannelId(), "effect-2") == edit.get()) + " " + (this.live.find(this.guitar.getChannelId(), "effect-2") == running(channel, "effect-2")));
+	}
+
+	// the editor of the element, opened waiting at most the milliseconds for the synthesizer to run it; null when it
+	// cannot be opened
+	private TGPluginEditor edit(String element, long wait) {
+		try {
+			return this.live.openEditor(this.guitar.getChannelId(), element, wait);
+		} catch (TGVst3Exception e) {
+			return null;
+		}
+	}
+
+	// an editor waiting for its plugin to run, interrupted, opens none
+	@Test
+	public void anEditorInterruptedWaitingForItsPluginOpensNone() throws Exception {
+		playLive(LiveOutput.synthesizer(this.fixture.context, 44100));
+		this.addGain();
+		java.util.concurrent.CompletableFuture<TGPluginEditor> edit = new java.util.concurrent.CompletableFuture<TGPluginEditor>();
+		Thread editing = new Thread(() -> edit.complete(this.edit("effect-2", TGLivePlugins.LOAD_WAIT)));
+		editing.start();
+		waitUntilWaiting(editing);
+		editing.interrupt();
+		editing.join();
+		assertEquals("null null", edit.get() + " " + this.live.getEditor(this.guitar.getChannelId(), "effect-2"));
+	}
+
+	// a new effect the synthesizer does not get to run in the time waited is edited in a plugin kept open for it
+	@Test
+	public void anEditorOfANewEffectTheSynthesizerDoesNotRunEditsOneKeptForIt() throws Exception {
+		playLive(LiveOutput.synthesizer(this.fixture.context, 44100));
+		this.addGain();
+		TGPluginEditor editor = this.edit("effect-2", 100);
+		assertEquals("true true", (this.live.getEditor(this.guitar.getChannelId(), "effect-2") == editor) + " " + (this.live.find(this.guitar.getChannelId(), "effect-2") != null));
+	}
+
 	// a gesture undone, then redone: the synthesizer, sent the channel again (as the app's player is after a channel's
 	// change is undone or redone), runs its plugin as the song has it each time
 	@Test
