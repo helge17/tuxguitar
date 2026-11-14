@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,8 @@ import app.tuxguitar.player.base.MidiPlayerException;
 import app.tuxguitar.player.base.MidiSynthesizer;
 import app.tuxguitar.song.models.TGAudioInput;
 import app.tuxguitar.song.models.TGTrack;
+import app.tuxguitar.vst3.TGVst3Folders;
+import app.tuxguitar.vst3.TGVst3Hosting;
 
 /**
  * The app's live audio, installed as an app does at startup, on a double of the native backend listing two devices.
@@ -128,6 +131,27 @@ class TestLiveAudio {
 		Properties properties = new Properties();
 		properties.setProperty("java.library.path", system + File.pathSeparator + lib);
 		assertEquals(lib, TGLiveAudio.nativeFolder(properties));
+	}
+
+	// VST3 hosting: the host process is in the native folder (even when the native audio library is not), named for the
+	// system, and the plugins are those of the system's VST3 folders
+	@Test
+	void loadingConfiguresTheVst3HostInTheNativeFolderAndTheSystemsVst3Folders() {
+		File folder = new File("target/no-native-library");
+		TGVst3Hosting hosting = TGVst3Hosting.getInstance(this.fixture.context);
+		Map<String, String> env = Map.of("COMMONPROGRAMFILES", "/common");
+		this.audio.load(folder, system("Windows 11", "/home/me"), env);
+		String windows = hosting.getExecutable() + " " + hosting.getFolders();
+		this.audio.load(folder, system("Linux", "/home/me"), env);
+		String linux = hosting.getExecutable() + " " + hosting.getFolders();
+		assertEquals(new File(folder, "tuxguitar-vst3-host.exe") + " " + TGVst3Folders.standard("Windows 11", env, new File("/home/me")) + " | " + new File(folder, "tuxguitar-vst3-host") + " " + TGVst3Folders.standard("Linux", env, new File("/home/me")), windows + " | " + linux);
+	}
+
+	private static Properties system(String os, String home) {
+		Properties system = new Properties();
+		system.setProperty("os.name", os);
+		system.setProperty("user.home", home);
+		return system;
 	}
 
 	// what a track's input channels are picked from: the channels opened on the input device; none without a device

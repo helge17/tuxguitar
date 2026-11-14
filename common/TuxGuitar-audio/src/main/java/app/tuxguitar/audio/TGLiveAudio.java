@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -21,6 +22,8 @@ import app.tuxguitar.midi.synth.TGSynthOutput;
 import app.tuxguitar.player.base.MidiPlayer;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.singleton.TGSingletonUtil;
+import app.tuxguitar.vst3.TGVst3Folders;
+import app.tuxguitar.vst3.TGVst3Hosting;
 
 /**
  * The app's live audio, one per context: the live audio device opened on the devices the settings choose, at the rate
@@ -99,8 +102,16 @@ public final class TGLiveAudio implements TGSynthOutput {
 		return new File(system.getProperty(NATIVE_PATH, holding));
 	}
 
-	// the native audio backend, from the folder; if it does not load, that is the problem
-	public synchronized void load(File folder) {
+	// the native audio backend, from the folder; if it does not load, that is the problem. VST3 plugins are hosted by the
+	// host process in the folder, from the system's VST3 folders
+	public void load(File folder) {
+		this.load(folder, System.getProperties(), System.getenv());
+	}
+
+	// on the system the properties and the environment describe
+	synchronized void load(File folder, Properties system, Map<String, String> env) {
+		String os = system.getProperty("os.name", "");
+		TGVst3Hosting.getInstance(this.context).configure(TGVst3Hosting.executable(folder, os), TGVst3Folders.standard(os, env, new File(system.getProperty("user.home", "."))));
 		try {
 			this.use(TGPortAudio.load(folder));
 		} catch (TGAudioDeviceException | LinkageError e) {
