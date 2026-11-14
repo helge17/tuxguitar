@@ -8,8 +8,10 @@ Implemented so far, rendered offline on the Test Interface: `tracks/audio_tracks
 `recording/recording_line_in`, `plugins/hosting_vst3_plugins` and `sync/keeping_audio_in_sync`, but for the scenarios
 still tagged `@planned` in them: takes, General MIDI programs, the mix, time-stretching, input channels and levels, the
 round trip, refusals during a recording, Count In, monitoring, sound chains of VST3 effects and instruments in their
-helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module; the
-desktop export dialog does not call it yet). Saving is implemented in lib's TuxGuitar file format (format 3.0: a
+helper processes, and plugin delay compensation. Export is implemented headless (TGAudioExporter in this module), in
+WAVE 16/24-bit/float, AIFF 16-bit and AU 16-bit (`TGExportFormat.offered`); an installed app's audio export writes
+through it (`TGAudioExport`, synth-core's `TGSynthAudioExporter` extension: the desktop's File > Export audio offers
+those formats when the audio plugin is installed). Saving is implemented in lib's TuxGuitar file format (format 3.0: a
 `TGAudio` node in content.xml, each take a 32-bit float wave entry `takes/<id>.wav` written by this module's
 `TGTakeWave`) and `TGAudioSaving.install`, which gives the take codec to the reader and writer and stores each VST3
 plugin's state before the write action. The player's position
@@ -27,7 +29,14 @@ offer yet). Without a device Record is refused, and an input channel the device 
 Count In / Metronome click is a TuxGuitar setting kept in the app's configuration (`MidiClick.read`/`write`). Plugin editors are implemented headless: `TGLivePlugins` knows each VST3 plugin of a
 sound chain as it runs (a live render's, else one kept open for its element), opens its own editor or TuxGuitar's
 parameter editor (`TGOpenPluginEditorAction`), and turns one gesture or preset in it into one
-`TGSetPluginStateAction`; the desktop does not map those actions or bind its synthesizer's chains yet. The Metronome
+`TGSetPluginStateAction` when an app drains it on the thread that edits the song (the audio thread only notes it).
+An installed app's synthesizer runs VST3 effects and instruments and tells `TGLivePlugins` each time a channel's chain
+changes (synth-core's `TGSynthChannelListener`), so editors open on the plugin that sounds and close when it stops;
+saving takes an enabled running plugin's state. `TGLiveAudio.load` also configures VST3 hosting (the host process in
+the native folder, the system's VST3 folders, `TGVst3Folders.standard`). The desktop maps the sound-chain actions,
+offers Tools > Sound Chain... (`TGSoundChainRows`), scans the VST3 folders at startup and drains gestures every 50 ms;
+Tools > Record and Audio Track Settings... grey when they cannot apply (a core enabled check on custom tools). The
+desktop has no parameter editor window yet for a plugin without its own editor. The Metronome
 clicks on the General MIDI drums outside every sound chain: offline (`TGMetronome`), and live on the TuxGuitar
 Synthesizer's own drums (the channel `MidiSampleClock.DRUMS`, at the percussion channel's Volume and Balance, delayed by
 plugin delay compensation like the tracks); with another MIDI Port it is still the sequencer's metronome track on the
