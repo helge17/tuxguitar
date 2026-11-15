@@ -32,6 +32,8 @@ public abstract class TGDivisionType {
 	// Alias for better code readability
 	public static final TGDivisionType NORMAL = DIVISION_TYPES[0];
 
+	public static final int FINEST_DIVISION_ENTERS = DIVISION_TYPES[DIVISION_TYPES.length - 1].getEnters();
+
 	/**
 	 * Cantidad de Duraciones que entran en los tiempos
 	 */
