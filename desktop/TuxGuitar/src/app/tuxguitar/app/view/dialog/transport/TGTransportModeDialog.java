@@ -271,6 +271,7 @@ public class TGTransportModeDialog {
 		buttonsLayout.set(buttonCancel, UITableLayout.MARGIN_RIGHT, 0f);
 
 		this.colorOK = this.customFrom.getBgColor();
+		simplePercent.setFocus();
 		TGDialogUtil.openDialog(dialog,TGDialogUtil.OPEN_STYLE_CENTER | TGDialogUtil.OPEN_STYLE_PACK);
 	}
 	
