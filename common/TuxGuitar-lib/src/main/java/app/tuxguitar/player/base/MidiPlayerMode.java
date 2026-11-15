@@ -7,6 +7,9 @@ public class MidiPlayerMode{
 	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_FROM = 80;
 	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_TO = 100;
 	public static final int CUSTOM_DEFAULT_TEMPO_PERCENT_INCREMENT = 5;
+	
+	public static final int MIN_TEMPO_PERCENTAGE = 1;
+	public static final int MAX_TEMPO_PERCENTAGE = 500;
 
 	public static final int TYPE_SIMPLE = 1;
 	public static final int TYPE_CUSTOM = 2;
