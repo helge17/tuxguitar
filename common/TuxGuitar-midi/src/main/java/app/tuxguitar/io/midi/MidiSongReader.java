@@ -26,6 +26,7 @@ import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChannelParameter;
 import app.tuxguitar.song.models.TGColor;
+import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
@@ -459,8 +460,13 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 					this.settings.getMaxDivision());
 			}
 			else {
-				durationList = new ArrayList<TGDuration>();
-				durationList.add(TGDuration.fromTime(this.factory, coarseTimeToFill));
+				// no quantization, try perfect split
+				durationList = TGDuration.splitPreciseDuration(preciseTimeToFill, measure.getPreciseLength(), factory);
+				// if perfect split failed, split approximately with finest possible resolution
+				if (durationList == null) {
+					durationList = TGDuration.splitPreciseDurationApproximately(preciseTimeToFill,  measure.getPreciseLength(), factory,
+							TGDuration.SHORTEST, TGDivisionType.FINEST_DIVISION_ENTERS);
+				}
 			}
 
 			// need to re-align list? (e.g. what's best, 1/2 + 1/16 or 1/16 + 1/2 ?)

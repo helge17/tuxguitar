@@ -39,6 +39,8 @@ import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
@@ -230,7 +232,7 @@ public class TGFretBoard {
 		if (this.stringSpacing != this.lastStringSpacing) {
 			TuxGuitar.getInstance().getConfig().setValue(TGConfigKeys.FRETBOARD_STRING_SPACING,this.stringSpacing);
 			this.setChanges(true);
-			this.updateEditor();
+			this.getControl().redraw();
 		}
 	}
 
@@ -332,7 +334,7 @@ public class TGFretBoard {
 		}
 	}
 
-	private void updateEditor(){
+	private void updateEditor(UIPainter painter){
 		if( isVisible() ){
 			if( MidiPlayer.getInstance(this.context).isRunning()){
 				this.beat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
@@ -358,6 +360,7 @@ public class TGFretBoard {
 				initStrings(getStringCount());
 				//Fuerzo a cambiar el ancho
 				this.lastSize.setHeight(0);
+				this.updateFontSize(painter);
 			}
 
 			UIRectangle childArea = this.control.getChildArea();
@@ -375,6 +378,37 @@ public class TGFretBoard {
 			this.lastSize.setHeight(clientHeight);
 			this.lastStringSpacing = this.stringSpacing;
 		}
+	}
+
+	private void updateFontSize(UIPainter painter) {
+		UIFont font = this.config.getFont();
+		UIFontModel fontModel = new UIFontModel(font.getName(), font.getHeight(), font.isBold(), font.isItalic());
+		UIFont newFont = getUIFactory().createFont(fontModel);
+		Float textSize = updateTextSize(painter, newFont);
+		boolean OK = false;
+		// iterative approach, because width is not a linear function of height
+		while (textSize > 0.8*this.getOvalSize()) {
+			// too big
+			newFont.dispose();
+			fontModel.setHeight(fontModel.getHeight() - 1f);
+			newFont = getUIFactory().createFont(fontModel);
+			textSize = updateTextSize(painter, newFont);
+			OK = true;
+		}
+		while (!OK && (textSize < 0.7*this.getOvalSize())) {
+			// too small
+			newFont.dispose();
+			fontModel.setHeight(fontModel.getHeight() + 1f);
+			newFont = getUIFactory().createFont(fontModel);
+			textSize = updateTextSize(painter, newFont);
+		}
+		this.config.setFont(newFont);
+	}
+
+	private float updateTextSize(UIPainter painter, UIFont font) {
+		painter.setFont(font);
+		// measure of width: arbitrary string, with an alteration to be wide enough
+		return Math.max(font.getHeight(),painter.getFMWidth("A#"));
 	}
 
 	private void paintFretBoard(UIPainter painter){
@@ -531,14 +565,10 @@ public class TGFretBoard {
 	}
 
 	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
-		this.paintKeyOval(painter, background, x, y, this.getOvalSize());
-	}
-
-	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y, int ovalSize) {
 		painter.setBackground(background);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(x, y);
-		painter.addCircle(x, y, ovalSize);
+		painter.addCircle(x, y, this.getOvalSize());
 		painter.closePath();
 	}
 
@@ -549,16 +579,13 @@ public class TGFretBoard {
 			painter.setFont(this.config.getFont());
 
 			float fmWidth = painter.getFMWidth(text);
-			float fmHeight = painter.getFMHeight();
-			int ovalSize = (int)Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
-			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
-			this.paintKeyOval(painter, background, x, y, ovalSize);
+			this.paintKeyOval(painter, background, x, y);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
 		}
 	}
 
 	protected void paintEditor(UIPainter painter) {
-		this.updateEditor();
+		this.updateEditor(painter);
 		if (this.frets.length > 0 && this.strings.length > 0) {
 			paintFretBoard(painter);
 
@@ -672,11 +699,7 @@ public class TGFretBoard {
 	}
 
 	private int getOvalSize(){
-		return ((this.stringSpacing / 2) + (this.stringSpacing / 10));
-	}
-
-	private int getMaxOvalSize() {
-		return (this.stringSpacing - this.stringSpacing/10);
+		return (7*this.stringSpacing / 10);
 	}
 
 	private void addNote(int fret, int string) {

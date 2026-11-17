@@ -74,6 +74,14 @@ public class TGFretBoardConfig {
 		return this.font;
 	}
 
+	public void setFont(UIFont font) {
+		if ((this.font != null) && !this.font.isDisposed()) {
+			this.font.dispose();
+		}
+		this.font = font;
+	}
+
+
 	public UIColor getColorBackground() {
 		return this.colorBackground;
 	}

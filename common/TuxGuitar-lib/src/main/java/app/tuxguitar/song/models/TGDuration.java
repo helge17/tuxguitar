@@ -251,7 +251,11 @@ public abstract class TGDuration implements Comparable<TGDuration> {
 						default:
 							return null;
 						}
-
+						// specific case for 9-uplets: not ok if number of instances can be divided by 3
+						if ((dt.getEnters() == 9) && (nBase % 3 == 0)) {
+							base *= 3;
+							nBase /= 3;
+						}
 						if (ok) {
 							long handled = 0;
 							for (int i=0; i<nBase; i++) {
