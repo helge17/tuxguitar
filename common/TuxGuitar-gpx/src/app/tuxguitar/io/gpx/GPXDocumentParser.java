@@ -321,7 +321,7 @@ public class GPXDocumentParser {
 								tgBeat.setText(text);
 							}
 							if (beat.getChordId() != null) {
-								GPXChord gpChord = this.document.getChord(beat.getChordId());
+								GPXChord gpChord = document.getTracks().get(tgMeasure.getTrack().getNumber() - 1).getChord(beat.getChordId());
 								if (gpChord != null) {
 									TGChord chord = this.factory.newChord(gpChord.getStringCount());
 									if (gpChord.getName() != null) {

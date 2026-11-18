@@ -198,13 +198,13 @@ public class GPXDocumentReader {
 					}
 
 					this.gpxDocument.getTracks().add( track );
-					this.readChords(propertiesNode);
+					this.readChords(propertiesNode, track);
 				}
 			}
 		}
 	}
 
-	public void readChords(NodeList propertiesNode) {
+	public void readChords(NodeList propertiesNode, GPXTrack track) {
 		if( propertiesNode != null ){
 			for( int p = 0 ; p < propertiesNode.getLength() ; p ++ ){
 				Node propertyNode = propertiesNode.item( p );
@@ -234,7 +234,7 @@ public class GPXDocumentReader {
 												}
 											}
 										}
-										this.gpxDocument.getChords().add(chord);
+										track.getChords().add(chord);
 									}
 								}
 							}

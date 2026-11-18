@@ -1,5 +1,9 @@
 package app.tuxguitar.io.gpx.score;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class GPXTrack {
 
 	private int id;
@@ -7,6 +11,7 @@ public class GPXTrack {
 	private int[] color;
 	private String name;
 	private int capo;
+	private List<GPXChord> chords;
 
 	private int gmProgram;
 	private int gmChannel1;
@@ -14,6 +19,7 @@ public class GPXTrack {
 
 	public GPXTrack(){
 		super();
+		this.chords = new ArrayList<GPXChord>();
 	}
 
 	public int getId() {
@@ -79,4 +85,20 @@ public class GPXTrack {
 	public void setGmChannel2(int gmChannel2) {
 		this.gmChannel2 = gmChannel2;
 	}
+
+	public List<GPXChord> getChords() {
+		return chords;
+	}
+
+	public GPXChord getChord( int id ){
+		Iterator<GPXChord> it = this.chords.iterator();
+		while( it.hasNext() ){
+			GPXChord chord = it.next();
+			if( chord.getId() == id ){
+				return chord;
+			}
+		}
+		return null;
+	}
+
 }
