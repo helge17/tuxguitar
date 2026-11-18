@@ -216,21 +216,51 @@ public class GPXDocumentReader {
 								Node itemNode = itemsNode.item( i );
 								if (itemNode.getNodeName().equals("Item")) {
 									Node diagramNode = getChildNode(itemNode, "Diagram");
-									NodeList fretsNode = getChildNodeList(itemNode, "Diagram");
-									if( diagramNode != null && fretsNode != null ) {
+									if (diagramNode != null) {
 										GPXChord chord = new GPXChord();
-
 										chord.setId(getAttributeIntegerValue(itemNode, "id"));
 										chord.setName(getAttributeValue(itemNode, "name"));
 										chord.setStringCount(getAttributeIntegerValue(diagramNode, "stringCount"));
-										chord.setBaseFret(getAttributeIntegerValue(diagramNode, "baseFret"));
+										int baseFret = getAttributeIntegerValue(diagramNode, "baseFret");
+										chord.setBaseFret(baseFret);
 										chord.setFrets(new Integer[chord.getStringCount()]);
-										for( int f = 0 ; f < fretsNode.getLength() ; f ++ ){
-											Node fretNode = fretsNode.item( f );
-											if (fretNode.getNodeName().equals("Fret")) {
-												Integer string = getAttributeIntegerValue(fretNode, "string");
-												if( string != null && string < chord.getStringCount() ) {
-													chord.getFrets()[string] = getAttributeIntegerValue(fretNode, "fret");
+										// try to read "Fingering" node first, if it exists, else fall back to frets
+										boolean chordFound = false;
+										Node fingeringNode = getChildNode(diagramNode, "Fingering");
+										if (fingeringNode != null) {
+											NodeList positionNodes = getChildNodeList(diagramNode, "Fingering");
+											if (positionNodes != null) {
+												for( int f = 0 ; f < positionNodes.getLength() ; f ++ ){
+													Node positionNode = positionNodes.item( f );
+													if (positionNode.getNodeName().equals("Position")) {
+														String finger = getAttributeValue(positionNode, "finger");
+														Integer fret = getAttributeIntegerValue(positionNode, "fret");
+														Integer string = getAttributeIntegerValue(positionNode, "string");
+														if( string != null && string < chord.getStringCount() && fret >= 0 && finger != null) {
+															// specific case: if finger is "None" and fret is 0 this means fret 0, as an *absolute value*
+															// in other cases, the fret number is relative to baseFret
+															// consider all fret number relative to baseFret
+															if (fret == 0 && "None".equals(finger)) {
+																fret = -baseFret;
+															}
+															chord.getFrets()[string] = fret;
+															chordFound = true;
+														}
+													}
+												}
+											}
+										}
+										if (!chordFound) {
+											NodeList fretsNode = getChildNodeList(itemNode, "Diagram");
+											if( fretsNode != null ) {
+												for( int f = 0 ; f < fretsNode.getLength() ; f ++ ){
+													Node fretNode = fretsNode.item( f );
+													if (fretNode.getNodeName().equals("Fret")) {
+														Integer string = getAttributeIntegerValue(fretNode, "string");
+														if( string != null && string < chord.getStringCount() ) {
+															chord.getFrets()[string] = getAttributeIntegerValue(fretNode, "fret");
+														}
+													}
 												}
 											}
 										}
