@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import app.tuxguitar.io.tef.TGSongAdjuster;
 import app.tuxguitar.io.tef3.base.TEChordDefinition;
 import app.tuxguitar.io.tef3.base.TEComponentBase;
 import app.tuxguitar.io.tef3.base.TEComponentChord;
@@ -19,15 +20,16 @@ import app.tuxguitar.io.tef3.base.TEComponentTempoChange;
 import app.tuxguitar.io.tef3.base.TEComponentTextEvent;
 import app.tuxguitar.io.tef3.base.TELyrics;
 import app.tuxguitar.io.tef3.base.TEMeasure;
-import app.tuxguitar.io.tef3.base.TEPosition;
 import app.tuxguitar.io.tef3.base.TESong;
 import app.tuxguitar.io.tef3.base.TETimeSignature;
 import app.tuxguitar.io.tef3.base.TETrack;
 import app.tuxguitar.song.factory.TGFactory;
+import app.tuxguitar.song.managers.TGMeasureManager;
 import app.tuxguitar.song.managers.TGSongManager;
 import app.tuxguitar.song.models.TGBeat;
 import app.tuxguitar.song.models.TGChannel;
 import app.tuxguitar.song.models.TGChord;
+import app.tuxguitar.song.models.TGDivisionType;
 import app.tuxguitar.song.models.TGDuration;
 import app.tuxguitar.song.models.TGLyric;
 import app.tuxguitar.song.models.TGMeasure;
@@ -71,6 +73,7 @@ public class TESongParser {
 		this.addTracks(tgSong, teSong);
 		this.addMeasures(tgSong, teSong);
 		this.sortComponents(teSong);
+		this.cleanMeasures(tgSong);
 		this.addComponents(tgSong, teSong);
 
 		return new TGSongAdjuster(this.manager, tgSong).process();
@@ -192,6 +195,13 @@ public class TESongParser {
 		}
 	}
 
+	private void cleanMeasures(TGSong tgSong) {
+		Iterator<TGTrack> tracks = tgSong.getTracks();
+		while (tracks.hasNext()) {
+			this.manager.getMeasureManager().cleanMeasure(tracks.next().getMeasure(0));
+		}
+	}
+
 	private void addComponents(TGSong tgSong, TESong teSong){
 		List<TETrack> teTracks = teSong.getTracks();
 		Iterator<TEComponentBase> it = teSong.getComponents().iterator();
@@ -223,7 +233,14 @@ public class TESongParser {
 			TETrack teTrack = teTracks.get(componentTrackIndex);
 			TGTrack tgTrack = tgSong.getTrack(componentTrackIndex);
 			TGMeasure tgMeasure = tgTrack.getMeasure(measure);
-			TGBeat tgBeat = getBeat(tgMeasure, this.getGridPosition(tgMeasure, component.getPosition()));
+			TGDuration tgDuration = null;
+			if (component instanceof TEComponentRest) {
+				tgDuration = getDuration(((TEComponentRest)component).getDuration().getValue());
+			} else if (component instanceof TEComponentNote) {
+				tgDuration = getDuration(((TEComponentNote)component).getDuration().getValue());
+			}
+			long beatPreciseStart = getPreciseStart(tgDuration, tgMeasure, component.getPosition().getPositionInMeasure());
+			TGBeat tgBeat = getBeatPrecise(tgMeasure, beatPreciseStart);
 
 			if(component instanceof TEComponentNote) {
 				TGNote tgNote = this.addNote(teTrack, (TEComponentNote)component, tgBeat);
@@ -283,29 +300,32 @@ public class TESongParser {
 		});
 	}
 
-	private TGBeat getBeat(TGMeasure measure, long start){
-		TGBeat beat = this.manager.getMeasureManager().getBeat(measure, start);
+	private TGBeat getBeatPrecise(TGMeasure measure, long preciseStart){
+		TGBeat beat = this.manager.getMeasureManager().getBeatPrecise(measure, preciseStart);
 		if(beat == null){
 			beat = this.manager.getFactory().newBeat();
-			beat.setStart(start);
+			beat.setPreciseStart(preciseStart);
 			measure.addBeat(beat);
 		}
 		return beat;
 	}
 
-	// TablEdit uses a 16th note grid.
-	// Anything smaller than a 16th note is padded with rests to be a 16th note.
-	// So a 1/64th note is actually 1/64th note, with 3 1/64th note rests after it.
-	private long getGridPosition(TGMeasure measure, TEPosition position){
-		long measureStart = measure.getStart();
-		int positionInMeasure = position.getPositionInMeasure();
-
-		float durationOfSixteenthNote = (float)TGDuration.QUARTER / TGDuration.SIXTEENTH;
-		float sizePerGridPosition = TGDuration.QUARTER_TIME * durationOfSixteenthNote;
-
-		long gridPosition = (long) (measureStart + (sizePerGridPosition * positionInMeasure));
-
-		return gridPosition;
+	private long getPreciseStart(TGDuration duration, TGMeasure measure, int position){
+		// position = position in measure, unit = 1 whole/64
+		// assuming that first note of a triplet is correctly aligned, 2nd and 3rd are not
+		// Example for a triplet of eighth:
+		// - first note is aligned on a quarter
+		// - second note is placed 1/16th after first
+		// - third is placed 2/16th after first
+		long preciseStartInMeasure = TGDuration.WHOLE_PRECISE_DURATION * position / 64;
+		if(duration != null && !duration.getDivision().isEqual(TGDivisionType.NORMAL)){
+			long notTupletedHalfDuration = duration.getPreciseTime() * 3 / 4; // for a triplet of 1/8th, this corresponds to 1/16th
+			long indexInTriplet = (preciseStartInMeasure / notTupletedHalfDuration) % 4;	// logically, from 0 to 2
+			if ((indexInTriplet == 1) || (indexInTriplet == 2)) {
+				preciseStartInMeasure += indexInTriplet * duration.getPreciseTime() / 4;
+			}
+		}
+		return measure.getPreciseStart() + preciseStartInMeasure;
 	}
 
 	private TGDuration getDuration(int duration){
@@ -414,20 +434,8 @@ public class TESongParser {
 
 		this.addNoteEffects(tgNote, teNote);
 
-		int voiceIndex = 0;
-		switch (teNote.getAttributes()) {
-			case UpperVoice:
-				voiceIndex = 0;
-				break;
-			case LowerVoice:
-				voiceIndex = 1;
-				break;
-			default:
-				break;
-		}
-
 		TGDuration tgDuration = this.getDuration(teNote.getDuration().getValue());
-		TGVoice tgVoice = tgBeat.getVoice(voiceIndex);
+		TGVoice tgVoice = tgBeat.getVoice(0);
 
 		switch (teNote.getStroke()) {
 			case UpStroke:
@@ -442,7 +450,10 @@ public class TESongParser {
 				break;
 		}
 
-		tgVoice.getDuration().copyFrom(tgDuration);
+		// merge voices: keep shortest duration
+		if (tgVoice.isEmpty() || (tgDuration.compareTo(tgVoice.getDuration()) < 0)) {
+			tgVoice.getDuration().copyFrom(tgDuration);
+		}
 		tgVoice.addNote(tgNote);
 
 		return tgNote;
@@ -693,18 +704,17 @@ public class TESongParser {
 				break;
 		}
 	}
-
+	
 	private void addRest(TEComponentRest teRest, TGBeat tgBeat) {
-		int voiceIndex = 0;
-
-		if (teRest.getIsLowerVoice()) {
-			voiceIndex = 1;
+		// merge voices: keep shortest duration
+		TGVoice tgVoice = tgBeat.getVoice(0);
+		TGDuration tgDuration = this.getDuration(teRest.getDuration().getValue());
+		if (tgVoice.isEmpty() || (tgDuration.compareTo(tgVoice.getDuration()) < 0)) {
+			tgVoice.getDuration().copyFrom(tgDuration);
 		}
-
-		TGVoice tgVoice = tgBeat.getVoice(voiceIndex);
-		tgVoice.clearNotes();
+		tgVoice.setEmpty(false);
 	}
-
+	
 	private void addTextEvent(TESong teSong, TEComponentTextEvent teTextEvent, TGBeat tgBeat) {
 		TGText tgText = this.manager.getFactory().newText();
 		tgText.setBeat(tgBeat);
@@ -743,97 +753,6 @@ public class TESongParser {
 			measureHeader.setRepeatClose(endingNumber - 1);
 		} else if (measureHeader.getRepeatClose() == 0 && endingNumber != 0) {
 			measureHeader.setRepeatAlternative(1 << (endingNumber - 1));
-		}
-	}
-}
-
-class TGSongAdjuster {
-
-	protected TGSong song;
-	protected TGSongManager manager;
-
-	public TGSongAdjuster(TGSongManager manager, TGSong song) {
-		this.manager = manager;
-		this.song = song;
-	}
-
-	public TGSong process() {
-		Iterator<TGTrack> tracks = this.song.getTracks();
-		while(tracks.hasNext()) {
-			TGTrack track = tracks.next();
-			Iterator<TGMeasure> measures = track.getMeasures();
-			while(measures.hasNext()) {
-				TGMeasure measure = measures.next();
-				this.process(measure);
-			}
-		}
-		return this.song;
-	}
-
-	public void process(TGMeasure measure){
-		this.manager.getMeasureManager().orderBeats(measure);
-		this.adjustBeats(measure);
-	}
-
-	public void adjustBeats(TGMeasure measure) {
-		TGBeat previous = null;
-		boolean finish = true;
-
-		long measureStart = measure.getStart();
-		long measureEnd = (measureStart + measure.getLength());
-		for(int i = 0;i < measure.countBeats();i++){
-			TGBeat beat = measure.getBeat( i );
-			long beatStart = beat.getStart();
-			long beatLength = beat.getVoice(0).getDuration().getTime();
-			if(previous != null){
-				long previousStart = previous.getStart();
-				long previousLength = previous.getVoice(0).getDuration().getTime();
-
-				// check for a chord in a rest beat
-				if( beat.getVoice(0).isRestVoice() && beat.isChordBeat() ){
-					TGBeat candidate = null;
-					TGBeat next = this.manager.getMeasureManager().getFirstBeat( measure.getBeats() );
-					while( next != null ){
-						if( candidate != null && next.getStart() > beat.getStart() ){
-							break;
-						}
-						if(! next.getVoice(0).isRestVoice() && !next.isChordBeat() ){
-							candidate = next;
-						}
-						next = this.manager.getMeasureManager().getNextBeat(measure.getBeats(), next);
-					}
-					if(candidate != null){
-						candidate.setChord( beat.getChord() );
-					}
-					measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-
-				// check the duration
-				if(previousStart < beatStart && (previousStart + previousLength) > beatStart){
-					if(beat.getVoice(0).isRestVoice()){
-						measure.removeBeat(beat);
-						finish = false;
-						break;
-					}
-					TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (beatStart - previousStart) );
-					previous.getVoice(0).getDuration().copyFrom( duration );
-				}
-			}
-			if( (beatStart + beatLength) > measureEnd ){
-				if(beat.getVoice(0).isRestVoice()){
-					measure.removeBeat(beat);
-					finish = false;
-					break;
-				}
-				TGDuration duration = TGDuration.fromTime(this.manager.getFactory(), (measureEnd - beatStart) );
-				beat.getVoice(0).getDuration().copyFrom( duration );
-			}
-			previous = beat;
-		}
-		if(!finish){
-			adjustBeats(measure);
 		}
 	}
 }
