@@ -300,7 +300,7 @@ public class TGSongManager {
 		}
 	}
 
-	public String createChannelName(TGSong song, TGChannel channel, String prefix) {
+	public String createChannelName(TGSong song, String prefix) {
 		int number = 0;
 
 		String unusedName = null;
@@ -315,22 +315,32 @@ public class TGSongManager {
 	}
 
 	public String createDefaultChannelName(TGSong song, TGChannel channel) {
-		return this.createChannelName(song, channel, TGMessagesManager.getProperty("file.save.default-name"));
+		return this.createChannelName(song, TGMessagesManager.getProperty("file.save.default-name"));
 	}
 
 	public String createChannelNameFromProgram(TGSong song, TGChannel channel) {
 		if( channel.isPercussionChannel() ) {
-			return this.createChannelName(song, channel, TGMessagesManager.getProperty("instrument.drumkit"));
+			return this.createChannelName(song, TGMessagesManager.getProperty("instrument.drumkit"));
 		}
 		if( channel.getProgram() >= 0 && channel.getProgram() < TGMessagesManager.getMidiInstrumentsNumber() ) {
-			return this.createChannelName(song, channel, TGMessagesManager.getMidiInstrument(channel.getProgram()).getName());
+			return this.createChannelName(song, TGMessagesManager.getMidiInstrument(channel.getProgram()).getName());
 		}
 		return this.createDefaultChannelName(song, channel);
 	}
 
+	public String getChannelNameFromProgram(TGChannel channel) {
+		if( channel.isPercussionChannel() ) {
+			return TGMessagesManager.getProperty("instrument.drumkit");
+		}
+		if( channel.getProgram() >= 0 && channel.getProgram() < TGMessagesManager.getMidiInstrumentsNumber() ) {
+			return TGMessagesManager.getMidiInstrument(channel.getProgram()).getName();
+		}
+		return "";
+	}
+
 	// -------------------------------------------------------------- //
 
-	private TGTrack createTrack(TGSong song){
+	public TGTrack createTrack(TGSong song){
 		TGTrack tgTrack = getFactory().newTrack();
 		tgTrack.setNumber(getNextTrackNumber(song));
 		tgTrack.setName(getDefaultTrackName(tgTrack));
@@ -1030,5 +1040,28 @@ public class TGSongManager {
 		while(itMeasures.hasNext()) {
 			getMeasureManager().updateBeatsPreciseStart(itMeasures.next());
 		}
+	}
+
+	// suggest a value for key signature, considering first measure of all non-percussion tracks
+	public int getKeySignatureProposal(TGSong song) {
+		int[] nbHits = new int[15];
+		int bestKeySignature = 0;
+		int maxNbHits = 0;
+		for (int i=0; i<nbHits.length; i++) {
+			nbHits[i] = 0;
+		}
+		Iterator<TGTrack> tracks = song.getTracks();
+		while (tracks.hasNext()) {
+			TGTrack track = tracks.next();
+			if (!track.isPercussion() && (track.getOffset() == 0)) {
+				int keySig = track.getMeasure(0).getKeySignature();
+				nbHits[keySig]++;
+				if (nbHits[keySig] > maxNbHits) {
+					maxNbHits = nbHits[keySig];
+					bestKeySignature = keySig;
+				}
+			}
+		}
+		return bestKeySignature;
 	}
 }

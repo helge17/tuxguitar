@@ -12,9 +12,13 @@ import app.tuxguitar.util.singleton.TGSingletonUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TuningManager {
 
@@ -24,11 +28,13 @@ public class TuningManager {
 
 	private TuningGroup tgTuningsGroup;
 	private TuningGroup customTuningsGroup;
+	private Map<Integer, InstrumentTuning> instruments;
 
 	private TuningManager(TGContext context){
 		this.context = context;
 		this.tgTuningsGroup = new TuningGroup();
 		this.customTuningsGroup = new TuningGroup();
+		this.instruments = new HashMap<Integer, InstrumentTuning>();
 		this.loadTunings();
 	}
 
@@ -75,18 +81,34 @@ public class TuningManager {
 		return priorityTunings;
 	}
 
+	public InstrumentTuning getInstrumentTuning(int midiInstrument) {
+		return this.instruments.get(midiInstrument);
+	}
+
+	public InstrumentTuning getDefaultInstrumentTuning() {
+		return this.getInstrumentTuning(25);	// default, one guitar
+	}
+
 	public void saveCustomTunings(TuningGroup group) {
 		TuningWriter.write(group, TGUserFileUtils.PATH_USER_TUNINGS);
 	}
 
-	private void loadTunings(){
+	private void loadTunings() {
+		this.loadTunings(TGResourceManager.getInstance(this.context).getResourceAsStream(TG_TUNING_FILE));
+	}
+	
+	// public: useful for testing
+	public void loadTunings(InputStream tuningsStream){
 		try{
 			TuningReader tuningReader = new TuningReader();
-			tuningReader.loadTunings(this.tgTuningsGroup, TGResourceManager.getInstance(this.context).getResourceAsStream(TG_TUNING_FILE) );
+			tuningReader.loadTunings(this.tgTuningsGroup, instruments, tuningsStream);
 			File file = new File(TGUserFileUtils.PATH_USER_TUNINGS);
 			if (TGUserFileUtils.isExistentAndReadable(file)) {
-				tuningReader.loadTunings(this.customTuningsGroup, new FileInputStream(TGUserFileUtils.PATH_USER_TUNINGS));
+				tuningReader.loadTunings(this.customTuningsGroup, instruments, new FileInputStream(TGUserFileUtils.PATH_USER_TUNINGS));
 			}
+		} catch (InvalidParameterException e) {
+			// don't catch that one: if tuning configuration file is invalid, better fail early
+			throw(e);
 		} catch (Throwable e) {
 			TGErrorManager.getInstance(this.context).handleError(e);
 		}
