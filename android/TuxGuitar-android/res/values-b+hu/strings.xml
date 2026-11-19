@@ -21,7 +21,7 @@
 	<string name="global_button_clean">Eltávolít</string>
 	<string name="global_button_add">Hozzáad</string>
 
-	<!-- <string name="global_spinner_select_option"></string> -->
+	<string name="global_spinner_select_option">-- Válassz --</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================== MENU =================================== -->
@@ -37,7 +37,7 @@
 	<string name="action_menu_dynamic">Dinamika</string>
 	<string name="action_menu_effects">Effektusok</string>
 	<string name="action_menu_transport">Lejátszó</string>
-	<!-- <string name="action_menu_settings"></string> -->
+	<string name="action_menu_settings">Beállítások</string>
 
 	<!-- <string name="action_tab_keyboard_toggle"></string> -->
 
@@ -48,39 +48,39 @@
 
 	<string name="action_undo">Visszavonás</string>
 	<string name="action_redo">Újra</string>
-	<!-- <string name="action_voice_1"></string> -->
-	<!-- <string name="action_voice_2"></string> -->
+	<string name="action_voice_1">1. szólam kiválasztása</string>
+	<string name="action_voice_2">2. szólam kiválasztása</string>
 	<string name="action_copy">Másolás</string>
 	<string name="action_paste">Beillesztés</string>
 
-	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_channel_list">Hangszerek</string>
 	<string name="action_view_layout_show_score">Kotta látszik</string>
-	<!-- <string name="action_view_layout_show_chord_name"></string> -->
-	<!-- <string name="action_view_layout_show_chord_diagram"></string> -->
+	<string name="action_view_layout_show_chord_name">Akkordnevek megjelenítése</string>
+	<string name="action_view_layout_show_chord_diagram">Akkorddiagramok megjelenítése</string>
 
 	<string name="action_transport_play">Lejátszás/szünet</string>
 	<string name="action_transport_stop">Leállítás</string>
-	<!-- <string name="action_transport_metronome"></string> -->
-	<!-- <string name="action_transport_count_down"></string> -->
-	<!-- <string name="action_transport_mode"></string> -->
-	<!-- <string name="action_transport_set_loop_start"></string> -->
-	<!-- <string name="action_transport_set_loop_end"></string> -->
-	<!-- <string name="action_transport_highlight_played_beat"></string> -->
+	<string name="action_transport_metronome">Metronóm</string>
+	<string name="action_transport_count_down">Beszámolás</string>
+	<string name="action_transport_mode">Lejátszási mód</string>
+	<string name="action_transport_set_loop_start">Ismétlés kezdőpontjának beállítása</string>
+	<string name="action_transport_set_loop_end">Ismétlés végpontjának beállítása</string>
+	<string name="action_transport_highlight_played_beat">Lejátszott ütem kiemelése</string>
 
-	<!-- <string name="action_go_up"></string> -->
-	<!-- <string name="action_go_down"></string> -->
-	<!-- <string name="action_go_left"></string> -->
-	<!-- <string name="action_go_right"></string> -->
+	<string name="action_go_up">Kurzor mozgatása felfelé</string>
+	<string name="action_go_down">Kurzor mozgatása lefelé</string>
+	<string name="action_go_left">Kurzor mozgatása balra</string>
+	<string name="action_go_right">Kurzor mozgatása jobbra</string>
 
 	<string name="action_change_tempo">Tempó változtatása</string>
 	<string name="action_change_clef">Kulcs változtatása</string>
 	<string name="action_change_key_signature">Elõjegyzés változtatása</string>
 	<string name="action_change_time_signature">Ütemmutató változtatása</string>
-	<!-- <string name="action_change_triplet_feel"></string> -->
+	<string name="action_change_triplet_feel">Triolás lüktetés módosítása</string>
 	<string name="action_change_repeat_open">Ismétlés kezdete</string>
 	<string name="action_change_repeat_close">Ismétlés vége</string>
-	<!-- <string name="action_change_repeat_alternative"></string> -->
-	<!-- <string name="action_change_double_bar"></string> -->
+	<string name="action_change_repeat_alternative">Alternatív ismétlések</string>
+	<string name="action_change_double_bar">Kettős ütemvonal</string>
 	<string name="action_change_properties">Tulajdonságok</string>
 
 	<string name="action_track_first">Elsõ sáv</string>
@@ -90,14 +90,14 @@
 	<string name="action_track_add">Új sáv</string>
 	<string name="action_track_clone">Sáv klónozása</string>
 	<string name="action_track_remove">Sáv eltávolítása</string>
-	<!-- <string name="action_track_move_up"></string> -->
-	<!-- <string name="action_track_move_down"></string> -->
-	<!-- <string name="action_track_change_solo"></string> -->
-	<!-- <string name="action_track_change_mute"></string> -->
+	<string name="action_track_move_up">Sáv mozgatása felfelé</string>
+	<string name="action_track_move_down">Sáv mozgatása lefelé</string>
+	<string name="action_track_change_solo">Sáv szóló módjának beállítása</string>
+	<string name="action_track_change_mute">Sáv némításának beállítása</string>
 	<string name="action_track_set_name">Név</string>
 	<string name="action_track_set_channel">Hangszer</string>
-	<!-- <string name="action_track_change_tuning"></string> -->
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_change_tuning">Hangolás</string>
+	<string name="action_track_change_string_count">Vonalak száma</string>
 
 	<string name="action_measure_first">Elsõ ütem</string>
 	<string name="action_measure_previous">Elõzõ ütem</string>
@@ -106,25 +106,25 @@
 	<string name="action_measure_add">Új ütem</string>
 	<string name="action_measure_clean">Csendes ütem</string>
 	<string name="action_measure_remove">Ütem eltávolítása</string>
-	<!-- <string name="action_fix_voice"></string> -->
+	<string name="action_fix_voice">Szólam javítása</string>
 
 	<string name="action_change_tied_note">Átkötött hang</string>
 	<string name="action_clean_beat">Hang/akkord törlése</string>
 	<string name="action_decrement_note_semitone">Félhanggal lejjebb</string>
 	<string name="action_increment_note_semitone">Félhanggal feljebb</string>
-	<!-- <string name="action_delete_note_or_rest"></string> -->
-	<!-- <string name="action_insert_rest_beat"></string> -->
-	<!-- <string name="action_move_beats_left"></string> -->
-	<!-- <string name="action_move_beats_right"></string> -->
-	<!-- <string name="action_remove_unused_voice"></string> -->
-	<!-- <string name="action_set_voice_auto"></string> -->
-	<!-- <string name="action_set_voice_down"></string> -->
-	<!-- <string name="action_set_voice_up"></string> -->
+	<string name="action_delete_note_or_rest">Hangjegy vagy szünet törlése</string>
+	<string name="action_insert_rest_beat">Szünet beszúrása</string>
+	<string name="action_move_beats_left">Eltolás egy ütemmel balra</string>
+	<string name="action_move_beats_right">Eltolás egy ütemmel jobbra</string>
+	<string name="action_remove_unused_voice">Nem használt szólam eltávolítása</string>
+	<string name="action_set_voice_auto">Automatikus szárirány</string>
+	<string name="action_set_voice_down">Szárak lefelé</string>
+	<string name="action_set_voice_up">Szárak felfelé</string>
 	<string name="action_shift_note_down">Mélyebb húron</string>
 	<string name="action_shift_note_up">Magasabb húron</string>
-	<!-- <string name="action_change_stroke"></string> -->
+	<string name="action_change_stroke">Felfelé/lefelé seprés</string>
 	<!-- <string name="action_change_pickstroke"></string> -->
-	<!-- <string name="action_change_text"></string> -->
+	<string name="action_change_text">Szöveg beszúrása</string>
 
 	<string name="action_set_duration_whole">Egész</string>
 	<string name="action_set_duration_half">Fél</string>
@@ -137,16 +137,16 @@
 	<string name="action_set_duration_doubledotted">Duplán nyújtott</string>
 	<string name="action_set_duration_division_type">Osztott ritmus</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_1">Nincs osztás</string>
+	<string name="action_set_duration_division_type_3">Triola</string>
+	<string name="action_set_duration_division_type_5">Kvintola</string>
+	<string name="action_set_duration_division_type_6">Szextola</string>
+	<string name="action_set_duration_division_type_7">Szeptola</string>
+	<string name="action_set_duration_division_type_9">Novemola</string>
+	<string name="action_set_duration_division_type_10">Decimola</string>
+	<string name="action_set_duration_division_type_11">Undecimola</string>
+	<string name="action_set_duration_division_type_12">Duodecimola</string>
+	<string name="action_set_duration_division_type_13">Tredecimola</string>
 
 	<!-- <string name="action_set_velocity_ppp"></string> -->
 	<!-- <string name="action_set_velocity_pp"></string> -->
@@ -162,20 +162,20 @@
 	<string name="action_change_dead_note">Tompított hang</string>
 	<string name="action_change_slide">Csúsztatás</string>
 	<string name="action_change_hammer">Kalapács/felengedés</string>
-	<!-- <string name="action_change_tremolo_bar"></string> -->
-	<!-- <string name="action_change_ghost_note"></string> -->
+	<string name="action_change_tremolo_bar">Tremolókar</string>
+	<string name="action_change_ghost_note">Szellemhang</string>
 	<string name="action_change_accentuated_note">Hangsúly</string>
 	<string name="action_change_heavy_accentuated_note">Erõsebb hangsúly</string>
-	<!-- <string name="action_change_harmonic"></string> -->
+	<string name="action_change_harmonic">Üveghang</string>
 	<string name="action_change_grace">Díszítõhang</string>
 	<string name="action_change_trill">Trilla</string>
 	<string name="action_change_tremolo_picking">Tremoló pengetés</string>
 	<string name="action_change_palm_mute">Fojtás tenyérrel</string>
-	<!-- <string name="action_change_let_ring"></string> -->
+	<string name="action_change_let_ring">Kicsengés</string>
 	<!-- <string name="action_change_staccato"></string> -->
 	<!-- <string name="action_change_tapping"></string> -->
-	<!-- <string name="action_change_slapping"></string> -->
-	<!-- <string name="action_change_popping"></string> -->
+	<string name="action_change_slapping">Slap technika</string>
+	<string name="action_change_popping">Húrtépés</string>
 	<string name="action_change_fade_in">Beúsztatás</string>
 
 	<string name="action_channel_list_add">Hozzáad</string>
@@ -198,40 +198,40 @@
 	<!-- =================================================================== -->
 
 	<string name="storage_default_filename">Nincs cím</string>
-	<string name="storage_export_to">Exportálás %1$s néven</string>
+	<string name="storage_export_to">Exportálás %1$s formátumba</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= SAF Storage =============================== -->
 	<!-- =================================================================== -->
 
 	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
-	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+	<string name="storage_saf_assets_provider_title">Bemutatódalok</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
 	<!-- =================================================================== -->
 
-	<!-- <string name="browser_refresh"></string> -->
-	<!-- <string name="browser_back"></string> -->
-	<!-- <string name="browser_root"></string> -->
-	<!-- <string name="browser_settings"></string> -->
+	<string name="browser_refresh">Frissítés</string>
+	<string name="browser_back">Vissza</string>
+	<string name="browser_root">Kezdőmappa</string>
+	<string name="browser_settings">Beállítások</string>
 	<string name="browser_save_label">Mentés</string>
 	<!-- <string name="browser_add_collection"></string> -->
 	<!-- <string name="browser_remove_collection"></string> -->
-	<string name="browser_file_overwrite_question">A fájl már létezik, felülírod ???</string>
+	<string name="browser_file_overwrite_question">A fájl már létezik, felülírod?</string>
 	<!-- <string name="browser_file_overwrite_readonly_error"></string> -->
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<!-- <string name="browser_collections_dlg_title"></string> -->
+	<string name="browser_collections_dlg_title">Gyűjteményböngésző</string>
 
-	<!-- <string name="browser_settings_fs_dlg_title"></string> -->
+	<string name="browser_settings_fs_dlg_title">Fájlrendszerbeli gyűjtemény</string>
 	<string name="browser_settings_fs_name_label">Név:</string>
-	<!-- <string name="browser_settings_fs_path_label"></string> -->
+	<string name="browser_settings_fs_path_label">Mappa:</string>
 
 	<!-- <string name="browser_settings_title_format"></string> -->
 	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
-	<!-- <string name="browser_settings_saf_uri_request_msg"></string> -->
+	<string name="browser_settings_saf_uri_request_msg">Válaszd ki a gyűjtemény mappáját</string>
 
 	<string name="browser_settings_fs_error_title">Hiba</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
@@ -244,11 +244,11 @@
 	<!-- =================================================================== -->
 
 	<string name="preferences_general_title">Általános</string>
-	<!-- <string name="preferences_general_use_collection_browser_title"></string> -->
+	<string name="preferences_general_use_collection_browser_title">Gyűjteményböngésző</string>
 	<!-- <string name="preferences_general_use_collection_browser_summary"></string> -->
 
 	<string name="preferences_sound_category_title">Hang</string>
-	<!-- <string name="preferences_midi_output_port_title"></string> -->
+	<string name="preferences_midi_output_port_title">MIDI-port</string>
 	<!-- <string name="preferences_midi_output_port_summary"></string> -->
 	<!-- <string name="preferences_midi_output_port_summary_empty"></string> -->
 
@@ -257,14 +257,14 @@
 	<!-- =================================================================== -->
 
 	<!-- Confirm dialog -->
-	<!-- <string name="confirm_dlg_title"></string> -->
+	<string name="confirm_dlg_title">Megerősítés</string>
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Tempó változtatása</string>
 	<string name="tempo_dlg_tempo_label">Tempó:</string>
-	<!-- <string name="tempo_dlg_options_apply_to_song"></string> -->
-	<!-- <string name="tempo_dlg_options_apply_to_end"></string> -->
-	<!-- <string name="tempo_dlg_options_apply_to_next_marker"></string> -->
+	<string name="tempo_dlg_options_apply_to_song">Tempó alkalmazása a teljes dalra</string>
+	<string name="tempo_dlg_options_apply_to_end">Tempó alkalmazása a dal végéig</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Tempó alkalmazása a következő tempójelzésig</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Kulcs változtatása</string>
@@ -273,10 +273,10 @@
 	<string name="clef_dlg_clef_value_bass_8">Basszus</string>
 	<!-- <string name="clef_dlg_clef_value_tenor_8"></string> -->
 	<string name="clef_dlg_clef_value_alto_8">Alt</string>
-	<!-- <string name="clef_dlg_clef_value_treble_standard"></string> -->
-	<!-- <string name="clef_dlg_clef_value_bass_standard"></string> -->
+	<string name="clef_dlg_clef_value_treble_standard">Violin (standard)</string>
+	<string name="clef_dlg_clef_value_bass_standard">Basszus (standard)</string>
 	<!-- <string name="clef_dlg_clef_value_tenor_standard"></string> -->
-	<!-- <string name="clef_dlg_clef_value_alto_standard"></string> -->
+	<string name="clef_dlg_clef_value_alto_standard">Alt (standard)</string>
 	<string name="clef_dlg_options_apply_to_end">Maradjon ez a darab végéig</string>
 
 	<!-- Key Signature dialog -->
@@ -306,7 +306,7 @@
 	<string name="time_signature_dlg_options_apply_to_end">A darab végéig</string>
 
 	<!-- Triplet Feel dialog -->
-	<!-- <string name="triplet_feel_dlg_title"></string> -->
+	<string name="triplet_feel_dlg_title">Triolás lüktetés módosítása</string>
 	<string name="triplet_feel_dlg_none">Nincs triolás alapritmus</string>
 	<string name="triplet_feel_dlg_eighth">Triolás 8-adok</string>
 	<string name="triplet_feel_dlg_sixteenth">Triolás 16-odok</string>
@@ -317,19 +317,19 @@
 	<string name="repeat_close_dlg_count_label">Ismétlések száma:</string>
 
 	<!-- Repeat Alternative dialog -->
-	<!-- <string name="repeat_alternative_dlg_title"></string> -->
+	<string name="repeat_alternative_dlg_title">Alternatív ismétlések</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Tulajdonságok</string>
 	<string name="song_properties_dlg_name_label">Név:</string>
 	<string name="song_properties_dlg_artist_label">Elõadó:</string>
-	<!-- <string name="song_properties_dlg_album_label"></string> -->
+	<string name="song_properties_dlg_album_label">Album:</string>
 	<string name="song_properties_dlg_author_label">Szerzõ:</string>
-	<!-- <string name="song_properties_dlg_date_label"></string> -->
-	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<!-- <string name="song_properties_dlg_writer_label"></string> -->
-	<!-- <string name="song_properties_dlg_transcriber_label"></string> -->
-	<!-- <string name="song_properties_dlg_comments_label"></string> -->
+	<string name="song_properties_dlg_date_label">Dátum:</string>
+	<string name="song_properties_dlg_copyright_label">Szerzői jog:</string>
+	<string name="song_properties_dlg_writer_label">Tabulatúra készítője:</string>
+	<string name="song_properties_dlg_transcriber_label">Lejegyezte:</string>
+	<string name="song_properties_dlg_comments_label">Megjegyzések:</string>
 
 	<!-- Track name dialog -->
 	<string name="track_name_dlg_title">Név</string>
@@ -337,23 +337,23 @@
 
 	<!-- Track channel dialog -->
 	<string name="track_channel_dlg_channel_label">Hangszer:</string>
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_settings_label">Hangszerek</string>
 
 	<!-- Track tuning dialog -->
-	<!-- <string name="track_tuning_dlg_title"></string> -->
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_title">Hangolás</string>
+	<string name="track_tuning_dlg_value_label">Érték:</string>
+	<string name="track_tuning_dlg_preview_label">Címke:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Hiba</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<string name="track_tuning_dlg_range_error">A húrok száma %1$d és %2$d közötti lehet</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">Vonalak száma</string>
+	<string name="track_string_count_dlg_count_label">Vonalak száma:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Új ütem</string>
-	<!-- <string name="measure_add_dlg_count_label"></string> -->
+	<string name="measure_add_dlg_count_label">Hozzáadandó ütemek száma:</string>
 	<string name="measure_add_dlg_options_before_position">Ütem beszúrása a mostani elé</string>
 	<string name="measure_add_dlg_options_after_position">Ütem beszúrása a mostani után</string>
 	<string name="measure_add_dlg_options_at_end">Új ütem hozzáadása a darab végéhez</string>
@@ -376,12 +376,12 @@
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Ütem beillesztése</string>
-	<!-- <string name="measure_paste_dlg_count_label"></string> -->
+	<string name="measure_paste_dlg_count_label">Beillesztések száma:</string>
 	<string name="measure_paste_dlg_options_mode_replace">Beillesztés ebbe az ütembe</string>
 	<string name="measure_paste_dlg_options_mode_insert">Új ütem beszúrása a mostani elé</string>
 
 	<!-- Text dialog -->
-	<!-- <string name="text_dlg_title"></string> -->
+	<string name="text_dlg_title">Szöveg beszúrása</string>
 
 	<!-- Bend dialog -->
 	<string name="bend_dlg_title">Hajlítás Szerkesztõ</string>
@@ -393,14 +393,14 @@
 	<string name="bend_dlg_preset_prebend_release">Elõkészített/vissza</string>
 
 	<!-- Tremolo Bar dialog -->
-	<!-- <string name="tremolo_bar_dlg_title"></string> -->
+	<string name="tremolo_bar_dlg_title">Tremolókar</string>
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_inverted_dip"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_return"></string> -->
+	<string name="tremolo_bar_dlg_preset_dip">Enyhe leengedés</string>
+	<string name="tremolo_bar_dlg_preset_dive">Mély leengedés</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Felengedés felfelé</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Felengedés lefelé</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Enyhe felhúzás</string>
+	<string name="tremolo_bar_dlg_preset_return">Visszatérés</string>
 
 	<!-- Tremolo picking dialog -->
 	<string name="tremolo_picking_dlg_title">Tremoló pengetés</string>
@@ -420,8 +420,8 @@
 	<string name="grace_dlg_fret_label">Bund:</string>
 	<string name="grace_dlg_dead_note_label">Tompított hang</string>
 	<string name="grace_dlg_position_label">Pozíció</string>
-	<string name="grace_dlg_position_before_beat">Ütés elõtt</string>
-	<string name="grace_dlg_position_on_beat">Ütésre</string>
+	<string name="grace_dlg_position_before_beat">Ütem elõtt</string>
+	<string name="grace_dlg_position_on_beat">Ütemre</string>
 	<string name="grace_dlg_duration_label">Hanghossz</string>
 	<string name="grace_dlg_duration_16">Tizenhatod</string>
 	<string name="grace_dlg_duration_32">Harmincketted</string>
@@ -442,19 +442,19 @@
 	<string name="grace_dlg_transition_hammer">Kalapács</string>
 
 	<!-- Harmonic dialog -->
-	<!-- <string name="harmonic_dlg_title"></string> -->
-	<!-- <string name="harmonic_dlg_type_nh"></string> -->
-	<!-- <string name="harmonic_dlg_type_ah"></string> -->
-	<!-- <string name="harmonic_dlg_type_th"></string> -->
-	<!-- <string name="harmonic_dlg_type_ph"></string> -->
-	<!-- <string name="harmonic_dlg_type_sh"></string> -->
+	<string name="harmonic_dlg_title">Üveghang</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Természetes üveghang</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Mesterséges üveghang</string>
+	<string name="harmonic_dlg_type_th">[T.H] Érintéssel képzett üveghang</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Pengetővel képzett üveghang</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Félüveghang</string>
 
 	<!-- Stroke dialog -->
-	<!-- <string name="stroke_dlg_title"></string> -->
-	<!-- <string name="stroke_dlg_direction_label"></string> -->
+	<string name="stroke_dlg_title">Felfelé/lefelé seprés</string>
+	<string name="stroke_dlg_direction_label">Irány:</string>
 	<string name="stroke_dlg_direction_none">Nincs</string>
-	<!-- <string name="stroke_dlg_direction_up"></string> -->
-	<!-- <string name="stroke_dlg_direction_down"></string> -->
+	<string name="stroke_dlg_direction_up">Felfelé seprés</string>
+	<string name="stroke_dlg_direction_down">Lefelé seprés</string>
 	<string name="stroke_dlg_duration_4">Negyed</string>
 	<string name="stroke_dlg_duration_8">Nyolcad</string>
 	<string name="stroke_dlg_duration_16">Tizenhatod</string>
@@ -463,13 +463,13 @@
 
 	<!-- Pick stroke dialog -->
 	<!-- <string name="pickstroke_dlg_title"></string> -->
-	<!-- <string name="pickstroke_dlg_direction_label"></string> -->
+	<string name="pickstroke_dlg_direction_label">Irány:</string>
 	<string name="pickstroke_dlg_direction_none">Nincs</string>
-	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
-	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
+	<string name="pickstroke_dlg_direction_up">Felfelé pengetés</string>
+	<string name="pickstroke_dlg_direction_down">Lefelé pengetés</string>
 
 	<!-- Channels view -->
-	<!-- <string name="channel_list"></string> -->
+	<string name="channel_list">Hangszerek</string>
 
 	<!-- Channel edit dialog -->
 	<string name="channel_edit_dlg_title">Hangszer</string>
@@ -478,27 +478,27 @@
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Ütőhangszeres csatorna</string>
 	<string name="channel_edit_dlg_volume_label">Hangerõ:</string>
 	<string name="channel_edit_dlg_balance_label">Balansz:</string>
-	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
-	<!-- <string name="channel_edit_dlg_reverb_label"></string> -->
-	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
-	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+	<string name="channel_edit_dlg_chorus_label">Kóruseffekt:</string>
+	<string name="channel_edit_dlg_reverb_label">Zengető:</string>
+	<string name="channel_edit_dlg_phaser_label">Fázistoló:</string>
+	<string name="channel_edit_dlg_tremolo_label">Tremoló:</string>
 
 	<!-- Play Mode dialog -->
-	<!-- <string name="transport_mode_dlg_title"></string> -->
-	<!-- <string name="transport_mode_dlg_simple"></string> -->
-	<!-- <string name="transport_mode_dlg_trainer"></string> -->
-	<!-- <string name="transport_mode_dlg_simple_tempo_percent_label"></string> -->
-	<!-- <string name="transport_mode_dlg_simple_loop"></string> -->
+	<string name="transport_mode_dlg_title">Lejátszási mód</string>
+	<string name="transport_mode_dlg_simple">Egyszerű mód</string>
+	<string name="transport_mode_dlg_trainer">Gyakorló mód</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Tempó százaléka:</string>
+	<string name="transport_mode_dlg_simple_loop">Ismétlődő lejátszás</string>
 	<string name="transport_mode_dlg_trainer_tempo_percent_from_label">Tempó:</string>
 	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Vége:</string>
-	<!-- <string name="transport_mode_dlg_trainer_tempo_increment_label"></string> -->
-	<!-- <string name="transport_mode_dlg_loop_range_label"></string> -->
-	<!-- <string name="transport_mode_dlg_loop_range_from_label"></string> -->
-	<!-- <string name="transport_mode_dlg_loop_range_from_default"></string> -->
-	<!-- <string name="transport_mode_dlg_loop_range_to_label"></string> -->
-	<!-- <string name="transport_mode_dlg_loop_range_to_default"></string> -->
+	<string name="transport_mode_dlg_trainer_tempo_increment_label">Növelés mértéke:</string>
+	<string name="transport_mode_dlg_loop_range_label">Ismétlési tartomány</string>
+	<string name="transport_mode_dlg_loop_range_from_label">Kezdőütem:</string>
+	<string name="transport_mode_dlg_loop_range_from_default">A dal elejétől</string>
+	<string name="transport_mode_dlg_loop_range_to_label">Záróütem:</string>
+	<string name="transport_mode_dlg_loop_range_to_default">A dal végéig</string>
 
 </resources>

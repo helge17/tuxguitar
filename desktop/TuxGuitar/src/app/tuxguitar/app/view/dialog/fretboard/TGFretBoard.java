@@ -1,6 +1,7 @@
 package app.tuxguitar.app.view.dialog.fretboard;
 
 import java.util.Iterator;
+import java.util.ArrayList;
 
 import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.action.TGActionProcessorListener;
@@ -38,6 +39,8 @@ import app.tuxguitar.ui.event.UISelectionEvent;
 import app.tuxguitar.ui.event.UISelectionListener;
 import app.tuxguitar.ui.layout.UITableLayout;
 import app.tuxguitar.ui.resource.UIColor;
+import app.tuxguitar.ui.resource.UIFont;
+import app.tuxguitar.ui.resource.UIFontModel;
 import app.tuxguitar.ui.resource.UIImage;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
@@ -52,6 +55,7 @@ import app.tuxguitar.ui.widget.UILabel;
 import app.tuxguitar.ui.widget.UIPanel;
 import app.tuxguitar.ui.widget.UISelectItem;
 import app.tuxguitar.ui.widget.UISeparator;
+import app.tuxguitar.util.TGBeatRange;
 import app.tuxguitar.util.TGContext;
 import app.tuxguitar.util.TGMusicKeyUtils;
 
@@ -82,6 +86,8 @@ public class TGFretBoard {
 	private UIImage fretBoard;
 	private TGBeat beat;
 	private TGBeat externalBeat;
+	private TGBeatRange selectedBeatRange;
+	private ArrayList<TGBeat> beats = new ArrayList<TGBeat>();
 	private int[] frets;
 	private int[] strings;
 	private float fretSpacing;
@@ -226,7 +232,7 @@ public class TGFretBoard {
 		if (this.stringSpacing != this.lastStringSpacing) {
 			TuxGuitar.getInstance().getConfig().setValue(TGConfigKeys.FRETBOARD_STRING_SPACING,this.stringSpacing);
 			this.setChanges(true);
-			this.updateEditor();
+			this.getControl().redraw();
 		}
 	}
 
@@ -328,7 +334,7 @@ public class TGFretBoard {
 		}
 	}
 
-	private void updateEditor(){
+	private void updateEditor(UIPainter painter){
 		if( isVisible() ){
 			if( MidiPlayer.getInstance(this.context).isRunning()){
 				this.beat = TGTransport.getInstance(this.context).getCache().getPlayBeat();
@@ -336,6 +342,17 @@ public class TGFretBoard {
 				this.beat = this.externalBeat;
 			}else{
 				this.beat = TablatureEditor.getInstance(this.context).getTablature().getCaret().getSelectedBeat();
+				this.selectedBeatRange = TablatureEditor.getInstance(this.context).getTablature().getCurrentBeatRange();
+			}
+
+			this.beats.clear();
+			if (this.beat != null) {
+				TGMeasure measure = this.beat.getMeasure();
+				if (measure != null) {
+					for (TGBeat measureBeat : measure.getBeats()) {
+						this.beats.add(measureBeat);
+					}
+				}
 			}
 
 			if ((this.strings.length != getStringCount()) || (this.stringSpacing != this.lastStringSpacing)) {
@@ -343,6 +360,7 @@ public class TGFretBoard {
 				initStrings(getStringCount());
 				//Fuerzo a cambiar el ancho
 				this.lastSize.setHeight(0);
+				this.updateFontSize(painter);
 			}
 
 			UIRectangle childArea = this.control.getChildArea();
@@ -360,6 +378,37 @@ public class TGFretBoard {
 			this.lastSize.setHeight(clientHeight);
 			this.lastStringSpacing = this.stringSpacing;
 		}
+	}
+
+	private void updateFontSize(UIPainter painter) {
+		UIFont font = this.config.getFont();
+		UIFontModel fontModel = new UIFontModel(font.getName(), font.getHeight(), font.isBold(), font.isItalic());
+		UIFont newFont = getUIFactory().createFont(fontModel);
+		Float textSize = updateTextSize(painter, newFont);
+		boolean OK = false;
+		// iterative approach, because width is not a linear function of height
+		while (textSize > 0.8*this.getOvalSize()) {
+			// too big
+			newFont.dispose();
+			fontModel.setHeight(fontModel.getHeight() - 1f);
+			newFont = getUIFactory().createFont(fontModel);
+			textSize = updateTextSize(painter, newFont);
+			OK = true;
+		}
+		while (!OK && (textSize < 0.7*this.getOvalSize())) {
+			// too small
+			newFont.dispose();
+			fontModel.setHeight(fontModel.getHeight() + 1f);
+			newFont = getUIFactory().createFont(fontModel);
+			textSize = updateTextSize(painter, newFont);
+		}
+		this.config.setFont(newFont);
+	}
+
+	private float updateTextSize(UIPainter painter, UIFont font) {
+		painter.setFont(font);
+		// measure of width: arbitrary string, with an alteration to be wide enough
+		return Math.max(font.getHeight(),painter.getFMWidth("A#"));
 	}
 
 	private void paintFretBoard(UIPainter painter){
@@ -474,13 +523,13 @@ public class TGFretBoard {
 		painter.setForeground(this.config.getColorBackground());
 	}
 
-	private void paintNotes(UIPainter painter) {
-		if(this.beat != null){
+	private void paintBeatNotes(UIPainter painter, TGBeat beat, UIColor color, UIColor foregroundColor) {
+		if(beat != null){
 			TGTrack track = getTrack();
-			int keySignature = this.beat.getMeasure().getKeySignature();
+			int keySignature = beat.getMeasure().getKeySignature();
 
-			for(int v = 0; v < this.beat.countVoices(); v ++){
-				TGVoice voice = this.beat.getVoice( v );
+			for(int v = 0; v < beat.countVoices(); v ++){
+				TGVoice voice = beat.getVoice( v );
 				Iterator<TGNote> it = voice.getNotes().iterator();
 				while (it.hasNext()) {
 					TGNote note = it.next();
@@ -495,10 +544,10 @@ public class TGFretBoard {
 
 						if( (this.config.getStyle() & TGFretBoardConfig.DISPLAY_TEXT_NOTE) != 0 ){
 							int realValue = track.getString(note.getString()).getValue() + note.getValue();
-							paintKeyText(painter,this.config.getColorNoteText(), this.config.getColorNote(), x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
+							paintKeyText(painter, foregroundColor, color, x, y, TGMusicKeyUtils.noteName(realValue, keySignature, note.isAltEnharmonic()));
 						}
 						else{
-							paintKeyOval(painter,this.config.getColorNote(), x, y);
+							paintKeyOval(painter,color, x, y);
 						}
 					}
 				}
@@ -507,14 +556,19 @@ public class TGFretBoard {
 		}
 	}
 
-	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
-		this.paintKeyOval(painter, background, x, y, this.getOvalSize());
+	private void paintBeatNotes(UIPainter painter, ArrayList<TGBeat> beats, UIColor color, UIColor foregroundColor) {
+		if(beats != null){
+			for(TGBeat beat : beats){
+				paintBeatNotes(painter, beat, color, foregroundColor);
+			}
+		}
 	}
-	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y, int ovalSize) {
+
+	private void paintKeyOval(UIPainter painter, UIColor background,int x, int y) {
 		painter.setBackground(background);
 		painter.initPath(UIPainter.PATH_FILL);
 		painter.moveTo(x, y);
-		painter.addCircle(x, y, ovalSize);
+		painter.addCircle(x, y, this.getOvalSize());
 		painter.closePath();
 	}
 
@@ -525,19 +579,29 @@ public class TGFretBoard {
 			painter.setFont(this.config.getFont());
 
 			float fmWidth = painter.getFMWidth(text);
-			float fmHeight = painter.getFMHeight();
-			int ovalSize = (int)Math.max(fmWidth, fmHeight) + this.stringSpacing/10;
-			ovalSize = Math.min(ovalSize, this.getMaxOvalSize());
-			this.paintKeyOval(painter, background, x, y, ovalSize);
+			this.paintKeyOval(painter, background, x, y);
 			painter.drawString(text, x - (fmWidth / 2f),y + painter.getFMMiddleLine());
 		}
 	}
 
 	protected void paintEditor(UIPainter painter) {
-		this.updateEditor();
+		this.updateEditor(painter);
 		if (this.frets.length > 0 && this.strings.length > 0) {
 			paintFretBoard(painter);
-			paintNotes(painter);
+
+			if (this.config.getPreviewNotes()) {
+				// If the player is not running and something is selected, then paint selected beat range, else paint the notes of current measure
+				if(!MidiPlayer.getInstance(this.context).isRunning() && TuxGuitar.getInstance().getTablatureEditor().getTablature().getSelector().isActive()) {
+					for (TGBeat beat : this.selectedBeatRange.getBeats()) {
+						paintBeatNotes(painter, beat, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
+					}
+				}
+				else {
+					paintBeatNotes(painter, this.beats, this.config.getColorPreviewNote(), this.config.getColorPreviewNoteText());
+				}
+			}
+
+			paintBeatNotes(painter, this.beat, this.config.getColorNote(), this.config.getColorNoteText());
 		}
 	}
 
@@ -635,11 +699,7 @@ public class TGFretBoard {
 	}
 
 	private int getOvalSize(){
-		return ((this.stringSpacing / 2) + (this.stringSpacing / 10));
-	}
-
-	private int getMaxOvalSize() {
-		return (this.stringSpacing - this.stringSpacing/10);
+		return (7*this.stringSpacing / 10);
 	}
 
 	private void addNote(int fret, int string) {
@@ -684,7 +744,7 @@ public class TGFretBoard {
 		if(!this.isDisposed()){
 			this.fretBoardComposite.redraw();
 		}
-	 }
+	}
 
 	public void setVisible(boolean visible) {
 		this.control.setVisible(visible);
