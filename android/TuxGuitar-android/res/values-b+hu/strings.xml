@@ -323,7 +323,7 @@
 	<string name="song_properties_dlg_title">Tulajdonságok</string>
 	<string name="song_properties_dlg_name_label">Név:</string>
 	<string name="song_properties_dlg_artist_label">Elõadó:</string>
-	<string name="song_properties_dlg_album_label">Album:</string>
+	<!-- <string name="song_properties_dlg_album_label"></string> -->
 	<string name="song_properties_dlg_author_label">Szerzõ:</string>
 	<string name="song_properties_dlg_date_label">Dátum:</string>
 	<string name="song_properties_dlg_copyright_label">Szerzői jog:</string>

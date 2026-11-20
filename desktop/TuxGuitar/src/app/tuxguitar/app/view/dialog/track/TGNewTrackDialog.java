@@ -155,7 +155,7 @@ public class TGNewTrackDialog implements TGEventListener {
 		instrumentLayout.set(midiInstrumentPanel, 3, 1, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, true);
 
 		UILabel midiInstrumentLabel = factory.createLabel(midiInstrumentPanel);
-		midiInstrumentLabel.setText(TuxGuitar.getProperty("track.instrument.midi"));
+		midiInstrumentLabel.setText(TuxGuitar.getProperty("track.instrument.midi") + ":");
 		midiInstrumentLayout.set(midiInstrumentLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 		this.midiInstrumentSelect = factory.createDropDownSelect(midiInstrumentPanel);
 		this.midiInstrumentSelect.addSelectionListener(new UISelectionListener() {
@@ -167,7 +167,7 @@ public class TGNewTrackDialog implements TGEventListener {
 		midiInstrumentLayout.set(this.midiInstrumentSelect, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		UILabel midiInstrumentNameLabel = factory.createLabel(midiInstrumentPanel);
-		midiInstrumentNameLabel.setText(TuxGuitar.getProperty("track.instrument.midi.name"));
+		midiInstrumentNameLabel.setText(TuxGuitar.getProperty("track.instrument.midi.name") + ":");
 		midiInstrumentLayout.set(midiInstrumentNameLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, false);
 		this.instrumentName = factory.createTextField(midiInstrumentPanel);
 		midiInstrumentLayout.set(this.instrumentName, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
@@ -181,21 +181,21 @@ public class TGNewTrackDialog implements TGEventListener {
 
 		// clef
 		UILabel clefLabel = factory.createLabel(propertiesPanel);
-		clefLabel.setText(TuxGuitar.getProperty("composition.clef"));
+		clefLabel.setText(TuxGuitar.getProperty("composition.clef") + ":");
 		propertiesLayout.set(clefLabel, 1, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
 		this.clefSelect = factory.createDropDownSelect(propertiesPanel);
 		propertiesLayout.set(this.clefSelect, 1, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		// key signature
 		UILabel keySignatureLabel = factory.createLabel(propertiesPanel);
-		keySignatureLabel.setText(TuxGuitar.getProperty("composition.keysignature"));
+		keySignatureLabel.setText(TuxGuitar.getProperty("composition.keysignature") + ":");
 		propertiesLayout.set(keySignatureLabel, 2, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
 		this.keySignatureSelect = factory.createDropDownSelect(propertiesPanel);
 		propertiesLayout.set(this.keySignatureSelect, 2, 2, UITableLayout.ALIGN_FILL, UITableLayout.ALIGN_CENTER, true, false);
 
 		// tuning
 		UILabel tuningLabel = factory.createLabel(propertiesPanel);
-		tuningLabel.setText(TuxGuitar.getProperty("tuning"));
+		tuningLabel.setText(TuxGuitar.getProperty("tuning") + ":");
 		propertiesLayout.set(tuningLabel, 3, 1, UITableLayout.ALIGN_LEFT, UITableLayout.ALIGN_CENTER, true, true);
 		this.tuningText = factory.createReadOnlyTextField(propertiesPanel);
 		this.updateTuningText();
