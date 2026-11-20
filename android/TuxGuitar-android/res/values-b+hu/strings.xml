@@ -183,8 +183,8 @@
 	<string name="action_channel_list_item_remove">Eltávolít</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_edit">Szerkesztés</string>
-	<string name="action_track_tuning_list_item_remove">Eltávolít</string>
+	<!-- <string name="action_track_tuning_list_item_edit"></string> -->
+	<!-- <string name="action_track_tuning_list_item_remove"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -341,12 +341,17 @@
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Hangolás</string>
+	<string name="track_tuning_dlg_preset_label">Hangolási minták</string>
+	<string name="track_tuning_dlg_strings_label">Húrok</string>
+	<string name="track_tuning_dlg_options_label">Beállítások</string>
 	<string name="track_tuning_dlg_value_label">Érték:</string>
 	<string name="track_tuning_dlg_preview_label">Címke:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Hiba</string>
 	<string name="track_tuning_dlg_range_error">A húrok száma %1$d és %2$d közötti lehet</string>
+	<!-- <string name="track_tuning_dlg_add_string_title"></string> -->
+	<!-- <string name="track_tuning_dlg_edit_string_title"></string> -->
 
 	<string name="track_string_count_dlg_title">Vonalak száma</string>
 	<string name="track_string_count_dlg_count_label">Vonalak száma:</string>

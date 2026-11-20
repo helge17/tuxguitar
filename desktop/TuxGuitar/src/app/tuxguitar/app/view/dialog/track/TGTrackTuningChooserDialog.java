@@ -29,7 +29,7 @@ public class TGTrackTuningChooserDialog {
 		final UIWindow dialog = uiFactory.createWindow(this.tuningDialog.getDialog(), true, false);
 
 		dialog.setLayout(dialogLayout);
-		dialog.setText(TuxGuitar.getProperty("tuning"));
+		dialog.setText(TuxGuitar.getProperty(model != null ? "tuning.string.edit" : "tuning.string.add"));
 
 		//-------------MAIN PANEL-----------------------------------------------
 		UITableLayout panelLayout = new UITableLayout();

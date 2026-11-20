@@ -27,7 +27,8 @@ public class TGTrackTuningModelDialog extends TGModalFragment {
 
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
-		this.createActionBar(true, false, R.string.track_tuning_dlg_title);
+		TGTrackTuningModel model = this.getAttribute(TGTrackTuningModelDialogController.ATTRIBUTE_MODEL);
+		this.createActionBar(true, false, model != null ? R.string.track_tuning_dlg_edit_string_title : R.string.track_tuning_dlg_add_string_title);
 	}
 
 	@Override

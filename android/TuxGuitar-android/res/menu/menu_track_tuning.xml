@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_add"
-        android:title="@string/global_button_add"
+        android:title="@string/track_tuning_dlg_add_string_title"
         android:icon="@drawable/ic_add_white_24dp"
         app:showAsAction="always"/>
 

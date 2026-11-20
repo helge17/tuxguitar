@@ -262,6 +262,7 @@ public class TGTrackTuningDialog {
 
 		UIButton buttonAdd = factory.createButton(buttonsPanel);
 		buttonAdd.setImage(TGIconManager.getInstance(this.context.getContext()).getListAdd());
+		buttonAdd.setToolTipText(TuxGuitar.getProperty("tuning.string.add"));
 		buttonAdd.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onAddTuningModel();
@@ -270,6 +271,7 @@ public class TGTrackTuningDialog {
 
 		buttonEdit = factory.createButton(buttonsPanel);
 		buttonEdit.setImage(TGIconManager.getInstance(this.context.getContext()).getListEdit());
+		buttonEdit.setToolTipText(TuxGuitar.getProperty("tuning.string.edit"));
 		buttonEdit.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onEditTuningModel();
@@ -294,6 +296,7 @@ public class TGTrackTuningDialog {
 
 		buttonDelete = factory.createButton(buttonsPanel);
 		buttonDelete.setImage(TGIconManager.getInstance(this.context.getContext()).getImageByName(TGIconManager.LIST_REMOVE));
+		buttonDelete.setToolTipText(TuxGuitar.getProperty("tuning.string.delete"));
 		buttonDelete.addSelectionListener(new UISelectionListener() {
 			public void onSelect(UISelectionEvent event) {
 				TGTrackTuningDialog.this.onRemoveTuningModel();

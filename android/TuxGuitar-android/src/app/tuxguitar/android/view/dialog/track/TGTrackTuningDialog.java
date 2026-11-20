@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -221,6 +222,19 @@ public class TGTrackTuningDialog extends TGModalFragment {
 		TGTrackTuningAdapter adapter = (TGTrackTuningAdapter) listView.getAdapter();
 
 		adapter.notifyDataSetChanged();
+
+		// Calculate string list height
+		int measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+		int height = 0;
+		for(int i = 0; i < adapter.getCount(); i ++) {
+			View item = adapter.getView(i, null, listView);
+			item.measure(measureSpec, measureSpec);
+			height += item.getMeasuredHeight();
+			height += listView.getDividerHeight();
+		}
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = height;
+		listView.setLayoutParams(params);
 	}
 
 	public void updateTuningFromTrack(TGTrack track) {

@@ -1,32 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	style="?attr/dialogStyle">
 
-	<Spinner
-		android:id="@+id/track_tuning_dlg_preset_value"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"/>
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-	<ListView
-		android:id="@+id/track_tuning_dlg_list_view"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_below="@+id/track_tuning_dlg_preset_value"
-		android:layout_above="@+id/track_tuning_dlg_offset_value"/>
+		<TextView
+			android:id="@+id/track_tuning_dlg_preset_label"
+			android:text="@string/track_tuning_dlg_preset_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"/>
 
-	<Spinner
-		android:id="@+id/track_tuning_dlg_offset_value"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentBottom="true"/>
+		<Spinner
+			android:id="@+id/track_tuning_dlg_preset_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/track_tuning_dlg_preset_label"/>
 
-</RelativeLayout>
+		<TextView
+			android:id="@+id/track_tuning_dlg_strings_label"
+			android:text="@string/track_tuning_dlg_strings_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/track_tuning_dlg_preset_value"/>
+
+		<ListView
+			android:id="@+id/track_tuning_dlg_list_view"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/track_tuning_dlg_strings_label"/>
+
+		<TextView
+			android:id="@+id/track_tuning_dlg_options_label"
+			android:text="@string/track_tuning_dlg_options_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/track_tuning_dlg_list_view"/>
+
+		<Spinner
+			android:id="@+id/track_tuning_dlg_offset_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/track_tuning_dlg_options_label"/>
+
+	</RelativeLayout>
+
+</ScrollView>

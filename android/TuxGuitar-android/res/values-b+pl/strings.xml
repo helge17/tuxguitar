@@ -183,8 +183,8 @@
 	<string name="action_channel_list_item_remove">Usuń</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_edit">Edycja</string>
-	<string name="action_track_tuning_list_item_remove">Usuń</string>
+	<!-- <string name="action_track_tuning_list_item_edit"></string> -->
+	<!-- <string name="action_track_tuning_list_item_remove"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -341,12 +341,17 @@
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Strojenie</string>
+	<string name="track_tuning_dlg_preset_label">Presety</string>
+	<string name="track_tuning_dlg_strings_label">Struny</string>
+	<string name="track_tuning_dlg_options_label">Opcje</string>
 	<string name="track_tuning_dlg_value_label">Wartość:</string>
 	<string name="track_tuning_dlg_preview_label">Etykieta:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Błąd</string>
 	<string name="track_tuning_dlg_range_error">Liczba strun musi być między %1$d i %2$d</string>
+	<!-- <string name="track_tuning_dlg_add_string_title"></string> -->
+	<!-- <string name="track_tuning_dlg_edit_string_title"></string> -->
 
 	<string name="track_string_count_dlg_title">Liczba linii</string>
 	<string name="track_string_count_dlg_count_label">Liczba linii:</string>

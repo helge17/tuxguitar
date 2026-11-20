@@ -177,8 +177,8 @@
 	<string name="action_channel_list_item_remove">Remove</string>
 	<string name="action_channel_list_item_remove_confirm_question">Are you sure you want to remove this instrument?</string>
 
-	<string name="action_track_tuning_list_item_edit">Edit</string>
-	<string name="action_track_tuning_list_item_remove">Remove</string>
+	<string name="action_track_tuning_list_item_edit">Edit String</string>
+	<string name="action_track_tuning_list_item_remove">Delete String</string>
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -335,12 +335,17 @@
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Tuning</string>
+	<string name="track_tuning_dlg_preset_label">Presets</string>
+	<string name="track_tuning_dlg_strings_label">Strings</string>
+	<string name="track_tuning_dlg_options_label">Options</string>
 	<string name="track_tuning_dlg_value_label">Value:</string>
 	<string name="track_tuning_dlg_preview_label">Label:</string>
 	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
 	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>
 	<string name="track_tuning_dlg_error_title">Error</string>
 	<string name="track_tuning_dlg_range_error">String count must be between %1$d and %2$d</string>
+	<string name="track_tuning_dlg_add_string_title">Add String</string>
+	<string name="track_tuning_dlg_edit_string_title">Edit String</string>
 
 	<string name="track_string_count_dlg_title">Line Count</string>
 	<string name="track_string_count_dlg_count_label">Line Count:</string>

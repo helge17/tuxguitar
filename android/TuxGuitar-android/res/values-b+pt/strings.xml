@@ -183,8 +183,8 @@
 	<string name="action_channel_list_item_remove">Remover</string>
 	<!-- <string name="action_channel_list_item_remove_confirm_question"></string> -->
 
-	<string name="action_track_tuning_list_item_edit">Editar</string>
-	<string name="action_track_tuning_list_item_remove">Remover</string>
+	<!-- <string name="action_track_tuning_list_item_edit"></string> -->
+	<!-- <string name="action_track_tuning_list_item_remove"></string> -->
 
 	<!-- =================================================================== -->
 	<!-- ======================= MAIN DRAWER =============================== -->
@@ -341,12 +341,17 @@
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Afinação</string>
+	<string name="track_tuning_dlg_preset_label">Predefinições</string>
+	<string name="track_tuning_dlg_strings_label">Cordas</string>
+	<string name="track_tuning_dlg_options_label">Opções</string>
 	<string name="track_tuning_dlg_value_label">Valor:</string>
 	<string name="track_tuning_dlg_preview_label">Rótulo:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
 	<string name="track_tuning_dlg_error_title">Erro</string>
 	<string name="track_tuning_dlg_range_error">Quantia de cordas precisa estar entre %1$d e %2$d</string>
+	<!-- <string name="track_tuning_dlg_add_string_title"></string> -->
+	<!-- <string name="track_tuning_dlg_edit_string_title"></string> -->
 
 	<string name="track_string_count_dlg_title">Contagem de Linhas</string>
 	<string name="track_string_count_dlg_count_label">Contagem de Linhas:</string>
