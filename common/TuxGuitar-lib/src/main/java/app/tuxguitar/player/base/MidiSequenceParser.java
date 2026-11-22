@@ -207,7 +207,7 @@ public class MidiSequenceParser {
 
 					boolean percussionChannel = tgChannel.isPercussionChannel();
 					//---Fade In---
-					if((note.getEffect().isFadeIn()) && ((this.flags & ADD_MIXER_MESSAGES) != 0)) {
+					if((note.getEffect().isFadeIn()) && (this.flags != NO_CONTROL_CHANGE_PROGRAM_CHANGE)) {
 						addFadeIn(sh,track.getNumber(), start, duration, tgChannel.getVolume(), channel);
 					}
 					//---Grace---
