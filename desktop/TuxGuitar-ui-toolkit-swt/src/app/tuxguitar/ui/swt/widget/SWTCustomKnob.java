@@ -135,7 +135,7 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 		// value
 		float value = (this.value - this.minimum);
 		float maximum = (this.maximum - this.minimum);
-		float percent = (0.5f + (value > 0 && maximum > 0 ? ((value / maximum) * 1.5f) : 0f));
+		float percent = (0.75f + (value > 0 && maximum > 0 ? ((value / maximum) * 1.5f) : 0f));
 		float valueSize = (ovalSize / 10f);
 		float valueX = (x +  Math.round((ovalSize / 3f) * Math.cos(Math.PI * percent)));
 		float valueY = (y + Math.round((ovalSize / 3f) * Math.sin(Math.PI * percent)));
@@ -143,7 +143,7 @@ public class SWTCustomKnob extends SWTControl<Composite> implements UIKnob, UIMo
 		UIPainter uiPainter = new SWTPainter(e.gc);
 		uiPainter.initPath(UIPainter.PATH_DRAW);
 		uiPainter.moveTo(x, y);
-		uiPainter.addCircle(y, y, ovalSize);
+		uiPainter.addCircle(x, y, ovalSize);
 		uiPainter.closePath();
 
 		uiPainter.initPath(UIPainter.PATH_DRAW);

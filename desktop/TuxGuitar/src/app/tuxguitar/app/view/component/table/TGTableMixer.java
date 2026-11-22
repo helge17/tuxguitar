@@ -125,7 +125,7 @@ public class TGTableMixer {
 		}
 
 		private void updateToolTipText() {
-			int percent = 100*(VolumeControl.this.volumeScale.getValue() - TGChannel.MIN_VOLUME) / (TGChannel.MAX_VOLUME - TGChannel.MIN_VOLUME);
+			int percent = Math.round(100f * (VolumeControl.this.volumeScale.getValue() - TGChannel.MIN_VOLUME) / (TGChannel.MAX_VOLUME - TGChannel.MIN_VOLUME));
 			this.volumeScale.setToolTipText(String.valueOf(percent) + "%");
 		}
 
@@ -143,6 +143,7 @@ public class TGTableMixer {
 
 		void updateVolume() {
 			this.volumeScale.setValue(this.channel.getVolume());
+			this.updateToolTipText();
 		}
 
 		@Override
