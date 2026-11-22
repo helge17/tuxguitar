@@ -24,8 +24,9 @@ public class GPXFileSystem {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		int read = 0;
-		while ((read = in.read()) != -1) {
-			out.write(read);
+		byte[] buffer = new byte[8192];
+		while ((read = in.read(buffer)) != -1) {
+			out.write(buffer, 0, read);
 		}
 		out.close();
 		out.flush();

@@ -50,8 +50,10 @@ public class TGSongView extends View {
 		this.context = TGApplicationUtil.findContext(this);
 		this.controller = TGSongViewController.getInstance(this.context);
 		this.controller.setSongView(this);
-		this.controller.getLayout().loadStyles(this.getDefaultScale());
-		this.controller.updateTablature();
+		if( this.controller.getLayout().getScale() != this.getDefaultScale() ) {
+			this.controller.getLayout().loadStyles(this.getDefaultScale());
+			this.controller.updateTablature();
+		}
 		this.gestureDetector = new TGSongViewGestureDetector(getContext(), this);
 	}
 
