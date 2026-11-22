@@ -16,7 +16,7 @@
 	<!-- <string name="global_error_message"></string> -->
 	<!-- <string name="global_exit_confirm_message"></string> -->
 
-	<!-- <string name="global_button_ok"></string> -->
+	<string name="global_button_ok">OK</string>
 	<string name="global_button_cancel">Annulla</string>
 	<string name="global_button_clean">Svuota</string>
 	<string name="global_button_add">Aggiungi</string>
@@ -61,7 +61,7 @@
 	<string name="action_transport_play">Suona/pausa la canzone</string>
 	<string name="action_transport_stop">Ferma il suono</string>
 	<string name="action_transport_metronome">Metronomo</string>
-	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_count_down">Conto alla rovescia</string>
 	<string name="action_transport_mode">Modalità riproduttore</string>
 	<string name="action_transport_set_loop_start">Fissa inizio del loop</string>
 	<string name="action_transport_set_loop_end">Fissa fine del loop</string>
@@ -92,7 +92,7 @@
 	<string name="action_track_remove">Rimuovi traccia</string>
 	<string name="action_track_move_up">Sposta su</string>
 	<string name="action_track_move_down">Sposta giù</string>
-	<!-- <string name="action_track_change_solo"></string> -->
+	<string name="action_track_change_solo">Solo</string>
 	<string name="action_track_change_mute">Muto</string>
 	<string name="action_track_set_name">Nome</string>
 	<string name="action_track_set_channel">Strumento</string>
@@ -143,36 +143,36 @@
 	<string name="action_set_duration_division_type_6">6 - Sestina</string>
 	<string name="action_set_duration_division_type_7">7 - Settimina</string>
 	<string name="action_set_duration_division_type_9">9 - Nonina</string>
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_10">10 - Decina</string>
+	<string name="action_set_duration_division_type_11">11 - Undecina</string>
+	<string name="action_set_duration_division_type_12">12 - Dodicina</string>
+	<string name="action_set_duration_division_type_13">13 - Tredicina</string>
 
-	<!-- <string name="action_set_velocity_ppp"></string> -->
-	<!-- <string name="action_set_velocity_pp"></string> -->
-	<!-- <string name="action_set_velocity_p"></string> -->
-	<!-- <string name="action_set_velocity_mp"></string> -->
-	<!-- <string name="action_set_velocity_mf"></string> -->
-	<!-- <string name="action_set_velocity_f"></string> -->
-	<!-- <string name="action_set_velocity_ff"></string> -->
-	<!-- <string name="action_set_velocity_fff"></string> -->
+	<string name="action_set_velocity_ppp">Piano Pianissimo</string>
+	<string name="action_set_velocity_pp">Pianissimo</string>
+	<string name="action_set_velocity_p">Piano</string>
+	<string name="action_set_velocity_mp">Mezzo Piano</string>
+	<string name="action_set_velocity_mf">Mezzo Forte</string>
+	<string name="action_set_velocity_f">Forte</string>
+	<string name="action_set_velocity_ff">Fortissimo</string>
+	<string name="action_set_velocity_fff">Forte Fortissimo</string>
 
-	<!-- <string name="action_change_vibrato"></string> -->
-	<!-- <string name="action_change_bend"></string> -->
+	<string name="action_change_vibrato">Vibrato</string>
+	<string name="action_change_bend">Bend</string>
 	<string name="action_change_dead_note">Nota stoppata</string>
-	<!-- <string name="action_change_slide"></string> -->
-	<!-- <string name="action_change_hammer"></string> -->
+	<string name="action_change_slide">Slide</string>
+	<string name="action_change_hammer">Hammer-on/Pull-off</string>
 	<string name="action_change_tremolo_bar">Whammy Bar</string>
 	<string name="action_change_ghost_note">Nota fantasma</string>
 	<string name="action_change_accentuated_note">Nota accentuata</string>
 	<string name="action_change_heavy_accentuated_note">Nota fortemente accentuata</string>
 	<string name="action_change_harmonic">Armonico</string>
 	<string name="action_change_grace">Appoggiatura</string>
-	<!-- <string name="action_change_trill"></string> -->
+	<string name="action_change_trill">Trillo</string>
 	<string name="action_change_tremolo_picking">Leva Tremolo</string>
-	<!-- <string name="action_change_palm_mute"></string> -->
-	<!-- <string name="action_change_let_ring"></string> -->
-	<!-- <string name="action_change_staccato"></string> -->
+	<string name="action_change_palm_mute">Palm Mute</string>
+	<string name="action_change_let_ring">Let Ring</string>
+	<string name="action_change_staccato">Staccato</string>
 	<!-- <string name="action_change_tapping"></string> -->
 	<!-- <string name="action_change_slapping"></string> -->
 	<!-- <string name="action_change_popping"></string> -->
@@ -190,7 +190,7 @@
 	<!-- ======================= MAIN DRAWER =============================== -->
 	<!-- =================================================================== -->
 
-	<!-- <string name="main_drawer_file"></string> -->
+	<string name="main_drawer_file">File</string>
 	<!-- <string name="main_drawer_tracks"></string> -->
 
 	<!-- =================================================================== -->
@@ -323,7 +323,7 @@
 	<string name="song_properties_dlg_title">Proprietà</string>
 	<string name="song_properties_dlg_name_label">Nome:</string>
 	<string name="song_properties_dlg_artist_label">Artista:</string>
-	<!-- <string name="song_properties_dlg_album_label"></string> -->
+	<string name="song_properties_dlg_album_label">Album:</string>
 	<string name="song_properties_dlg_author_label">Autore:</string>
 	<string name="song_properties_dlg_date_label">Data:</string>
 	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
@@ -391,7 +391,7 @@
 	<!-- Bend dialog -->
 	<string name="bend_dlg_title">Modifica Bend</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
-	<!-- <string name="bend_dlg_preset_bend"></string> -->
+	<string name="bend_dlg_preset_bend">Bend</string>
 	<!-- <string name="bend_dlg_preset_bend_release"></string> -->
 	<!-- <string name="bend_dlg_preset_bend_release_bend"></string> -->
 	<!-- <string name="bend_dlg_preset_prebend"></string> -->
@@ -414,7 +414,7 @@
 	<string name="tremolo_picking_dlg_duration_32">Biscroma</string>
 
 	<!-- Trill dialog -->
-	<!-- <string name="trill_dlg_title"></string> -->
+	<string name="trill_dlg_title">Trillo</string>
 	<string name="trill_dlg_fret_label">Tasto:</string>
 	<string name="trill_dlg_duration_16">Semicroma</string>
 	<string name="trill_dlg_duration_32">Biscroma</string>
@@ -432,19 +432,19 @@
 	<string name="grace_dlg_duration_32">Biscroma</string>
 	<string name="grace_dlg_duration_64">Semibiscroma</string>
 	<string name="grace_dlg_dynamic_label">Dinamica</string>
-	<!-- <string name="grace_dlg_dynamic_ppp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_p"></string> -->
-	<!-- <string name="grace_dlg_dynamic_mp"></string> -->
-	<!-- <string name="grace_dlg_dynamic_mf"></string> -->
-	<!-- <string name="grace_dlg_dynamic_f"></string> -->
-	<!-- <string name="grace_dlg_dynamic_ff"></string> -->
-	<!-- <string name="grace_dlg_dynamic_fff"></string> -->
+	<string name="grace_dlg_dynamic_ppp">Piano Pianissimo</string>
+	<string name="grace_dlg_dynamic_pp">Pianissimo</string>
+	<string name="grace_dlg_dynamic_p">Piano</string>
+	<string name="grace_dlg_dynamic_mp">Mezzo Piano</string>
+	<string name="grace_dlg_dynamic_mf">Mezzo Forte</string>
+	<string name="grace_dlg_dynamic_f">Forte</string>
+	<string name="grace_dlg_dynamic_ff">Fortissimo</string>
+	<string name="grace_dlg_dynamic_fff">Forte Fortissimo</string>
 	<string name="grace_dlg_transition_label">Appoggiatura</string>
 	<string name="grace_dlg_transition_none">Nessuna</string>
-	<!-- <string name="grace_dlg_transition_bend"></string> -->
-	<!-- <string name="grace_dlg_transition_slide"></string> -->
-	<!-- <string name="grace_dlg_transition_hammer"></string> -->
+	<string name="grace_dlg_transition_bend">Bend</string>
+	<string name="grace_dlg_transition_slide">Slide</string>
+	<string name="grace_dlg_transition_hammer">Hammer</string>
 
 	<!-- Harmonic dialog -->
 	<string name="harmonic_dlg_title">Armonico</string>
@@ -484,12 +484,12 @@
 	<string name="channel_edit_dlg_bank_label">Banco:</string>
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
 	<string name="channel_edit_dlg_percussion_label">Traccia batteria</string>
-	<!-- <string name="channel_edit_dlg_volume_label"></string> -->
+	<string name="channel_edit_dlg_volume_label">Volume:</string>
 	<string name="channel_edit_dlg_balance_label">Bilanciamento:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
 	<string name="channel_edit_dlg_reverb_label">Riverbero:</string>
 	<!-- <string name="channel_edit_dlg_phaser_label"></string> -->
-	<!-- <string name="channel_edit_dlg_tremolo_label"></string> -->
+	<string name="channel_edit_dlg_tremolo_label">Tremolo:</string>
 
 	<!-- Play Mode dialog -->
 	<string name="transport_mode_dlg_title">Modalità riproduttore</string>

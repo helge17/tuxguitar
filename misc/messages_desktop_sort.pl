@@ -90,11 +90,11 @@ sub process_list {
       # Skip the first $skip lines
       next if $line <= $skip;
      if (/^(.+?)=(.+)$/) {
-        if ($msg_lang{$1} && $msg_lang{$1} ne $2) {
-          # message is translated and is not the same as in the default messages.properties
+        if ($msg_lang{$1}) {
+          # message is translated
           print MSG_LNEW "$1=$msg_lang{$1}\n";
         } else {
-          print MSG_LNEW "# $1=\n";
+          print MSG_LNEW "# $1=$2\n";
         }
       } else {
         print MSG_LNEW "$_\n";
