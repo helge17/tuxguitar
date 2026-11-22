@@ -2,11 +2,19 @@ package app.tuxguitar.app.view.component.tab;
 
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.graphics.control.TGLayoutStyles;
+import app.tuxguitar.ui.resource.UIColorModel;
 
 public class TablatureStyles extends TGLayoutStyles {
 
+	private static final int RGB_MAX = 255;
+
+	private final boolean darkCanvas;
+
 	public TablatureStyles(TGConfigManager config) {
+		this.darkCanvas = TGSkinManager.getInstance(config.getContext()).isDarkCanvas();
+
 		this.setBufferEnabled(true);
 		this.setStringSpacing(config.getIntegerValue(TGConfigKeys.STYLE_STRING_SPACING));
 		this.setScoreLineSpacing(config.getIntegerValue(TGConfigKeys.STYLE_SCORE_LINE_SPACING));
@@ -46,17 +54,27 @@ public class TablatureStyles extends TGLayoutStyles {
 		this.setGraceFont(config.getFontModelConfigValue(TGConfigKeys.FONT_GRACE));
 		this.setChordFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD));
 		this.setChordFretFont(config.getFontModelConfigValue(TGConfigKeys.FONT_CHORD_FRET));
-		this.setForegroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_FOREGROUND));
-		this.setBackgroundColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND));
-		this.setBackgroundColorPlaying(config.getColorModelConfigValue(TGConfigKeys.COLOR_BACKGROUND_PLAYING));
-		this.setLineColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE));
-		this.setLineColorInvalid(config.getColorModelConfigValue(TGConfigKeys.COLOR_LINE_INVALID));
-		this.setScoreNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SCORE_NOTE));
-		this.setTabNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_TAB_NOTE));
-		this.setPlayNoteColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_PLAY_NOTE));
-		this.setSelectionColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_SELECTION));
-		this.setLoopSMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_S_MARKER));
-		this.setLoopEMarkerColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_LOOP_E_MARKER));
-		this.setMeasureNumberColor(config.getColorModelConfigValue(TGConfigKeys.COLOR_MEASURE_NUMBER));
+		this.setForegroundColor(this.getColorModel(config, TGConfigKeys.COLOR_FOREGROUND));
+		this.setBackgroundColor(this.getColorModel(config, TGConfigKeys.COLOR_BACKGROUND));
+		this.setBackgroundColorPlaying(this.getColorModel(config, TGConfigKeys.COLOR_BACKGROUND_PLAYING));
+		this.setLineColor(this.getColorModel(config, TGConfigKeys.COLOR_LINE));
+		this.setLineColorInvalid(this.getColorModel(config, TGConfigKeys.COLOR_LINE_INVALID));
+		this.setScoreNoteColor(this.getColorModel(config, TGConfigKeys.COLOR_SCORE_NOTE));
+		this.setTabNoteColor(this.getColorModel(config, TGConfigKeys.COLOR_TAB_NOTE));
+		this.setPlayNoteColor(this.getColorModel(config, TGConfigKeys.COLOR_PLAY_NOTE));
+		this.setSelectionColor(this.getColorModel(config, TGConfigKeys.COLOR_SELECTION));
+		this.setLoopSMarkerColor(this.getColorModel(config, TGConfigKeys.COLOR_LOOP_S_MARKER));
+		this.setLoopEMarkerColor(this.getColorModel(config, TGConfigKeys.COLOR_LOOP_E_MARKER));
+		this.setMeasureNumberColor(this.getColorModel(config, TGConfigKeys.COLOR_MEASURE_NUMBER));
+	}
+
+	private UIColorModel getColorModel(TGConfigManager config, String key) {
+		UIColorModel color = config.getColorModelConfigValue(key);
+		if( this.darkCanvas && color != null ) {
+			color.setRed(RGB_MAX - color.getRed());
+			color.setGreen(RGB_MAX - color.getGreen());
+			color.setBlue(RGB_MAX - color.getBlue());
+		}
+		return color;
 	}
 }

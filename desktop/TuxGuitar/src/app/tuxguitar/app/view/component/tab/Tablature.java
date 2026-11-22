@@ -7,6 +7,7 @@ import app.tuxguitar.app.TuxGuitar;
 import app.tuxguitar.app.document.TGDocument;
 import app.tuxguitar.app.system.config.TGConfigKeys;
 import app.tuxguitar.app.system.config.TGConfigManager;
+import app.tuxguitar.app.system.icons.TGSkinManager;
 import app.tuxguitar.app.transport.TGTransport;
 import app.tuxguitar.app.ui.TGApplication;
 import app.tuxguitar.app.view.component.tab.edit.EditorKit;
@@ -26,6 +27,7 @@ import app.tuxguitar.song.models.TGMeasure;
 import app.tuxguitar.song.models.TGMeasureHeader;
 import app.tuxguitar.song.models.TGNote;
 import app.tuxguitar.song.models.TGSong;
+import app.tuxguitar.ui.resource.UIColorModel;
 import app.tuxguitar.ui.resource.UIPainter;
 import app.tuxguitar.ui.resource.UIRectangle;
 import app.tuxguitar.ui.resource.UIResourceFactory;
@@ -201,9 +203,20 @@ public class Tablature implements TGController {
 	public void loadCaretStyles() {
 		TGConfigManager config = TGConfigManager.getInstance(this.context);
 
-		getCaret().setColorCurrentVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_CURRENT_VOICE));
-		getCaret().setColorOtherVoice(config.getColorModelConfigValue(TGConfigKeys.COLOR_CARET_OTHER_VOICE));
+		boolean darkCanvas = TGSkinManager.getInstance(this.context).isDarkCanvas();
+		getCaret().setColorCurrentVoice(this.getCaretColor(config, TGConfigKeys.COLOR_CARET_CURRENT_VOICE, darkCanvas));
+		getCaret().setColorOtherVoice(this.getCaretColor(config, TGConfigKeys.COLOR_CARET_OTHER_VOICE, darkCanvas));
 		getCaret().setAlpha(config.getIntegerValue(TGConfigKeys.COLOR_CARET_ALPHA));
+	}
+
+	private UIColorModel getCaretColor(TGConfigManager config, String key, boolean darkCanvas) {
+		UIColorModel color = config.getColorModelConfigValue(key);
+		if( darkCanvas && color != null ) {
+			color.setRed(255 - color.getRed());
+			color.setGreen(255 - color.getGreen());
+			color.setBlue(255 - color.getBlue());
+		}
+		return color;
 	}
 
 	public void scale(Float scale) {
