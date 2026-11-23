@@ -339,6 +339,7 @@
 	<string name="track_tuning_dlg_strings_label">Strings</string>
 	<string name="track_tuning_dlg_options_label">Options</string>
 	<string name="track_tuning_dlg_value_label">Value:</string>
+	<string name="track_tuning_dlg_midi_note_label">MIDI Note:</string>
 	<string name="track_tuning_dlg_preview_label">Label:</string>
 	<string name="track_tuning_dlg_offset_select_value">Offset #%1$d</string>
 	<string name="track_tuning_dlg_preset_select_value">-- Presets --</string>

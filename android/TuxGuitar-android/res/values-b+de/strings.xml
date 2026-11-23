@@ -345,6 +345,7 @@
 	<string name="track_tuning_dlg_strings_label">Saiten</string>
 	<string name="track_tuning_dlg_options_label">Optionen</string>
 	<string name="track_tuning_dlg_value_label">Wert:</string>
+	<string name="track_tuning_dlg_midi_note_label">MIDI-Note:</string>
 	<string name="track_tuning_dlg_preview_label">Bezeichnung:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->

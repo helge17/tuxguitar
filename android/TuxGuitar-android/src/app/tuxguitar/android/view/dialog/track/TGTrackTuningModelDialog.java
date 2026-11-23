@@ -13,13 +13,12 @@ import android.widget.Spinner;
 import app.tuxguitar.android.R;
 import app.tuxguitar.android.view.dialog.fragment.TGModalFragment;
 import app.tuxguitar.android.view.util.TGSelectableItem;
+import app.tuxguitar.util.TGMusicKeyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TGTrackTuningModelDialog extends TGModalFragment {
-
-	private static final int MAX_OCTAVES = 10;
 
 	public TGTrackTuningModelDialog() {
 		super(R.layout.view_track_tuning_model_dialog);
@@ -54,25 +53,48 @@ public class TGTrackTuningModelDialog extends TGModalFragment {
 		editText.setText(TGTrackTuningLabel.valueOf(this.findSelectedValue()));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void fillTuning() {
-		ArrayAdapter<TGSelectableItem> arrayAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings());
-		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<TGSelectableItem> valueAdapter = new ArrayAdapter<TGSelectableItem>(getActivity(), android.R.layout.simple_spinner_item, createSelectableTunings());
+		valueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		Spinner spinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_value_control);
-		spinner.setAdapter(arrayAdapter);
-		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		ArrayAdapter<Integer> midiNoteAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, createMidiNoteValues());
+		midiNoteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		final Spinner valueSpinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_value_control);
+		final Spinner midiNoteSpinner = (Spinner) this.getView().findViewById(R.id.track_tuning_dlg_midi_note_control);
+		valueSpinner.setAdapter(valueAdapter);
+		midiNoteSpinner.setAdapter(midiNoteAdapter);
+
+		// keep spinners in sync
+		valueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+				if( midiNoteSpinner.getSelectedItemPosition() != i ) {
+					midiNoteSpinner.setSelection(i, false);
+				}
 				fillPreview();
+			}
+
+			public void onNothingSelected(AdapterView<?> adapterView) {}
+		});
+		midiNoteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+				if( valueSpinner.getSelectedItemPosition() != i ) {
+					valueSpinner.setSelection(i, false);
+				}
 			}
 
 			public void onNothingSelected(AdapterView<?> adapterView) {}
 		});
 
 		TGTrackTuningModel model = this.getAttribute(TGTrackTuningModelDialogController.ATTRIBUTE_MODEL);
-		if( model != null ) {
-			spinner.setSelection(((ArrayAdapter<TGSelectableItem>)spinner.getAdapter()).getPosition(new TGSelectableItem(Integer.valueOf(model.getValue()), null)), false);
-		}
+		int position = (getInitialValue(model) - TGMusicKeyUtils.MIN_MIDI_NOTE);
+		valueSpinner.setSelection(position, false);
+		midiNoteSpinner.setSelection(position, false);
+	}
+
+	private static int getInitialValue(TGTrackTuningModel model) {
+		int value = (model != null ? model.getValue() : TGMusicKeyUtils.MIN_MIDI_NOTE);
+		return Math.max(TGMusicKeyUtils.MIN_MIDI_NOTE, Math.min(TGMusicKeyUtils.MAX_MIDI_NOTE, value));
 	}
 
 	public int findSelectedValue() {
@@ -84,15 +106,22 @@ public class TGTrackTuningModelDialog extends TGModalFragment {
 	public TGSelectableItem[] createSelectableTunings() {
 		List<TGSelectableItem> selectableItems = new ArrayList<TGSelectableItem>();
 
-		int count = (MAX_OCTAVES * TGTrackTuningLabel.KEY_NAMES.length);
-		for (int i = 0; i < count; i++) {
-			selectableItems.add(new TGSelectableItem(Integer.valueOf(i), TGTrackTuningLabel.valueOf(i, true)));
+		for (int value = TGMusicKeyUtils.MIN_MIDI_NOTE; value <= TGMusicKeyUtils.MAX_MIDI_NOTE; value++) {
+			selectableItems.add(new TGSelectableItem(Integer.valueOf(value), TGMusicKeyUtils.sharpNoteFullName(value)));
 		}
 
 		TGSelectableItem[] builtItems = new TGSelectableItem[selectableItems.size()];
 		selectableItems.toArray(builtItems);
 
 		return builtItems;
+	}
+
+	public Integer[] createMidiNoteValues() {
+		Integer[] values = new Integer[TGMusicKeyUtils.MAX_MIDI_NOTE - TGMusicKeyUtils.MIN_MIDI_NOTE + 1];
+		for (int i = 0; i < values.length; i++) {
+			values[i] = Integer.valueOf(TGMusicKeyUtils.MIN_MIDI_NOTE + i);
+		}
+		return values;
 	}
 
 	public boolean handleSelection() {

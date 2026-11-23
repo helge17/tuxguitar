@@ -19,6 +19,15 @@
 			android:layout_gravity="fill_horizontal|center_vertical" />
 
 		<TextView
+			android:id="@+id/track_tuning_dlg_midi_note_label"
+			android:text="@string/track_tuning_dlg_midi_note_label"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<Spinner
+			android:id="@+id/track_tuning_dlg_midi_note_control"
+			android:layout_gravity="fill_horizontal|center_vertical" />
+
+		<TextView
 			android:id="@+id/track_tuning_dlg_preview_label"
 			android:text="@string/track_tuning_dlg_preview_label"
 			android:layout_gravity="fill_horizontal|center_vertical" />
