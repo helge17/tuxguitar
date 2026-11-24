@@ -807,6 +807,7 @@ public class MidiSongReader extends MidiFileFormat implements TGSongReader {
 			while(it.hasNext()){
 				TGMeasure measure = it.next();
 				process(measure, track.isPercussion(), track.getMaxFret());
+				tgSongManager.getMeasureManager().reAlignRests(measure);
 			}
 			tgSongManager.getTrackManager().fixInvalidTiedNotes(track);
 		}
