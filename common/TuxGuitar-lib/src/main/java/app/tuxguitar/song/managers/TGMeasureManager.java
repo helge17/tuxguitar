@@ -1100,65 +1100,289 @@ public class TGMeasureManager {
 		return false;
 	}
 
+	// for a valid measure only: remove all rests and re-create them, aligned
+	public void reAlignRests(TGMeasure measure) {
+		if (isMeasureDurationValid(measure)) {
+			List<TGVoice> toDelete = new ArrayList<TGVoice>();
+			for (TGBeat b : measure.getBeats()) {
+				for (int v=0; v<TGBeat.MAX_VOICES; v++) {
+					TGVoice voice = b.getVoice(v);
+					if (voice.isRestVoice()) {
+						toDelete.add(voice);
+					}
+				}
+			}
+			for (TGVoice voice : toDelete) {
+				removeVoice(voice);
+			}
+			autoCompleteSilences(measure);
+		}
+	}
+
+	// fills the EMPTY sections of a measure, where nothing is defined (no note, no rest)
 	public void autoCompleteSilences(TGMeasure measure){
 		TGBeat beat = getFirstBeat( measure.getBeats() );
-
 		// no beat: fill measure and return
 		if( beat == null ){
 			createSilences(measure, measure.getPreciseStart(), measure.getPreciseLength(), 0);
 			return;
 		}
-
-		// complete silences before first note
-		boolean hasVoices = false;
+		// proceed voices one by one
 		for( int v = 0 ; v < TGBeat.MAX_VOICES ; v ++ ){
-			TGVoice voice = getFirstVoice( measure.getBeats() , v );
-			if( voice != null && voice.getBeat().getPreciseStart() > measure.getPreciseStart() ){
-				createSilences(measure, measure.getPreciseStart(), voice.getBeat().getPreciseStart() - measure.getPreciseStart(), v);
-			}
-			hasVoices = (hasVoices || voice != null);
+			autoCompleteSilences(measure, v);
 		}
+	}
 
-		// no voice: fill measure and return
-		if(!hasVoices) {
-			createSilences(measure, measure.getPreciseStart(), measure.getPreciseLength(), 0);
+	// fills the EMPTY sections of one voice in a measure, where nothing is defined (no note, no rest)
+	// this is tricky, since there are many different methods to fill an empty space: many possible combinations are mathematically valid
+	// and sometimes it's not easy to choose among them. Some subjective (and arbitrary) criteria are applied here.
+	// Logically, it should not produce an *optimal* result in all cases (if such a result exists!)
+	// Essentially: try to align rests. E.g. to fill a gap of 3*1/8:
+	// - at the beginning of one measure, it will choose 1*1/4 + 1*1/8
+	// - after a first 1/8 in a measure, it will choose  1*1/8 + 1*1/4
+	// also, try to regroup/align tuplets:
+	// e.g. a triplet of 1/8th where only the third note is not a rest will produce [2*1/8-triplet rest + 1/8-triplet note] (if it's aligned!)
+	// mathematically, [1/4-triplet rest + 1/8-triplet note] is perfectly valid, but it is considered less readable (arbitrarily)
+	private void autoCompleteSilences(TGMeasure measure, int voiceIndex){
+		TGDuration preferredDuration = null;
+
+		// if measure is empty: fill measure for first voice, else do nothing
+		TGVoice voice = getFirstVoice( measure.getBeats() , voiceIndex);
+		if (voice == null) {
+			if (voiceIndex == 0) {
+				createSilences(measure, measure.getPreciseStart(), measure.getPreciseLength(), 0);
+			}
 			return;
 		}
 
-		long[] start = new long[beat.countVoices()];
-		long[] uncompletedLength = new long[beat.countVoices()];
-		for( int v = 0; v < uncompletedLength.length; v ++ ){
-			start[v] = 0;
-			uncompletedLength[v] = 0;
+		// measure is not empty
+		// complete silences before first voice
+		long durationToFill = voice.getBeat().getPreciseStart() - measure.getPreciseStart();
+		if (durationToFill > 0){
+			preferredDuration = getPreferredDurationToFillVoice(voice, durationToFill);
+			createSilences(measure, measure.getPreciseStart(), voice.getBeat().getPreciseStart() - measure.getPreciseStart(), preferredDuration, voiceIndex);
+			// possibly, some gaps were filled with (too) many rests, or with too long rests: align them
+			alignRests(measure, measure.getPreciseStart(), durationToFill, voiceIndex);
 		}
 
-		// in each voice, look for empty spaces between notes, and until end of measure
-		while (beat != null) {
-			for( int v = 0; v < beat.countVoices(); v ++ ){
-				TGVoice voice = beat.getVoice( v );
-				if( !voice.isEmpty() ){
-					long voiceEnd = beat.getPreciseStart() + voice.getDuration().getPreciseTime();
-					long nextPosition = measure.getPreciseStart() + measure.getPreciseLength();
+		// look for empty spaces between voices, and until end of measure
+		// and follow the structure of tuplets, to fill the gaps with correct TGDivisionType
+		preferredDuration = null;			// shortest division of current tuplet (or null if outside of a tuplet)
+		long tupletPreciseDuration = 0;		// sum of all notes precise duration inside current tuplet (or 0)
+		while (voice != null) {
+			long voiceEnd = voice.getBeat().getPreciseStart() + voice.getDuration().getPreciseTime();
+			long nextPosition = measure.getPreciseStart() + measure.getPreciseLength();
+			TGVoice nextVoice = getNextVoice(measure.getBeats(), voice.getBeat(), voiceIndex);
 
-					TGVoice nextVoice = getNextVoice(measure.getBeats(), beat, voice.getIndex());
-					if(nextVoice != null){
-						nextPosition = nextVoice.getBeat().getPreciseStart();
-					}
-					if( voiceEnd < nextPosition){
-						start[v] = voiceEnd;
-						uncompletedLength[v] = (nextPosition - voiceEnd);
-					}
+			// follow tuplets structure, to choose value of preferredDuration used to fill the next gap
+			if (!voice.getDuration().getDivision().isTuplet()) {
+				// not in a tuplet
+				preferredDuration = null;
+				tupletPreciseDuration = 0;
+			} else if ((preferredDuration == null) || (preferredDuration.getDivision() != voice.getDuration().getDivision())) {
+				// first in a tuplet
+				preferredDuration = voice.getDuration().clone(getSongManager().getFactory());
+				tupletPreciseDuration = voice.getDuration().getPreciseTime();
+			} else {
+				// currently in a tuplet (in the middle, or last)
+				// increment tuplet accumulated duration, update preferred duration if current is shorter
+				tupletPreciseDuration += voice.getDuration().getPreciseTime();
+				if (voice.getDuration().getPreciseTime() < preferredDuration.getPreciseTime()) {
+					preferredDuration = voice.getDuration().clone(getSongManager().getFactory());
+				}
+				// last in tuplet? If so, forget it
+				if (tupletPreciseDuration % (voice.getDuration().getDivision().getEnters() * preferredDuration.getPreciseTime()) == 0) {
+					preferredDuration = null;
+					tupletPreciseDuration = 0;
 				}
 			}
 
-			for( int v = 0; v < uncompletedLength.length; v ++ ){
-				if( uncompletedLength[v] > 0 ){
-					createSilences(measure,start[v],uncompletedLength[v], v);
-				}
-				start[v] = 0;
-				uncompletedLength[v] = 0;
+			// need to fill a gap?
+			if(nextVoice != null){
+				nextPosition = nextVoice.getBeat().getPreciseStart();
 			}
-			beat = getNextBeat(measure.getBeats(), beat );
+			durationToFill = nextPosition - voiceEnd;
+			if( durationToFill > 0 ){
+				if (preferredDuration == null) {
+					preferredDuration = getPreferredDurationToFillVoice(voice, durationToFill);
+				}
+				createSilences(measure, voiceEnd, durationToFill, preferredDuration, voiceIndex);
+				// possibly, some gaps were filled with (too) many rests, or with too long rests: align them
+				alignRests(measure, voiceEnd, durationToFill, voiceIndex);
+			}
+			voice = getNextVoice(measure.getBeats(), voice.getBeat(), voiceIndex);
+		}
+	}
+
+	private TGDuration getPreferredDurationToFillVoice(TGVoice voice, long durationToFill) {
+		TGDuration preferredDuration = null;
+		TGMeasure measure = voice.getBeat().getMeasure();
+
+		// is there any tuplet in this interval?
+		boolean isTuplet = false;
+		List<TGDuration> listDuration = TGDuration.splitPreciseDuration(durationToFill, measure.getPreciseLength(), getSongManager().getFactory());
+		if (listDuration == null) {
+			// ?? can't even fill the interval, position of first voice is invalid... Do nothing
+			return null;
+		}
+		for (TGDuration d : listDuration) {
+			isTuplet |= d.getDivision().isTuplet();
+		}
+		if (isTuplet) {
+			// interval cannot be filled without tuplets
+			// possibly the first following non-rest voice corresponds to the end of a tuplet (?)
+			TGVoice next = getNextVoice(measure.getBeats(), voice.getBeat(), voice.getIndex());
+			if (next != null) {
+				preferredDuration = next.getDuration().clone(getSongManager().getFactory());
+			}
+		}
+		return preferredDuration;
+	}
+
+	// merge and/or split rests to align them (as far as possible)
+	// assumes the measure is valid
+	// There are different successive steps, that follow the same pattern:
+	// - LOOP over all beats/voices of measure
+	// - look for some specific operation that can be done (merge or split)
+	// - if something is found
+	//    - get out of the LOOP and proceed: it can modify the structure of the measure, and shall not conflict with the definition of the LOOP
+	//    - restart the process from the beginning of the measure, with measure's new structure
+	// - and it goes on like this until no more operation to perform is found
+	// subjective criteria: no dotted/double-dotted rests, merge tuplets fully or not at all
+	private void alignRests(TGMeasure measure, long from, long length, int voiceIndex) {
+		TGVoice current = null;
+		boolean done = false;
+
+		orderBeats(measure);
+
+		// STEP 1, merge
+		// e.g. [4*1/8-triplet] -> [1/8-triplet + 1/4] or [1/4 + 1/8-triplet] or keep [4*1/8-triplet] if unaligned
+		// e.g. 2*1/8 -> 1/4, or keep 2*1/8 if unaligned
+		List<TGVoice> toMerge = new ArrayList<TGVoice>();	// list of candidates for a merge, homogeneous time division
+		while (!done) {
+			long targetPreciseLength = 0;
+			done = true;
+			current = getFirstVoice(measure.getBeats(), voiceIndex);
+			while ((current != null) && !current.isRestVoice()) {
+				current = getNextRestVoice(measure.getBeats(), current);
+			}
+			while (current != null) {
+				long voicePreciseEnd = current.getBeat().getPreciseStart() + current.getDuration().getPreciseTime();
+				if (current.isRestVoice() && (current.getBeat().getPreciseStart() >= from) && (voicePreciseEnd <= from + length)) {
+					long mPreciseStart = measure.getPreciseStart();
+					if (!toMerge.isEmpty() && !toMerge.get(0).getDuration().getDivision().isEqual(current.getDuration().getDivision())) {
+						toMerge.clear();
+					}
+					toMerge.add(current);
+					// current is the only voice in list, and it's a tuplet: is it aligned? (candidate for a merge?)
+					if ((toMerge.size() == 1) && current.getDuration().getDivision().isTuplet()) {
+						long mergedPreciseTime = current.getDuration().getPreciseTime() * current.getDuration().getDivision().getEnters();
+						long posInMeasure = current.getBeat().getPreciseStart() - mPreciseStart;
+						if (posInMeasure % mergedPreciseTime != 0) {
+							toMerge.clear();
+						}
+					}
+					// can merge?
+					if (toMerge.size() > 1) {
+						targetPreciseLength = 0;
+						for (TGVoice v : toMerge) {
+							targetPreciseLength += v.getDuration().getPreciseTime();
+						}
+						TGDuration merged = getSongManager().getFactory().newDuration();
+						try {
+							merged.setPreciseValue(targetPreciseLength);
+						} catch (IllegalArgumentException e) {
+							merged = null;
+						}
+						// some arbitrary criteria here
+						// TODO, open point: accept dotted if timeSignature.numerator is divisible by 3?
+						if ((merged != null) && !merged.isDotted() && !merged.isDoubleDotted() && !merged.getDivision().isTuplet()) {
+							// duration OK, what about alignment?
+							long posInMeasure = toMerge.get(0).getBeat().getPreciseStart() - mPreciseStart;
+							if (posInMeasure % targetPreciseLength == 0) {
+								// OK
+								done = false;
+								break;
+							}
+						}
+					}
+					// cannot merge, if not a tuplet only keep last item in list (merge only 2 by 2)
+					if (!current.getDuration().getDivision().isTuplet()) {
+						while (toMerge.size() > 1) {
+							toMerge.remove(0);
+						}
+					}
+				} else {
+					// current is not a rest
+					toMerge.clear();
+				}
+				current = getNextVoice(measure.getBeats(), current.getBeat(), voiceIndex);
+			}
+
+			// shall the list of candidates be merged?
+			if (!done) {
+				toMerge.get(0).getDuration().setPreciseValue(targetPreciseLength);
+				for (int i=1; i<toMerge.size(); i++) {
+					removeVoice(toMerge.get(i));
+				}
+				toMerge.clear();
+			}
+		}
+
+		// STEP 2 split non-aligned
+		done = false;
+		while (!done) {
+			done = true;
+			Long targetPreciseLength = null;
+			current = getFirstVoice(measure.getBeats(), voiceIndex);
+			while ((current != null) && !current.isRestVoice()) {
+				current = getNextRestVoice(measure.getBeats(), current);
+			}
+			while (current != null) {
+				long mPreciseStart = measure.getPreciseStart();
+				long posInMeasure = current.getBeat().getPreciseStart() - mPreciseStart;
+				targetPreciseLength = current.getDuration().getPreciseTime();
+				boolean aligned = (posInMeasure % targetPreciseLength == 0);
+				if (aligned) {
+					targetPreciseLength = null;
+				} else {
+					// try to split
+					int value = current.getDuration().getValue();
+					while (!aligned && (value < TGDuration.SHORTEST)) {
+						value *= 2;
+						targetPreciseLength /= 2;
+						aligned = (posInMeasure % targetPreciseLength == 0);
+					}
+					if (aligned) {
+						// it's possible to split the rest so it becomes aligned
+						// get out of while loop to proceed
+						done = false;
+						break;
+					}
+				}
+				current = getNextVoice(measure.getBeats(), current.getBeat(), voiceIndex);
+			}
+			// split if needed
+			if (!done) {
+				int nbSplit = (int)(current.getDuration().getPreciseTime() / targetPreciseLength);
+				current.getDuration().setPreciseValue(targetPreciseLength);
+				long newStart = current.getBeat().getPreciseStart() + targetPreciseLength;
+				for (int i=1; i<nbSplit; i++) {
+					TGVoice newVoice = getSongManager().getFactory().newVoice(voiceIndex);
+					newVoice.getDuration().setPreciseValue(targetPreciseLength);
+					newVoice.setEmpty(false);
+					TGBeat newBeat = getBeatPrecise(measure, newStart);
+					if (newBeat == null) {
+						newBeat = getSongManager().getFactory().newBeat();
+						newBeat.setPreciseStart(newStart);
+					}
+					newBeat.setVoice(voiceIndex, newVoice);
+					addBeat(measure, newBeat);
+					newStart += targetPreciseLength;
+				}
+				// new beats have been added, need to re-order
+				orderBeats(measure);
+			}
 		}
 	}
 
@@ -1330,11 +1554,11 @@ public class TGMeasureManager {
 	 * Crea Silencios temporarios en base a length
 	 */
 	private void createSilences(TGMeasure measure, long preciseStart, long preciseLength, int voiceIndex){
-		createSilences(measure, preciseStart, preciseLength, measure.getPreciseLength(), voiceIndex);
+		createSilences(measure, preciseStart, preciseLength, measure.getPreciseLength(), null, voiceIndex);
 	}
-
-	private void createSilences(TGMeasure measure, long preciseStart, long preciseLength, long maxPreciseLength, int voiceIndex){
-		createSilences(measure, preciseStart, preciseLength, maxPreciseLength, null, voiceIndex);
+	
+	private void createSilences(TGMeasure measure, long preciseStart, long preciseLength, TGDuration preferredDuration, int voiceIndex){
+		createSilences(measure, preciseStart, preciseLength, measure.getPreciseLength(), preferredDuration, voiceIndex);
 	}
 
 	private void createSilences(TGMeasure measure, long preciseStart, long preciseLength, long maxPreciseLength, TGDuration preferredDuration, int voiceIndex){

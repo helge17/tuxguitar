@@ -29,7 +29,7 @@ public class TestImportMidi {
 		// load test song
 		TGSongReaderHandle handleRead = new TGSongReaderHandle();
 		handleRead.setContext(new TGSongStreamContext());
-		handleRead.setInputStream(getClass().getClassLoader().getResource("test_midi_20.tg").openStream());
+		handleRead.setInputStream(getClass().getClassLoader().getResource("test_midi_22.tg").openStream());
 		handleRead.setFactory(new TGFactory());
 		TGSongReaderImpl songReader = new TGSongReaderImpl();
 		songReader.read(handleRead);
@@ -64,13 +64,14 @@ public class TestImportMidi {
 		}
 		
 		measure = importedSong.getTrack(0).getMeasure(1);
-		assertEquals(6, measure.countBeats());
+		assertEquals(7, measure.countBeats());
 		assertFalse(measure.getBeat(0).isRestBeat());
 		assertTrue(measure.getBeat(1).isRestBeat());
-		assertFalse(measure.getBeat(2).isRestBeat());
-		assertTrue(measure.getBeat(3).isRestBeat());
-		assertFalse(measure.getBeat(4).isRestBeat());
-		assertTrue(measure.getBeat(5).isRestBeat());
+		assertTrue(measure.getBeat(2).isRestBeat());
+		assertFalse(measure.getBeat(3).isRestBeat());
+		assertTrue(measure.getBeat(4).isRestBeat());
+		assertFalse(measure.getBeat(5).isRestBeat());
+		assertTrue(measure.getBeat(6).isRestBeat());
 	}
 
 	// quantization: too long and too short notes, too early or too late start
@@ -79,7 +80,7 @@ public class TestImportMidi {
 		// load test song
 		TGSongReaderHandle handleRead = new TGSongReaderHandle();
 		handleRead.setContext(new TGSongStreamContext());
-		handleRead.setInputStream(getClass().getClassLoader().getResource("test_midi_20.tg").openStream());
+		handleRead.setInputStream(getClass().getClassLoader().getResource("test_midi_22.tg").openStream());
 		handleRead.setFactory(new TGFactory());
 		TGSongReaderImpl songReader = new TGSongReaderImpl();
 		songReader.read(handleRead);
@@ -212,16 +213,21 @@ public class TestImportMidi {
 		importedSong = handleRead.getSong();
 		assertTrue(identicalRhythm(refMeasure, importedSong.getTrack(1).getMeasure(8)));
 
-		// alignment: when (1/16 + 1/2) is more readable than (1/2 + 1/16)
+		// alignment:
+		// 3rd and 4th beats are not-aligned 1/16th
+		// 5th and 6th beats: (1/16 + 1/2) is more readable than (1/2 + 1/16)
 		measure = importedSong.getTrack(1).getMeasure(9);
-		assertEquals(5, measure.countBeats());
+		assertEquals(6, measure.countBeats());
 		assertEquals(4, measure.getBeat(0).getVoice(0).getDuration().getValue());
 		assertEquals(16, measure.getBeat(1).getVoice(0).getDuration().getValue());
 		assertTrue(measure.getBeat(1).getVoice(0).getNote(0).isTiedNote());
-		assertEquals(8, measure.getBeat(2).getVoice(0).getDuration().getValue());
+		assertEquals(16, measure.getBeat(2).getVoice(0).getDuration().getValue());
+		assertTrue(measure.getBeat(2).isRestBeat());
 		assertEquals(16, measure.getBeat(3).getVoice(0).getDuration().getValue());
-		assertEquals(2, measure.getBeat(4).getVoice(0).getDuration().getValue());
-		assertTrue(measure.getBeat(4).getVoice(0).getNote(0).isTiedNote());
+		assertTrue(measure.getBeat(3).isRestBeat());
+		assertEquals(16, measure.getBeat(4).getVoice(0).getDuration().getValue());
+		assertEquals(2, measure.getBeat(5).getVoice(0).getDuration().getValue());
+		assertTrue(measure.getBeat(5).getVoice(0).getNote(0).isTiedNote());
 
 	}
 

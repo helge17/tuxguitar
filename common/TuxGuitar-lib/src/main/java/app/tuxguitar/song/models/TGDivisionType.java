@@ -60,6 +60,10 @@ public abstract class TGDivisionType {
 		return this.times;
 	}
 
+	public boolean isTuplet() {
+		return (!this.isEqual(TGDivisionType.NORMAL));
+	}
+
 	public void setTimes(int times) {
 		this.times = times;
 	}
