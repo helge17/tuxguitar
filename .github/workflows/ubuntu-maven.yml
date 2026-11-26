@@ -34,6 +34,9 @@ jobs:
       run: curl -o swt-4.41-gtk-linux-`uname -m`.zip https://archive.eclipse.org/eclipse/downloads/drops4/R-4.41-202608281142/swt-4.41-gtk-linux-`uname -m`.zip
     - name : install SWT
       run: mkdir swt-4.41-gtk-linux-`uname -m` && cd swt-4.41-gtk-linux-`uname -m` && unzip ../swt-4.41-gtk-linux-`uname -m`.zip && mvn install:install-file -Dfile=swt.jar -DgroupId=org.eclipse.swt -DartifactId=org.eclipse.swt.gtk.linux -Dpackaging=jar -Dversion=4.41
+    # bypass an error because a symlink is not followed correctly when building
+    - name: Copy data file to test
+      run: rm common/TuxGuitar-lib/src/test/resources/tunings.xml && cp common/resources/tunings/tunings.xml common/TuxGuitar-lib/src/test/resources/
     - name: Build with Maven
       run: cd desktop/build-scripts/tuxguitar-linux-swt-deb && mvn -e clean verify -P native-modules
     - uses: actions/upload-artifact@v4
