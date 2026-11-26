@@ -446,10 +446,12 @@ public class TGNewTrackDialog implements TGEventListener {
 		// associate channel to track
 		this.newTrack.setChannelId(selectedChannel.getChannelId());
 		
-		TGMeasure firstMeasure = this.newTrack.getMeasure(0);
-		firstMeasure.setClef(this.clefSelect.getSelectedValue());
-		firstMeasure.setKeySignature(this.keySignatureSelect.getSelectedValue());
-
+		Iterator<TGMeasure> measures = this.newTrack.getMeasures();
+		while (measures.hasNext()) {
+			TGMeasure measure = measures.next();
+			measure.setClef(this.clefSelect.getSelectedValue());
+			measure.setKeySignature(this.keySignatureSelect.getSelectedValue());
+		}
 		TGActionProcessor actionProcessor = new TGActionProcessor(this.context.getContext(), TGAddTrackAction.NAME);
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_TRACK, this.newTrack);
 		actionProcessor.setAttribute(TGDocumentContextAttributes.ATTRIBUTE_SONG, this.song);
