@@ -21,7 +21,7 @@
 	<string name="global_button_clean">Rensa</string>
 	<string name="global_button_add">Lägg till</string>
 
-	<!-- <string name="global_spinner_select_option"></string> -->
+	<string name="global_spinner_select_option">-- Välj --</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================== MENU =================================== -->
@@ -53,33 +53,33 @@
 	<string name="action_copy">Kopiera</string>
 	<string name="action_paste">Klistra in</string>
 
-	<!-- <string name="action_view_channel_list"></string> -->
+	<string name="action_view_channel_list">Instrument</string>
 	<string name="action_view_layout_show_score">Visa partitur</string>
 	<string name="action_view_layout_show_chord_name">Visa ackordnamn</string>
 	<string name="action_view_layout_show_chord_diagram">Visa ackorddiagram</string>
 
-	<string name="action_transport_play">Spela upp sång</string>
-	<string name="action_transport_stop">Stanna uppspelning</string>
+	<string name="action_transport_play">Spela upp eller pausa låten</string>
+	<string name="action_transport_stop">Stoppa uppspelningen</string>
 	<string name="action_transport_metronome">Metronom</string>
-	<!-- <string name="action_transport_count_down"></string> -->
+	<string name="action_transport_count_down">Inräkning</string>
 	<string name="action_transport_mode">Uppspelningsläge</string>
-	<string name="action_transport_set_loop_start">Sätt slingans startpunkt</string>
-	<string name="action_transport_set_loop_end">Sätt slingans slutpunkt</string>
-	<!-- <string name="action_transport_highlight_played_beat"></string> -->
+	<string name="action_transport_set_loop_start">Ange slingans startpunkt</string>
+	<string name="action_transport_set_loop_end">Ange slingans slutpunkt</string>
+	<string name="action_transport_highlight_played_beat">Markera slaget som spelas</string>
 
-	<!-- <string name="action_go_up"></string> -->
-	<!-- <string name="action_go_down"></string> -->
-	<!-- <string name="action_go_left"></string> -->
-	<!-- <string name="action_go_right"></string> -->
+	<string name="action_go_up">Flytta markören uppåt</string>
+	<string name="action_go_down">Flytta markören nedåt</string>
+	<string name="action_go_left">Flytta markören åt vänster</string>
+	<string name="action_go_right">Flytta markören åt höger</string>
 
 	<string name="action_change_tempo">Ändra tempo</string>
 	<string name="action_change_clef">Ändra klav</string>
-	<string name="action_change_key_signature">Ändra förtecken</string>
+	<string name="action_change_key_signature">Ändra tonartsförtecken</string>
 	<string name="action_change_time_signature">Ändra taktart</string>
 	<string name="action_change_triplet_feel">Ändra triolkänsla</string>
-	<string name="action_change_repeat_open">Öppna repris</string>
-	<string name="action_change_repeat_close">Stäng repris</string>
-	<string name="action_change_repeat_alternative">Alternativa repriser</string>
+	<string name="action_change_repeat_open">Reprisens början</string>
+	<string name="action_change_repeat_close">Reprisens slut</string>
+	<string name="action_change_repeat_alternative">Alternativa reprisslut</string>
 	<string name="action_change_properties">Egenskaper</string>
 
 	<string name="action_track_first">Första spåret</string>
@@ -89,14 +89,14 @@
 	<string name="action_track_add">Lägg till spår</string>
 	<string name="action_track_clone">Klona spår</string>
 	<string name="action_track_remove">Ta bort spår</string>
-	<string name="action_track_move_up">Flytta upp</string>
-	<string name="action_track_move_down">Flytta ner</string>
-	<!-- <string name="action_track_change_solo"></string> -->
-	<!-- <string name="action_track_change_mute"></string> -->
+	<string name="action_track_move_up">Flytta spåret uppåt</string>
+	<string name="action_track_move_down">Flytta spåret nedåt</string>
+	<string name="action_track_change_solo">Växla sololäge för spåret</string>
+	<string name="action_track_change_mute">Tysta spåret eller slå på ljudet igen</string>
 	<string name="action_track_set_name">Namn</string>
 	<!-- <string name="action_track_set_channel"></string> -->
 	<string name="action_track_change_tuning">Stämning</string>
-	<!-- <string name="action_track_change_string_count"></string> -->
+	<string name="action_track_change_string_count">Antal tabulaturlinjer</string>
 
 	<string name="action_measure_first">Första takten</string>
 	<string name="action_measure_previous">Föregående takt</string>
@@ -105,47 +105,47 @@
 	<string name="action_measure_add">Lägg till takt</string>
 	<string name="action_measure_clean">Rensa takt</string>
 	<string name="action_measure_remove">Ta bort takt</string>
-	<!-- <string name="action_fix_voice"></string> -->
+	<string name="action_fix_voice">Rätta fel i stämman</string>
 
-	<string name="action_change_tied_note">Sammanbunden not</string>
+	<string name="action_change_tied_note">Bunden not</string>
 	<string name="action_clean_beat">Rensa slag</string>
-	<string name="action_decrement_note_semitone">Sänk halvton</string>
-	<string name="action_increment_note_semitone">Höj halvton</string>
-	<!-- <string name="action_delete_note_or_rest"></string> -->
-	<!-- <string name="action_insert_rest_beat"></string> -->
+	<string name="action_decrement_note_semitone">Sänk en halvton</string>
+	<string name="action_increment_note_semitone">Höj en halvton</string>
+	<string name="action_delete_note_or_rest">Ta bort not eller paus</string>
+	<string name="action_insert_rest_beat">Infoga paus</string>
 	<string name="action_move_beats_left">Flytta ett slag åt vänster</string>
 	<string name="action_move_beats_right">Flytta ett slag åt höger</string>
 	<string name="action_remove_unused_voice">Ta bort oanvänd stämma</string>
-	<string name="action_set_voice_auto">Automatiska notskaft</string>
-	<string name="action_set_voice_down">Notskaft nedåt</string>
-	<string name="action_set_voice_up">Notskaft uppåt</string>
-	<string name="action_shift_note_down">Skifta nedåt</string>
-	<string name="action_shift_note_up">Skifta uppåt</string>
-	<string name="action_change_stroke">Anslag</string>
+	<string name="action_set_voice_auto">Automatisk riktning på nothalsar</string>
+	<string name="action_set_voice_down">Nothalsar nedåt</string>
+	<string name="action_set_voice_up">Nothalsar uppåt</string>
+	<string name="action_shift_note_down">Flytta noten en sträng nedåt</string>
+	<string name="action_shift_note_up">Flytta noten en sträng uppåt</string>
+	<string name="action_change_stroke">Uppåt- eller nedåtgående ackordanslag</string>
 	<!-- <string name="action_change_pickstroke"></string> -->
 	<string name="action_change_text">Infoga text</string>
 
-	<string name="action_set_duration_whole">Hel</string>
-	<string name="action_set_duration_half">Halv</string>
-	<string name="action_set_duration_quarter">Fjärdedel</string>
-	<string name="action_set_duration_eighth">Åttondel</string>
-	<string name="action_set_duration_sixteenth">Sextondel</string>
-	<string name="action_set_duration_thirtysecond">Trettioandradel</string>
-	<string name="action_set_duration_sixtyfourth">Sextiofjärdedel</string>
+	<string name="action_set_duration_whole">Helnot</string>
+	<string name="action_set_duration_half">Halvnot</string>
+	<string name="action_set_duration_quarter">Fjärdedelsnot</string>
+	<string name="action_set_duration_eighth">Åttondelsnot</string>
+	<string name="action_set_duration_sixteenth">Sextondelsnot</string>
+	<string name="action_set_duration_thirtysecond">Trettioandradelsnot</string>
+	<string name="action_set_duration_sixtyfourth">Sextiofjärdedelsnot</string>
 	<string name="action_set_duration_dotted">Punkterad</string>
 	<string name="action_set_duration_doubledotted">Dubbelpunkterad</string>
-	<string name="action_set_duration_division_type">Typ av uppdelning</string>
+	<string name="action_set_duration_division_type">Rytmisk indelning</string>
 
-	<!-- <string name="action_set_duration_division_type_1"></string> -->
-	<!-- <string name="action_set_duration_division_type_3"></string> -->
-	<!-- <string name="action_set_duration_division_type_5"></string> -->
-	<!-- <string name="action_set_duration_division_type_6"></string> -->
-	<!-- <string name="action_set_duration_division_type_7"></string> -->
-	<!-- <string name="action_set_duration_division_type_9"></string> -->
-	<!-- <string name="action_set_duration_division_type_10"></string> -->
-	<!-- <string name="action_set_duration_division_type_11"></string> -->
-	<!-- <string name="action_set_duration_division_type_12"></string> -->
-	<!-- <string name="action_set_duration_division_type_13"></string> -->
+	<string name="action_set_duration_division_type_1">Ingen annandelning</string>
+	<string name="action_set_duration_division_type_3">3 – triol</string>
+	<string name="action_set_duration_division_type_5">5 – kvintol</string>
+	<string name="action_set_duration_division_type_6">6 – sextol</string>
+	<string name="action_set_duration_division_type_7">7 – septol</string>
+	<string name="action_set_duration_division_type_9">9 – nonol</string>
+	<string name="action_set_duration_division_type_10">10 – grupp om tio</string>
+	<string name="action_set_duration_division_type_11">11 – grupp om elva</string>
+	<string name="action_set_duration_division_type_12">12 – grupp om tolv</string>
+	<string name="action_set_duration_division_type_13">13 – grupp om tretton</string>
 
 	<string name="action_set_velocity_ppp">Piano pianissimo</string>
 	<!-- <string name="action_set_velocity_pp"></string> -->
@@ -157,25 +157,25 @@
 	<string name="action_set_velocity_fff">Forte fortissimo</string>
 
 	<!-- <string name="action_change_vibrato"></string> -->
-	<!-- <string name="action_change_bend"></string> -->
+	<string name="action_change_bend">Strängböjning</string>
 	<string name="action_change_dead_note">Död not</string>
-	<!-- <string name="action_change_slide"></string> -->
-	<!-- <string name="action_change_hammer"></string> -->
+	<string name="action_change_slide">Glidning</string>
+	<string name="action_change_hammer">Hammer-on/pull-off</string>
 	<string name="action_change_tremolo_bar">Svajarm</string>
 	<string name="action_change_ghost_note">Spöknot</string>
 	<string name="action_change_accentuated_note">Betonad not</string>
 	<string name="action_change_heavy_accentuated_note">Starkt betonad not</string>
-	<!-- <string name="action_change_harmonic"></string> -->
-	<string name="action_change_grace">Föranslagsnot</string>
-	<!-- <string name="action_change_trill"></string> -->
-	<string name="action_change_tremolo_picking">Tremolo picking</string>
-	<string name="action_change_palm_mute">Palm mute</string>
-	<!-- <string name="action_change_let_ring"></string> -->
+	<string name="action_change_harmonic">Flageolett</string>
+	<string name="action_change_grace">Förslag</string>
+	<string name="action_change_trill">Drill</string>
+	<string name="action_change_tremolo_picking">Tremoloanslag</string>
+	<string name="action_change_palm_mute">Handflatedämpning</string>
+	<string name="action_change_let_ring">Låt klinga</string>
 	<!-- <string name="action_change_staccato"></string> -->
 	<!-- <string name="action_change_tapping"></string> -->
-	<!-- <string name="action_change_slapping"></string> -->
+	<string name="action_change_slapping">Slap</string>
 	<!-- <string name="action_change_popping"></string> -->
-	<string name="action_change_fade_in">Upptoning</string>
+	<string name="action_change_fade_in">Intoning</string>
 
 	<string name="action_channel_list_add">Lägg till</string>
 	<string name="action_channel_list_item_edit">Redigera</string>
@@ -204,7 +204,7 @@
 	<!-- =================================================================== -->
 
 	<!-- <string name="storage_saf_file_format_chooser_title"></string> -->
-	<!-- <string name="storage_saf_assets_provider_title"></string> -->
+	<string name="storage_saf_assets_provider_title">Demolåtar</string>
 
 	<!-- =================================================================== -->
 	<!-- ========================= BROWSER ================================= -->
@@ -222,7 +222,7 @@
 	<!-- <string name="browser_element_icon_description"></string> -->
 
 	<!-- collections -->
-	<string name="browser_collections_dlg_title">Bläddrare</string>
+	<string name="browser_collections_dlg_title">Bläddra i samlingar</string>
 
 	<string name="browser_settings_fs_dlg_title">Samling i filsystemet</string>
 	<string name="browser_settings_fs_name_label">Namn:</string>
@@ -232,7 +232,7 @@
 	<!-- <string name="browser_settings_saf_error_uri_access"></string> -->
 	<string name="browser_settings_saf_uri_request_msg">Välj din samlingsmapp</string>
 
-	<string name="browser_settings_fs_error_title">fel</string>
+	<string name="browser_settings_fs_error_title">Fel</string>
 	<!-- <string name="browser_settings_fs_error_empty_name"></string> -->
 	<!-- <string name="browser_settings_fs_error_empty_path"></string> -->
 	<!-- <string name="browser_settings_fs_error_nonexistent_path"></string> -->
@@ -243,7 +243,7 @@
 	<!-- =================================================================== -->
 
 	<string name="preferences_general_title">Allmänt</string>
-	<string name="preferences_general_use_collection_browser_title">Bläddrare</string>
+	<string name="preferences_general_use_collection_browser_title">Bläddra i samlingar</string>
 	<!-- <string name="preferences_general_use_collection_browser_summary"></string> -->
 
 	<string name="preferences_sound_category_title">Ljud</string>
@@ -256,73 +256,73 @@
 	<!-- =================================================================== -->
 
 	<!-- Confirm dialog -->
-	<!-- <string name="confirm_dlg_title"></string> -->
+	<string name="confirm_dlg_title">Bekräfta</string>
 
 	<!-- Tempo dialog -->
 	<string name="tempo_dlg_title">Ändra tempo</string>
 	<!-- <string name="tempo_dlg_tempo_label"></string> -->
-	<string name="tempo_dlg_options_apply_to_song">Tillämpa detta tempo i hela sången</string>
-	<string name="tempo_dlg_options_apply_to_end">Tillämpa detta tempo till slutet</string>
-	<string name="tempo_dlg_options_apply_to_next_marker">Tillämpa detta tempo till nästa tempomarkör</string>
+	<string name="tempo_dlg_options_apply_to_song">Använd tempot i hela låten</string>
+	<string name="tempo_dlg_options_apply_to_end">Använd tempot till låtens slut</string>
+	<string name="tempo_dlg_options_apply_to_next_marker">Använd tempot fram till nästa tempomarkör</string>
 
 	<!-- Clef dialog -->
 	<string name="clef_dlg_title">Ändra klav</string>
 	<string name="clef_dlg_clef_label">Klav:</string>
-	<string name="clef_dlg_clef_value_treble">Diskant</string>
-	<string name="clef_dlg_clef_value_bass">Bas</string>
-	<!-- <string name="clef_dlg_clef_value_tenor"></string> -->
-	<string name="clef_dlg_clef_value_alto">Alt</string>
-	<string name="clef_dlg_options_apply_to_end">Tillämpa denna klaven till slutet</string>
+	<string name="clef_dlg_clef_value_treble">Diskantklav</string>
+	<string name="clef_dlg_clef_value_bass">Basklav</string>
+	<string name="clef_dlg_clef_value_tenor">Tenorklav</string>
+	<string name="clef_dlg_clef_value_alto">Altklav</string>
+	<string name="clef_dlg_options_apply_to_end">Använd klaven till låtens slut</string>
 
 	<!-- Key Signature dialog -->
-	<string name="key_signature_dlg_title">Ändra förtecken</string>
-	<string name="key_signature_dlg_ks_label">Förtecken:</string>
-	<string name="key_signature_dlg_ks_value_natural">Inga</string>
-	<string name="key_signature_dlg_ks_value_sharp_1">1 höjd</string>
-	<string name="key_signature_dlg_ks_value_sharp_2">2 höjda</string>
-	<string name="key_signature_dlg_ks_value_sharp_3">3 höjda</string>
-	<string name="key_signature_dlg_ks_value_sharp_4">4 höjda</string>
-	<string name="key_signature_dlg_ks_value_sharp_5">5 höjda</string>
-	<string name="key_signature_dlg_ks_value_sharp_6">6 höjda</string>
-	<string name="key_signature_dlg_ks_value_sharp_7">7 höjda</string>
-	<string name="key_signature_dlg_ks_value_flat_1">1 sänkt</string>
-	<string name="key_signature_dlg_ks_value_flat_2">2 sänkta</string>
-	<string name="key_signature_dlg_ks_value_flat_3">3 sänkta</string>
-	<string name="key_signature_dlg_ks_value_flat_4">4 sänkta</string>
-	<string name="key_signature_dlg_ks_value_flat_5">5 sänkta</string>
-	<string name="key_signature_dlg_ks_value_flat_6">6 sänkta</string>
-	<string name="key_signature_dlg_ks_value_flat_7">7 sänkta</string>
-	<string name="key_signature_dlg_options_apply_to_end">Tillämpa dessa förtecken till slutet</string>
+	<string name="key_signature_dlg_title">Ändra tonartsförtecken</string>
+	<string name="key_signature_dlg_ks_label">Tonartsförtecken:</string>
+	<string name="key_signature_dlg_ks_value_natural">Inga förtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_1">1 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_2">2 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_3">3 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_4">4 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_5">5 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_6">6 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_sharp_7">7 korsförtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_1">1 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_2">2 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_3">3 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_4">4 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_5">5 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_6">6 b-förtecken</string>
+	<string name="key_signature_dlg_ks_value_flat_7">7 b-förtecken</string>
+	<string name="key_signature_dlg_options_apply_to_end">Använd tonartsförtecknen till låtens slut</string>
 
 	<!-- Time Signature dialog -->
 	<string name="time_signature_dlg_title">Ändra taktart</string>
-	<string name="time_signature_dlg_ts_numerator_label">Antal slag:</string>
-	<string name="time_signature_dlg_ts_denominator_label">Pulsvärde:</string>
-	<string name="time_signature_dlg_options_apply_to_end">Till slutet</string>
+	<string name="time_signature_dlg_ts_numerator_label">Antal slag per takt:</string>
+	<string name="time_signature_dlg_ts_denominator_label">Slagets notvärde:</string>
+	<string name="time_signature_dlg_options_apply_to_end">Använd taktarten till låtens slut</string>
 
 	<!-- Triplet Feel dialog -->
 	<string name="triplet_feel_dlg_title">Ändra triolkänsla</string>
 	<string name="triplet_feel_dlg_none">Ingen triolkänsla</string>
-	<string name="triplet_feel_dlg_eighth">8-dels trioler</string>
-	<string name="triplet_feel_dlg_sixteenth">16-dels trioler</string>
-	<string name="triplet_feel_dlg_options_apply_to_end">Tillämpa denna triolkänsla till slutet</string>
+	<string name="triplet_feel_dlg_eighth">Triolkänsla på åttondelar</string>
+	<string name="triplet_feel_dlg_sixteenth">Triolkänsla på sextondelar</string>
+	<string name="triplet_feel_dlg_options_apply_to_end">Använd triolkänslan till låtens slut</string>
 
 	<!-- Repeat Close dialog -->
-	<string name="repeat_close_dlg_title">Stäng repris</string>
-	<string name="repeat_close_dlg_count_label">Antal repriser:</string>
+	<string name="repeat_close_dlg_title">Reprisens slut</string>
+	<string name="repeat_close_dlg_count_label">Antal upprepningar:</string>
 
 	<!-- Repeat Alternative dialog -->
-	<string name="repeat_alternative_dlg_title">Alternativa repriser</string>
+	<string name="repeat_alternative_dlg_title">Alternativa reprisslut</string>
 
 	<!-- Song Properties dialog -->
 	<string name="song_properties_dlg_title">Egenskaper</string>
 	<string name="song_properties_dlg_name_label">Namn:</string>
 	<!-- <string name="song_properties_dlg_artist_label"></string> -->
 	<!-- <string name="song_properties_dlg_album_label"></string> -->
-	<string name="song_properties_dlg_author_label">Upphovsman:</string>
+	<string name="song_properties_dlg_author_label">Upphovsperson:</string>
 	<string name="song_properties_dlg_date_label">Datum:</string>
-	<!-- <string name="song_properties_dlg_copyright_label"></string> -->
-	<string name="song_properties_dlg_writer_label">Skapare av tabulatur:</string>
+	<string name="song_properties_dlg_copyright_label">Upphovsrätt:</string>
+	<string name="song_properties_dlg_writer_label">Tabulatur av:</string>
 	<string name="song_properties_dlg_transcriber_label">Transkriberad av:</string>
 	<string name="song_properties_dlg_comments_label">Kommentarer:</string>
 
@@ -332,25 +332,25 @@
 
 	<!-- Track channel dialog -->
 	<!-- <string name="track_channel_dlg_channel_label"></string> -->
-	<!-- <string name="track_channel_dlg_settings_label"></string> -->
+	<string name="track_channel_dlg_settings_label">Instrument</string>
 
 	<!-- Track tuning dialog -->
 	<string name="track_tuning_dlg_title">Stämning</string>
-	<!-- <string name="track_tuning_dlg_value_label"></string> -->
-	<!-- <string name="track_tuning_dlg_preview_label"></string> -->
+	<string name="track_tuning_dlg_value_label">Värde:</string>
+	<string name="track_tuning_dlg_preview_label">Beteckning:</string>
 	<!-- <string name="track_tuning_dlg_offset_select_value"></string> -->
 	<!-- <string name="track_tuning_dlg_preset_select_value"></string> -->
-	<string name="track_tuning_dlg_error_title">fel</string>
-	<!-- <string name="track_tuning_dlg_range_error"></string> -->
+	<string name="track_tuning_dlg_error_title">Fel</string>
+	<string name="track_tuning_dlg_range_error">Antalet strängar måste vara mellan %1$d och %2$d</string>
 
-	<!-- <string name="track_string_count_dlg_title"></string> -->
-	<!-- <string name="track_string_count_dlg_count_label"></string> -->
+	<string name="track_string_count_dlg_title">Antal tabulaturlinjer</string>
+	<string name="track_string_count_dlg_count_label">Antal tabulaturlinjer:</string>
 
 	<!-- Measure add dialog -->
 	<string name="measure_add_dlg_title">Lägg till takt</string>
-	<string name="measure_add_dlg_count_label">Lägg till räknande:</string>
-	<string name="measure_add_dlg_options_before_position">Lägg till takt innan den aktuella positionen</string>
-	<string name="measure_add_dlg_options_after_position">Lägg till takt efter den aktuella positionen</string>
+	<string name="measure_add_dlg_count_label">Antal takter att lägga till:</string>
+	<string name="measure_add_dlg_options_before_position">Lägg till takt före aktuell position</string>
+	<string name="measure_add_dlg_options_after_position">Lägg till takt efter aktuell position</string>
 	<string name="measure_add_dlg_options_at_end">Lägg till takt i slutet</string>
 
 	<!-- Measure remove dialog -->
@@ -371,56 +371,56 @@
 
 	<!-- Measure paste dialog -->
 	<string name="measure_paste_dlg_title">Klistra in takt</string>
-	<string name="measure_paste_dlg_count_label">Klistra in räknande:</string>
-	<string name="measure_paste_dlg_options_mode_replace">Klistra in vid aktuell takt</string>
+	<string name="measure_paste_dlg_count_label">Antal inklistringar:</string>
+	<string name="measure_paste_dlg_options_mode_replace">Klistra in från aktuell takt</string>
 	<string name="measure_paste_dlg_options_mode_insert">Klistra in i ny takt</string>
 
 	<!-- Text dialog -->
 	<string name="text_dlg_title">Infoga text</string>
 
 	<!-- Bend dialog -->
-	<string name="bend_dlg_title">Redigering av bend</string>
+	<string name="bend_dlg_title">Redigera strängböjning</string>
 	<!-- <string name="bend_dlg_preset_label"></string> -->
-	<!-- <string name="bend_dlg_preset_bend"></string> -->
-	<!-- <string name="bend_dlg_preset_bend_release"></string> -->
-	<!-- <string name="bend_dlg_preset_bend_release_bend"></string> -->
-	<string name="bend_dlg_preset_prebend">Pre-bend</string>
-	<string name="bend_dlg_preset_prebend_release">Pre-bend/Release</string>
+	<string name="bend_dlg_preset_bend">Strängböjning</string>
+	<string name="bend_dlg_preset_bend_release">Böj och släpp tillbaka</string>
+	<string name="bend_dlg_preset_bend_release_bend">Böj, släpp tillbaka och böj igen</string>
+	<string name="bend_dlg_preset_prebend">Böj före anslaget</string>
+	<string name="bend_dlg_preset_prebend_release">Böj före anslaget och släpp tillbaka</string>
 
 	<!-- Tremolo Bar dialog -->
 	<string name="tremolo_bar_dlg_title">Svajarm</string>
 	<!-- <string name="tremolo_bar_dlg_preset_label"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dip"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_dive"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_up"></string> -->
-	<!-- <string name="tremolo_bar_dlg_preset_release_down"></string> -->
-	<string name="tremolo_bar_dlg_preset_inverted_dip">Inverted dip</string>
-	<!-- <string name="tremolo_bar_dlg_preset_return"></string> -->
+	<string name="tremolo_bar_dlg_preset_dip">Sänk och återgå</string>
+	<string name="tremolo_bar_dlg_preset_dive">Sänk tonhöjden</string>
+	<string name="tremolo_bar_dlg_preset_release_up">Återgå från sänkt ton</string>
+	<string name="tremolo_bar_dlg_preset_release_down">Återgå från höjd ton</string>
+	<string name="tremolo_bar_dlg_preset_inverted_dip">Höj och återgå</string>
+	<string name="tremolo_bar_dlg_preset_return">Höj tonhöjden</string>
 
 	<!-- Tremolo picking dialog -->
-	<string name="tremolo_picking_dlg_title">Tremolo picking</string>
-	<string name="tremolo_picking_dlg_duration_8">Åttondel</string>
-	<string name="tremolo_picking_dlg_duration_16">Sextondel</string>
-	<string name="tremolo_picking_dlg_duration_32">Trettioandradel</string>
+	<string name="tremolo_picking_dlg_title">Tremoloanslag</string>
+	<string name="tremolo_picking_dlg_duration_8">Åttondelsnot</string>
+	<string name="tremolo_picking_dlg_duration_16">Sextondelsnot</string>
+	<string name="tremolo_picking_dlg_duration_32">Trettioandradelsnot</string>
 
 	<!-- Trill dialog -->
-	<!-- <string name="trill_dlg_title"></string> -->
+	<string name="trill_dlg_title">Drill</string>
 	<string name="trill_dlg_fret_label">Band:</string>
-	<string name="trill_dlg_duration_16">Sextondel</string>
-	<string name="trill_dlg_duration_32">Trettioandradel</string>
-	<string name="trill_dlg_duration_64">Sextiofjärdedel</string>
+	<string name="trill_dlg_duration_16">Sextondelsnot</string>
+	<string name="trill_dlg_duration_32">Trettioandradelsnot</string>
+	<string name="trill_dlg_duration_64">Sextiofjärdedelsnot</string>
 
 	<!-- Grace dialog -->
-	<string name="grace_dlg_title">Föranslagsnot</string>
+	<string name="grace_dlg_title">Förslag</string>
 	<string name="grace_dlg_fret_label">Band:</string>
 	<string name="grace_dlg_dead_note_label">Död not</string>
 	<!-- <string name="grace_dlg_position_label"></string> -->
-	<string name="grace_dlg_position_before_beat">Före slag</string>
-	<string name="grace_dlg_position_on_beat">På slag</string>
+	<string name="grace_dlg_position_before_beat">Före slaget</string>
+	<string name="grace_dlg_position_on_beat">På slaget</string>
 	<string name="grace_dlg_duration_label">Notvärde</string>
-	<string name="grace_dlg_duration_16">Sextondel</string>
-	<string name="grace_dlg_duration_32">Trettioandradel</string>
-	<string name="grace_dlg_duration_64">Sextiofjärdedel</string>
+	<string name="grace_dlg_duration_16">Sextondelsnot</string>
+	<string name="grace_dlg_duration_32">Trettioandradelsnot</string>
+	<string name="grace_dlg_duration_64">Sextiofjärdedelsnot</string>
 	<string name="grace_dlg_dynamic_label">Dynamik</string>
 	<string name="grace_dlg_dynamic_ppp">Piano pianissimo</string>
 	<!-- <string name="grace_dlg_dynamic_pp"></string> -->
@@ -432,39 +432,39 @@
 	<string name="grace_dlg_dynamic_fff">Forte fortissimo</string>
 	<string name="grace_dlg_transition_label">Övergång</string>
 	<string name="grace_dlg_transition_none">Ingen</string>
-	<!-- <string name="grace_dlg_transition_bend"></string> -->
-	<!-- <string name="grace_dlg_transition_slide"></string> -->
-	<!-- <string name="grace_dlg_transition_hammer"></string> -->
+	<string name="grace_dlg_transition_bend">Strängböjning</string>
+	<string name="grace_dlg_transition_slide">Glidning</string>
+	<string name="grace_dlg_transition_hammer">Hammer-on/pull-off</string>
 
 	<!-- Harmonic dialog -->
-	<!-- <string name="harmonic_dlg_title"></string> -->
-	<string name="harmonic_dlg_type_nh">[N.H] Natural harmonic</string>
-	<string name="harmonic_dlg_type_ah">[A.H] Artifical harmonic</string>
-	<string name="harmonic_dlg_type_th">[T.H] Tapped harmonic</string>
-	<string name="harmonic_dlg_type_ph">[P.H] Pinch harmonic</string>
-	<string name="harmonic_dlg_type_sh">[S.H] Semi harmonic</string>
+	<string name="harmonic_dlg_title">Flageolett</string>
+	<string name="harmonic_dlg_type_nh">[N.H] Naturlig flageolett</string>
+	<string name="harmonic_dlg_type_ah">[A.H] Konstgjord flageolett</string>
+	<string name="harmonic_dlg_type_th">[T.H] Flageolett med tapping</string>
+	<string name="harmonic_dlg_type_ph">[P.H] Tumflageolett (pinch harmonic)</string>
+	<string name="harmonic_dlg_type_sh">[S.H] Halvflageolett</string>
 
 	<!-- Stroke dialog -->
-	<string name="stroke_dlg_title">Anslag</string>
+	<string name="stroke_dlg_title">Uppåt- eller nedåtgående ackordanslag</string>
 	<string name="stroke_dlg_direction_label">Riktning:</string>
 	<string name="stroke_dlg_direction_none">Ingen</string>
-	<string name="stroke_dlg_direction_up">Uppåtslag</string>
-	<string name="stroke_dlg_direction_down">Nedåtslag</string>
-	<string name="stroke_dlg_duration_4">Fjärdedel</string>
-	<string name="stroke_dlg_duration_8">Åttondel</string>
-	<string name="stroke_dlg_duration_16">Sextondel</string>
-	<string name="stroke_dlg_duration_32">Trettioandradel</string>
-	<string name="stroke_dlg_duration_64">Sextiofjärdedel</string>
+	<string name="stroke_dlg_direction_up">Uppåtgående ackordanslag</string>
+	<string name="stroke_dlg_direction_down">Nedåtgående ackordanslag</string>
+	<string name="stroke_dlg_duration_4">Fjärdedelsnot</string>
+	<string name="stroke_dlg_duration_8">Åttondelsnot</string>
+	<string name="stroke_dlg_duration_16">Sextondelsnot</string>
+	<string name="stroke_dlg_duration_32">Trettioandradelsnot</string>
+	<string name="stroke_dlg_duration_64">Sextiofjärdedelsnot</string>
 
 	<!-- Pick stroke dialog -->
 	<!-- <string name="pickstroke_dlg_title"></string> -->
 	<string name="pickstroke_dlg_direction_label">Riktning:</string>
 	<string name="pickstroke_dlg_direction_none">Ingen</string>
-	<!-- <string name="pickstroke_dlg_direction_up"></string> -->
-	<!-- <string name="pickstroke_dlg_direction_down"></string> -->
+	<string name="pickstroke_dlg_direction_up">Uppåtslag med plektrum</string>
+	<string name="pickstroke_dlg_direction_down">Nedåtslag med plektrum</string>
 
 	<!-- Channels view -->
-	<!-- <string name="channel_list"></string> -->
+	<string name="channel_list">Instrument</string>
 
 	<!-- Channel edit dialog -->
 	<!-- <string name="channel_edit_dlg_title"></string> -->
@@ -473,7 +473,7 @@
 	<!-- <string name="channel_edit_dlg_program_value"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_label"></string> -->
 	<!-- <string name="channel_edit_dlg_bank_value"></string> -->
-	<!-- <string name="channel_edit_dlg_percussion_label"></string> -->
+	<string name="channel_edit_dlg_percussion_label">Slagverkskanal</string>
 	<string name="channel_edit_dlg_volume_label">Volym:</string>
 	<string name="channel_edit_dlg_balance_label">Balans:</string>
 	<!-- <string name="channel_edit_dlg_chorus_label"></string> -->
@@ -485,12 +485,12 @@
 	<string name="transport_mode_dlg_title">Uppspelningsläge</string>
 	<string name="transport_mode_dlg_simple">Enkelt uppspelningsläge</string>
 	<string name="transport_mode_dlg_trainer">Träningsläge</string>
-	<string name="transport_mode_dlg_simple_tempo_percent_label">Tempoprocentandel:</string>
-	<string name="transport_mode_dlg_simple_loop">Spela enkel slinga</string>
+	<string name="transport_mode_dlg_simple_tempo_percent_label">Tempo i procent:</string>
+	<string name="transport_mode_dlg_simple_loop">Spela i slinga</string>
 	<!-- <string name="transport_mode_dlg_trainer_tempo_percent_from_label"></string> -->
 	<string name="transport_mode_dlg_trainer_tempo_percent_to_label">Till:</string>
 	<string name="transport_mode_dlg_trainer_tempo_increment_label">Öka med:</string>
-	<string name="transport_mode_dlg_loop_range_label">Slingans omfång</string>
+	<string name="transport_mode_dlg_loop_range_label">Takter i slingan</string>
 	<string name="transport_mode_dlg_loop_range_from_label">Spela från takt:</string>
 	<string name="transport_mode_dlg_loop_range_from_default">Från början</string>
 	<string name="transport_mode_dlg_loop_range_to_label">Spela till takt:</string>
